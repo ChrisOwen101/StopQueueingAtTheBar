@@ -2,9 +2,12 @@
    Each clip has a 200%-wide .bm-pan strip holding the room (.bm-front) and the
    back bar (.bm-back); turning round slides the strip. People, drinks and bubbles
    share keyframes, timed by per-element delays in ms, so the markup reads like a script:
-     people   --t arrive (walk from the door), --m move to --x2/--y2/--w2, --l leave
-     .pop     --a appear, --b disappear
+     people   --t arrive (walk from the door), --m move to --x2/--y2/--w2, --l leave;
+              .rock shifts from foot to foot from --r, for --n rocks
+     .pop     --a appear, --b disappear (.swap: the same, but a plain fade)
+     .bm-arm  --a raise and wave a tenner, --n waves, --b lower it
      glasses  --a fill to --f%, --b top up to 100%, --s Guinness starts settling
+     bubbles  --x the speaker, --y just above their head; .me is you, tail up at --x
    Sizes use cqw (the stage is a container) so everything scales with the stage. */
 
 .hpt-stage { container-type: inline-size; }
@@ -12,6 +15,8 @@
 /* Keep the clip's z-indexes below the player's badge and start cover. */
 .hpt-shot { isolation: isolate; }
 .hpt-badge { top: 4%; bottom: auto; left: 42%; }
+/* Clip 8's hazard is up by the back wall, so its stamp goes on the empty floor. */
+.hpt-stage:has(.b8.on) .hpt-badge { top: 46%; left: 24%; }
 
 .bm-pan { position: absolute; top: 0; left: 0; width: 200%; height: 100%; }
 .bm-view { position: absolute; top: 0; width: 50%; height: 100%; overflow: hidden; }
@@ -118,13 +123,15 @@
     linear-gradient(#8a5a22 0 10%, #6e4519 10% 14%, #c98a3e 14%);
 }
 
+/* Trays and mats keep to the far edge of the bar, leaving the strip nearest you
+   clear for your own speech bubbles. */
 .bm-tray {
   position: absolute;
   z-index: 101;
   left: calc(var(--x) * 1%);
-  top: 87%;
+  top: 81.2%;
   width: 13%;
-  height: 4.5%;
+  height: 4.2%;
   translate: -50% 0;
   border-radius: 0.6cqw;
   background: repeating-linear-gradient(90deg, #3a3d44 0 0.5cqw, #2b2d33 0.5cqw 1cqw);
@@ -134,7 +141,7 @@
   position: absolute;
   z-index: 101;
   left: calc(var(--x) * 1%);
-  top: 80.5%;
+  top: 80.2%;
   width: 4.2%;
   aspect-ratio: 1;
   translate: -50% 0;
@@ -392,6 +399,186 @@
   10%, 100% { filter: opacity(0); scale: 0.8; }
 }
 
+/* A Hoverer shifts from foot to foot: --r starts it, for --n rocks. */
+.bm-p.rock {
+  transform-origin: 50% 100%;
+  animation-name: bm-walk, bm-move, bm-leave, bm-rock;
+  animation-delay: calc(var(--t, -99999) * 1ms), calc(var(--m, 99999) * 1ms), calc(var(--l, 99999) * 1ms), calc(var(--r, 0) * 1ms);
+  animation-duration: var(--dur), var(--dur), var(--dur), 1200ms;
+  animation-iteration-count: 1, 1, 1, var(--n, 2);
+  animation-fill-mode: both, forwards, forwards, none;
+}
+
+@keyframes bm-rock {
+  0%, 100% { rotate: 0deg; }
+  25%      { rotate: -4deg; }
+  75%      { rotate: 4deg; }
+}
+
+/* A colleague, seen from behind: the back of their head, a black staff shirt
+   and a tea towel over the shoulder. */
+.bm-p.mate::before { background: var(--hair); }
+.bm-p.mate::after { background: #16161d; }
+
+.bm-towel {
+  position: absolute;
+  z-index: 2;
+  left: 66%;
+  top: 13%;
+  width: 20%;
+  height: 24%;
+  border-radius: 0.3cqw;
+  background: repeating-linear-gradient(to bottom, var(--cream) 0 24%, #2447f5 24% 34%);
+}
+
+/* A customer turned round to face their table: the back of their head (.swap, --a to --b). */
+.bm-turn {
+  position: absolute;
+  z-index: 2;
+  left: 27%;
+  top: 0;
+  width: 46%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--hair);
+}
+
+.swap {
+  animation-name: bm-show, bm-out;
+  animation-delay: calc(var(--a, -99999) * 1ms), calc(var(--b, 99999) * 1ms);
+  animation-fill-mode: both, forwards;
+}
+
+@keyframes bm-show {
+  0%         { opacity: 0; }
+  1.5%, 100% { opacity: 1; }
+}
+
+/* A raised arm waving a tenner, from --a for --n waves, lowered at --b. */
+.bm-arm {
+  position: absolute;
+  left: 100%;
+  top: 24%;
+  width: 17%;
+  height: 30%;
+  translate: -50% -100%;
+  transform-origin: 50% 100%;
+  border-radius: 999px;
+  background: var(--c);
+  animation-name: bm-in, bm-out, bm-wave;
+  animation-delay: calc(var(--a) * 1ms), calc(var(--b) * 1ms), calc(var(--a) * 1ms);
+  animation-duration: var(--dur), var(--dur), 460ms;
+  animation-iteration-count: 1, 1, var(--n, 10);
+  animation-fill-mode: both, forwards, both;
+}
+
+/* The hand, and the tenner in it. */
+.bm-arm::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 150%;
+  aspect-ratio: 1;
+  translate: -50% -45%;
+  border-radius: 50%;
+  background: var(--skin);
+}
+
+.bm-arm::after {
+  content: "£10";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  translate: -50% -88%;
+  rotate: -12deg;
+  padding: 0.15em 0.45em;
+  border-radius: 0.2em;
+  border: max(1.5px, 0.3cqw) solid #f6c48a;
+  background: #c8641e;
+  color: var(--cream);
+  font-weight: 900;
+  font-size: max(8px, 1.5cqw);
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+@keyframes bm-wave {
+  0%, 100% { rotate: 0deg; }
+  50%      { rotate: 24deg; }
+}
+
+/* Furniture out on the floor. */
+.bm-table {
+  position: absolute;
+  z-index: 25;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--w) * 1%);
+  height: 11%;
+  translate: -50% 0;
+  border-radius: 0.4cqw 0.4cqw 0 0;
+  background: linear-gradient(#c98a3e 0 20%, #5a3f2a 20%);
+}
+
+.bm-pool {
+  position: absolute;
+  z-index: 25;
+  left: 50%;
+  top: 35%;
+  width: 40%;
+  height: 13%;
+}
+
+.bm-pool::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 42% 0;
+  border: 0.7cqw solid #6e4519;
+  border-radius: 0.5cqw;
+  background:
+    radial-gradient(0.65cqw circle at 28% 50%, #e63946 96%, transparent),
+    radial-gradient(0.65cqw circle at 55% 35%, #ffd36a 96%, transparent),
+    radial-gradient(0.65cqw circle at 70% 62%, var(--cream) 96%, transparent),
+    #1f7a4a;
+}
+
+.bm-pool::after {
+  content: "";
+  position: absolute;
+  inset: 56% 0.5% 0;
+  border-radius: 0 0 0.4cqw 0.4cqw;
+  background: #5a3f2a;
+}
+
+/* The door to the toilets, on the back wall. */
+.bm-wc {
+  position: absolute;
+  left: 74%;
+  top: 5%;
+  width: 7%;
+  height: 19%;
+  background: #3b2a1e;
+  border: 0.4cqw solid #5a3f2a;
+  border-bottom: 0;
+  border-radius: 0.6cqw 0.6cqw 0 0;
+}
+
+.bm-wc::before {
+  content: "WC";
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  translate: -50% 0;
+  padding: 0.1em 0.3em;
+  border-radius: 0.25em;
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 900;
+  font-size: max(7px, 1.3cqw);
+  line-height: 1.1;
+}
+
 /* ---------- Things that pop in and out ---------- */
 
 .pop {
@@ -410,14 +597,21 @@
   3%, 100% { filter: opacity(0); }
 }
 
+/* Speech bubbles. --x is the speaker (or, for your own lines, the person you're
+   talking to): the tail always sits exactly there. The bubble leans away from the
+   nearest edge so it never leaves the stage: --k is where the tail sits along the
+   bubble (0 left, 1 right), worked out from --x and the widest the bubble can be
+   (--bw, in cqw). Set --ax on a bubble to lean it by hand, e.g. away from another. */
 .bm-bub {
+  --bw: 44;
+  --k: var(--ax, max(0.14, min(0.86, clamp(calc(1 - (97 - var(--x)) / var(--bw)), 0.5, calc((var(--x) - 3) / var(--bw))))));
   position: absolute;
   z-index: 120;
   left: calc(var(--x) * 1%);
   top: calc(var(--y) * 1%);
-  translate: -50% -100%;
+  translate: calc(var(--k) * -100%) -100%;
   width: max-content;
-  max-width: 44cqw;
+  max-width: calc(var(--bw) * 1cqw);
   margin: 0;
   padding: 0.45em 0.8em;
   border-radius: 1em;
@@ -427,21 +621,47 @@
   font-size: max(10px, 1.8cqw);
   line-height: 1.2;
   text-align: center;
-  transform-origin: 50% 100%;
+  transform-origin: calc(var(--k) * 100%) 100%;
 }
 
 .bm-bub::after {
   content: "";
   position: absolute;
-  left: 50%;
+  left: calc(var(--k) * 100%);
   top: calc(100% - 1px);
   translate: -50% 0;
   border: max(5px, 0.8cqw) solid transparent;
+  border-bottom-width: 0;
   border-top-color: var(--cream);
 }
 
-.bm-bub.me { background: var(--amber); }
-.bm-bub.me::after { border-top-color: var(--amber); }
+/* Your own lines: amber, on the clear strip of bar nearest you, tail up at whoever
+   you're talking to. The room slides away when you turn, so say them facing it. */
+.bm-bub.me {
+  --bw: 66;
+  top: auto;
+  bottom: 3%;
+  translate: calc(var(--k) * -100%) 0;
+  background: var(--amber);
+  transform-origin: calc(var(--k) * 100%) 0;
+}
+
+.bm-bub.me::before {
+  content: "you";
+  margin-right: 0.5em;
+  font-size: 0.72em;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.bm-bub.me::after {
+  top: auto;
+  bottom: calc(100% - 1px);
+  border-width: 0 max(5px, 0.8cqw) max(5px, 0.8cqw);
+  border-color: transparent transparent var(--amber);
+}
 
 .bm-ring {
   position: absolute;
@@ -642,6 +862,22 @@
 @keyframes b5-pan {
   0%, 20.8%   { translate: 0 0; }
   26.7%, 100% { translate: -50% 0; }
+}
+
+/* Clip 7 (12s): turn to pour the lager, turn back. */
+.b7-pan { animation-name: b7-pan; }
+@keyframes b7-pan {
+  0%, 19.2%    { translate: 0 0; }
+  24.2%, 37.5% { translate: -50% 0; }
+  42.5%, 100%  { translate: 0 0; }
+}
+
+/* Clip 10 (11.5s): serve the next one while the round is decided. */
+.b10-pan { animation-name: b10-pan; }
+@keyframes b10-pan {
+  0%, 61.7%    { translate: 0 0; }
+  67%, 78.3%   { translate: -50% 0; }
+  83.5%, 100%  { translate: 0 0; }
 }
 
 /* Clip 4 (10s): the card machine comes up, is handed over, and goes. */

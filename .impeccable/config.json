@@ -1,0 +1,62 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "clipped-overflow-container",
+        "value": "*",
+        "files": [
+          "public/hazard-barperson.html"
+        ],
+        "createdAt": "2026-10-07T21:15:06.030Z",
+        "reason": "lead decided: .hpt-stage and .bm-view are the film frame of an animated clip; clipping figures that walk in/out of frame is the intended viewport behaviour"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "public/hazard-{customer,barperson}.html"
+        ],
+        "createdAt": "2026-10-07T21:23:33.246Z",
+        "reason": "lead decided: the flagged element is .hpt-stage, the animated clip's film frame; artwork runs full-bleed to its border and it holds no UI text"
+      },
+      {
+        "rule": "clipped-overflow-container",
+        "value": "*",
+        "files": [
+          "public/hazard-customer.html"
+        ],
+        "createdAt": "2026-10-07T21:23:33.304Z",
+        "reason": "lead decided: the clip stage clips actors walking in/out of frame by design (same exception as hazard-barperson.html)"
+      },
+      {
+        "rule": "radial-halo",
+        "value": "*",
+        "files": [
+          "public/hazard-barperson.html"
+        ],
+        "createdAt": "2026-10-07T21:23:33.397Z",
+        "reason": "lead decided: the radial gradients draw hard-edged pool balls, a dartboard and a lime as illustration, not a decorative glow"
+      },
+      {
+        "rule": "repeated-container-text",
+        "value": "*",
+        "files": [
+          "public/hazard-barperson.html"
+        ],
+        "createdAt": "2026-10-07T21:23:37.003Z",
+        "reason": "lead decided: the repeated line is the barperson asking 'What can I get you?' in different clips; only one clip is visible at a time"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "public/index.html"
+        ],
+        "createdAt": "2026-10-07T21:25:28.255Z",
+        "reason": "lead decided: cream is a named core colour in DESIGN.md (one of the two text colours and a whole-screen colour block), not a reflexive off-white surface"
+      }
+    ]
+  }
+}

@@ -69,18 +69,17 @@
   background: var(--ink);
 }
 
-.hpt-head, .hpt-stage, .hpt-sub, .hpt-controls { width: var(--stage-w); }
+.hpt-head, .hpt-stage, .hpt-controls { width: var(--stage-w); }
 
 .hpt-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
 .hpt-head .small { margin: 0; }
 .hpt-clipno { font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; font-size: clamp(0.75rem, 1.6vw, 0.95rem); }
 
 .hpt-panel { min-height: 14rem; padding-top: 0.6rem; }
-.hpt-panel:focus { outline: none; }
 
 @media (orientation: landscape) and (min-width: 600px) {
   .hpt {
-    --chrome: 150px;
+    --chrome: 104px;
     --stage-w: min(100%, calc((100svh - var(--hz-top) - var(--chrome)) * 16 / 11));
     grid-template-columns: minmax(0, 3fr) minmax(280px, 2fr);
     align-items: center;
@@ -205,16 +204,6 @@
   line-height: 1;
   letter-spacing: -0.03em;
   text-transform: lowercase;
-}
-
-
-.hpt-sub {
-  min-height: 2.6em;
-  margin: 0;
-  text-align: center;
-  font-weight: 700;
-  font-size: clamp(1rem, 2vw, 1.3rem);
-  line-height: 1.3;
 }
 
 .hpt-controls { display: flex; align-items: center; gap: 0.8rem; }
@@ -438,10 +427,9 @@
 /* Landscape phones: every pixel of height counts. */
 @media (orientation: landscape) and (max-height: 520px) {
   :root { --hz-top: 44px; }
-  .hpt { --chrome: 124px; }
+  .hpt { --chrome: 96px; }
   .hpt-head { display: none; }
   .hpt-media { gap: 6px; }
-  .hpt-sub { min-height: 1.3em; margin: 0; font-size: 0.85rem; }
   .hpt-btn { width: 36px; height: 36px; }
   .hpt-btn svg { width: 16px; height: 16px; }
   .hpt-mark { width: 9px; height: 9px; border-width: 1.5px; }

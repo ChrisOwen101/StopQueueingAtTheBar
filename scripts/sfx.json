@@ -53,6 +53,10 @@
     "beep": {
       "prompt": "Contactless card payment terminal approved, two short electronic beeps, clean",
       "duration": 0.6
+    },
+    "flush": {
+      "prompt": "Pub toilet flushing behind a closed door, muffled, short, slightly comedic",
+      "duration": 2
     }
   }
 }

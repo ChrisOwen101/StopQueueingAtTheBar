@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Customer Hazard Test · Don't Queue At The Bar</title>
-  <meta name="description" content="The hazard perception test for customers. Four clips. Spot the hazard before you join a queue.">
+  <meta name="description" content="The hazard perception test for customers. Five clips, picked at random from ten. Spot the hazard before you join a queue.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="hazard.css">
   <link rel="stylesheet" href="hazard-customer.css">
@@ -59,7 +59,7 @@
           <i class="a cust c4" style="--x:86;--y:28"></i>
           <i class="pint k2-pint-a" style="--x:70"></i>
           <i class="a you k2-you"></i>
-          <span class="hpt-bubble k2-nod" style="--x:50;--y:45">*nod*</span>
+          <p class="hpt-bubble me say-r pop" style="--x:50;--y:28;--a:5200;--b:6900">*nod*</p>
           <i class="pint k2-pint" style="--x:50"></i>
         </div>
 
@@ -73,7 +73,7 @@
           <i class="a cust c4" style="--x:86;--y:28"></i>
           <i class="a cust c3 k3-them"></i>
           <i class="a you k3-you"></i>
-          <span class="hpt-bubble k3-say" style="--x:53;--y:46">← you're next</span>
+          <p class="hpt-bubble say-l pop" style="--x:66;--y:8;--a:4400;--b:6500">← you're next</p>
           <i class="pint k3-pint-a" style="--x:66"></i>
           <i class="pint k3-pint" style="--x:40"></i>
         </div>
@@ -81,7 +81,6 @@
         <!-- Clip 4: the round. -->
         <div class="hpt-shot">
           <i class="hpt-clock"></i>
-          <i class="a staff idle" style="--x:18;--y:8"></i>
           <i class="a staff busy k4-staff" style="--x:39;--y:8"></i>
           <i class="a staff busy" style="--x:63;--y:8"></i>
           <i class="a staff busy" style="--x:84;--y:8"></i>
@@ -94,8 +93,8 @@
           <i class="a cust c4" style="--x:15;--y:87"></i>
           <i class="a cust c2" style="--x:29;--y:87"></i>
           <i class="a you k4-you"></i>
-          <span class="hpt-bubble k4-ask" style="--x:47;--y:45">what are you having?</span>
-          <span class="hpt-bubble k4-order" style="--x:47;--y:45">4 lagers, a Guinness, a lime &amp; soda</span>
+          <p class="hpt-bubble say-l pop" style="--x:47;--y:8;--a:4000;--b:5700">what are you having?</p>
+          <p class="hpt-bubble me say-b pop" style="--x:47;--y:28;--a:5800;--b:7600">4 lagers, a Guinness, a lime &amp; soda</p>
           <i class="pint k4-p" style="--x:40;--i:0"></i>
           <i class="pint k4-p" style="--x:43;--i:1"></i>
           <i class="pint k4-p" style="--x:46;--i:2"></i>
@@ -103,12 +102,137 @@
           <i class="pint k4-p" style="--x:52;--i:4"></i>
           <i class="pint k4-p" style="--x:55;--i:5"></i>
         </div>
+
+        <!-- Clip 5: the phantom queue. A line by the pool table, an empty bar. -->
+        <div class="hpt-shot">
+          <i class="hpt-clock"></i>
+          <i class="a staff idle k5-sa" style="--x:18;--y:8"></i>
+          <i class="a staff idle k5-sb" style="--x:39;--y:8"></i>
+          <i class="a staff idle k5-sc" style="--x:61;--y:8"></i>
+          <i class="a staff idle k5-sd" style="--x:82;--y:8"></i>
+          <i class="hpt-pool" style="--x:21;--y:66;--w:26;--h:24"><i style="--x:30;--y:62"></i><i style="--x:64;--y:36"></i></i>
+          <i class="hpt-cue" style="--x:36;--y:44;--r:128deg"></i>
+          <i class="a cust c2" style="--x:36;--y:44"></i>
+          <i class="a cust c1 k5-s2"></i>
+          <i class="a cust c3 k5-s3"></i>
+          <i class="a cust c4 k5-s4"></i>
+          <i class="a cust c0 k5-s5"></i>
+          <i class="a you k5-you"></i>
+          <i class="pint pop" style="--x:76;--a:7400"></i>
+        </div>
+
+        <!-- Clip 6: someone lines up behind you. -->
+        <div class="hpt-shot">
+          <i class="hpt-clock"></i>
+          <i class="a staff busy" style="--x:18;--y:8"></i>
+          <i class="a staff busy k6-sb" style="--x:54;--y:8"></i>
+          <i class="a staff busy k6-sc" style="--x:84;--y:8"></i>
+          <i class="a cust c3" style="--x:16;--y:28"></i>
+          <i class="a cust c4" style="--x:86;--y:28"></i>
+          <i class="a you" style="--x:38;--y:28"></i>
+          <i class="a cust c1 k6-them"></i>
+          <i class="a ghost pop" style="--x:38;--y:54;--a:3900;--b:5500"></i>
+          <i class="a ghost pop" style="--x:38;--y:66;--a:4200;--b:5500"></i>
+          <i class="a ghost pop" style="--x:38;--y:78;--a:4500;--b:5500"></i>
+          <p class="hpt-bubble me say-r pop" style="--x:38;--y:28;--a:5300;--b:6600">plenty of room here</p>
+          <p class="hpt-bubble say-b pop" style="--x:64;--y:28;--a:7300;--b:8700">cheers</p>
+          <i class="pint pop" style="--x:38;--a:8000"></i>
+          <i class="pint pop" style="--x:64;--a:9400"></i>
+        </div>
+
+        <!-- Clip 7: you've been served. Two people are waiting for a gap. -->
+        <div class="hpt-shot">
+          <i class="hpt-clock"></i>
+          <i class="a staff busy" style="--x:18;--y:8"></i>
+          <i class="a staff busy k7-sb" style="--x:50;--y:8"></i>
+          <i class="a staff busy" style="--x:70;--y:8"></i>
+          <i class="a staff busy" style="--x:88;--y:8"></i>
+          <i class="a cust c1" style="--x:14;--y:28"></i>
+          <i class="a cust c2" style="--x:26;--y:28"></i>
+          <i class="a cust c3" style="--x:38;--y:28"></i>
+          <i class="a cust c4" style="--x:62;--y:28"></i>
+          <i class="a cust c0" style="--x:74;--y:28"></i>
+          <i class="a cust c1" style="--x:86;--y:28"></i>
+          <i class="hpt-table" style="--x:80;--y:79"></i>
+          <i class="a cust c3" style="--x:68;--y:76"></i>
+          <i class="a cust c2" style="--x:92;--y:76"></i>
+          <i class="a cust c2 k7-w1"></i>
+          <i class="a cust c1 k7-w2"></i>
+          <i class="pint pop" style="--x:47;--a:1400;--b:5200"></i>
+          <i class="pint pop" style="--x:53;--a:2400;--b:5200"></i>
+          <i class="a you k7-you"><i class="pint pop" style="--x:-30;--a:5200"></i><i class="pint pop" style="--x:130;--a:5200"></i></i>
+          <p class="hpt-bubble say-l pop" style="--x:44;--y:43;--a:3800;--b:5600">ahem</p>
+          <i class="pint pop" style="--x:50;--a:9000"></i>
+        </div>
+
+        <!-- Clip 8: "who's next?" They got there first. -->
+        <div class="hpt-shot">
+          <i class="hpt-clock"></i>
+          <i class="a staff busy" style="--x:18;--y:8"></i>
+          <i class="a staff k8-sb" style="--x:52;--y:8"></i>
+          <i class="a staff busy" style="--x:84;--y:8"></i>
+          <i class="a cust c1" style="--x:16;--y:28"></i>
+          <i class="a cust c4" style="--x:86;--y:28"></i>
+          <i class="a cust c2 k8-them"></i>
+          <i class="a you k8-you"></i>
+          <p class="hpt-bubble say-r pop" style="--x:52;--y:8;--a:4200;--b:5700">who's next?</p>
+          <p class="hpt-bubble me say-b pop" style="--x:62;--y:28;--a:5200;--b:6800">they were first</p>
+          <p class="hpt-bubble say-b pop" style="--x:42;--y:28;--a:7400;--b:8800">cheers</p>
+          <i class="pint pop" style="--x:42;--a:7000"></i>
+          <i class="pint pop" style="--x:62;--a:9200"></i>
+        </div>
+
+        <!-- Clip 9: five of you, one round. -->
+        <div class="hpt-shot">
+          <i class="hpt-clock"></i>
+          <i class="a staff busy" style="--x:18;--y:8"></i>
+          <i class="a staff idle k9-sb" style="--x:39;--y:8"></i>
+          <i class="a staff idle k9-sc" style="--x:61;--y:8"></i>
+          <i class="a staff busy" style="--x:84;--y:8"></i>
+          <i class="a cust c1" style="--x:16;--y:28"></i>
+          <i class="a cust c4" style="--x:86;--y:28"></i>
+          <i class="hpt-table" style="--x:20;--y:69"></i>
+          <i class="a ghost pop" style="--x:32;--y:28;--a:3800;--b:5300"></i>
+          <i class="a ghost pop" style="--x:41;--y:28;--a:4000;--b:5300"></i>
+          <i class="a ghost pop" style="--x:50;--y:28;--a:4200;--b:5300"></i>
+          <i class="a ghost pop" style="--x:59;--y:28;--a:4400;--b:5300"></i>
+          <i class="a ghost pop" style="--x:68;--y:28;--a:4600;--b:5300"></i>
+          <i class="a cust c0 k9-m1"></i>
+          <i class="a cust c2 k9-m2"></i>
+          <i class="a cust c3 k9-m3"></i>
+          <i class="a cust c1 k9-m4"></i>
+          <i class="a cust c0 k9-new"></i>
+          <i class="a you k9-you"></i>
+          <p class="hpt-bubble me say-t pop" style="--x:50;--y:52;--a:5100;--b:6100">I'll get these</p>
+          <i class="pint pop" style="--x:44;--a:7600"></i>
+          <i class="pint pop" style="--x:47;--a:7900"></i>
+          <i class="pint pop" style="--x:50;--a:8200"></i>
+          <i class="pint pop" style="--x:53;--a:8500"></i>
+          <i class="pint pop" style="--x:56;--a:8800"></i>
+        </div>
+
+        <!-- Clip 10: they're pouring your last pint. -->
+        <div class="hpt-shot">
+          <i class="hpt-clock"></i>
+          <i class="a staff busy" style="--x:18;--y:8"></i>
+          <i class="a staff busy k10-sb" style="--x:50;--y:8"></i>
+          <i class="a staff busy" style="--x:84;--y:8"></i>
+          <i class="a cust c1" style="--x:16;--y:28"></i>
+          <i class="a cust c3" style="--x:32;--y:28"></i>
+          <i class="a cust c2" style="--x:68;--y:28"></i>
+          <i class="a cust c4" style="--x:86;--y:28"></i>
+          <i class="pint pop" style="--x:47;--a:1200;--b:8800"></i>
+          <i class="pint glass k10-glass" style="--x:53"><b class="k10-beer"></b></i>
+          <i class="hpt-ring pop" style="--x:53;--y:16;--s:6;--a:4300;--b:5400"></i>
+          <i class="hpt-reader k10-reader" style="--x:58;--y:17"><b class="k10-paid"></b></i>
+          <i class="a you k10-you"><i class="card k10-card"></i><i class="pint pop" style="--x:-30;--a:8800"></i><i class="pint pop" style="--x:130;--a:8800"></i></i>
+        </div>
       </div>
     </div>
 
     <div class="hpt-panel" aria-live="polite">
       <h1 class="hpt-h">The customer test</h1>
-      <p class="hpt-intro">Four clips. Watch each one. When it pauses on a hazard, pick what you'd do. Get it right and we'll let you near a bar.</p>
+      <p class="hpt-intro">Five clips, picked at random from ten, so it's different every time. Watch each one. When it pauses on a hazard, pick what you'd do. Get it right and we'll let you near a bar.</p>
       <p class="hpt-intro">Sound on for the commentary.</p>
     </div>
   </main>

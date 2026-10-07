@@ -1,10 +1,19 @@
 /* Customer hazard perception test: top-down pub, dots for people.
-   Keyframes k1-* to k4-* are the four clips; each pauses at 50% (5s of 10s). */
+   A pool of ten clips (keyframes k1-* to k10-*); the player deals five at random.
+   Positions are % of the stage: --x across, --y down. Staff stand in the band above
+   the bar (y 8), customers at the bar stand just below it (y 28).
+   Sizes use cqw (the stage is a container), so dots, labels and bubbles scale with it.
+   Movement is per-clip keyframes, in % of the clip. Things that simply appear and
+   disappear use .pop with --a (in) and --b (out) in ms of clip time. */
 
 .hpt-stage {
-  --d: 5.2%;
-  --ring: 0 0 0 4px rgba(255, 182, 39, 0.7);
+  container-type: inline-size;
+  --d: 5.2cqw;
+  --ring: 0 0 0 max(3px, 0.55cqw) rgba(255, 182, 39, 0.7);
 }
+
+/* Keep the clip's z-indexes below the player's badge and start cover. */
+.hpt-shot { isolation: isolate; }
 
 .hpt-bar {
   position: absolute;
@@ -13,9 +22,11 @@
   top: 14%;
   height: 5%;
   background: #c98a3e;
-  border-radius: 6px;
-  box-shadow: 0 5px 0 #8a5a22;
+  border-radius: max(4px, 0.8cqw);
+  box-shadow: 0 max(3px, 0.7cqw) 0 #8a5a22;
 }
+
+/* ---------- People ---------- */
 
 .hpt .a {
   position: absolute;
@@ -41,35 +52,148 @@
 .hpt .you {
   z-index: 3;
   background: var(--amber);
-  box-shadow: 0 0 0 3px #0e0e13, 0 0 0 6px var(--amber);
+  box-shadow: 0 0 0 max(2px, 0.4cqw) #0e0e13, 0 0 0 max(4px, 0.8cqw) var(--amber);
 }
 
 .hpt .you::after {
   content: "you";
   position: absolute;
   left: 50%;
-  top: calc(100% + 6px);
+  top: calc(100% + max(3px, 0.6cqw));
   translate: -50% 0;
   color: var(--amber);
   font-weight: 900;
-  font-size: clamp(0.55rem, 1.4vw, 0.8rem);
+  font-size: max(8px, 1.4cqw);
+  line-height: 1;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+
+/* The queue that's about to happen: red, because it's The Single File. */
+.hpt .ghost {
+  z-index: 0;
+  border: max(2px, 0.4cqw) dashed var(--red-soft);
+}
+
+/* ---------- Things on the bar ---------- */
 
 .hpt .pint {
   position: absolute;
   z-index: 2;
   left: calc(var(--x) * 1%);
-  top: 13%;
-  width: 2.4%;
+  top: 16%;
+  width: 2.4cqw;
   aspect-ratio: 0.72;
   translate: -50% -50%;
   background: var(--amber);
-  border-top: 3px solid var(--cream);
-  border-radius: 2px 2px 5px 5px;
+  border-top: max(2px, 0.45cqw) solid var(--cream);
+  border-radius: 2px 2px max(3px, 0.6cqw) max(3px, 0.6cqw);
   opacity: 0;
 }
+
+/* Drinks you're carrying sit beside your dot (--x is % of the dot). */
+.hpt .a > .pint { top: 40%; }
+
+/* A glass being poured: it fills from the bottom, and the head goes on last. */
+.hpt .pint.glass {
+  overflow: hidden;
+  background: transparent;
+  border-top-color: transparent;
+  box-shadow: inset 0 0 0 max(1px, 0.25cqw) rgba(255, 244, 220, 0.6);
+}
+
+.hpt .pint.glass b {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
+  background: var(--amber);
+}
+
+.hpt .card {
+  position: absolute;
+  left: 110%;
+  top: -15%;
+  width: 3cqw;
+  aspect-ratio: 1.6;
+  rotate: -14deg;
+  border-radius: 0.35cqw;
+  background: #7f95ff;
+  border-top: max(2px, 0.45cqw) solid var(--ink);
+}
+
+.hpt-reader {
+  position: absolute;
+  z-index: 2;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 3.2cqw;
+  aspect-ratio: 0.66;
+  translate: -50% -50%;
+  border: max(1px, 0.25cqw) solid #6b6f78;
+  border-radius: 0.5cqw;
+  background: #2b2d33;
+}
+
+.hpt-reader b {
+  position: absolute;
+  inset: 12% 14% 48%;
+  border-radius: 0.2cqw;
+  background: #0b3d2e;
+}
+
+/* ---------- The room ---------- */
+
+.hpt-table {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 12cqw;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: #6b4a26;
+}
+
+.hpt-pool {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--w) * 1%);
+  height: calc(var(--h) * 1%);
+  translate: -50% -50%;
+  border: 1cqw solid #6b4a26;
+  border-radius: 1.2cqw;
+  background: #23408e;
+}
+
+.hpt-pool i {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 1.7cqw;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--cream);
+}
+
+.hpt-pool i + i { background: #ffd36a; }
+
+.hpt-cue {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 13cqw;
+  height: max(2px, 0.5cqw);
+  border-radius: 99px;
+  background: #e8cfa0;
+  transform-origin: 0 50%;
+  rotate: var(--r);
+}
+
+/* ---------- Highlights ---------- */
 
 .hpt-zone {
   position: absolute;
@@ -77,22 +201,34 @@
   width: calc(var(--w) * 1%);
   top: 21%;
   height: 14%;
-  border: 3px dashed var(--amber);
-  border-radius: 12px;
+  border: max(2px, 0.45cqw) dashed var(--amber);
+  border-radius: max(8px, 1.6cqw);
   opacity: 0;
 }
 
 .hpt-zone span {
   position: absolute;
   left: 50%;
-  top: calc(100% + 6px);
+  top: calc(100% + max(3px, 0.6cqw));
   translate: -50% 0;
   white-space: nowrap;
   color: var(--amber);
   font-weight: 900;
-  font-size: clamp(0.55rem, 1.4vw, 0.8rem);
+  font-size: max(8px, 1.4cqw);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.hpt-ring {
+  position: absolute;
+  z-index: 3;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--s, 6) * 1cqw);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border: max(2px, 0.4cqw) dashed var(--amber);
+  border-radius: 50%;
 }
 
 .hpt-gaze {
@@ -108,44 +244,115 @@
   opacity: 0;
 }
 
-.hpt-table {
-  position: absolute;
-  left: calc(var(--x) * 1%);
-  top: calc(var(--y) * 1%);
-  width: 12%;
-  aspect-ratio: 1;
-  translate: -50% -50%;
-  border-radius: 50%;
-  background: #6b4a26;
-}
+/* ---------- Speech bubbles ----------
+   Put the bubble at its speaker's position (--x, --y, where they stand when they
+   speak) and pick the side with free space: say-r / say-l (beside them, for staff
+   in the band above the bar) or say-b / say-t (below or above them). The tail
+   always points back at the speaker. .me is you: amber, and say-b clears the YOU label.
+   Long lines wrap; keep staff lines short, as the band above the bar fits one line. */
 
 .hpt-bubble {
+  --bg: var(--cream);
+  --tail: max(6px, 1cqw);
+  --off: calc(var(--d) / 2 + var(--tail) + 0.4cqw);
   position: absolute;
   z-index: 4;
   left: calc(var(--x) * 1%);
   top: calc(var(--y) * 1%);
-  translate: -50% -50%;
-  padding: 0.35em 0.75em;
-  border-radius: 12px;
-  background: var(--cream);
+  width: max-content;
+  max-width: 40cqw;
+  margin: 0;
+  padding: 0.4em 0.75em;
+  border-radius: 0.9em;
+  background: var(--bg);
   color: var(--ink);
   font-weight: 800;
-  font-size: clamp(0.6rem, 1.7vw, 1rem);
-  white-space: nowrap;
-  opacity: 0;
+  font-size: max(10px, 1.8cqw);
+  line-height: 1.15;
+  text-align: center;
+  text-wrap: balance;
+  translate: -50% var(--off);
+  transform-origin: 50% 0;
 }
 
-.hpt-bubble::before {
+.hpt-bubble.me { --bg: var(--amber); }
+
+.hpt-bubble::after {
   content: "";
   position: absolute;
+  border: var(--tail) solid transparent;
+}
+
+.hpt-bubble.say-b::after {
   left: 50%;
   bottom: calc(100% - 1px);
   translate: -50% 0;
-  border: 7px solid transparent;
-  border-bottom-color: var(--cream);
+  border-top-width: 0;
+  border-bottom-color: var(--bg);
 }
 
-/* Clip 1: the single file */
+.hpt-bubble.me.say-b {
+  --off: calc(var(--d) / 2 + var(--tail) + max(3px, 0.6cqw) + max(8px, 1.4cqw) + 0.6cqw);
+}
+
+.hpt-bubble.say-t {
+  translate: -50% calc(-100% - var(--off));
+  transform-origin: 50% 100%;
+}
+
+.hpt-bubble.say-t::after {
+  left: 50%;
+  top: calc(100% - 1px);
+  translate: -50% 0;
+  border-bottom-width: 0;
+  border-top-color: var(--bg);
+}
+
+.hpt-bubble.say-r {
+  translate: var(--off) -50%;
+  transform-origin: 0 50%;
+}
+
+.hpt-bubble.say-r::after {
+  right: calc(100% - 1px);
+  top: 50%;
+  translate: 0 -50%;
+  border-left-width: 0;
+  border-right-color: var(--bg);
+}
+
+.hpt-bubble.say-l {
+  translate: calc(-100% - var(--off)) -50%;
+  transform-origin: 100% 50%;
+}
+
+.hpt-bubble.say-l::after {
+  left: calc(100% - 1px);
+  top: 50%;
+  translate: 0 -50%;
+  border-right-width: 0;
+  border-left-color: var(--bg);
+}
+
+/* ---------- Pop in at --a, out at --b (ms of clip time) ---------- */
+
+.hpt .pop {
+  animation-name: c-in, c-out;
+  animation-delay: calc(var(--a, -99999) * 1ms), calc(var(--b, 99999) * 1ms);
+  animation-fill-mode: both, forwards;
+}
+
+@keyframes c-in {
+  0%       { opacity: 0; scale: 0.6; }
+  3%, 100% { opacity: 1; scale: 1; }
+}
+
+@keyframes c-out {
+  0%       { filter: opacity(1); }
+  3%, 100% { filter: opacity(0); }
+}
+
+/* ---------- Clip 1: the single file ---------- */
 .k1-you   { animation-name: k1-you; }
 .k1-staff { animation-name: k1-staff; }
 .k1-zone  { animation-name: k1-zone; }
@@ -154,8 +361,8 @@
 .k1-pint  { animation-name: k1-pint; }
 
 @keyframes k1-you {
-  0%       { left: 88%; top: 112%; }
-  42%, 50% { left: 80%; top: 76%; }
+  0%        { left: 88%; top: 112%; }
+  42%, 50%  { left: 80%; top: 76%; }
   66%, 100% { left: 74%; top: 28%; }
 }
 @keyframes k1-staff {
@@ -180,13 +387,12 @@
   88%, 100% { opacity: 1; scale: 1; }
 }
 
-/* Clip 2: catch the eye */
+/* ---------- Clip 2: catch the eye ---------- */
 .k2-staff  { animation-name: k2-staff; }
 .k2-gaze   { animation-name: k2-gaze; }
 .k2-leave  { animation-name: k2-leave; }
 .k2-pint-a { animation-name: k2-pint-a; }
 .k2-you    { animation-name: k2-you; }
-.k2-nod    { animation-name: k2-nod; }
 .k2-pint   { animation-name: k1-pint; }
 
 @keyframes k2-staff {
@@ -217,17 +423,11 @@
   60%       { top: 25%; }
   62%, 100% { top: 28%; }
 }
-@keyframes k2-nod {
-  0%, 52%   { opacity: 0; scale: 0.6; }
-  55%, 66%  { opacity: 1; scale: 1; }
-  72%, 100% { opacity: 0; scale: 1; }
-}
 
-/* Clip 3: trust the barperson */
+/* ---------- Clip 3: trust the barperson ---------- */
 .k3-them   { animation-name: k3-them; }
 .k3-you    { animation-name: k3-you; }
 .k3-staff  { animation-name: k3-staff; }
-.k3-say    { animation-name: k3-say; }
 .k3-pint-a { animation-name: k3-pint-a; }
 .k3-pint   { animation-name: k3-pint; }
 
@@ -243,16 +443,11 @@
 @keyframes k3-staff {
   0%, 36%   { left: 61%; box-shadow: var(--ring); }
   40%       { left: 61%; box-shadow: none; }
-  48%, 52%  { left: 66%; box-shadow: none; }
+  44%, 52%  { left: 66%; box-shadow: none; }
   56%, 64%  { left: 66%; box-shadow: var(--ring); }
   68%       { left: 66%; box-shadow: none; }
   78%       { left: 40%; box-shadow: none; }
   82%, 100% { left: 40%; box-shadow: var(--ring); }
-}
-@keyframes k3-say {
-  0%, 42%   { opacity: 0; scale: 0.6; }
-  46%, 64%  { opacity: 1; scale: 1; }
-  70%, 100% { opacity: 0; scale: 1; }
 }
 @keyframes k3-pint-a {
   0%, 60%   { opacity: 0; scale: 0; }
@@ -264,11 +459,9 @@
   92%, 100% { opacity: 1; scale: 1; }
 }
 
-/* Clip 4: the round */
+/* ---------- Clip 4: the round ---------- */
 .k4-you   { animation-name: k4-you; }
 .k4-staff { animation-name: k4-staff; }
-.k4-ask   { animation-name: k4-ask; }
-.k4-order { animation-name: k4-order; }
 .k4-p     { animation-name: k4-p; animation-delay: calc(var(--i) * 250ms); }
 
 @keyframes k4-you {
@@ -278,20 +471,221 @@
 @keyframes k4-staff {
   0%, 30%   { left: 39%; box-shadow: var(--ring); }
   34%       { left: 39%; box-shadow: none; }
-  42%, 68%  { left: 47%; box-shadow: none; }
+  38%, 68%  { left: 47%; box-shadow: none; }
   72%, 100% { left: 47%; box-shadow: var(--ring); }
-}
-@keyframes k4-ask {
-  0%, 40%   { opacity: 0; scale: 0.6; }
-  44%, 56%  { opacity: 1; scale: 1; }
-  59%, 100% { opacity: 0; scale: 1; }
-}
-@keyframes k4-order {
-  0%, 58%   { opacity: 0; scale: 0.6; }
-  61%, 74%  { opacity: 1; scale: 1; }
-  80%, 100% { opacity: 0; scale: 1; }
 }
 @keyframes k4-p {
   0%, 72%   { opacity: 0; scale: 0; }
   76%, 100% { opacity: 1; scale: 1; }
+}
+
+/* ---------- Clip 5: the phantom queue ---------- */
+.k5-you { animation-name: k5-you; }
+.k5-sa  { animation-name: k5-sa; }
+.k5-sb  { animation-name: k5-sb; }
+.k5-sc  { animation-name: k5-sc; }
+.k5-sd  { animation-name: k5-sd; }
+.k5-s2  { animation-name: k5-s2; }
+.k5-s3  { animation-name: k5-s3; }
+.k5-s4  { animation-name: k5-s4; }
+.k5-s5  { animation-name: k5-s5; }
+
+@keyframes k5-you {
+  0%        { left: 92%; top: 112%; }
+  40%, 50%  { left: 76%; top: 81.5%; }
+  58%       { left: 90%; top: 56%; }
+  68%, 100% { left: 76%; top: 28%; }
+}
+@keyframes k5-sd {
+  0%, 60%   { left: 82%; opacity: 0.35; box-shadow: none; }
+  68%, 100% { left: 76%; opacity: 1; box-shadow: var(--ring); }
+}
+@keyframes k5-sa {
+  0%, 82%   { left: 18%; opacity: 0.35; box-shadow: none; }
+  90%, 100% { left: 40%; opacity: 1; box-shadow: var(--ring); }
+}
+@keyframes k5-sb {
+  0%, 84%   { left: 39%; opacity: 0.35; box-shadow: none; }
+  92%, 100% { left: 52%; opacity: 1; box-shadow: var(--ring); }
+}
+@keyframes k5-sc {
+  0%, 86%   { left: 61%; opacity: 0.35; box-shadow: none; }
+  94%, 100% { left: 64%; opacity: 1; box-shadow: var(--ring); }
+}
+@keyframes k5-s2 {
+  0%, 76%   { left: 44%; top: 51.5%; }
+  86%, 100% { left: 40%; top: 28%; }
+}
+@keyframes k5-s3 {
+  0%, 79%   { left: 52%; top: 59%; }
+  89%, 100% { left: 52%; top: 28%; }
+}
+@keyframes k5-s4 {
+  0%, 82%   { left: 60%; top: 66.5%; }
+  92%, 100% { left: 64%; top: 28%; }
+}
+@keyframes k5-s5 {
+  0%, 84%   { left: 68%; top: 74%; }
+  94%, 100% { left: 88%; top: 28%; }
+}
+
+/* ---------- Clip 6: someone lines up behind you ---------- */
+.k6-them { animation-name: k6-them; }
+.k6-sb   { animation-name: k6-sb; }
+.k6-sc   { animation-name: k6-sc; }
+
+@keyframes k6-them {
+  0%, 6%    { left: 46%; top: 112%; }
+  36%, 62%  { left: 38%; top: 42%; }
+  72%, 100% { left: 64%; top: 28%; }
+}
+@keyframes k6-sb {
+  0%, 64%   { left: 54%; }
+  72%, 100% { left: 38%; }
+}
+@keyframes k6-sc {
+  0%, 80%   { left: 84%; }
+  88%, 100% { left: 64%; }
+}
+
+/* ---------- Clip 7: served, so step away ---------- */
+.k7-you { animation-name: k7-you; }
+.k7-w1  { animation-name: k7-w1; }
+.k7-w2  { animation-name: k7-w2; }
+.k7-sb  { animation-name: k7-sb; }
+
+@keyframes k7-you {
+  0%, 52%   { left: 50%; top: 28%; }
+  57%       { left: 50.5%; top: 45%; }
+  62%       { left: 54%; top: 57%; }
+  72%, 100% { left: 80%; top: 60%; }
+}
+@keyframes k7-w1 {
+  0%, 8%    { left: 40%; top: 112%; }
+  30%, 66%  { left: 44%; top: 43%; }
+  74%, 100% { left: 50%; top: 28%; }
+}
+@keyframes k7-w2 {
+  0%, 16%   { left: 62%; top: 112%; }
+  38%, 100% { left: 57%; top: 44%; }
+}
+@keyframes k7-sb {
+  0%, 30%   { opacity: 1; box-shadow: var(--ring); }
+  34%, 72%  { opacity: 0.35; box-shadow: none; }
+  76%, 100% { opacity: 1; box-shadow: var(--ring); }
+}
+
+/* ---------- Clip 8: who's next? ---------- */
+.k8-them { animation-name: k8-them; }
+.k8-you  { animation-name: k8-you; }
+.k8-sb   { animation-name: k8-sb; }
+
+@keyframes k8-them {
+  0%        { left: 34%; top: 112%; }
+  20%, 100% { left: 42%; top: 28%; }
+}
+@keyframes k8-you {
+  0%, 12%   { left: 72%; top: 112%; }
+  34%, 100% { left: 62%; top: 28%; }
+}
+@keyframes k8-sb {
+  0%, 36%   { left: 52%; box-shadow: var(--ring); }
+  40%, 60%  { left: 52%; box-shadow: none; }
+  66%, 76%  { left: 42%; box-shadow: var(--ring); }
+  80%       { left: 62%; box-shadow: none; }
+  84%, 100% { left: 62%; box-shadow: var(--ring); }
+}
+
+/* ---------- Clip 9: five of you, one round ---------- */
+.k9-you { animation-name: k9-you; }
+.k9-m1  { animation-name: k9-m1; }
+.k9-m2  { animation-name: k9-m2; }
+.k9-m3  { animation-name: k9-m3; }
+.k9-m4  { animation-name: k9-m4; }
+.k9-new { animation-name: k9-new; }
+.k9-sb  { animation-name: k9-sb; }
+.k9-sc  { animation-name: k9-sc; }
+
+@keyframes k9-you {
+  0%        { left: 50%; top: 118%; }
+  46%, 62%  { left: 50%; top: 52%; }
+  72%, 100% { left: 50%; top: 28%; }
+}
+@keyframes k9-m1 {
+  0%        { left: 41%; top: 124%; }
+  46%, 56%  { left: 41%; top: 58%; }
+  66%, 100% { left: 31%; top: 62%; }
+}
+@keyframes k9-m2 {
+  0%        { left: 59%; top: 124%; }
+  46%, 58%  { left: 59%; top: 58%; }
+  66%       { left: 26%; top: 49%; }
+  74%, 100% { left: 9%; top: 62%; }
+}
+@keyframes k9-m3 {
+  0%        { left: 45%; top: 133%; }
+  46%, 56%  { left: 45%; top: 67%; }
+  66%, 100% { left: 31%; top: 76%; }
+}
+@keyframes k9-m4 {
+  0%        { left: 55%; top: 133%; }
+  46%, 60%  { left: 55%; top: 67%; }
+  68%       { left: 26%; top: 88%; }
+  76%, 100% { left: 9%; top: 76%; }
+}
+@keyframes k9-new {
+  0%, 66%   { left: 80%; top: 112%; }
+  84%, 100% { left: 70%; top: 28%; }
+}
+@keyframes k9-sb {
+  0%, 64%   { left: 39%; opacity: 0.35; box-shadow: none; }
+  70%, 100% { left: 50%; opacity: 1; box-shadow: var(--ring); }
+}
+@keyframes k9-sc {
+  0%, 82%   { left: 61%; opacity: 0.35; box-shadow: none; }
+  88%, 100% { left: 70%; opacity: 1; box-shadow: var(--ring); }
+}
+
+/* ---------- Clip 10: card ready ---------- */
+.k10-you    { animation-name: k10-you; }
+.k10-sb     { animation-name: k10-sb; }
+.k10-glass  { animation-name: k10-glass; }
+.k10-beer   { animation-name: k10-beer; }
+.k10-reader { animation-name: k10-reader; }
+.k10-paid   { animation-name: k10-paid; }
+.k10-card   { animation-name: k10-card; }
+
+@keyframes k10-you {
+  0%, 88%   { left: 50%; top: 28%; }
+  96%, 100% { left: 46%; top: 46%; }
+}
+@keyframes k10-sb {
+  0%, 78%   { left: 50%; }
+  84%, 100% { left: 68%; }
+}
+@keyframes k10-glass {
+  0%, 17%   { opacity: 0; border-top-color: transparent; }
+  18%, 58%  { opacity: 1; border-top-color: transparent; }
+  62%, 87%  { opacity: 1; border-top-color: var(--cream); }
+  88%, 100% { opacity: 0; border-top-color: var(--cream); }
+}
+@keyframes k10-beer {
+  0%, 20%   { height: 0; }
+  60%, 100% { height: 100%; }
+}
+@keyframes k10-reader {
+  0%, 60%   { top: 8%; opacity: 0; }
+  64%, 80%  { top: 17%; opacity: 1; }
+  84%, 100% { top: 8%; opacity: 0; }
+}
+@keyframes k10-paid {
+  0%, 71%   { background: #0b3d2e; }
+  72%, 100% { background: #4ad295; }
+}
+@keyframes k10-card {
+  0%, 52%   { opacity: 0; scale: 0.6; translate: 0 0; }
+  54%, 67%  { opacity: 1; scale: 1; translate: 0 0; }
+  70%, 73%  { opacity: 1; scale: 1; translate: 3.4cqw -4.6cqw; }
+  76%, 86%  { opacity: 1; scale: 1; translate: 0 0; }
+  88%, 100% { opacity: 0; scale: 1; translate: 0 0; }
 }

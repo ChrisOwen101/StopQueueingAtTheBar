@@ -1,8 +1,9 @@
 /* Hazard perception test player.
-   A test page provides the clips as .hpt-shot elements (CSS keyframe animations)
-   plus the matching data, then calls HazardTest.init(root, config).
-   The player drives the keyframes with the Web Animations API so each clip stops
-   exactly on its hazard, waits for an answer, then plays the outcome.
+   A test page provides a pool of clips as .hpt-shot elements (CSS keyframe
+   animations) plus the matching data, then calls HazardTest.init(root, config).
+   Each run deals a few clips from the pool in random order. The player drives the
+   keyframes with the Web Animations API so each clip stops exactly on its hazard,
+   waits for an answer, plays the outcome, then waits for Next.
    All audio (narration and sound effects) is pre-recorded with ElevenLabs by
    scripts/generate-audio.mjs and listed in audio/manifest.json. */
 
@@ -12,7 +13,19 @@
 
   const DEFAULT_DUR = 10000;
   const DEFAULT_CUE = 5000;
+  const DEFAULT_PICK = 5;
   const LETTERS = 'ABCD';
+
+  // How many clips one run deals from the pool.
+  const handSize = (config) => Math.min(config.pick || DEFAULT_PICK, config.clips.length);
+
+  const shuffle = (a) => {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
 
   // [minimum fraction correct, grade, line]
   const DEFAULT_GRADES = [
@@ -33,7 +46,7 @@
 
   function spokenLines(config) {
     const grades = config.grades || DEFAULT_GRADES;
-    const n = config.clips.length;
+    const n = handSize(config);
     const lines = [START_LINE];
     config.clips.forEach((c) => {
       lines.push(c.question);
@@ -43,12 +56,12 @@
     return [...new Set(lines.filter(Boolean))];
   }
 
-  // Sounds the player itself plays, plus every sound named in the clips' events.
+  // Sounds the player itself plays, plus every sound cued in the clips.
   const PLAYER_SOUNDS = ['hazard', 'correct', 'wrong', 'fanfare', 'sad'];
 
   function soundNames(config) {
     const names = [...PLAYER_SOUNDS];
-    config.clips.forEach((c) => c.events.forEach(([, , fx]) => fx && names.push(fx)));
+    config.clips.forEach((c) => (c.sounds || []).forEach(([, fx]) => names.push(fx)));
     return [...new Set(names)];
   }
 
@@ -119,6 +132,7 @@
 
     return {
       get muted() { return muted; },
+      hush: stopVoice,
       // Must be called from a click: browsers only allow audio after a user gesture.
       unlock() {
         if (!ctx && AC) ctx = new AC();
@@ -205,16 +219,18 @@
   };
 
   /* config:
-     clips:  [{ dur?, cue?, label, events: [[ms, caption|null, sound?]], question, options: [{ text, ok?, say }] }]
+     clips:  the pool: [{ dur?, cue?, label, sounds: [[ms, name]], question, options: [{ text, ok?, say }] }]
+     pick:   clips dealt per run, in random order (optional, default 5)
      grades: [[minFraction, grade, line]] highest first (optional)
      links:  [{ href, text }] shown with "Take it again" at the end (optional)
-     posterAt: ms into clip 1 shown behind the start button (optional)
-     audio:  narration manifest URL (optional, default audio/manifest.json) */
+     posterAt: ms into the pool's first clip shown behind the start button (optional)
+     audio:  narration manifest URL (optional, default audio/manifest.json)
+     To review particular clips, add ?clips=3,7 (pool positions, from 1) to the page URL. */
   function init(root, config) {
-    const clips = config.clips;
+    const pool = config.clips;
     const grades = config.grades || DEFAULT_GRADES;
     const shots = [...root.querySelectorAll('.hpt-shot')];
-    if (shots.length !== clips.length) console.warn(`HazardTest: ${shots.length} .hpt-shot elements but ${clips.length} clips`);
+    if (shots.length !== pool.length) console.warn(`HazardTest: ${shots.length} .hpt-shot elements but ${pool.length} clips`);
     if (!('getAnimations' in Element.prototype)) return;
 
     const stage = root.querySelector('.hpt-stage');
@@ -223,8 +239,12 @@
     const sound = createSound();
     const lines = spokenLines(config);
     const sounds = soundNames(config);
+    const forced = (new URLSearchParams(location.search).get('clips') || '')
+      .split(',')
+      .map((s) => parseInt(s, 10) - 1)
+      .filter((i) => i >= 0 && i < pool.length);
 
-    // Player chrome: hazard badge and start cover on the stage, captions and controls below it.
+    // Player chrome: hazard badge and start cover on the stage, controls below it.
     const badge = el('p', 'hpt-badge', 'hazard');
     badge.setAttribute('aria-hidden', 'true');
     const cover = el('div', 'hpt-cover');
@@ -239,30 +259,42 @@
     });
     stage.append(badge, cover);
 
-    const sub = el('p', 'hpt-sub');
-    sub.setAttribute('aria-hidden', 'true');
     const controls = el('div', 'hpt-controls');
     controls.innerHTML = CONTROLS;
-    stage.after(sub, controls);
+    stage.after(controls);
 
     const playBtn = controls.querySelector('.hpt-play');
     const muteBtn = controls.querySelector('.hpt-mute');
     const track = controls.querySelector('.hpt-track');
     const fill = controls.querySelector('.hpt-fill');
     const timeText = controls.querySelector('.hpt-time').firstChild;
+    const totText = controls.querySelector('.hpt-time .tot');
 
-    const durs = clips.map((c) => c.dur || DEFAULT_DUR);
-    const cues = clips.map((c) => c.cue || DEFAULT_CUE);
-    const starts = durs.map((_, i) => durs.slice(0, i).reduce((a, b) => a + b, 0));
-    const total = durs.reduce((a, b) => a + b, 0);
-    controls.querySelector('.hpt-time .tot').textContent = ` / ${fmt(total)}`;
+    // This run's hand: which pool clips, in what order, and where they sit on the timeline.
+    let hand = [];
+    let clips = [];
+    let durs = [];
+    let cues = [];
+    let starts = [];
+    let total = 0;
+    let marks = [];
 
-    const marks = clips.map((_, i) => {
-      const m = el('i', 'hpt-mark');
-      m.style.left = `${((starts[i] + cues[i]) / total) * 100}%`;
-      track.appendChild(m);
-      return m;
-    });
+    const deal = () => {
+      hand = forced.length ? forced : shuffle(pool.map((_, i) => i)).slice(0, handSize(config));
+      clips = hand.map((i) => pool[i]);
+      durs = clips.map((c) => c.dur || DEFAULT_DUR);
+      cues = clips.map((c) => c.cue || DEFAULT_CUE);
+      starts = durs.map((_, i) => durs.slice(0, i).reduce((a, b) => a + b, 0));
+      total = durs.reduce((a, b) => a + b, 0);
+      totText.textContent = ` / ${fmt(total)}`;
+      marks.forEach((m) => m.remove());
+      marks = clips.map((_, i) => {
+        const m = el('i', 'hpt-mark');
+        m.style.left = `${((starts[i] + cues[i]) / total) * 100}%`;
+        track.appendChild(m);
+        return m;
+      });
+    };
 
     let state = 'idle';
     let clip = 0;
@@ -295,37 +327,29 @@
       timeText.textContent = fmt(done);
     };
 
-    const showCaption = (t) => {
-      let text = '';
-      clips[clip].events.forEach(([at, cap]) => {
-        if (at <= t && cap) text = cap;
-      });
-      sub.textContent = text;
-    };
-
-    // Captions and sound cues whose time falls in (from, to].
+    // Sound cues whose time falls in (from, to].
     const fire = (from, to) => {
-      clips[clip].events.forEach(([at, cap, fx]) => {
-        if (at > from && at <= to) {
-          if (cap) sub.textContent = cap;
-          if (fx) sound.play(fx);
-        }
+      (clips[clip].sounds || []).forEach(([at, fx]) => {
+        if (at > from && at <= to) sound.play(fx);
       });
     };
 
     const seek = (t) => {
       anims.forEach((a) => (a.currentTime = t));
       lastT = t;
-      showCaption(t);
       progress(t);
+    };
+
+    const show = (shot, dur) => {
+      shots.forEach((s) => s.classList.toggle('on', s === shot));
+      shot.style.setProperty('--dur', `${dur}ms`);
+      return shot.getAnimations({ subtree: true });
     };
 
     const load = (i) => {
       clip = i;
-      shots.forEach((s, j) => s.classList.toggle('on', j === i));
-      const shot = shots[i];
-      shot.style.setProperty('--dur', `${durs[i]}ms`);
-      anims = shot.getAnimations({ subtree: true });
+      const shot = shots[hand[i]];
+      anims = show(shot, durs[i]);
       clock = shot.querySelector('.hpt-clock').getAnimations()[0] || null;
       anims.forEach((a) => a.pause());
       stage.setAttribute('aria-label', `Clip ${i + 1} of ${clips.length}: ${clips[i].label}`);
@@ -338,16 +362,14 @@
     };
 
     const tick = () => {
-      // Never let a caption from after the hazard leak out before the question.
+      // Never let a sound from after the hazard leak out before the question.
       const t = state === 'lead' ? Math.min(now(), cues[clip]) : now();
       fire(lastT, t);
       lastT = t;
       progress(t);
       if (state === 'lead' && t >= cues[clip]) return ask();
-      if (state === 'outcome' && t >= durs[clip]) {
-        halt();
-        return next();
-      }
+      // The outcome holds on its last frame until Next.
+      if (state === 'outcome' && t >= durs[clip]) return pause();
       raf = requestAnimationFrame(tick);
     };
 
@@ -423,25 +445,26 @@
         const right = c.options.find((x) => x.ok);
         kids.push(el('p', 'hpt-answer', `The answer: ${right.text.replace(/\.$/, '')}.`));
       }
+      const nextBtn = el('button', 'hpt-again', clip + 1 < clips.length ? 'Next clip →' : 'See your result →');
+      nextBtn.type = 'button';
+      nextBtn.addEventListener('click', next);
+      const row = el('div', 'hpt-actions');
+      row.append(nextBtn);
+      kids.push(row);
+
       panel.dataset.verdict = o.ok ? 'right' : 'wrong';
       panel.replaceChildren(...kids);
-      panel.focus({ preventScroll: true });
+      nextBtn.focus({ preventScroll: true });
       setState('outcome');
 
-      if (reduceMotion) {
-        seek(durs[clip]);
-        const btn = el('button', 'hpt-again', clip + 1 < clips.length ? 'Next clip →' : 'See your result →');
-        btn.type = 'button';
-        btn.addEventListener('click', next);
-        const row = el('div', 'hpt-actions');
-        row.append(btn);
-        panel.append(row);
-        return;
-      }
-      resume();
+      // The outcome shows the right way to do it, whatever the answer.
+      if (reduceMotion) seek(durs[clip]);
+      else resume();
     };
 
     const next = () => {
+      halt();
+      sound.hush();
       if (clip + 1 < clips.length) startClip(clip + 1);
       else finish();
     };
@@ -462,7 +485,6 @@
         el('p', 'hpt-note', line)
       );
       cover.hidden = false;
-      sub.textContent = '';
 
       const again = el('button', 'hpt-again', 'Take it again');
       again.type = 'button';
@@ -479,11 +501,15 @@
         el('p', 'hpt-intro', score === n
           ? 'Flawless. The landlord nods at you. Briefly.'
           : 'Each diamond on the timeline is a hazard. Green, you got it right. Red, you didn\'t.'),
+        el('p', 'hpt-intro', 'Every go deals a fresh hand of clips.'),
         row
       );
+      again.focus({ preventScroll: true });
     };
 
     function start() {
+      // A retake gets a fresh hand; the first run uses the one on the timeline already.
+      if (state === 'done') deal();
       sound.unlock();
       sound.say(START_LINE);
       sound.preload(lines, sounds);
@@ -496,10 +522,12 @@
     startBtn.addEventListener('click', start);
 
     playBtn.addEventListener('click', () => {
-      if (state === 'idle' || state === 'done') start();
-      else if (state === 'asking') return;
-      else if (running) pause();
-      else resume();
+      if (state === 'idle' || state === 'done') return start();
+      if (state === 'asking') return;
+      if (running) return pause();
+      // At the end of an outcome, play watches it again.
+      if (state === 'outcome' && lastT >= durs[clip]) seek(cues[clip]);
+      resume();
     });
 
     const syncMute = () => {
@@ -541,11 +569,15 @@
     }
     document.addEventListener('visibilitychange', checkAway);
 
-    // Poster frame behind the start button.
-    panel.tabIndex = -1;
-    load(0);
-    anims.forEach((a) => (a.currentTime = config.posterAt ?? Math.round(cues[0] / 2)));
+    deal();
     if (clipNo) clipNo.textContent = `${clips.length} clips`;
+
+    // Poster frame behind the start button: the first clip in the pool.
+    const posterAt = config.posterAt ?? Math.round((pool[0].cue || DEFAULT_CUE) / 2);
+    show(shots[0], pool[0].dur || DEFAULT_DUR).forEach((a) => {
+      a.pause();
+      a.currentTime = posterAt;
+    });
   }
 
   window.HazardTest = { init, spokenLines, soundNames };

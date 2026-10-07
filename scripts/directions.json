@@ -1,0 +1,133 @@
+{
+  "_notes": "How the narrator performs each line. Only used on models that take direction (eleven_v3, eleven_v4); older models get the plain line. `lines` maps a line's exact on-screen text to what is sent to ElevenLabs: [audio tags] for emotion and delivery (they carry forward until the next tag), ... for a pause, a dash for a beat, CAPITALS for emphasis. The words must stay the same as the plain line (generate-audio checks this), so only the delivery changes and the manifest key stays the plain text. A line without an entry gets its role's tag in front: question, correct, wrong, narration (the start line and anything else), or result, picked by score like the grades (the first entry whose minimum the score reaches). Keep tags short and the tone dry: a long-suffering landlord, not melodrama. Changing a direction re-records that line on the next `npm run audio:generate`; `npm run audio:dry` shows every line as it will be sent.",
+  "roles": {
+    "narration": "[calm, measured, like a driving examiner]",
+    "question": "[tense, expectant]",
+    "correct": "[relieved, warmly pleased]",
+    "wrong": "[sighs, disappointed and a little pained]",
+    "result": [
+      [1, "[proudly, almost moved]"],
+      [0.75, "[pleased, warmly]"],
+      [0.5, "[sighs, weary but kind]"],
+      [0.01, "[deeply disappointed]"],
+      [0, "[crestfallen, a little distressed]"]
+    ]
+  },
+  "lines": {
+    "Clip one. Watch for the hazard.": "[calm, measured, like a driving examiner] Clip one... Watch for the hazard.",
+
+    "A single file is forming right in front of you. What do you do?": "[tense, urgent] A single file is forming RIGHT in front of you... What do you do?",
+    "That's the Single File. One at a time, five deep, while nineteen feet of bar sits empty.": "[sighs, disappointed] That's the Single File. One at a time, five deep... [pained] while NINETEEN feet of bar sits empty.",
+    "Correct. Point along the bar. Spread out, I'll come to you. Now you can see everyone, and so can the rest of the staff.": "[relieved, warmly] Correct. Point along the bar. [calling out, friendly] Spread out, I'll come to you. [satisfied] Now you can see everyone, and so can the rest of the staff.",
+    "Congratulations. You've built a post office. A bar is not a post office.": "[flat, bitterly sarcastic] Congratulations. You've built a post office. [distressed] A bar is NOT a post office.",
+
+    "The Guinness has to settle. Someone else is waiting. What do you do?": "[a little tense] The Guinness has to settle. Someone else is waiting... What do you do?",
+    "It settles without supervision. Meanwhile someone's been stood at the bar for two minutes, watching you watch a pint.": "[sighs, disappointed] It settles without supervision. [exasperated] Meanwhile someone's been stood at the bar for TWO minutes... watching you watch a pint.",
+    "They will notice. Everyone notices. Flat pint, long stare, bad review.": "[alarmed] They will notice. EVERYONE notices. [despairing] Flat pint, long stare... bad review.",
+    "Correct. A Guinness settles on its own. Your hands are free, so take the next order while it does.": "[pleased, relieved] Correct. A Guinness settles on its own. Your hands are free, so take the next order while it does.",
+
+    "Two people waiting. Who do you serve next?": "[a little tense] Two people waiting... Who do you serve next?",
+    "Correct. The right one arrived first. You clocked them before you turned, and watched the middle one arrive in the mirror. Give the middle one a nod.": "[pleased, impressed] Correct. The right one arrived first. You clocked them before you turned, and watched the middle one arrive in the mirror. [warmly] Give the middle one a nod.",
+    "Nearest is not next. The right one was here first. You saw them arrive before you turned round.": "[disappointed, patient but pained] Nearest is not NEXT. The right one was here first. [sighs] You saw them arrive before you turned round.",
+    "That's how you train a whole pub to wave. Never reward the tenner-waver.": "[aghast] That's how you train a whole pub to wave. [through gritted teeth] NEVER reward the tenner-waver.",
+
+    "The card machine is connecting. Someone's waiting. What do you do?": "[a little tense] The card machine is connecting... Someone's waiting. What do you do?",
+    "Staring doesn't help. It never has. Meanwhile someone on the right is holding a tenner and losing faith.": "[sighs, disappointed] Staring doesn't help. It never has. [despairing] Meanwhile someone on the right is holding a tenner... and losing faith.",
+    "Correct. Hand it over, turn your head, take the next order. The machine doesn't need supervising.": "[pleased, brisk] Correct. Hand it over, turn your head, take the next order. [dryly] The machine doesn't need supervising.",
+    "And there it is. A single file, started by you, from behind the bar.": "[long sigh, heartbroken] And there it is. A single file, started by YOU... [distressed] from BEHIND the bar.",
+
+    "Six drinks. One of them is a Guinness. What do you pour first?": "[a little tense] Six drinks. One of them is a Guinness... What do you pour first?",
+    "Then five lagers go flat while the Guinness settles at the end, and everyone waits for the last pint.": "[sighs, disappointed] Then five lagers go flat while the Guinness settles at the end... [weary] and EVERYONE waits for the last pint.",
+    "The freshest Guinness in London, and five warm lagers. Nobody has ever said thank you for that.": "[dry, disappointed] The freshest Guinness in London... and five WARM lagers. [sighs] Nobody has ever said thank you for that.",
+    "Correct. Guinness first. It settles while you pour the other five, and everything's ready at once.": "[pleased, satisfied] Correct. Guinness first. It settles while you pour the other five, and everything's ready at once.",
+
+    "Someone's waving a tenner at you. Who do you serve?": "[tense, expectant] Someone's waving a tenner at you... Who do you serve?",
+    "Reward one tenner and the whole pub learns to wave. By nine o'clock it looks like a semaphore convention.": "[sighs, disappointed] Reward one tenner and the WHOLE pub learns to wave. [despairing] By nine o'clock it looks like a semaphore convention.",
+    "Now nobody gets a drink. The quiet one was here first, and their only crime is standing there nicely.": "[distressed] Now NOBODY gets a drink. [sighs] The quiet one was here first, and their only crime is standing there... nicely.",
+    "Correct. The quiet one was here first, so serve them. Then tell the tenner they're next. Waving gets you served at exactly the same time as not waving.": "[relieved, warmly] Correct. The quiet one was here first, so serve them. Then tell the tenner they're next. [dryly] Waving gets you served at EXACTLY the same time as not waving.",
+
+    "Someone's hovering a metre back from the bar. What do you do?": "[a little tense] Someone's hovering a metre back from the bar... What do you do?",
+    "Correct. That's The Hoverer. They came in before the one at the bar, so wave them into the gap and serve them next. Hovering is not a queue.": "[pleased, warmly] Correct. That's The Hoverer. They came in before the one at the bar, so wave them into the gap and serve them next. [knowingly] Hovering is not a queue.",
+    "They do want a drink. They were here first. They're just waiting to be invited in, like a vampire.": "[sighs, disappointed] They DO want a drink. They were here first. [deadpan] They're just waiting to be invited in... like a vampire.",
+    "They won't. A Hoverer can hover until closing. Some of them have been there since 2020.": "[flatly, let down] They won't. A Hoverer can hover until CLOSING. [weary] Some of them have been there since 2020.",
+
+    "There's a queue by the toilets. The bar is empty. What do you do?": "[tense, expectant] There's a queue by the toilets. The bar is EMPTY. What do you do?",
+    "They don't. They think the bar is at the end of that queue. It isn't. It's a toilet.": "[sighs, disappointed] They don't. They think the bar is at the end of that queue. [pained] It isn't... It's a toilet.",
+    "Correct. That's the Phantom Queue. A queue with no bar at the end of it. Call them over before it reaches the pool table.": "[relieved, warmly] Correct. That's the Phantom Queue. A queue with NO bar at the end of it. [urgently] Call them over before it reaches the pool table.",
+    "It goes to the toilet. You've left an empty bar to queue for the loo. The landlord would like a word.": "[distressed] It goes to the TOILET. You've left an empty bar to queue for the loo. [ominously] The landlord would like a word.",
+
+    "You and a colleague are both going for the same customer. What do you do?": "[tense, urgent] You and a colleague are both going for the SAME customer. What do you do?",
+    "Correct. Call it out loud and split the bar. Two staff, two customers, and nobody saying hello to an empty bit of bar.": "[pleased, brisk] Correct. Call it out loud and split the bar. Two staff, two customers, [satisfied] and nobody saying hello to an empty bit of bar.",
+    "Two people taking one order isn't double the service. It's half. And the one on the right is still saying hello.": "[sighs, disappointed] Two people taking one order isn't double the service. It's HALF. [pained] And the one on the right is still saying hello.",
+    "Very competitive. Very fast. Meanwhile the customer on the right has started their own petition.": "[dryly, let down] Very competitive. Very fast. [despairing] Meanwhile the customer on the right has started their own petition.",
+
+    "They're asking their table what everyone wants. What do you do?": "[a little tense] They're asking their table what EVERYONE wants... What do you do?",
+    "They were first to the bar, and they'll be last to decide. Meanwhile the next customer is visibly ageing.": "[sighs, disappointed] They were first to the bar, and they'll be LAST to decide. [weary] Meanwhile the next customer is visibly ageing.",
+    "Bold. Efficient. Now someone at that table is drinking a lager they didn't want, very slowly, while staring at you.": "[flatly] Bold. Efficient. [distressed] Now someone at that table is drinking a lager they didn't want... very slowly, while staring at you.",
+    "Correct. That's The Round. What are you having is a question for the table, not the bar. Serve the next one while they find out, then go back.": "[relieved, warmly] Correct. That's The Round. What are you having is a question for the TABLE, not the bar. Serve the next one while they find out, then go back.",
+
+    "You scored 0 out of 5. Barred. From behind the bar. Read the Bar Rule again.": "[crestfallen, a little distressed] You scored 0 out of 5. [long pause] Barred. [sighs] From BEHIND the bar. Read the Bar Rule again.",
+    "You scored 1 out of 5. Barred. From behind the bar. Read the Bar Rule again.": "[deeply disappointed] You scored 1 out of 5. [sighs] Barred. From behind the bar. Read the Bar Rule again.",
+    "You scored 2 out of 5. Glass collector. Back to the dishwasher for now.": "[sighs, let down] You scored 2 out of 5. Glass collector. Back to the dishwasher... for now.",
+    "You scored 3 out of 5. Bar staff. Eyes up. Let the Guinness settle on its own.": "[mildly disappointed, encouraging] You scored 3 out of 5. Bar staff. Eyes up. Let the Guinness settle on its own.",
+    "You scored 4 out of 5. Head bartender. One slip. Nobody noticed. Probably.": "[pleased] You scored 4 out of 5. Head bartender. One slip. Nobody noticed... [doubtful] Probably.",
+    "You scored 5 out of 5. Landlord material. You see everyone. You serve them in order. Nobody queues.": "[proudly, almost moved] You scored 5 out of 5. Landlord material. [warmly] You see everyone. You serve them in order. [triumphant] Nobody queues.",
+
+    "There's a queue. Most of the bar is empty. What do you do?": "[tense, expectant] There's a queue. Most of the bar is... EMPTY. What do you do?",
+    "That's the Single File. You've just made it longer. One barperson works. The other three watch.": "[sighs, disappointed] That's the Single File. You've just made it... longer. [pained] One barperson works. The other three — watch.",
+    "Correct. Walk to the bar. Not behind someone. To the bar. Three staff were standing idle.": "[relieved, warmly] Correct. Walk to the bar. Not BEHIND someone. TO the bar. [shaking head] Three staff were standing idle.",
+    "That's The Hoverer. You're not in a queue. You're in the way. Step in.": "[groans, disappointed] That's The Hoverer. You're not in a queue... You're in the WAY. [exasperated, pleading] Step in.",
+
+    "The barperson looks your way. What do you do?": "[tense, expectant] The barperson looks your way... What do you do?",
+    "No waving. No clicking. They're a barperson, not a spaniel.": "[appalled] No waving. No clicking. [sighs] They're a barperson... not a SPANIEL.",
+    "They can't serve someone who isn't there. Eyes up. Catching an eye is the whole system.": "[sighs, let down] They can't serve someone who isn't THERE. Eyes up. [pleading] Catching an eye is the WHOLE system.",
+    "Correct. A nod, a raised eyebrow, a tenner held with quiet confidence. That's all it takes.": "[pleased, savouring it] Correct. A nod, a raised eyebrow... a tenner held with QUIET confidence. [satisfied] That's all it takes.",
+
+    "They got there first. The barperson says you're next. What do you do?": "[a little tense] They got there first. The barperson says you're next... What do you do?",
+    "You weren't. And even if you were, the barperson knows. Do not test them.": "[flatly, disappointed] You weren't. [sighs] And even if you were — the barperson KNOWS. [alarmed] Do not test them.",
+    "Correct. They know who's next. They always know. It's their entire job.": "[warmly, relieved] Correct. They know who's next. [knowingly] They ALWAYS know. It's their entire job.",
+    "And now you've started a queue. Someone will join it. Then it never ends.": "[distressed, rising dread] And now you've started a queue. Someone will join it... [despairing] Then it NEVER ends.",
+
+    "You're buying for six. They ask what you're having. What do you do?": "[a little tense] You're buying for six. They ask what you're having... What do you do?",
+    "\"What are you having\" is a question for the table. Not the bar. Everyone behind you just aged a year.": "[wincing, disappointed] \"What are you having\" is a question for the TABLE. Not the bar. [weary sigh] Everyone behind you just aged a year.",
+    "That's six trips. It's not a round. It's a relay.": "[sighs heavily] That's SIX trips. [deadpan] It's not a round... It's a relay.",
+    "Correct. Know the order before you get to the bar. Four lagers, a Guinness, and a lime and soda. Done.": "[pleased, brisk] Correct. Know the order before you get to the bar. Four lagers, a Guinness, and a lime and soda. [satisfied] Done.",
+
+    "There's a long line by the pool table. The bar's empty. What do you do?": "[a little tense] There's a long line by the pool table. The bar's EMPTY. What do you do?",
+    "It isn't. That's a Phantom Queue. There's no bar at the end of it. It's for the pool table. Wrong kind of cue.": "[sighs, disappointed] It isn't. That's a Phantom Queue. There's no bar at the end of it. [weary] It's for the pool table... [deadpan] Wrong kind of cue.",
+    "They don't know. Nobody knows. That's what makes it a Phantom Queue. Meanwhile, four staff are standing behind an empty bar.": "[let down] They don't know. NOBODY knows. That's what makes it a Phantom Queue. [pained] Meanwhile, four staff are standing behind an empty bar.",
+    "Correct. Follow the bar, not the queue. Four staff, nobody being served. That line was for the pool table.": "[relieved, warmly] Correct. Follow the BAR, not the queue. Four staff, nobody being served. [dryly] That line was for the pool table.",
+
+    "Someone's just lined up right behind you. What do you do?": "[tense, expectant] Someone's just lined up RIGHT behind you... What do you do?",
+    "Correct. Point at the gap. Side by side is a cluster. One behind the other is the start of a queue.": "[pleased, warmly] Correct. Point at the gap. Side by side is a cluster. [knowingly] One BEHIND the other is the start of a queue.",
+    "Queues are polite in a post office. This is a pub. Give it ten minutes and that line reaches the door.": "[sighs, disappointed] Queues are polite in a post office. This is a PUB. [rising dread] Give it ten minutes and that line reaches the door.",
+    "A tut is not a policy. It's a noise. Use your words. Or at least your finger.": "[weary, let down] A tut is not a policy. It's a noise. [pleading] Use your words... Or at least your finger.",
+
+    "You've got your drinks. People are waiting for a gap. What do you do?": "[a little tense] You've got your drinks. People are waiting for a gap. What do you do?",
+    "You earned a drink. The spot was on loan. The bar is for ordering, not for living.": "[sighs, disappointed] You earned a drink. The spot was on LOAN. [exasperated] The bar is for ordering... not for living.",
+    "Correct. Served means done. Take your drinks, free the gap. Someone behind you has been very patient.": "[relieved, warmly] Correct. Served means done. Take your drinks, free the gap. [gently] Someone behind you has been VERY patient.",
+    "They're lovely. They're also working. Two people behind you would like a turn at lovely.": "[patient but pained] They're lovely. They're also WORKING. [sighs] Two people behind you would like a turn at lovely.",
+
+    "The barperson asks who is next. They were here before you. What do you do?": "[tense, expectant] The barperson asks who is next. They were here BEFORE you. What do you do?",
+    "Correct. They were first, so point at them. The Cluster runs on honesty. And you are next anyway.": "[warmly, relieved] Correct. They were first, so point at them. The Cluster runs on honesty. [reassuring] And you ARE next anyway.",
+    "Technically fast. Morally slow. The barperson saw that. They always see that.": "[flatly, disappointed] Technically fast. Morally slow. [sighs] The barperson saw that... They ALWAYS see that.",
+    "Silence isn't an answer. It's a delay. And somebody is still thirsty.": "[sighs, let down] Silence isn't an answer. It's a delay. [pained] And somebody is STILL thirsty.",
+
+    "Five of you. One round. Who goes to the bar?": "[a little tense] Five of you. One round... Who goes to the bar?",
+    "Five people, one round, half the bar. Everyone else is now watching your mate choose crisps.": "[sighs, disappointed] Five people, one round, HALF the bar. [despairing] Everyone else is now watching your mate choose crisps.",
+    "Five of you, single file, buying one round. That's not a queue. That's a conga.": "[distressed] Five of you, single file, buying ONE round. [deadpan] That's not a queue... That's a conga.",
+    "Correct. One round, one person, one gap. The rest of you find a table and start arguing about whose round is next.": "[pleased, warmly] Correct. One round, one person, one gap. [fondly] The rest of you find a table and start arguing about whose round is next.",
+
+    "Your last pint's nearly poured. What do you do while you wait?": "[tense, expectant] Your last pint's nearly poured... What do you do while you wait?",
+    "Correct. Card out while they pour. Tap. Beep. Done. The barperson is on to the next person before your pint has stopped fizzing.": "[relieved, delighted] Correct. Card out while they pour. Tap. Beep. Done. [satisfied] The barperson is on to the next person before your pint has stopped fizzing.",
+    "Every pocket. Then the coat. Then the other coat. That's three minutes nobody else at the bar gets served.": "[sighs, disappointed] Every pocket. Then the coat... Then the OTHER coat. [pained] That's three minutes nobody else at the bar gets served.",
+    "They're a barperson, not a cloakroom. Now they're minding two pints and a card machine for a stranger.": "[appalled] They're a barperson, not a CLOAKROOM. [despairing] Now they're minding two pints and a card machine for a stranger.",
+
+    "You scored 0 out of 5. Fail. Back to the sticker. Read the Bar Rule again.": "[crestfallen, a little distressed] You scored 0 out of 5. [long pause] Fail. [sighs] Back to the sticker... Read the Bar Rule again.",
+    "You scored 1 out of 5. Fail. Back to the sticker. Read the Bar Rule again.": "[deeply disappointed] You scored 1 out of 5. [sighs] Fail. Back to the sticker... Read the Bar Rule again.",
+    "You scored 2 out of 5. Fail. Back to the sticker. Read the Bar Rule again.": "[disappointed, trying to be kind] You scored 2 out of 5. Fail. [sighs] Back to the sticker. Read the Bar Rule again.",
+    "You scored 3 out of 5. Provisional licence. Practise on a quiet Tuesday. Bring an adult.": "[sighs, weary but kind] You scored 3 out of 5. Provisional licence. Practise on a quiet Tuesday. [deadpan] Bring an adult.",
+    "You scored 4 out of 5. Pass. Mind the Hoverers. Beware the Phantom Queue.": "[pleased, warmly] You scored 4 out of 5. Pass. Mind the Hoverers. [ominously] Beware... the Phantom Queue.",
+    "You scored 5 out of 5. Full licence. You may approach any bar in the land.": "[proudly, almost moved] You scored 5 out of 5. Full licence. [grandly] You may approach ANY bar in the land."
+  }
+}

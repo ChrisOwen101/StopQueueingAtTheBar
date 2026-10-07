@@ -1,5 +1,5 @@
 {
-  "_notes": "Narrator for the hazard perception tests: \"Publican Yorkshire\", a designed voice (cheerful, warm, middle-aged northern British publican) in the team's ElevenLabs account, so the API key in .env must belong to that account. Settings favour keeping the British accent steady (stability and similarity near the voice's defaults, modest style); lower stability or higher style makes the read livelier but can drift the accent. v3Tag is only sent when modelId is eleven_v3. Changing anything here re-records every line on the next `npm run audio:generate`.",
+  "_notes": "Narrator for the hazard perception tests: \"Publican Yorkshire\", a designed voice (cheerful, warm, middle-aged northern British publican) in the team's ElevenLabs account, so the API key in .env must belong to that account. Settings favour keeping the British accent steady (stability and similarity near the voice's defaults, modest style); lower stability or higher style makes the read livelier but can drift the accent. How each line is performed (audio tags, pauses, emphasis) is in scripts/directions.json, and is only sent on eleven_v3 and eleven_v4; eleven_multilingual_v2 gets the plain lines. eleven_v4 only uses stability and similarity_boost (style, speed and use_speaker_boost are ignored). Optional \"seed\" (a whole number) makes re-records repeatable. Changing anything here re-records every line on the next `npm run audio:generate`; try changes first with `npm run audio:compare`.",
   "voiceId": "pZ7LTalHefyTL3rBNpU4",
   "voiceName": "Publican Yorkshire",
   "modelId": "eleven_multilingual_v2",
@@ -10,6 +10,5 @@
     "style": 0.25,
     "use_speaker_boost": true,
     "speed": 0.97
-  },
-  "v3Tag": "[deadpan, grandly theatrical]"
+  }
 }

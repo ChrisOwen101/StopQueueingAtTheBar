@@ -12,6 +12,7 @@
     "check": "wrangler deploy --dry-run",
     "audio:dry": "node scripts/generate-audio.mjs --dry-run",
     "audio:samples": "node scripts/voice-samples.mjs",
+    "audio:compare": "node scripts/direction-samples.mjs",
     "audio:generate": "node scripts/generate-audio.mjs",
     "audio:check": "node scripts/check-audio.mjs"
   },
