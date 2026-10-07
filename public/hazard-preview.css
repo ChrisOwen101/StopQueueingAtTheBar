@@ -1,0 +1,235 @@
+/* Clip preview (hazard-preview.html). The page chrome (hz-page, hz-top, hz-back) comes
+   from styles.css and hazard.css; this file only styles the list. */
+
+.hzp {
+  width: min(960px, 100%);
+  margin: 0 auto;
+  padding: clamp(1.2rem, 4vh, 2.5rem) var(--hz-pad) 14vh;
+}
+
+.hzp-intro .small { margin: 0 0 0.4em; }
+
+.hzp-title {
+  font-size: clamp(2.6rem, 9vw, 6.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-transform: lowercase;
+}
+
+.hzp-lede {
+  max-width: 44ch;
+  margin-top: 0.9em;
+  font-weight: 600;
+  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+/* Pill links: jump links, per-clip previews. Outlined, like the back link. */
+.hzp-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hzp-jump a,
+.hzp-go {
+  display: inline-block;
+  padding: 0.5em 1.1em;
+  border: 3px solid currentColor;
+  border-radius: 999px;
+  color: var(--cream);
+  font-weight: 800;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.hzp-jump a:hover,
+.hzp-go:hover { background: var(--cream); color: var(--ink); border-color: var(--cream); }
+
+/* ---------- One test ---------- */
+
+.hzp-test { margin-top: clamp(3rem, 10vh, 6rem); scroll-margin-top: 1rem; }
+
+.hzp-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.4rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 3px solid rgba(255, 244, 220, 0.3);
+}
+
+.hzp-h {
+  flex: 1 1 100%;
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+}
+
+.hzp-count {
+  font-weight: 900;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The one amber thing per test: play the whole pool. */
+.hzp-all {
+  padding: 0.6em 1.3em;
+  border-radius: 999px;
+  background: var(--amber);
+  color: var(--ink);
+  font-weight: 900;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  text-decoration: none;
+  transition: scale 0.15s ease;
+}
+
+.hzp-all:hover { scale: 1.03; }
+
+.hzp-jump a:focus-visible,
+.hzp-go:focus-visible,
+.hzp-all:focus-visible,
+.hzp a.plain:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; border-radius: 999px; }
+
+.hzp-status,
+.hzp-error,
+.hzp-warn {
+  margin-top: 1.4rem;
+  font-weight: 700;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  line-height: 1.4;
+}
+
+.hzp-status { opacity: 0.75; }
+
+/* Problems with a test: red on ink, like the petition form's errors, in a thick outline. */
+.hzp-error,
+.hzp-warn {
+  padding: 0.9em 1.1em;
+  border: 3px solid currentColor;
+  border-radius: 14px;
+  color: var(--red-soft);
+}
+
+.hzp-error a.plain { color: var(--cream); }
+
+/* ---------- Clips ---------- */
+
+.hzp-clips {
+  display: grid;
+  gap: 1.2rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hzp-clip {
+  padding: clamp(1.1rem, 3vw, 1.8rem);
+  border: 3px solid rgba(255, 244, 220, 0.3);
+  border-radius: 24px;
+}
+
+.hzp-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.2rem 1rem;
+}
+
+.hzp-no {
+  font-weight: 900;
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hzp-time {
+  font-weight: 800;
+  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+}
+
+.hzp-label {
+  max-width: 62ch;
+  margin-top: 0.8em;
+  font-weight: 600;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.45;
+  opacity: 0.85;
+}
+
+.hzp-q {
+  margin-top: 0.9em;
+  font-weight: 800;
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.hzp-opts {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hzp-opts li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.8em;
+  padding: 0.6em 0.9em;
+  border: 3px solid rgba(255, 244, 220, 0.3);
+  border-radius: 18px;
+  font-weight: 700;
+  font-size: clamp(0.98rem, 1.6vw, 1.1rem);
+  line-height: 1.3;
+}
+
+.hzp-opts b {
+  display: grid;
+  place-items: center;
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 900;
+}
+
+/* The right answer: green, as in the tests' verdict panel, plus a stamp so it isn't colour alone. */
+.hzp-opts li.ok { background: var(--green); border-color: var(--green); }
+
+.hzp-right {
+  display: inline-block;
+  margin-left: 0.3em;
+  padding: 0.15em 0.65em;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 0.75em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  rotate: -3deg;
+}
+
+.hzp-go { margin-top: 1.1rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hzp-all { transition: none; }
+}

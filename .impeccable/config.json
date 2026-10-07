@@ -56,6 +56,15 @@
         ],
         "createdAt": "2026-10-07T21:25:28.255Z",
         "reason": "lead decided: cream is a named core colour in DESIGN.md (one of the two text colours and a whole-screen colour block), not a reflexive off-white surface"
+      },
+      {
+        "rule": "all-caps-body",
+        "value": "*",
+        "files": [
+          "public/hazard-preview.html"
+        ],
+        "createdAt": "2026-10-07T22:03:23.462Z",
+        "reason": "lead decided: the flagged text is the 32-character .hz-title header label ('Hazard perception · clip preview'), the same short uppercase label the test pages use, not body text"
       }
     ]
   }
