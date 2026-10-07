@@ -1,28 +1,39 @@
 import { Client } from 'pg';
+// Imported as text (see "rules" in wrangler.jsonc). The security headers live in that file only.
+import HEADERS_FILE from '../public/_headers';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// The site is plain HTML, CSS and one script, all same-origin. Inline styles are
-// needed for the --w custom property on the stat bars.
-const SECURITY_HEADERS = {
-  'Content-Security-Policy':
-    "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; " +
-    "connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
-  'X-Content-Type-Options': 'nosniff',
-  'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-};
-
-const secure = (res) => {
-  const out = new Response(res.body, res);
-  for (const [k, v] of Object.entries(SECURITY_HEADERS)) out.headers.set(k, v);
-  return out;
-};
+// Cloudflare applies public/_headers to everything served from public/, including what
+// env.ASSETS.fetch returns below, but never to responses the Worker builds itself. So the
+// API's JSON responses copy the /* block from that file here.
+const SECURITY_HEADERS = {};
+{
+  let inAll = false;
+  for (const line of HEADERS_FILE.split(/\r?\n/)) {
+    if (!line.trim() || line.trim().startsWith('#')) continue;
+    if (!/^\s/.test(line)) {
+      inAll = line.trim() === '/*';
+      continue;
+    }
+    const i = line.indexOf(':');
+    if (inAll && i > 0) SECURITY_HEADERS[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+  }
+  // Fail at deploy (Cloudflare runs this on upload) rather than ship an API without headers.
+  if (!SECURITY_HEADERS['Content-Security-Policy']) {
+    throw new Error('public/_headers has no Content-Security-Policy in its /* block');
+  }
+}
 
 const json = (body, status = 200, headers = {}) =>
   new Response(JSON.stringify(body), {
     status,
-    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', ...headers },
+    headers: {
+      ...SECURITY_HEADERS,
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store',
+      ...headers,
+    },
   });
 
 // One short-lived client per request; Hyperdrive does the real pooling.
@@ -102,10 +113,11 @@ export default {
     }
 
     // The home page gets absolute URLs in its social meta tags (og:image etc.),
-    // built from whatever domain it is served on.
+    // built from whatever domain it is served on. Responses from env.ASSETS already carry
+    // the public/_headers rules, and HTMLRewriter keeps them, so nothing is added here.
     if (pathname === '/' && request.method === 'GET') {
       const res = await env.ASSETS.fetch(request);
-      if (!res.headers.get('Content-Type')?.includes('text/html')) return secure(res);
+      if (!res.headers.get('Content-Type')?.includes('text/html')) return res;
       const origin = new URL(request.url).origin;
       const absolutise = (attr) => ({
         element(el) {
@@ -113,15 +125,13 @@ export default {
           el.removeAttribute('data-abs');
         },
       });
-      return secure(
-        new HTMLRewriter()
-          .on('meta[data-abs]', absolutise('content'))
-          .on('link[data-abs]', absolutise('href'))
-          .transform(res)
-      );
+      return new HTMLRewriter()
+        .on('meta[data-abs]', absolutise('content'))
+        .on('link[data-abs]', absolutise('href'))
+        .transform(res);
     }
 
-    // Anything else falls through to the static site.
-    return secure(await env.ASSETS.fetch(request));
+    // Anything else (404s, unknown /api paths) falls through to the static site.
+    return env.ASSETS.fetch(request);
   },
 };

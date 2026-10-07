@@ -5,3 +5,6 @@ node_modules/
 exports/
 .DS_Store
 .voice-samples/
+
+# Agent worktrees (local only)
+.claude/worktrees/

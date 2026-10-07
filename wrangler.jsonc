@@ -13,6 +13,10 @@
     "run_worker_first": ["/api/*", "/"]
   },
 
+  // Lets src/worker.js import public/_headers as a string, so its /api responses use the
+  // same security headers as the static site without a second copy.
+  "rules": [{ "type": "Text", "globs": ["**/_headers"], "fallthrough": true }],
+
   // Postgres via Hyperdrive (connection pooling + caching in front of your database).
   // Create it with:
   //   npx wrangler hyperdrive create bar-petition --connection-string="postgres://USER:PASS@HOST:5432/DB"
