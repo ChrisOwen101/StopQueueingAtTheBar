@@ -19,7 +19,7 @@
   "hyperdrive": [
     {
       "binding": "HYPERDRIVE",
-      "id": "7918ba5119924ef1b8f334b70bd9eb5e",
+      "id": "88c5a2e2902f470995344cd16411c3fc",
       // Used by `wrangler dev` only. Or set CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE.
       "localConnectionString": "postgres://postgres:postgres@localhost:5432/bar_petition"
     }
