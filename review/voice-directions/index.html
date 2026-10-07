@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Narration directions</title>
+<style>
+  :root { color-scheme: light dark; --bg: #fbf7ef; --fg: #1d1b18; --muted: #6b655c; --line: #e2dccf; --tag: #a4461c; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #171614; --fg: #f2eee6; --muted: #a39d92; --line: #34312c; --tag: #f0915f; } }
+  body { margin: 0; padding: 24px 16px 64px; background: var(--bg); color: var(--fg); font: 15px/1.45 system-ui, sans-serif; }
+  h1 { font-size: 28px; margin: 0 0 4px; }
+  p.lede { color: var(--muted); margin: 0 0 24px; max-width: 70ch; }
+  section { border-top: 2px solid var(--fg); padding: 16px 0 24px; }
+  h2 { font-size: 18px; margin: 0 0 4px; }
+  .role { display: inline-block; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .cell { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  .cell h3 { font-size: 13px; margin: 0 0 8px; font-weight: 600; }
+  audio { width: 100%; }
+  .sent { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+  .sent b { color: var(--tag); font-weight: 600; }
+</style>
+</head>
+<body>
+<h1>Narration directions</h1>
+<p class="lede">Each row is one line from the hazard tests. "Now" is the recording on the site today. The others send the direction in scripts/directions.json (audio tags, pauses, CAPITALS) to a different model or stability. Same voice (Publican Yorkshire), same seed (1). Listen for: does the wrong answer sound let down, does the accent hold, are any tags read out loud?</p>
+<section>
+<h2>That's the Single File. You've just made it longer. One barperson works. The other three watch.</h2>
+<span class="role">wrong · customer</span>
+<div class="grid">
+<div class="cell"><h3>Now: eleven_multilingual_v2, plain</h3><audio controls preload="none" src="now/74a676525bb0.mp3"></audio></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0.5 (Natural)</h3><audio controls preload="none" src="v3-natural/58322482aae2.mp3"></audio><p class="sent"><b>[sighs, disappointed]</b> That's the Single File. You've just made it... longer. <b>[pained]</b> One barperson works. The other three — watch.</p></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0 (Creative)</h3><audio controls preload="none" src="v3-creative/071c95c0f1f5.mp3"></audio><p class="sent"><b>[sighs, disappointed]</b> That's the Single File. You've just made it... longer. <b>[pained]</b> One barperson works. The other three — watch.</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.5</h3><audio controls preload="none" src="v4-0.5/a1431228a5b9.mp3"></audio><p class="sent"><b>[sighs, disappointed]</b> That's the Single File. You've just made it... longer. <b>[pained]</b> One barperson works. The other three — watch.</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.25</h3><audio controls preload="none" src="v4-0.25/b1bdace9b5fc.mp3"></audio><p class="sent"><b>[sighs, disappointed]</b> That's the Single File. You've just made it... longer. <b>[pained]</b> One barperson works. The other three — watch.</p></div>
+<div class="cell"><h3>eleven_v4, stability 0.5, role default only (how an undirected new line sounds)</h3><audio controls preload="none" src="v4-role/82dbabdbda9d.mp3"></audio><p class="sent"><b>[sighs, disappointed and a little pained]</b> That's the Single File. You've just made it longer. One barperson works. The other three watch.</p></div>
+</div>
+</section>
+<section>
+<h2>Correct. They know who's next. They always know. It's their entire job.</h2>
+<span class="role">correct · customer</span>
+<div class="grid">
+<div class="cell"><h3>Now: eleven_multilingual_v2, plain</h3><audio controls preload="none" src="now/7800b46dd671.mp3"></audio></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0.5 (Natural)</h3><audio controls preload="none" src="v3-natural/57dfa833a4f6.mp3"></audio><p class="sent"><b>[warmly, relieved]</b> Correct. They know who's next. <b>[knowingly]</b> They ALWAYS know. It's their entire job.</p></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0 (Creative)</h3><audio controls preload="none" src="v3-creative/5a4df7568edc.mp3"></audio><p class="sent"><b>[warmly, relieved]</b> Correct. They know who's next. <b>[knowingly]</b> They ALWAYS know. It's their entire job.</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.5</h3><audio controls preload="none" src="v4-0.5/cc4d079f6fc6.mp3"></audio><p class="sent"><b>[warmly, relieved]</b> Correct. They know who's next. <b>[knowingly]</b> They ALWAYS know. It's their entire job.</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.25</h3><audio controls preload="none" src="v4-0.25/c5f5c38bc21f.mp3"></audio><p class="sent"><b>[warmly, relieved]</b> Correct. They know who's next. <b>[knowingly]</b> They ALWAYS know. It's their entire job.</p></div>
+<div class="cell"><h3>eleven_v4, stability 0.5, role default only (how an undirected new line sounds)</h3><audio controls preload="none" src="v4-role/0a03471e2c4e.mp3"></audio><p class="sent"><b>[relieved, warmly pleased]</b> Correct. They know who's next. They always know. It's their entire job.</p></div>
+</div>
+</section>
+<section>
+<h2>There's a queue. Most of the bar is empty. What do you do?</h2>
+<span class="role">question · customer</span>
+<div class="grid">
+<div class="cell"><h3>Now: eleven_multilingual_v2, plain</h3><audio controls preload="none" src="now/a91523dc6307.mp3"></audio></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0.5 (Natural)</h3><audio controls preload="none" src="v3-natural/27f4bfde32f1.mp3"></audio><p class="sent"><b>[tense, expectant]</b> There's a queue. Most of the bar is... EMPTY. What do you do?</p></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0 (Creative)</h3><audio controls preload="none" src="v3-creative/3aeadedb1d69.mp3"></audio><p class="sent"><b>[tense, expectant]</b> There's a queue. Most of the bar is... EMPTY. What do you do?</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.5</h3><audio controls preload="none" src="v4-0.5/449d9a177c0f.mp3"></audio><p class="sent"><b>[tense, expectant]</b> There's a queue. Most of the bar is... EMPTY. What do you do?</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.25</h3><audio controls preload="none" src="v4-0.25/1947e2e17bc6.mp3"></audio><p class="sent"><b>[tense, expectant]</b> There's a queue. Most of the bar is... EMPTY. What do you do?</p></div>
+<div class="cell"><h3>eleven_v4, stability 0.5, role default only (how an undirected new line sounds)</h3><audio controls preload="none" src="v4-role/e4fa9f2e8fed.mp3"></audio><p class="sent"><b>[tense, expectant]</b> There's a queue. Most of the bar is empty. What do you do?</p></div>
+</div>
+</section>
+<section>
+<h2>They will notice. Everyone notices. Flat pint, long stare, bad review.</h2>
+<span class="role">wrong · barperson</span>
+<div class="grid">
+<div class="cell"><h3>Now: eleven_multilingual_v2, plain</h3><audio controls preload="none" src="now/8e949820b168.mp3"></audio></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0.5 (Natural)</h3><audio controls preload="none" src="v3-natural/6dca00a63b81.mp3"></audio><p class="sent"><b>[alarmed]</b> They will notice. EVERYONE notices. <b>[despairing]</b> Flat pint... long stare... bad review.</p></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0 (Creative)</h3><audio controls preload="none" src="v3-creative/10cc98cfcd7e.mp3"></audio><p class="sent"><b>[alarmed]</b> They will notice. EVERYONE notices. <b>[despairing]</b> Flat pint... long stare... bad review.</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.5</h3><audio controls preload="none" src="v4-0.5/9765f53bf0fe.mp3"></audio><p class="sent"><b>[alarmed]</b> They will notice. EVERYONE notices. <b>[despairing]</b> Flat pint... long stare... bad review.</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.25</h3><audio controls preload="none" src="v4-0.25/7106bd7c852a.mp3"></audio><p class="sent"><b>[alarmed]</b> They will notice. EVERYONE notices. <b>[despairing]</b> Flat pint... long stare... bad review.</p></div>
+
+</div>
+</section>
+<section>
+<h2>You scored 1 out of 4. Fail. Back to the sticker. Read the Bar Rule again.</h2>
+<span class="role">result, 25% · customer</span>
+<div class="grid">
+<div class="cell"><h3>Now: eleven_multilingual_v2, plain</h3><audio controls preload="none" src="now/fd35f2d3f08f.mp3"></audio></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0.5 (Natural)</h3><audio controls preload="none" src="v3-natural/a6d03001eae4.mp3"></audio><p class="sent"><b>[deeply disappointed]</b> You scored 1 out of 4. <b>[sighs]</b> Fail. Back to the sticker... Read the Bar Rule again.</p></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0 (Creative)</h3><audio controls preload="none" src="v3-creative/cb6ed2c24160.mp3"></audio><p class="sent"><b>[deeply disappointed]</b> You scored 1 out of 4. <b>[sighs]</b> Fail. Back to the sticker... Read the Bar Rule again.</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.5</h3><audio controls preload="none" src="v4-0.5/dfde7573b1ed.mp3"></audio><p class="sent"><b>[deeply disappointed]</b> You scored 1 out of 4. <b>[sighs]</b> Fail. Back to the sticker... Read the Bar Rule again.</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.25</h3><audio controls preload="none" src="v4-0.25/a1c719be2f79.mp3"></audio><p class="sent"><b>[deeply disappointed]</b> You scored 1 out of 4. <b>[sighs]</b> Fail. Back to the sticker... Read the Bar Rule again.</p></div>
+
+</div>
+</section>
+<section>
+<h2>You scored 4 out of 4. Full licence. You may approach any bar in the land.</h2>
+<span class="role">result, 100% · customer</span>
+<div class="grid">
+<div class="cell"><h3>Now: eleven_multilingual_v2, plain</h3><audio controls preload="none" src="now/4152b607e555.mp3"></audio></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0.5 (Natural)</h3><audio controls preload="none" src="v3-natural/4698963bc618.mp3"></audio><p class="sent"><b>[proudly, almost moved]</b> You scored 4 out of 4. Full licence. <b>[grandly]</b> You may approach ANY bar in the land.</p></div>
+<div class="cell"><h3>eleven_v3, directed, stability 0 (Creative)</h3><audio controls preload="none" src="v3-creative/5df8628c971b.mp3"></audio><p class="sent"><b>[proudly, almost moved]</b> You scored 4 out of 4. Full licence. <b>[grandly]</b> You may approach ANY bar in the land.</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.5</h3><audio controls preload="none" src="v4-0.5/1810f233fe52.mp3"></audio><p class="sent"><b>[proudly, almost moved]</b> You scored 4 out of 4. Full licence. <b>[grandly]</b> You may approach ANY bar in the land.</p></div>
+<div class="cell"><h3>eleven_v4, directed, stability 0.25</h3><audio controls preload="none" src="v4-0.25/a0956fe77fbf.mp3"></audio><p class="sent"><b>[proudly, almost moved]</b> You scored 4 out of 4. Full licence. <b>[grandly]</b> You may approach ANY bar in the land.</p></div>
+
+</div>
+</section>
+</body>
+</html>
