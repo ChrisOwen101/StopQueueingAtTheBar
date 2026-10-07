@@ -1,5 +1,5 @@
 {
-  "name": "stop-queueing-at-the-bar",
+  "name": "dont-queue-at-the-bar",
   "version": "0.1.0",
   "private": true,
   "type": "module",

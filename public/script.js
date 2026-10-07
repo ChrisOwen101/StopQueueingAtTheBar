@@ -1,4 +1,4 @@
-// Stop Queueing at the Bar — placeholder behaviour
+// Don't Queue At The Bar — placeholder behaviour
 
 document.documentElement.classList.add('js');
 

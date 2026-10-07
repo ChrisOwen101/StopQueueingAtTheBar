@@ -1,4 +1,4 @@
-# Stop Queueing at the Bar
+# Don't Queue At The Bar
 
 Static site (`public/`) plus a Cloudflare Worker (`src/worker.js`) that stores petition signatures in Postgres through Hyperdrive.
 
