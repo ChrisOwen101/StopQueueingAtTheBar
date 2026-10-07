@@ -66,7 +66,10 @@ A **fixed timeline rail** sits on the left and tracks the 8 chapters above. Anch
 - **Pub scenes:** `.scene[data-mode="single"|"cluster"]` run a small simulation (seeded random, same arrivals, 4 staff). In single mode only one member of staff can reach the queue front, so it serves far fewer pints. It starts and stops with visibility. Tunables are the constants near `STAFF_X`, `SERVICE_TICKS`, `ARRIVAL_CHANCE`.
 - **Timeline rail:** computed from scroll position. It hides on the hero, fills dot to dot, marks the active chapter (`.active`) and passed ones (`.done`).
 - **Petition form:** POSTs JSON to `/api/sign`, and shows the running total from `/api/count`.
-- `prefers-reduced-motion` is respected throughout.
+- `prefers-reduced-motion` is respected throughout. Otherwise a fixed **pause animations** button (built in `script.js`, hidden for reduced-motion users) stops the sims, marquee and mat wobble (WCAG 2.2.2).
+- **Tell a mate:** after a successful signature the form shows a share button (native share sheet, or copies the link).
+- **Security headers:** `src/worker.js` adds a CSP and friends to every static response. If you add an external script, font, image or analytics beacon, update `SECURITY_HEADERS` or it will be blocked.
+- Design and product context live in `PRODUCT.md`, `DESIGN.md` and `.impeccable/design.json`.
 
 ## Backend
 

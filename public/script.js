@@ -4,6 +4,7 @@ document.documentElement.classList.add('js');
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasIO = 'IntersectionObserver' in window;
+let animPaused = false; // set by the pause control below
 
 /* ---------- Reveal each screen as it scrolls into view ---------- */
 
@@ -197,15 +198,18 @@ function buildScene(el) {
     });
   };
 
-  // Pre-roll so the scene isn't empty when it appears.
-  for (let i = 0; i < 6; i++) step();
-  score = 0;
-  scoreEl.textContent = '0';
+  // Pre-roll so the scene isn't empty when it appears. With reduced motion the sim
+  // never runs, so roll further and keep the score: the still frame must show the comparison.
+  for (let i = 0; i < (reduceMotion ? 30 : 6); i++) step();
+  if (!reduceMotion) {
+    score = 0;
+    scoreEl.textContent = '0';
+  }
 
   let timer = null;
   return {
     start() {
-      if (!timer && !reduceMotion) timer = setInterval(step, TICK_MS);
+      if (!timer && !reduceMotion && !animPaused) timer = setInterval(step, TICK_MS);
     },
     stop() {
       clearInterval(timer);
@@ -214,7 +218,7 @@ function buildScene(el) {
   };
 }
 
-const scenes = [...document.querySelectorAll('.scene')].map((el) => ({ el, sim: buildScene(el) }));
+const scenes = [...document.querySelectorAll('.scene')].map((el) => ({ el, sim: buildScene(el), visible: !hasIO }));
 
 if (hasIO) {
   const sceneIO = new IntersectionObserver(
@@ -222,6 +226,7 @@ if (hasIO) {
       entries.forEach((entry) => {
         const scene = scenes.find((s) => s.el === entry.target);
         if (!scene) return;
+        scene.visible = entry.isIntersecting;
         if (entry.isIntersecting) scene.sim.start();
         else scene.sim.stop();
       });
@@ -231,6 +236,34 @@ if (hasIO) {
   scenes.forEach((s) => sceneIO.observe(s.el));
 } else {
   scenes.forEach((s) => s.sim.start());
+}
+
+/* ---------- Pause control (WCAG 2.2.2) ----------
+   The sims and the marquee move on their own for more than five seconds, so
+   offer a way to stop them. Not needed when the visitor already asked for reduced motion. */
+
+if (!reduceMotion) {
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'motion-toggle';
+  toggle.setAttribute('aria-pressed', 'false');
+  toggle.setAttribute('aria-label', 'Pause animations');
+  toggle.innerHTML =
+    '<svg class="pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg>' +
+    '<svg class="play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11a1 1 0 0 0 1.5.86l9-5.5a1 1 0 0 0 0-1.72l-9-5.5A1 1 0 0 0 4 2.5z"/></svg>' +
+    '<span class="txt">pause animations</span>';
+  const txt = toggle.querySelector('.txt');
+
+  toggle.addEventListener('click', () => {
+    animPaused = !animPaused;
+    document.documentElement.classList.toggle('paused', animPaused);
+    toggle.setAttribute('aria-pressed', String(animPaused));
+    toggle.setAttribute('aria-label', animPaused ? 'Play animations' : 'Pause animations');
+    txt.textContent = animPaused ? 'play animations' : 'pause animations';
+    scenes.forEach((s) => (animPaused ? s.sim.stop() : s.visible && s.sim.start()));
+  });
+
+  document.body.appendChild(toggle);
 }
 
 /* ---------- Timeline rail: where am I in the story? ---------- */
@@ -272,7 +305,15 @@ if (timeline) {
     timeline.classList.toggle('show', y > hero.offsetHeight * 0.5);
   };
 
-  window.addEventListener('scroll', updateTimeline, { passive: true });
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      updateTimeline();
+    });
+  }, { passive: true });
   window.addEventListener('resize', updateTimeline);
   updateTimeline();
 }
@@ -297,6 +338,26 @@ if (countEl) {
 if (form) {
   const msg = form.querySelector('.form-msg');
   const button = form.querySelector('button');
+  const buttonLabel = button.textContent;
+  const shareBox = form.querySelector('.share');
+  const shareBtn = document.getElementById('share-btn');
+  const shareNote = form.querySelector('.share-note');
+
+  // "Tell a mate": native share sheet where there is one, otherwise copy the link.
+  shareBtn?.addEventListener('click', async () => {
+    const url = `${location.origin}/`;
+    const text = 'A bar is not a post office. Spread out. Catch the eye. Trust the barperson.';
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Don't Queue At The Bar", text, url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        shareNote.textContent = 'Link copied. Send it to someone who queues.';
+      }
+    } catch (err) {
+      if (err.name !== 'AbortError') shareNote.textContent = `Copy this: ${url}`;
+    }
+  });
 
   const show = (text, kind) => {
     msg.textContent = text;
@@ -308,6 +369,7 @@ if (form) {
 
     if (!form.checkValidity()) {
       show('Please add your name, a valid email, and tick the box.', 'error');
+      form.querySelector(':invalid')?.focus();
       return;
     }
 
@@ -320,6 +382,9 @@ if (form) {
     };
 
     button.disabled = true;
+    button.textContent = 'Signing…';
+    form.setAttribute('aria-busy', 'true');
+    show('', '');
     try {
       const res = await fetch('/api/sign', {
         method: 'POST',
@@ -332,10 +397,13 @@ if (form) {
       }
       form.reset();
       show('Thank you. Now go and stand at the bar. 🍺', 'ok');
+      if (shareBox) shareBox.hidden = false;
     } catch (err) {
       show(err.message && !err.message.startsWith('HTTP') ? err.message : 'Something went wrong. Please try again.', 'error');
     } finally {
       button.disabled = false;
+      button.textContent = buttonLabel;
+      form.removeAttribute('aria-busy');
     }
   });
 }

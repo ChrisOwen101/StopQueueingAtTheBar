@@ -6,7 +6,8 @@ colors:
   last-orders-ink: "#16161d"
   snug-green: "#0f5b43"
   amber-pint: "#ffb627"
-  pint-glass-red: "#e63946"
+  pint-glass-red: "#d62839"
+  pint-glass-red-soft: "#ff6b76"
   pink-gin: "#ff9ec1"
   quiz-night-blue: "#2447f5"
   scene-night: "#0e0e13"
@@ -121,7 +122,8 @@ A rotation of saturated, flat pub-sign colours, one per screen, with cream and i
 - **Amber Pint** (#ffb627): The action and highlight colour. Petition button, "serving" dot, stat accents, timeline progress, focus outlines, marquee text, footer links. The one colour that means "do this" or "this is the point".
 
 ### Secondary
-- **Pint Glass Red** (#e63946): The Single File (the wrong behaviour), error text, the chaotic row of the alignment chart.
+- **Pint Glass Red** (#d62839): The Single File (the wrong behaviour) and the chaotic row of the alignment chart. Deep enough for cream text at 4.5:1.
+- **Pint Glass Red Soft** (#ff6b76): Red text on ink, such as form errors.
 - **Snug Green** (#0f5b43): The Cluster (the right behaviour), and calm, positive screens.
 
 ### Tertiary

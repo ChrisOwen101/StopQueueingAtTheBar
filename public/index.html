@@ -45,22 +45,24 @@
   <script src="script.js" defer></script>
 </head>
 <body>
+  <a class="skip" href="#petition-section">Skip to the petition</a>
 
   <!-- TIMELINE: fixed left rail, updated by script.js -->
   <nav class="timeline" aria-label="Timeline">
     <ol>
       <li class="tl-fill" aria-hidden="true"></li>
-      <li><a href="#covid"><span class="mark"></span><span class="lbl"><small>2020</small>The Stickers</span></a></li>
-      <li><a href="#after"><span class="mark"></span><span class="lbl"><small>After</small>The Queue Stayed</span></a></li>
-      <li><a href="#hackney"><span class="mark"></span><span class="lbl"><small>Aug 2026</small>Hackney Speaks</span></a></li>
-      <li><a href="#rule"><span class="mark"></span><span class="lbl"><small>The</small>Bar Rule</span></a></li>
-      <li><a href="#howto"><span class="mark"></span><span class="lbl"><small>How to</small>Do The Cluster</span></a></li>
-      <li><a href="#rulings"><span class="mark"></span><span class="lbl"><small>More</small>Bar Rulings</span></a></li>
-      <li><a href="#mats"><span class="mark"></span><span class="lbl"><small>For pubs</small>Beer Mats</span></a></li>
-      <li><a href="#petition-section"><span class="mark"></span><span class="lbl"><small>Now</small>Sign the Petition</span></a></li>
+      <li><a href="#covid"><span class="mark"></span><span class="lbl"><small>2020</small> The Stickers</span></a></li>
+      <li><a href="#after"><span class="mark"></span><span class="lbl"><small>After</small> The Queue Stayed</span></a></li>
+      <li><a href="#hackney"><span class="mark"></span><span class="lbl"><small>Aug 2026</small> Hackney Speaks</span></a></li>
+      <li><a href="#rule"><span class="mark"></span><span class="lbl"><small>The</small> Bar Rule</span></a></li>
+      <li><a href="#howto"><span class="mark"></span><span class="lbl"><small>How to</small> Do The Cluster</span></a></li>
+      <li><a href="#rulings"><span class="mark"></span><span class="lbl"><small>More</small> Bar Rulings</span></a></li>
+      <li><a href="#mats"><span class="mark"></span><span class="lbl"><small>For pubs</small> Beer Mats</span></a></li>
+      <li><a href="#petition-section"><span class="mark"></span><span class="lbl"><small>Now</small> Sign the Petition</span></a></li>
     </ol>
   </nav>
 
+  <main>
   <!-- 1. HERO -->
   <section class="screen c-cream hero" id="top">
     <div class="inner">
@@ -155,7 +157,7 @@
       <div class="scene" data-mode="single" data-label="single file" role="img"
            aria-label="Animated pub bar: customers form one long queue while three of four staff stand idle"></div>
       <p class="mid">Wait at the back. One barperson works. <br>The other three watch.</p>
-      <p class="tag">✗ not recommended</p>
+      <p class="tag"><span aria-hidden="true">✗</span> not recommended</p>
     </div>
   </section>
 
@@ -165,7 +167,7 @@
       <div class="scene" data-mode="cluster" data-label="the cluster" role="img"
            aria-label="Animated pub bar: customers spread along the bar and all four staff serve at once"></div>
       <p class="mid">Everyone gets a patch of bar. <br>Everyone gets served. Nobody builds a snake.</p>
-      <p class="tag">✓ the correct answer</p>
+      <p class="tag"><span aria-hidden="true">✓</span> the correct answer</p>
     </div>
   </section>
 
@@ -309,9 +311,14 @@
         </label>
         <button type="submit">Sign the petition</button>
         <p class="form-msg" role="status" aria-live="polite"></p>
+        <div class="share" hidden>
+          <button type="button" id="share-btn">Tell a mate</button>
+          <p class="share-note" role="status" aria-live="polite"></p>
+        </div>
       </form>
     </div>
   </section>
+  </main>
 
   <!-- 9. FOOTER -->
   <footer class="site-footer">

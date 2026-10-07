@@ -2,6 +2,23 @@ import { Client } from 'pg';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// The site is plain HTML, CSS and one script, all same-origin. Inline styles are
+// needed for the --w custom property on the stat bars.
+const SECURITY_HEADERS = {
+  'Content-Security-Policy':
+    "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; " +
+    "connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+};
+
+const secure = (res) => {
+  const out = new Response(res.body, res);
+  for (const [k, v] of Object.entries(SECURITY_HEADERS)) out.headers.set(k, v);
+  return out;
+};
+
 const json = (body, status = 200, headers = {}) =>
   new Response(JSON.stringify(body), {
     status,
@@ -88,7 +105,7 @@ export default {
     // built from whatever domain it is served on.
     if (pathname === '/' && request.method === 'GET') {
       const res = await env.ASSETS.fetch(request);
-      if (!res.headers.get('Content-Type')?.includes('text/html')) return res;
+      if (!res.headers.get('Content-Type')?.includes('text/html')) return secure(res);
       const origin = new URL(request.url).origin;
       const absolutise = (attr) => ({
         element(el) {
@@ -96,13 +113,15 @@ export default {
           el.removeAttribute('data-abs');
         },
       });
-      return new HTMLRewriter()
-        .on('meta[data-abs]', absolutise('content'))
-        .on('link[data-abs]', absolutise('href'))
-        .transform(res);
+      return secure(
+        new HTMLRewriter()
+          .on('meta[data-abs]', absolutise('content'))
+          .on('link[data-abs]', absolutise('href'))
+          .transform(res)
+      );
     }
 
     // Anything else falls through to the static site.
-    return env.ASSETS.fetch(request);
+    return secure(await env.ASSETS.fetch(request));
   },
 };
