@@ -5,6 +5,7 @@
 
 HazardTest.init(document.getElementById('hpt'), {
   posterAt: 2600,
+  ambience: 'pub',
   links: [
     { href: 'hazard-barperson.html', text: 'Now try it from behind the bar' },
     { href: '/#petition-section', text: 'Sign the petition' },

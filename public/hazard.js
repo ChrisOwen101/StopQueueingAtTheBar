@@ -61,14 +61,21 @@
 
   function soundNames(config) {
     const names = [...PLAYER_SOUNDS];
+    if (config.ambience) names.push(config.ambience);
     config.clips.forEach((c) => (c.sounds || []).forEach(([, fx]) => names.push(fx)));
     return [...new Set(names)];
   }
 
+  // The ambience bed's level under narration and sound effects (which play at 1),
+  // and its fade in and out in seconds.
+  const AMBIENCE_GAIN = 0.3;
+  const AMBIENCE_FADE = 0.4;
+
   // Plays the ElevenLabs recordings listed in the manifest through one AudioContext.
-  // Narration lines interrupt each other; sound effects overlap. Anything missing
-  // from the manifest stays silent and logs a warning (run `npm run audio:check`).
-  function createSound() {
+  // Narration lines interrupt each other; sound effects overlap; the ambience (a
+  // sound name, optional) loops quietly underneath while it's switched on. Anything
+  // missing from the manifest stays silent and logs a warning (run `npm run audio:check`).
+  function createSound(ambienceName) {
     const AC = window.AudioContext || window.webkitAudioContext;
     let ctx = null;
     let muted = false;
@@ -82,6 +89,9 @@
     let voice = null;
     let timer = 0;
     let seq = 0;
+    let bedOn = false;
+    let bed = null;
+    let bedSeq = 0;
 
     const fileFor = (kind, key) => {
       const url = manifest[kind] && manifest[kind][key];
@@ -128,6 +138,41 @@
         } catch {}
         voice = null;
       }
+    };
+
+    const startBed = () => {
+      if (bed || muted || !ctx || !ambienceName) return;
+      const url = fileFor('sfx', ambienceName);
+      if (!url) return;
+      const token = ++bedSeq;
+      loadBuffer(url).then(
+        (buf) => {
+          if (token !== bedSeq || !bedOn || muted || bed) return;
+          const gain = ctx.createGain();
+          gain.gain.setValueAtTime(0, ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(AMBIENCE_GAIN, ctx.currentTime + AMBIENCE_FADE);
+          gain.connect(ctx.destination);
+          const src = ctx.createBufferSource();
+          src.buffer = buf;
+          src.loop = true;
+          src.connect(gain);
+          src.start();
+          bed = { src, gain };
+        },
+        () => {}
+      );
+    };
+
+    const stopBed = () => {
+      bedSeq += 1;
+      if (!bed) return;
+      const { src, gain } = bed;
+      bed = null;
+      gain.gain.cancelScheduledValues(ctx.currentTime);
+      gain.gain.setTargetAtTime(0, ctx.currentTime, AMBIENCE_FADE / 4);
+      try {
+        src.stop(ctx.currentTime + AMBIENCE_FADE);
+      } catch {}
     };
 
     return {
@@ -184,9 +229,18 @@
           () => {}
         );
       },
+      // Switch the ambience bed on or off. Mute silences it; unmute brings it back if it's on.
+      ambience(on) {
+        bedOn = on;
+        if (on) startBed();
+        else stopBed();
+      },
       setMuted(m) {
         muted = m;
-        if (m) stopVoice();
+        if (m) {
+          stopVoice();
+          stopBed();
+        } else if (bedOn) startBed();
         try {
           localStorage.setItem('hpt-muted', m ? '1' : '0');
         } catch {}
@@ -224,6 +278,7 @@
      grades: [[minFraction, grade, line]] highest first (optional)
      links:  [{ href, text }] shown with "Take it again" at the end (optional)
      posterAt: ms into the pool's first clip shown behind the start button (optional)
+     ambience: a sound looped quietly under the whole test, e.g. 'pub' (optional)
      audio:  narration manifest URL (optional, default audio/manifest.json)
      To review particular clips, add ?clips=3,7 (pool positions, from 1) to the page URL. */
   function init(root, config) {
@@ -236,7 +291,7 @@
     const stage = root.querySelector('.hpt-stage');
     const panel = root.querySelector('.hpt-panel');
     const clipNo = root.querySelector('.hpt-clipno');
-    const sound = createSound();
+    const sound = createSound(config.ambience);
     const lines = spokenLines(config);
     const sounds = soundNames(config);
     const forced = (new URLSearchParams(location.search).get('clips') || '')
@@ -302,10 +357,20 @@
     let clock = null;
     let running = false;
     let autoPaused = false;
+    let held = false;
     let inView = true;
     let lastT = 0;
     let score = 0;
     let raf = 0;
+
+    // The ambience plays for the whole test, through questions, outcomes and the
+    // hold before Next. It stops while the viewer has paused, while the player is
+    // away (scrolled out of view or tab hidden) and on the result. Mute is handled
+    // by createSound.
+    const syncAmbience = () => {
+      const away = document.hidden || !inView;
+      sound.ambience(state !== 'idle' && state !== 'done' && !held && !away);
+    };
 
     const setState = (s) => {
       state = s;
@@ -381,7 +446,9 @@
 
     const resume = () => {
       autoPaused = false;
+      held = false;
       setRunning(true);
+      syncAmbience();
       run();
     };
 
@@ -394,6 +461,8 @@
       load(i);
       seek(0);
       setState('lead');
+      held = false;
+      syncAmbience();
       delete panel.dataset.verdict;
       panel.replaceChildren(el('p', 'hpt-wait', `Clip ${i + 1} of ${clips.length}. Watch for the hazard.`));
       if (reduceMotion) return ask();
@@ -472,6 +541,7 @@
     const finish = () => {
       setRunning(false);
       setState('done');
+      syncAmbience();
       const n = clips.length;
       const [, grade, line] = gradeFor(grades, score, n);
 
@@ -524,7 +594,11 @@
     playBtn.addEventListener('click', () => {
       if (state === 'idle' || state === 'done') return start();
       if (state === 'asking') return;
-      if (running) return pause();
+      if (running) {
+        held = true;
+        pause();
+        return syncAmbience();
+      }
       // At the end of an outcome, play watches it again.
       if (state === 'outcome' && lastT >= durs[clip]) seek(cues[clip]);
       resume();
@@ -557,6 +631,7 @@
       } else if (!away && autoPaused) {
         resume();
       }
+      syncAmbience();
     };
     if (hasIO) {
       new IntersectionObserver(

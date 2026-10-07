@@ -1,5 +1,5 @@
 {
-  "_notes": "Sound effects for the hazard perception tests, generated with the ElevenLabs Sound Effects API. Every sound the player plays (hazard, correct, wrong, fanfare, sad) and every sound named in a test's clip events needs an entry. duration is seconds (0.5 to 22). promptInfluence is 0 to 1; higher follows the prompt more literally. Changing a prompt or duration re-records that sound on the next `npm run audio:generate`.",
+  "_notes": "Sound effects for the hazard perception tests, generated with the ElevenLabs Sound Effects API. Every sound the player plays (hazard, correct, wrong, fanfare, sad) and every sound named in a test's clip events needs an entry. duration is seconds (0.5 to 30). loop (optional, true or false) asks for a recording that repeats without a seam, for the ambience a test names in its config. promptInfluence is 0 to 1; higher follows the prompt more literally. Changing a prompt, duration or loop re-records that sound on the next `npm run audio:generate`.",
   "promptInfluence": 0.6,
   "sounds": {
     "hazard": {
@@ -57,6 +57,11 @@
     "flush": {
       "prompt": "Pub toilet flushing behind a closed door, muffled, short, slightly comedic",
       "duration": 2
+    },
+    "pub": {
+      "prompt": "Busy British pub ambience, steady murmur of many conversations, occasional glass clinks and quiet laughter, no music, no distinct words, even level",
+      "duration": 20,
+      "loop": true
     }
   }
 }

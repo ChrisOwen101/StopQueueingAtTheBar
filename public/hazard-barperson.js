@@ -9,6 +9,7 @@ document.querySelectorAll('[data-decor]').forEach((view) => {
 
 HazardTest.init(document.getElementById('hpt'), {
   posterAt: 3300,
+  ambience: 'pub',
   links: [
     { href: 'hazard-customer.html', text: 'Now try it as a customer' },
     { href: '/#petition-section', text: 'Sign the petition' },
