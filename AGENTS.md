@@ -1,29 +1,114 @@
-# Handover: "Bar the Line" / The Bar Party
+# Handover: "Don't Queue At The Bar"
 
-**Goal:** A satirical UK campaign against single-file queueing in pubs, bars and breweries, framed as a mock political party.
+A comedy campaign site against single-file queueing at the bar in UK pubs, bars and breweries.
+Live at https://dont-queue-at-the-bar.cowen19921.workers.dev (Cloudflare Workers).
 
-## Deliverables
+## The idea (read this first)
 
-All files are in `/mnt/user-data/outputs/`.
+- **Background:** Since COVID (2020 social-distancing stickers, single-file lines), people queue in one long line to the bar. Pre-COVID, you spread out along the bar and the barman or landlord knows who is next.
+- **Problem:** The single file wastes room in the pub, blocks seating, leaves most of the bar and staff idle, and is unnatural.
+- **Goal:** Get people to stop, in a funny way. The site is a petition plus a merch route (beer mats for pubs).
+- **Name:** "Don't Queue At The Bar". It was earlier called "Stop Queueing at the Bar" and "Bar the Line / The Bar Party" (see the old notes at the bottom).
+- **Name for the right behaviour:** **The Cluster**. The wrong behaviour is **The Single File**.
+- **Tone:** Direct, dry British humour. Short, punchy lines. The format is mock-scientific (the "Bar Rule", rulings, alignment chart), copied from cuberule.com.
+- **Look:** Very bold. Huge lowercase type. One idea per full-screen colour block, scrolling down a long page. Simple diagrams with animation. No photos.
 
-- **Landing page:** Design artifact at https://claude.ai/artifact/VQk6yjEdCu5YtDmXXsqKqb
-  - Source: `artifacts/e6108d6a-1ed5-4e1f-9a5c-75f720b5b46a/project/Main.dc.html` plus `canvas.json`
-  - To edit, change those files and republish with the artifact `url`. Don't create a new canvas.
-- **`uk_pub_campaign_contacts.xlsx`:** 17 trade body and pub group contacts, colour-coded by confidence.
-- **`london_breweries_contacts.xlsx`:** 84 London breweries with websites, the London Brewers' Alliance emails (`hi@` and `pr@londonbrewers.org`), and only one confirmed brewery email (Five Points).
-- **`find_brewery_emails.py`:** Local scraper that fills in the brewery emails.
-  - The decoding is tested, but it hasn't been run against live sites.
-  - Set `YOUR_EMAIL_HERE` in it before running.
+## Real facts the page uses
+
+Source: [East London Times, 29 Aug 2026](https://eastlondontimes.co.uk/local/hackney/hackney-church-brew-co-sales-spike-after-single-file-queue-ban-hackney-2026/), which reports Hamish Glenn (Broadsheet London), MyLondon and YouGov.
+
+- Hackney Church Brew Co posted on 14 Aug 2026: "A BAR IS NOT A POST OFFICE". Their bar is about 20 ft with 4 staff.
+- Like-for-like sales rose **25%** on the following Thursday (£3.50 pints) when people spread along the bar. Footfall was steady; spend per head rose.
+- YouGov: **40%** prefer single-file, **39%** prefer along the bar. London: only 37% back single-file. Midlands, North and Wales: 42%. Ages 25 to 49 favour along the bar most.
+- The site is **not affiliated** with Hackney Church Brew Co and says so in the footer. Consider telling them.
+- Everything else (the animated sim scores, alignment chart, rulings) is jokes.
+
+## Project layout
+
+```
+public/            Static site (served by Workers assets)
+  index.html       All page copy and sections
+  styles.css       Colour blocks, type, scenes, timeline, beer mats, form
+  script.js        Reveal, count-ups, pub simulation, timeline rail, petition form
+src/worker.js      Worker: POST /api/sign, GET /api/count; everything else -> static assets
+schema.sql         Postgres table `signatures`
+wrangler.jsonc     Worker, assets and Hyperdrive config
+package.json       wrangler + pg; scripts: dev, deploy, check, db:init:local
+.github/workflows/deploy.yml   Deploys to Cloudflare on push to main
+README.md          Setup steps
+```
+
+No build step. Edit the files in `public/` and deploy.
+
+## Page structure (`public/index.html`)
+
+1. Hero with a looping marquee.
+2. Story: "Stand on the sticker" (2020), "it ended" (`#after`), "20 feet of bar".
+3. Evidence (`#hackney`): "A bar is not a post office", count-up **+25%**, YouGov bars.
+4. The Bar Rule (`#rule`): ① The Single File (red), ② The Cluster (green), and a side-by-side "Same pub. Same Thursday." scoreboard.
+5. How to do The Cluster (`#howto`): 4 steps (walk to the bar, pick a gap, catch an eye, trust the barman).
+6. Additional Bar Rulings (`#rulings`): The Round, The Hoverer, The Phantom Queue, alignment chart, The Landlord.
+7. Beer mats (`#mats`): three CSS beer mats, marked "coming soon". Nothing is for sale yet.
+8. Petition (`#petition-section`): pledges for pubs, the public and Parliament (mock), plus the form.
+9. Footer: sources and the non-affiliation line.
+
+A **fixed timeline rail** sits on the left and tracks the 8 chapters above. Anchors it uses: `#covid`, `#after`, `#hackney`, `#rule`, `#howto`, `#rulings`, `#mats`, `#petition-section`. If you add, rename or remove a chapter, update both the `<nav class="timeline">` list and the matching section `id`s.
+
+## How the interactive bits work (`public/script.js`)
+
+- **Reveal:** `.reveal` sections fade up via IntersectionObserver. The `js` class on `<html>` gates this, so the page works without JS.
+- **Count-ups:** elements with `data-count` (plus optional `data-prefix` and `data-suffix`) animate when scrolled to.
+- **Pub scenes:** `.scene[data-mode="single"|"cluster"]` run a small simulation (seeded random, same arrivals, 4 staff). In single mode only one member of staff can reach the queue front, so it serves far fewer pints. It starts and stops with visibility. Tunables are the constants near `STAFF_X`, `SERVICE_TICKS`, `ARRIVAL_CHANCE`.
+- **Timeline rail:** computed from scroll position. It hides on the hero, fills dot to dot, marks the active chapter (`.active`) and passed ones (`.done`).
+- **Petition form:** POSTs JSON to `/api/sign`, and shows the running total from `/api/count`.
+- `prefers-reduced-motion` is respected throughout.
+
+## Backend
+
+- **Database:** Neon Postgres (eu-west-2), table `signatures` (`id`, `name`, `email`, `consent`, `consent_at`, `created_at`). The unique index on `lower(email)` means duplicate emails are silently ignored, so the API doesn't reveal who has signed.
+- **Hyperdrive:** config `bar-petition`, id `7918ba5119924ef1b8f334b70bd9eb5e`, pointing at Neon's **direct** (non-`-pooler`) host. Hyperdrive does the pooling. It is bound as `HYPERDRIVE` in `wrangler.jsonc`.
+- **Worker:** `src/worker.js` checks the Origin header, has a honeypot field `website`, validates name, email and consent, and caches `/api/count` for 60s. Only `/api/*` runs the Worker (`run_worker_first`); everything else is served from `public/`.
+- **Secrets:** the connection string is stored in Hyperdrive only. It is not in the repo. Never commit it.
+
+## Commands
+
+```sh
+npm install
+npm run dev        # wrangler dev (needs local Postgres: createdb bar_petition && npm run db:init:local)
+npm run deploy     # deploy to Cloudflare (also happens on push to main via GitHub Actions)
+npm run check      # wrangler deploy --dry-run
+```
+
+- **CI:** `.github/workflows/deploy.yml` needs the repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
+- **Cloudflare:** logged in via `wrangler login`. Worker name `dont-queue-at-the-bar`, on the `workers.dev` subdomain.
+
+## Gotchas
+
+- **Wrong Hyperdrive id:** `wrangler.jsonc` once ended up with an id that doesn't exist in the account (`88c5a2e2…`), and `wrangler deploy` failed with error 10157. The right id is `7918ba51…`. Check with `npx wrangler hyperdrive list` if this recurs. `wrangler dev` may be what changed it.
+- **Old Worker still live:** The Worker was renamed from `stop-queueing-at-the-bar`, so the old one at `stop-queueing-at-the-bar.cowen19921.workers.dev` still exists. Delete it when ready (`npx wrangler delete --name stop-queueing-at-the-bar`).
+- **Testing animations:** In an automated or hidden browser tab, scroll events and IntersectionObservers don't fire reliably. Force them by dispatching a `scroll` event or adding `in` to `.reveal` elements.
+- **Count endpoint:** the first call after a deploy once returned a Cloudflare 1042 error, then worked. Watch for it.
 
 ## Open items
 
-- **Landing page placeholders:** contact email, promoter name and address, domain, and backers.
-- **Domain:** Ideas are `bartheline.uk` (top pick), `thebarparty.uk` and `stoptheline.uk`. Availability is unchecked.
-- **Offered but not done:** press release and logo concept.
+- **Rotate the Neon password.** It was pasted into chat during setup. Reset it in Neon (Roles -> `neondb_owner`), then run `npx wrangler hyperdrive update 7918ba5119924ef1b8f334b70bd9eb5e --connection-string=...`. Better still, make a limited role that can only read and write `signatures`.
+- **Spam protection:** add Cloudflare Turnstile or a WAF rate-limit rule before promoting the site.
+- **Privacy:** add a privacy notice and a way to delete a signature on request (UK GDPR and PECR). The consent box covers the petition plus campaign and beer mat updates, so make sure the notice matches.
+- **Beer mats:** no ordering route yet. Options are an email sign-up only, or a shop (Shopify, Stripe, Printful).
+- **Domain and contact details:** none yet. Custom domain goes under Workers & Pages -> the Worker -> Settings -> Domains & Routes. Earlier ideas: `bartheline.uk`, `thebarparty.uk`, `stoptheline.uk` (availability unchecked).
+- **Hackney Church Brew Co:** the page quotes and names them. Consider giving them a heads-up.
+- **Not done:** press release, logo, OG share image, favicon.
+- **Possible extras:** an admin export of signatures, a "share" button, a pub-pledge form for venues.
 
-## Caveats
+## Earlier work (from the first, separate handover)
 
-- **Sources:** The Guardian, Sun and Reddit links were blocked for me. The page's figures come from Metro and Broadsheet and are the brewery's own (service about 3x slower, +25% sales).
-- **Existing campaign:** @QueuesPub has been running since 2023. Consider allying with them.
-- **Legal:** PECR says sole traders and partnerships need consent before campaign emails. Include an opt-out and follow UK GDPR. I only collected role-based addresses.
-- **Tools:** Brewery sites hide their emails, and fetching only works on URLs that appear in search results.
+Before this site, a landing page for a mock political party, "Bar the Line / The Bar Party", was built in a Claude design artifact. Those files are **not** in this repo.
+
+- **Artifact:** https://claude.ai/artifact/VQk6yjEdCu5YtDmXXsqKqb
+- **Spreadsheets:**
+  - `uk_pub_campaign_contacts.xlsx`: 17 trade body and pub group contacts.
+  - `london_breweries_contacts.xlsx`: 84 London breweries, with only one confirmed brewery email (Five Points) plus London Brewers' Alliance `hi@` and `pr@londonbrewers.org`.
+- **Script:** `find_brewery_emails.py`, a scraper that fills in the brewery emails. Untested on live sites. Set `YOUR_EMAIL_HERE` first.
+- **Existing campaign:** @QueuesPub has run since 2023. Consider allying with them.
+- **Legal:** PECR says sole traders and partnerships need consent before campaign emails. Include an opt-out and follow UK GDPR. Only role-based addresses were collected.
+- **Sources caveat:** the Guardian, Sun and Reddit links were blocked at the time. Earlier figures (service about 3x slower, +25% sales) came from Metro and Broadsheet and are the brewery's own claims.

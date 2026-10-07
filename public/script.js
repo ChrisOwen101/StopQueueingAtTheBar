@@ -233,6 +233,50 @@ if (hasIO) {
   scenes.forEach((s) => s.sim.start());
 }
 
+/* ---------- Timeline rail: where am I in the story? ---------- */
+
+const timeline = document.querySelector('.timeline');
+
+if (timeline) {
+  const items = [...timeline.querySelectorAll('li:not(.tl-fill)')];
+  const links = items.map((li) => li.querySelector('a'));
+  const chapters = links.map((a) => document.querySelector(a.getAttribute('href')));
+  const hero = document.getElementById('top');
+
+  const updateTimeline = () => {
+    const y = window.scrollY;
+    const mid = y + window.innerHeight * 0.5;
+    const tops = chapters.map((el) => el.getBoundingClientRect().top + y);
+    const last = tops.length - 1;
+
+    let idx = -1;
+    tops.forEach((t, i) => {
+      if (mid >= t) idx = i;
+    });
+
+    // Progress runs dot to dot, so the fill always lines up with the marker.
+    let p = 0;
+    if (idx >= 0) {
+      const frac = idx < last ? Math.min(1, Math.max(0, (mid - tops[idx]) / (tops[idx + 1] - tops[idx]))) : 0;
+      p = (idx + frac) / last;
+    }
+    timeline.style.setProperty('--p', p.toFixed(4));
+
+    items.forEach((li, i) => {
+      li.classList.toggle('active', i === idx);
+      li.classList.toggle('done', i < idx);
+      if (i === idx) links[i].setAttribute('aria-current', 'location');
+      else links[i].removeAttribute('aria-current');
+    });
+
+    timeline.classList.toggle('show', y > hero.offsetHeight * 0.5);
+  };
+
+  window.addEventListener('scroll', updateTimeline, { passive: true });
+  window.addEventListener('resize', updateTimeline);
+  updateTimeline();
+}
+
 /* ---------- Petition -> Cloudflare Worker (/api/sign), stored in Postgres ---------- */
 
 const form = document.getElementById('petition');
