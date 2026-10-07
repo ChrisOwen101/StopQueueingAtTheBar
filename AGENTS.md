@@ -1,7 +1,7 @@
 # Handover: "Don't Queue At The Bar"
 
 A comedy campaign site against single-file queueing at the bar in UK pubs, bars and breweries.
-Live at https://dont-queue-at-the-bar.cowen19921.workers.dev (Cloudflare Workers).
+Hosted on Cloudflare Workers, on the team's current Cloudflare account (set up by a co-worker). The first deploy was on a previous personal account at `dont-queue-at-the-bar.cowen19921.workers.dev`, which is no longer used. Add the live URL here once confirmed.
 
 ## The idea (read this first)
 
@@ -66,7 +66,7 @@ A **fixed timeline rail** sits on the left and tracks the 8 chapters above. Anch
 ## Backend
 
 - **Database:** Neon Postgres (eu-west-2), table `signatures` (`id`, `name`, `email`, `consent`, `consent_at`, `created_at`). The unique index on `lower(email)` means duplicate emails are silently ignored, so the API doesn't reveal who has signed.
-- **Hyperdrive:** config `bar-petition`, id `7918ba5119924ef1b8f334b70bd9eb5e`, pointing at Neon's **direct** (non-`-pooler`) host. Hyperdrive does the pooling. It is bound as `HYPERDRIVE` in `wrangler.jsonc`.
+- **Hyperdrive:** id `88c5a2e2902f470995344cd16411c3fc` in the current Cloudflare account (the earlier account had `bar-petition`, id `7918ba51…`, which is no longer used). Use Neon's **direct** (non-`-pooler`) host. Hyperdrive does the pooling. It is bound as `HYPERDRIVE` in `wrangler.jsonc`.
 - **Worker:** `src/worker.js` checks the Origin header, has a honeypot field `website`, validates name, email and consent, and caches `/api/count` for 60s. Only `/api/*` runs the Worker (`run_worker_first`); everything else is served from `public/`.
 - **Secrets:** the connection string is stored in Hyperdrive only. It is not in the repo. Never commit it.
 
@@ -80,18 +80,18 @@ npm run check      # wrangler deploy --dry-run
 ```
 
 - **CI:** `.github/workflows/deploy.yml` needs the repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
-- **Cloudflare:** logged in via `wrangler login`. Worker name `dont-queue-at-the-bar`, on the `workers.dev` subdomain.
+- **Cloudflare:** log in with `wrangler login` using the **current** account. Worker name `dont-queue-at-the-bar`, on the `workers.dev` subdomain.
 
 ## Gotchas
 
-- **Wrong Hyperdrive id:** `wrangler.jsonc` once ended up with an id that doesn't exist in the account (`88c5a2e2…`), and `wrangler deploy` failed with error 10157. The right id is `7918ba51…`. Check with `npx wrangler hyperdrive list` if this recurs. `wrangler dev` may be what changed it.
-- **Old Worker still live:** The Worker was renamed from `stop-queueing-at-the-bar`, so the old one at `stop-queueing-at-the-bar.cowen19921.workers.dev` still exists. Delete it when ready (`npx wrangler delete --name stop-queueing-at-the-bar`).
+- **Hyperdrive error 10157 (config not found):** the id in `wrangler.jsonc` must exist in the account Wrangler is logged into. If `wrangler deploy` fails with 10157, you are probably logged into the wrong account (`npx wrangler whoami`), or the id changed. Check with `npx wrangler hyperdrive list`. `wrangler dev` may rewrite the id.
+- **Old account leftovers:** the previous personal account may still host `dont-queue-at-the-bar` and the older `stop-queueing-at-the-bar` Workers, plus the `bar-petition` Hyperdrive config. They are unused. Clean them up there if you still have access.
 - **Testing animations:** In an automated or hidden browser tab, scroll events and IntersectionObservers don't fire reliably. Force them by dispatching a `scroll` event or adding `in` to `.reveal` elements.
 - **Count endpoint:** the first call after a deploy once returned a Cloudflare 1042 error, then worked. Watch for it.
 
 ## Open items
 
-- **Rotate the Neon password.** It was pasted into chat during setup. Reset it in Neon (Roles -> `neondb_owner`), then run `npx wrangler hyperdrive update 7918ba5119924ef1b8f334b70bd9eb5e --connection-string=...`. Better still, make a limited role that can only read and write `signatures`.
+- **Rotate the Neon password.** It was pasted into chat during setup. Reset it in Neon (Roles -> `neondb_owner`), then run `npx wrangler hyperdrive update 88c5a2e2902f470995344cd16411c3fc --connection-string=...` (logged into the current account). The old personal-account Hyperdrive config also holds the password, so delete it or update it too. Better still, make a limited role that can only read and write `signatures`.
 - **Spam protection:** add Cloudflare Turnstile or a WAF rate-limit rule before promoting the site.
 - **Privacy:** add a privacy notice and a way to delete a signature on request (UK GDPR and PECR). The consent box covers the petition plus campaign and beer mat updates, so make sure the notice matches.
 - **Beer mats:** no ordering route yet. Options are an email sign-up only, or a shop (Shopify, Stripe, Printful).
