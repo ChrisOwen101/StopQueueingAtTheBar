@@ -55,7 +55,7 @@ a:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; border-r
 }
 .skip:focus-visible { translate: 0 0; outline: none; }
 
-/* Pause control (built by script.js): WCAG 2.2.2 for the sims and the marquee. */
+/* Pause control (built by script.js): WCAG 2.2.2 for the sims and the mat wobble. */
 .motion-toggle {
   position: fixed;
   right: 10px;
@@ -89,7 +89,6 @@ a:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; border-r
   .motion-toggle .txt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 }
 
-.paused .marquee .track,
 .paused .mat,
 .paused .scroll-hint { animation-play-state: paused; }
 
@@ -171,11 +170,10 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   font-weight: 900;
   font-size: clamp(1.1rem, 2.6vw, 1.6rem);
   text-decoration: none;
-  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.25);
-  transition: translate 0.15s ease, box-shadow 0.15s ease;
+  transition: scale 0.15s ease;
 }
 
-.cta:hover { translate: 0 -3px; box-shadow: 0 11px 0 rgba(0, 0, 0, 0.25); }
+.cta:hover { scale: 1.03; }
 .cta:focus-visible { outline: 4px solid var(--cream); outline-offset: 4px; }
 
 .stat {
@@ -214,7 +212,7 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 
 .scroll-hint {
   position: absolute;
-  bottom: 11vh;
+  bottom: 4vh;
   left: 50%;
   translate: -50% 0;
   font-size: 3rem;
@@ -227,28 +225,6 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 @keyframes bob {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(12px); }
-}
-
-.marquee {
-  position: absolute;
-  inset: auto 0 0 0;
-  background: var(--ink);
-  color: var(--amber);
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 0.7em 0;
-  font-weight: 900;
-  font-size: clamp(1rem, 2.4vw, 1.8rem);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.marquee .track { display: inline-flex; animation: marquee 22s linear infinite; }
-.marquee:hover .track { animation-play-state: paused; }
-.marquee span { padding-right: 1.5em; }
-
-@keyframes marquee {
-  to { transform: translateX(-50%); }
 }
 
 /* ---------- Pub scenes (built by script.js) ---------- */
@@ -713,7 +689,7 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; scroll-snap-type: none; }
-  .scroll-hint, .marquee .track, .mat { animation: none; }
+  .scroll-hint, .mat { animation: none; }
   .hero .inner > * { animation: none; }
   .js .reveal { opacity: 1; transform: none; transition: none; }
   .js .reveal .fill { clip-path: none; transition: none; }

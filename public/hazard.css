@@ -24,7 +24,7 @@
 
 .hz-back {
   padding: 0.4em 0.9em;
-  border: 2px solid rgba(255, 244, 220, 0.35);
+  border: 3px solid currentColor;
   border-radius: 999px;
   color: var(--cream);
   font-weight: 800;
@@ -33,17 +33,17 @@
   white-space: nowrap;
 }
 
-.hz-back:hover, .hz-back:focus-visible { border-color: var(--amber); color: var(--amber); }
+.hz-back:hover { background: var(--cream); border-color: var(--cream); color: var(--ink); }
+.hz-back:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; border-radius: 999px; }
 
-.hz-page.c-red { background: var(--red); }
-.hz-page.c-red .hz-back:hover, .hz-page.c-red .hz-back:focus-visible { border-color: var(--ink); color: var(--ink); }
+.hz-page.c-blue { background: var(--blue); }
 
 .hz-title {
   font-weight: 900;
   font-size: clamp(0.7rem, 1.6vw, 0.85rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--amber);
+  opacity: 0.75;
   text-align: right;
 }
 
@@ -73,7 +73,7 @@
 
 .hpt-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
 .hpt-head .small { margin: 0; }
-.hpt-clipno { font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); font-size: clamp(0.75rem, 1.6vw, 0.95rem); }
+.hpt-clipno { font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; font-size: clamp(0.75rem, 1.6vw, 0.95rem); }
 
 .hpt-panel { min-height: 14rem; padding-top: 0.6rem; }
 .hpt-panel:focus { outline: none; }
@@ -106,7 +106,6 @@
   border: 4px solid rgba(255, 244, 220, 0.9);
   border-radius: 24px;
   overflow: hidden;
-  transition: border-color 0.3s ease;
 }
 
 .hpt-shot { position: absolute; inset: 0; display: none; }
@@ -127,30 +126,30 @@
 
 /* ---------- Player chrome ---------- */
 
+/* Each test places the hazard stamp on a patch of stage that stays dark at every cue. */
 .hpt-badge {
   position: absolute;
   left: 50%;
-  bottom: 4%;
+  bottom: 5%;
   translate: -50% 0;
+  rotate: -3deg;
   z-index: 9;
-  padding: 0.3em 0.8em;
+  padding: 0.3em 0.9em;
+  border: 3px solid currentColor;
   border-radius: 999px;
-  background: var(--amber);
-  color: var(--ink);
+  color: var(--amber);
   font-weight: 900;
-  font-size: clamp(0.65rem, 1.6vw, 0.95rem);
+  font-size: clamp(0.7rem, 1.6vw, 1rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  visibility: hidden;
 }
 
-.hpt[data-state="asking"] .hpt-stage { border-color: var(--amber); }
-.hpt[data-state="asking"] .hpt-badge { opacity: 1; animation: hpt-pulse 0.9s ease-in-out infinite alternate; }
+.hpt[data-state="asking"] .hpt-badge { visibility: visible; animation: hpt-stamp 0.35s cubic-bezier(.16, 1, .3, 1) both; }
 
-@keyframes hpt-pulse {
-  from { scale: 1; }
-  to   { scale: 1.12; }
+@keyframes hpt-stamp {
+  from { scale: 1.7; opacity: 0; }
+  to   { scale: 1; opacity: 1; }
 }
 
 .hpt-cover {
@@ -181,12 +180,14 @@
   background: var(--amber);
   color: var(--ink);
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: scale 0.15s ease;
 }
 
-.hpt-start:hover, .hpt-again:hover { transform: scale(1.04); }
+.hpt-start { display: inline-flex; align-items: center; gap: 0.5em; }
+.hpt-start svg { width: 0.85em; height: 0.85em; fill: currentColor; }
+.hpt-start:hover, .hpt-again:hover { scale: 1.03; }
 .hpt-start:focus-visible, .hpt-again:focus-visible,
-.hpt-btn:focus-visible, .hpt-opt:focus-visible { outline: 3px solid var(--cream); outline-offset: 3px; }
+.hpt-btn:focus-visible, .hpt-opt:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
 
 .hpt-note { font-weight: 600; font-size: clamp(0.8rem, 1.8vw, 1.05rem); opacity: 0.7; }
 
@@ -195,7 +196,6 @@
   font-weight: 900;
   line-height: 0.85;
   letter-spacing: -0.06em;
-  color: var(--amber);
   font-variant-numeric: tabular-nums;
 }
 
@@ -207,7 +207,6 @@
   text-transform: lowercase;
 }
 
-.hpt-panel > .hpt-grade { color: var(--amber); margin-bottom: 0.4em; }
 
 .hpt-sub {
   min-height: 2.6em;
@@ -265,11 +264,11 @@
   translate: -50% -50%;
   rotate: 45deg;
   background: var(--cream);
-  border: 2px solid #0e0e13;
+  border: 2px solid var(--ink);
 }
 
-.hpt-mark.ok  { background: #4ad295; }
-.hpt-mark.bad { background: var(--red); }
+.hpt-mark.ok  { background: var(--green); border-color: var(--cream); }
+.hpt-mark.bad { background: var(--red); border-color: var(--cream); }
 
 .hpt-time {
   flex: none;
@@ -325,7 +324,7 @@
   line-height: 1.25;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease, translate 0.15s ease;
+  transition: border-color 0.15s ease, translate 0.15s ease;
   animation: hpt-in 0.4s cubic-bezier(.2, .8, .2, 1) both;
   animation-delay: calc(var(--i) * 80ms);
 }
@@ -336,29 +335,33 @@
   width: 2em;
   height: 2em;
   border-radius: 50%;
-  background: var(--amber);
+  background: var(--cream);
   color: var(--ink);
   font-weight: 900;
 }
 
-.hpt-opt:hover { border-color: var(--amber); background: rgba(255, 182, 39, 0.12); translate: 4px 0; }
+.hpt-opt:hover { border-color: var(--amber); translate: 4px 0; }
 
 @keyframes hpt-in {
   from { opacity: 0; translate: 0 18px; }
   to   { opacity: 1; translate: 0 0; }
 }
 
-.hpt-verdict {
-  font-size: clamp(2.4rem, 6vw, 4.6rem);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-  text-transform: lowercase;
-  animation: hpt-in 0.4s cubic-bezier(.2, .8, .2, 1) both;
+.hpt-panel[data-verdict] {
+  min-height: 0;
+  padding: clamp(1.2rem, 3vw, 2.2rem);
+  border-radius: 24px;
+  color: var(--cream);
 }
 
-.hpt-verdict.ok  { color: #4ad295; }
-.hpt-verdict.bad { color: var(--red); }
+.hpt-panel[data-verdict="right"] { background: var(--green); }
+.hpt-panel[data-verdict="wrong"] { background: var(--red); }
+
+.hpt-verdict {
+  margin: 0 0 0.6em;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  animation: hpt-stamp 0.35s cubic-bezier(.16, 1, .3, 1) both;
+}
 
 .hpt-say {
   margin-top: 0.6em;
@@ -367,7 +370,7 @@
   line-height: 1.3;
 }
 
-.hpt-answer { margin-top: 0.8em; font-weight: 700; opacity: 0.7; }
+.hpt-answer { margin-top: 0.8em; font-weight: 700; opacity: 0.9; }
 
 .hpt-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.6rem; margin-top: 1.2rem; }
 .hpt-actions .hpt-again { font-size: 1.15rem; }
@@ -377,73 +380,59 @@
   .hpt-controls { gap: 0.6rem; }
 }
 
-/* ---------- Hub page (hazard.html) ---------- */
+/* ---------- Hub page (hazard.html): one colour block per idea ---------- */
 
 .hz-hub {
-  min-height: calc(100svh - var(--hz-top));
   display: grid;
-  align-content: center;
-  gap: clamp(1.5rem, 4vh, 3rem);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2vh var(--hz-pad) 6vh;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100svh - var(--hz-top));
+}
+
+.hz-hub-title {
+  grid-column: 1 / -1;
+  display: grid;
+  place-content: center;
+  padding: 4vh var(--hz-pad) 9vh;
   text-align: center;
 }
 
-.hz-hub .mega { font-size: clamp(2.8rem, 9vw, 8rem); }
-.hz-hub .mid { margin-top: 0.5em; }
+.hz-hub-title .mega { font-size: clamp(2.8rem, 9vw, 8rem); }
 
-.hz-choices {
+.hz-door {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  gap: clamp(1rem, 2.5vw, 2rem);
-  text-align: left;
-}
-
-.hz-choice {
-  display: grid;
-  align-content: start;
-  gap: 0.6rem;
-  padding: clamp(1.4rem, 3vw, 2.4rem);
-  border-radius: 28px;
-  color: var(--ink);
+  align-content: center;
+  justify-items: start;
+  gap: 0.8rem;
+  min-height: 48svh;
+  padding: clamp(2.2rem, 7vh, 5rem) clamp(1.5rem, 5vw, 4.5rem);
   text-decoration: none;
-  box-shadow: 0 10px 0 rgba(0, 0, 0, 0.35);
-  transition: translate 0.15s ease, box-shadow 0.15s ease;
 }
 
-.hz-choice:hover { translate: 0 -4px; box-shadow: 0 14px 0 rgba(0, 0, 0, 0.35); }
-.hz-choice:focus-visible { outline: 4px solid var(--cream); outline-offset: 4px; }
-.hz-choice.customer { background: var(--amber); }
-.hz-choice.barperson { background: var(--pink); }
+.hz-door .big { text-transform: lowercase; }
+.hz-door p:not(.big) { max-width: 32ch; font-weight: 600; font-size: clamp(1.05rem, 1.8vw, 1.35rem); line-height: 1.4; }
 
-.hz-choice .emoji { margin: 0; font-size: clamp(2.4rem, 6vw, 3.6rem); letter-spacing: 0; }
-
-.hz-choice strong {
-  font-size: clamp(1.9rem, 4.5vw, 3.2rem);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-  text-transform: lowercase;
-}
-
-.hz-choice span { font-weight: 600; font-size: clamp(1rem, 1.8vw, 1.2rem); line-height: 1.35; }
-
-.hz-choice em {
-  justify-self: start;
-  margin-top: 0.6rem;
-  padding: 0.55em 1.1em;
+.hz-go {
+  margin-top: 0.8rem;
+  padding: 0.7em 1.4em;
   border-radius: 999px;
   background: var(--ink);
   color: var(--cream);
-  font-style: normal;
   font-weight: 900;
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  transition: scale 0.15s ease;
+}
+
+.hz-door:hover .hz-go { scale: 1.03; }
+.hz-door:focus-visible { outline: 4px solid var(--ink); outline-offset: -14px; border-radius: 0; }
+
+@media (max-width: 760px) {
+  .hz-hub { grid-template-columns: 1fr; }
+  .hz-door { min-height: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hpt-opt, .hpt-verdict, .hpt[data-state="asking"] .hpt-badge { animation: none; }
-  .hz-choice { transition: none; }
+  .hz-go, .hpt-start, .hpt-again { transition: none; }
 }
 
 /* Landscape phones: every pixel of height counts. */
@@ -453,15 +442,14 @@
   .hpt-head { display: none; }
   .hpt-media { gap: 6px; }
   .hpt-sub { min-height: 1.3em; margin: 0; font-size: 0.85rem; }
-  .hpt-btn { width: 36px; height: 36px; border-width: 2px; }
+  .hpt-btn { width: 36px; height: 36px; }
   .hpt-btn svg { width: 16px; height: 16px; }
   .hpt-mark { width: 9px; height: 9px; border-width: 1.5px; }
   .hpt-time { font-size: 0.8rem; }
   .hpt-h { font-size: 1.9rem; }
   .hpt-q { font-size: 1.15rem; }
   .hpt-opts { gap: 0.5rem; margin-top: 0.7rem; }
-  .hpt-opt { padding: 0.55em 0.8em; font-size: 0.92rem; border-width: 2px; }
-  .hpt-verdict { font-size: 2.2rem; }
+  .hpt-opt { padding: 0.55em 0.8em; font-size: 0.92rem; }
   .hpt-say { font-size: 1rem; }
   .hpt-intro, .hpt-wait { font-size: 0.95rem; }
   .hpt-stage { border-width: 3px; border-radius: 16px; }

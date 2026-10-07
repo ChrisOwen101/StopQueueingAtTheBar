@@ -90,10 +90,6 @@ components:
     backgroundColor: "{colors.scene-night}"
     textColor: "{colors.pub-cream}"
     rounded: "{rounded.xl}"
-  marquee:
-    backgroundColor: "{colors.last-orders-ink}"
-    textColor: "{colors.amber-pint}"
-    typography: "{typography.label}"
 ---
 
 # Design System: Don't Queue At The Bar
@@ -119,7 +115,7 @@ Density is low and the volume is high. There is one idea per full-screen block, 
 A rotation of saturated, flat pub-sign colours, one per screen, with cream and ink as the neutral pair.
 
 ### Primary
-- **Amber Pint** (#ffb627): The action and highlight colour. Petition button, "serving" dot, stat accents, timeline progress, focus outlines, marquee text, footer links. The one colour that means "do this" or "this is the point".
+- **Amber Pint** (#ffb627): The action and highlight colour. Petition button, "serving" dot, stat accents, timeline progress, focus outlines, footer links. The one colour that means "do this" or "this is the point".
 
 ### Secondary
 - **Pint Glass Red** (#d62839): The Single File (the wrong behaviour) and the chaotic row of the alignment chart. Deep enough for cream text at 4.5:1.
@@ -132,7 +128,7 @@ A rotation of saturated, flat pub-sign colours, one per screen, with cream and i
 
 ### Neutral
 - **Pub Cream** (#fff4dc): Page background, light screens, and text on ink, green, red and blue.
-- **Last Orders Ink** (#16161d): Text on cream, amber and pink; the dark screen, marquee, footer, timeline rail and chart cells.
+- **Last Orders Ink** (#16161d): Text on cream, amber and pink; the dark screen, footer, timeline rail and chart cells.
 - **Scene Night** (#0e0e13): The stage behind every pub simulation.
 - **Bar Wood** (#c98a3e) with **Bar Wood Edge** (#8a5a22): The bar counter in the sim only.
 
@@ -157,10 +153,10 @@ Sim customer dots also use four light tints (#7f95ff, #4ad295, #ff6b76, #ffd36a)
 - **Big** (800, `clamp(2.2rem, 7vw, 6rem)`, 1, -0.03em): Secondary statements and rule titles.
 - **Mid** (600, `clamp(1.3rem, 3.2vw, 2.6rem)`, 1.2): The supporting line under a headline.
 - **Small** (500, `clamp(1rem, 2vw, 1.6rem)`, 0.04em, lowercase, 80% opacity): Captions and asides.
-- **Label** (900, `clamp(0.9rem, 1.8vw, 1.3rem)`, 0.08em, uppercase): Tags, marquee, chart headings, sim scores.
+- **Label** (900, `clamp(0.9rem, 1.8vw, 1.3rem)`, 0.08em, uppercase): Tags, chart headings, sim scores.
 
 ### Named Rules
-**The Lowercase Shout Rule.** Headlines are lowercase and enormous. Uppercase is only for labels, the marquee, and the occasional `.mega.upper` quote.
+**The Lowercase Shout Rule.** Headlines are lowercase and enormous. Uppercase is only for labels and the occasional `.mega.upper` quote.
 
 **The Tabular Count Rule.** Any number that counts up uses `font-variant-numeric: tabular-nums` so it doesn't jitter.
 
@@ -228,9 +224,6 @@ A tall 16px-radius track in 12% ink with an ink fill, or red for the alternative
 
 ### Beer mats
 Real print artwork loaded from `/mats/*.svg` (generated from the logo by `scripts/build-mats.mjs`), shown at `clamp(220px, 30vw, 380px)`, tilted and wobbling, with a flat offset drop shadow.
-
-### Marquee
-A full-width ink strip with uppercase amber text that loops endlessly at the bottom of the hero.
 
 ## Do's and Don'ts
 

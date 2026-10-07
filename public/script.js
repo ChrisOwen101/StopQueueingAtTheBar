@@ -239,7 +239,7 @@ if (hasIO) {
 }
 
 /* ---------- Pause control (WCAG 2.2.2) ----------
-   The sims and the marquee move on their own for more than five seconds, so
+   The sims and the beer mats move on their own for more than five seconds, so
    offer a way to stop them. Not needed when the visitor already asked for reduced motion. */
 
 if (!reduceMotion) {

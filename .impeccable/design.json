@@ -19,7 +19,7 @@
       "big": { "displayName": "Big", "purpose": "Secondary statements and rule titles." },
       "mid": { "displayName": "Mid", "purpose": "Supporting line under a headline." },
       "small": { "displayName": "Small", "purpose": "Lowercase captions and asides at 80% opacity." },
-      "label": { "displayName": "Label", "purpose": "Uppercase tags, marquee, chart headings and sim scores." }
+      "label": { "displayName": "Label", "purpose": "Uppercase tags, chart headings and sim scores." }
     },
     "shadows": [
       { "name": "bar-lip", "value": "0 5px 0 #8a5a22", "purpose": "Hard counter lip on the sim bar." },
@@ -29,8 +29,7 @@
     "motion": [
       { "name": "ease-rise", "value": "cubic-bezier(0.2, 0.8, 0.2, 1)", "purpose": "Hero rise-in and scroll reveals (0.8 to 0.9s)." },
       { "name": "sim-move", "value": "0.7s ease", "purpose": "Sim dots moving along the bar." },
-      { "name": "button-hover", "value": "0.15s ease", "purpose": "Button scale to 1.03 on hover." },
-      { "name": "marquee", "value": "22s linear infinite", "purpose": "Hero marquee loop." }
+      { "name": "button-hover", "value": "0.15s ease", "purpose": "Button scale to 1.03 on hover." }
     ],
     "breakpoints": [
       { "name": "rail", "value": "900px" },
@@ -78,14 +77,6 @@
       "css": ".ds-rail { display: inline-flex; align-items: center; gap: 18px; padding: 16px 10px; background: rgba(22, 22, 29, 0.9); border: 2px solid rgba(255, 244, 220, 0.3); border-radius: 999px; color: #fff4dc; } .ds-dot { width: 14px; height: 14px; box-sizing: border-box; border-radius: 50%; background: #ffb627; border: 2px solid #fff4dc; transform: scale(1.5); box-shadow: 0 0 0 5px rgba(255, 182, 39, 0.35); } .ds-lbl { display: flex; align-items: baseline; gap: 0.6em; white-space: nowrap; padding: 0.4em 0.9em; background: #16161d; border: 2px solid rgba(255, 244, 220, 0.3); border-radius: 999px; font-size: 0.85rem; font-weight: 800; } .ds-lbl small { color: #ffb627; font-size: 0.7rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }"
     },
     {
-      "name": "Marquee",
-      "kind": "custom",
-      "refersTo": "marquee",
-      "description": "Ink strip with looping uppercase amber text.",
-      "html": "<div class=\"ds-marquee\">stand anywhere &bull; find a gap &bull; catch an eye</div>",
-      "css": ".ds-marquee { background: #16161d; color: #ffb627; padding: 0.7em 1em; white-space: nowrap; font-weight: 900; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.05em; }"
-    },
-    {
       "name": "Pub Scene Score",
       "kind": "custom",
       "refersTo": "scene",
@@ -109,7 +100,7 @@
       { "name": "The Whole-Screen Rule", "body": "Colour is applied to entire screens, never sprinkled as tints on a neutral page. Text on each block is always cream or ink, whichever is the higher contrast.", "section": "colors" },
       { "name": "The Red-Is-Wrong, Green-Is-Right Rule", "body": "Red always belongs to The Single File and green to The Cluster. Do not reuse them as decoration.", "section": "colors" },
       { "name": "The One Amber Rule", "body": "Amber is reserved for the thing to look at or press on that screen. If two amber things compete, one is wrong.", "section": "colors" },
-      { "name": "The Lowercase Shout Rule", "body": "Headlines are lowercase and enormous. Uppercase is only for labels, the marquee, and the occasional uppercase quote.", "section": "typography" },
+      { "name": "The Lowercase Shout Rule", "body": "Headlines are lowercase and enormous. Uppercase is only for labels and the occasional uppercase quote.", "section": "typography" },
       { "name": "The Tabular Count Rule", "body": "Any number that counts up uses tabular numerals so it doesn't jitter.", "section": "typography" },
       { "name": "The Flat-By-Default Rule", "body": "No soft drop shadows, no gradients, no glass. If something needs to stand out, change its colour or scale it up.", "section": "elevation" },
       { "name": "The Stamp Rule", "body": "Labels that act as stamps are outlined pills, uppercase, tilted -3deg. Never fill them.", "section": "shapes" }

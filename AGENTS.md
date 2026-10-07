@@ -54,7 +54,7 @@ No build step. Edit the files in `public/` and deploy.
 
 ## Page structure (`public/index.html`)
 
-1. Hero with a looping marquee.
+1. Hero: the name and "It's a pub. Not a post office." with a bobbing scroll hint.
 2. Story: "Stand on the sticker" (2020), "it ended" (`#after`), "20 feet of bar".
 3. Evidence (`#hackney`): "A bar is not a post office", count-up **+25%**, YouGov bars.
 4. The Bar Rule (`#rule`): ① The Single File (red), ② The Cluster (green), and a side-by-side "Same pub. Same Thursday." scoreboard.
@@ -74,7 +74,7 @@ A **fixed timeline rail** sits on the left and tracks the 9 chapters above. Anch
 - **Pub scenes:** `.scene[data-mode="single"|"cluster"]` run a small simulation (seeded random, same arrivals, 4 staff). In single mode only one member of staff can reach the queue front, so it serves far fewer pints. It starts and stops with visibility. Tunables are the constants near `STAFF_X`, `SERVICE_TICKS`, `ARRIVAL_CHANCE`.
 - **Timeline rail:** computed from scroll position. It hides on the hero, fills dot to dot, marks the active chapter (`.active`) and passed ones (`.done`).
 - **Petition form:** POSTs JSON to `/api/sign`, and shows the running total from `/api/count`.
-- `prefers-reduced-motion` is respected throughout. Otherwise a fixed **pause animations** button (built in `script.js`, hidden for reduced-motion users) stops the sims, marquee and mat wobble (WCAG 2.2.2).
+- `prefers-reduced-motion` is respected throughout. Otherwise a fixed **pause animations** button (built in `script.js`, hidden for reduced-motion users) stops the sims, scroll hint and mat wobble (WCAG 2.2.2).
 - **Tell a mate:** after a successful signature the form shows a share button (native share sheet, or copies the link).
 - **Security headers:** `src/worker.js` adds a CSP and friends to every static response. If you add an external script, font, image or analytics beacon, update `SECURITY_HEADERS` or it will be blocked.
 - Design and product context live in `PRODUCT.md`, `DESIGN.md` and `.impeccable/design.json`.

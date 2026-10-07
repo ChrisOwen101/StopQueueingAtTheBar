@@ -225,10 +225,11 @@
     const sounds = soundNames(config);
 
     // Player chrome: hazard badge and start cover on the stage, captions and controls below it.
-    const badge = el('p', 'hpt-badge', '⚠ hazard');
+    const badge = el('p', 'hpt-badge', 'hazard');
     badge.setAttribute('aria-hidden', 'true');
     const cover = el('div', 'hpt-cover');
-    const startBtn = el('button', 'hpt-start', '▶ Start the test');
+    const startBtn = el('button', 'hpt-start');
+    startBtn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>Start the test';
     startBtn.type = 'button';
     cover.append(startBtn, el('p', 'hpt-note', 'Turn your sound on for the commentary.'));
     sound.loadManifest(config.audio || 'audio/manifest.json').then((ok) => {
@@ -371,6 +372,7 @@
       load(i);
       seek(0);
       setState('lead');
+      delete panel.dataset.verdict;
       panel.replaceChildren(el('p', 'hpt-wait', `Clip ${i + 1} of ${clips.length}. Watch for the hazard.`));
       if (reduceMotion) return ask();
       resume();
@@ -397,6 +399,7 @@
         b.addEventListener('click', () => answer(i));
         opts.append(b);
       });
+      delete panel.dataset.verdict;
       panel.replaceChildren(el('p', 'hpt-q', c.question), opts);
       opts.firstChild.focus({ preventScroll: true });
     };
@@ -413,13 +416,14 @@
       sound.say(o.say, 450);
 
       const kids = [
-        el('p', `hpt-verdict ${o.ok ? 'ok' : 'bad'}`, o.ok ? 'Correct.' : 'Not quite.'),
+        el('p', 'tag hpt-verdict', o.ok ? '✓ correct' : '✗ not quite'),
         el('p', 'hpt-say', o.say.replace(/^Correct\. /, '')),
       ];
       if (!o.ok) {
         const right = c.options.find((x) => x.ok);
         kids.push(el('p', 'hpt-answer', `The answer: ${right.text.replace(/\.$/, '')}.`));
       }
+      panel.dataset.verdict = o.ok ? 'right' : 'wrong';
       panel.replaceChildren(...kids);
       panel.focus({ preventScroll: true });
       setState('outcome');
@@ -460,7 +464,7 @@
       cover.hidden = false;
       sub.textContent = '';
 
-      const again = el('button', 'hpt-again', '↻ Take it again');
+      const again = el('button', 'hpt-again', 'Take it again');
       again.type = 'button';
       again.addEventListener('click', start);
       const row = el('div', 'hpt-actions');
@@ -470,8 +474,8 @@
         a.href = href;
         row.append(a);
       });
+      delete panel.dataset.verdict;
       panel.replaceChildren(
-        el('p', 'hpt-grade', grade),
         el('p', 'hpt-intro', score === n
           ? 'Flawless. The landlord nods at you. Briefly.'
           : 'Each diamond on the timeline is a hazard. Green, you got it right. Red, you didn\'t.'),
