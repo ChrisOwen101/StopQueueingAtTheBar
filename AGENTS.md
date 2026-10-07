@@ -31,6 +31,13 @@ public/            Static site (served by Workers assets)
   index.html       All page copy and sections
   styles.css       Colour blocks, type, scenes, timeline, beer mats, form
   script.js        Reveal, count-ups, pub simulation, timeline rail, petition form
+  hazard.html      Hazard perception hub: two buttons, customer test and barperson test
+  hazard.js        Shared test player (HazardTest.init): playback, questions, scoring, sound, speech
+  hazard.css       Test page chrome and layout, player controls, hub cards
+  hazard-customer.{html,css,js}   Customer test: clip markup, keyframes, questions
+  hazard-barperson.{html,css,js}  Barperson test (first person): clip markup, keyframes, questions
+  audio/           Generated ElevenLabs narration and sound effects plus manifest.json (commit these)
+scripts/voice.json, sfx.json      Narrator voice and sound effect prompts for npm run audio:generate
 src/worker.js      Worker: POST /api/sign, GET /api/count; everything else -> static assets
 schema.sql         Postgres table `signatures`
 wrangler.jsonc     Worker, assets and Hyperdrive config
@@ -52,12 +59,13 @@ No build step. Edit the files in `public/` and deploy.
 3. Evidence (`#hackney`): "A bar is not a post office", count-up **+25%**, YouGov bars.
 4. The Bar Rule (`#rule`): ① The Single File (red), ② The Cluster (green), and a side-by-side "Same pub. Same Thursday." scoreboard.
 5. How to do The Cluster (`#howto`): 4 steps (walk to the bar, pick a gap, catch an eye, trust the barperson).
-6. Additional Bar Rulings (`#rulings`): The Round, The Hoverer, The Phantom Queue, alignment chart, The Landlord.
-7. Beer mats (`#mats`): the front (logo badge) and the back as SVG images, marked "coming soon". Nothing is for sale yet.
-8. Petition (`#petition-section`): pledges for pubs, the public and Parliament (mock), plus the form.
-9. Footer: sources and the non-affiliation line.
+6. Hazard Perception Test (`#test`): a teaser with a link out to `hazard.html`. The tests live on their own pages.
+7. Additional Bar Rulings (`#rulings`): The Round, The Hoverer, The Phantom Queue, alignment chart, The Landlord.
+8. Beer mats (`#mats`): the front (logo badge) and the back as SVG images, marked "coming soon". Nothing is for sale yet.
+9. Petition (`#petition-section`): pledges for pubs, the public and Parliament (mock), plus the form.
+10. Footer: sources and the non-affiliation line.
 
-A **fixed timeline rail** sits on the left and tracks the 8 chapters above. Anchors it uses: `#covid`, `#after`, `#hackney`, `#rule`, `#howto`, `#rulings`, `#mats`, `#petition-section`. If you add, rename or remove a chapter, update both the `<nav class="timeline">` list and the matching section `id`s.
+A **fixed timeline rail** sits on the left and tracks the 9 chapters above. Anchors it uses: `#covid`, `#after`, `#hackney`, `#rule`, `#howto`, `#test`, `#rulings`, `#mats`, `#petition-section`. If you add, rename or remove a chapter, update both the `<nav class="timeline">` list and the matching section `id`s.
 
 ## How the interactive bits work (`public/script.js`)
 
@@ -70,6 +78,16 @@ A **fixed timeline rail** sits on the left and tracks the 8 chapters above. Anch
 - **Tell a mate:** after a successful signature the form shows a share button (native share sheet, or copies the link).
 - **Security headers:** `src/worker.js` adds a CSP and friends to every static response. If you add an external script, font, image or analytics beacon, update `SECURITY_HEADERS` or it will be blocked.
 - Design and product context live in `PRODUCT.md`, `DESIGN.md` and `.impeccable/design.json`.
+
+## Hazard perception tests (`hazard*.html`)
+
+- **Pages:** `hazard.html` is the hub, linked from the home page `#test` section. Each test page loads `styles.css`, then `hazard.css` and its own CSS, then `hazard.js` and its own JS (both `defer`).
+- **Layout (`hazard.css`):** in landscape (desktop and landscape phones) the clip and playhead sit on the left and the questions on the right. In portrait the clip is at the top (sticky) and the questions sit underneath. The stage is sized to fit the viewport height in landscape. Short landscape phones get the compact overrides at the end of the file.
+- **Clips:** each `.hpt-shot` in a test page is one clip, made of CSS keyframes. Everything in a shot inherits the clip's duration (`--dur`), and `hazard.js` plays, pauses and seeks them through the Web Animations API (`getAnimations`, `currentTime`), so each clip stops exactly on its hazard. Each shot needs an `<i class="hpt-clock">`.
+- **Data:** `HazardTest.init(root, { clips, grades, links, sounds, posterAt })`. A clip is `{ dur, cue, label, events: [[ms, caption, sound]], question, options: [{ text, ok, say }] }`. `dur` and `cue` default to 10s and 5s. The outcome after the cue always shows the right behaviour. Keep the number of `.hpt-shot` elements equal to `clips.length`.
+- **Player chrome:** `hazard.js` adds the start cover, hazard badge, captions and controls (play/pause, progress bar with a diamond per hazard, time, mute) itself.
+- **Audio (all from ElevenLabs, no browser speech or synthesised tones):** the player plays narration and sound effects only from `public/audio/manifest.json`. A line or sound that's missing stays silent and logs a `console.warn`. `HazardTest.spokenLines()` and `soundNames()` list everything a test can play, and the scripts use the same functions. The voice and its settings are in `scripts/voice.json` (currently "Daniel – Deep Baritone"), and the sound effect prompts are in `scripts/sfx.json`. After changing any copy, prompt or voice, run `npm run audio:generate`. It reads `ELEVENLABS_API_KEY` from `.env`, only re-records what changed, and fails if anything is left without audio. Commit the new files in `public/audio/`. `audio:dry` shows what would be recorded and the character count. `audio:check` checks for gaps. `audio:samples` renders candidate voices into `.voice-samples/`, which is gitignored. Mute is saved in `localStorage`.
+- **Behaviour:** the player pauses when scrolled out of view or the tab is hidden. With reduced motion it jumps straight to each question, and a "Next clip" button replaces autoplay. Answers can also be keyed with 1–4 or A–D.
 
 ## Backend
 

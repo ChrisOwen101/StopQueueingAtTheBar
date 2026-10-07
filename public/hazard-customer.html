@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Hazard Test · Don't Queue At The Bar</title>
+  <meta name="description" content="The hazard perception test for customers. Four clips. Spot the hazard before you join a queue.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="hazard.css">
+  <link rel="stylesheet" href="hazard-customer.css">
+  <script src="hazard.js" defer></script>
+  <script src="hazard-customer.js" defer></script>
+</head>
+<body class="hz-page">
+
+  <header class="hz-top">
+    <a class="hz-back" href="hazard.html">← All tests</a>
+    <p class="hz-title">Hazard perception · customer</p>
+  </header>
+
+  <main class="hpt" id="hpt" data-state="idle">
+    <div class="hpt-media">
+      <div class="hpt-head">
+        <p class="small">the customer test</p>
+        <p class="hpt-clipno" aria-hidden="true"></p>
+      </div>
+
+      <div class="hpt-stage" role="img" aria-label="Animated pub bar clip">
+        <div class="hpt-bar"></div>
+
+        <!-- Clip 1: the single file. You arrive. -->
+        <div class="hpt-shot">
+          <i class="hpt-clock"></i>
+          <i class="a staff idle" style="--x:18;--y:8"></i>
+          <i class="a staff busy" style="--x:39;--y:8"></i>
+          <i class="a staff idle" style="--x:61;--y:8"></i>
+          <i class="a staff idle k1-staff" style="--x:82;--y:8"></i>
+          <div class="hpt-zone k1-zone" style="--x:51;--w:44"><span>empty bar</span></div>
+          <i class="a cust c0 k1-leave" style="--x:39;--y:28"></i>
+          <i class="a cust c1 k1-step" style="--x:41;--y:37.5"></i>
+          <i class="a cust c2 k1-step" style="--x:37;--y:47"></i>
+          <i class="a cust c3 k1-step" style="--x:40;--y:56.5"></i>
+          <i class="a cust c4 k1-step" style="--x:38;--y:66"></i>
+          <i class="a you k1-you"></i>
+          <i class="pint k1-pint" style="--x:74"></i>
+        </div>
+
+        <!-- Clip 2: catch the eye. -->
+        <div class="hpt-shot">
+          <i class="hpt-clock"></i>
+          <i class="a staff busy" style="--x:18;--y:8"></i>
+          <i class="a staff busy" style="--x:32;--y:8"></i>
+          <i class="a staff k2-staff" style="--x:68;--y:8"></i>
+          <i class="a staff busy" style="--x:86;--y:8"></i>
+          <i class="hpt-gaze k2-gaze" style="--x:68"></i>
+          <i class="a cust c1" style="--x:16;--y:28"></i>
+          <i class="a cust c2" style="--x:30;--y:28"></i>
+          <i class="a cust c3 k2-leave" style="--x:70;--y:28"></i>
+          <i class="a cust c4" style="--x:86;--y:28"></i>
+          <i class="pint k2-pint-a" style="--x:70"></i>
+          <i class="a you k2-you"></i>
+          <span class="hpt-bubble k2-nod" style="--x:50;--y:45">*nod*</span>
+          <i class="pint k2-pint" style="--x:50"></i>
+        </div>
+
+        <!-- Clip 3: trust the barperson. -->
+        <div class="hpt-shot">
+          <i class="hpt-clock"></i>
+          <i class="a staff busy" style="--x:18;--y:8"></i>
+          <i class="a staff busy k3-staff" style="--x:61;--y:8"></i>
+          <i class="a staff busy" style="--x:86;--y:8"></i>
+          <i class="a cust c1" style="--x:16;--y:28"></i>
+          <i class="a cust c4" style="--x:86;--y:28"></i>
+          <i class="a cust c3 k3-them"></i>
+          <i class="a you k3-you"></i>
+          <span class="hpt-bubble k3-say" style="--x:53;--y:46">👈 you're next</span>
+          <i class="pint k3-pint-a" style="--x:66"></i>
+          <i class="pint k3-pint" style="--x:40"></i>
+        </div>
+
+        <!-- Clip 4: the round. -->
+        <div class="hpt-shot">
+          <i class="hpt-clock"></i>
+          <i class="a staff idle" style="--x:18;--y:8"></i>
+          <i class="a staff busy k4-staff" style="--x:39;--y:8"></i>
+          <i class="a staff busy" style="--x:63;--y:8"></i>
+          <i class="a staff busy" style="--x:84;--y:8"></i>
+          <i class="a cust c2" style="--x:63;--y:28"></i>
+          <i class="a cust c1" style="--x:84;--y:28"></i>
+          <i class="hpt-table" style="--x:22;--y:76"></i>
+          <i class="a cust c0" style="--x:12;--y:72"></i>
+          <i class="a cust c1" style="--x:22;--y:62"></i>
+          <i class="a cust c3" style="--x:32;--y:72"></i>
+          <i class="a cust c4" style="--x:15;--y:87"></i>
+          <i class="a cust c2" style="--x:29;--y:87"></i>
+          <i class="a you k4-you"></i>
+          <span class="hpt-bubble k4-ask" style="--x:47;--y:45">what are you having?</span>
+          <span class="hpt-bubble k4-order" style="--x:47;--y:45">4 lagers, a Guinness, a lime &amp; soda</span>
+          <i class="pint k4-p" style="--x:40;--i:0"></i>
+          <i class="pint k4-p" style="--x:43;--i:1"></i>
+          <i class="pint k4-p" style="--x:46;--i:2"></i>
+          <i class="pint k4-p" style="--x:49;--i:3"></i>
+          <i class="pint k4-p" style="--x:52;--i:4"></i>
+          <i class="pint k4-p" style="--x:55;--i:5"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="hpt-panel" aria-live="polite">
+      <h1 class="hpt-h">The customer test</h1>
+      <p class="hpt-intro">Four clips. Watch each one. When it pauses on a hazard, pick what you'd do. Get it right and we'll let you near a bar.</p>
+      <p class="hpt-intro">Sound on for the commentary.</p>
+    </div>
+  </main>
+
+</body>
+</html>

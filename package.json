@@ -9,7 +9,11 @@
     "build:icons": "node scripts/build-icons.mjs",
     "build:mats": "node scripts/build-mats.mjs",
     "db:init:local": "psql \"postgres://postgres:postgres@localhost:5432/bar_petition\" -f schema.sql",
-    "check": "wrangler deploy --dry-run"
+    "check": "wrangler deploy --dry-run",
+    "audio:dry": "node scripts/generate-audio.mjs --dry-run",
+    "audio:samples": "node scripts/voice-samples.mjs",
+    "audio:generate": "node scripts/generate-audio.mjs",
+    "audio:check": "node scripts/check-audio.mjs"
   },
   "dependencies": {
     "pg": "^8.13.0"

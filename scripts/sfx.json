@@ -1,0 +1,58 @@
+{
+  "_notes": "Sound effects for the hazard perception tests, generated with the ElevenLabs Sound Effects API. Every sound the player plays (hazard, correct, wrong, fanfare, sad) and every sound named in a test's clip events needs an entry. duration is seconds (0.5 to 22). promptInfluence is 0 to 1; higher follows the prompt more literally. Changing a prompt or duration re-records that sound on the next `npm run audio:generate`.",
+  "promptInfluence": 0.6,
+  "sounds": {
+    "hazard": {
+      "prompt": "Two short urgent electronic alert beeps, like a quiz show warning, clean, no music",
+      "duration": 0.8
+    },
+    "correct": {
+      "prompt": "Bright game show correct-answer chime, two rising bell notes, cheerful, short",
+      "duration": 1
+    },
+    "wrong": {
+      "prompt": "Short low game show wrong-answer buzzer, comedic, single blunt buzz",
+      "duration": 1
+    },
+    "clink": {
+      "prompt": "Pint glass set down on a wooden pub bar with a light glass clink, close up, single hit",
+      "duration": 0.8
+    },
+    "pour": {
+      "prompt": "Beer pouring from a pub tap into a pint glass, foamy, steady stream, close up",
+      "duration": 2.5
+    },
+    "till": {
+      "prompt": "Old mechanical cash register ding and drawer sliding open in a pub, single",
+      "duration": 1.2
+    },
+    "fanfare": {
+      "prompt": "Short triumphant brass band fanfare, proud and slightly pompous, British village band",
+      "duration": 3
+    },
+    "sad": {
+      "prompt": "Sad trombone wah wah wah wah, comedic failure, four descending notes",
+      "duration": 2.5
+    },
+    "door": {
+      "prompt": "Pub front door opening with a small brass shop bell jingling above it, single, short",
+      "duration": 1.2
+    },
+    "whoosh": {
+      "prompt": "Quick soft whoosh of someone spinning round on the spot, subtle cartoon camera pan, short",
+      "duration": 0.5
+    },
+    "surge": {
+      "prompt": "Guinness stout pouring from a nitro tap into a pint glass, creamy rushing surge, close up",
+      "duration": 2
+    },
+    "fizz": {
+      "prompt": "Gentle fizzing of lager bubbles and foam settling in a pint glass, close up, quiet",
+      "duration": 1.5
+    },
+    "beep": {
+      "prompt": "Contactless card payment terminal approved, two short electronic beeps, clean",
+      "duration": 0.6
+    }
+  }
+}
