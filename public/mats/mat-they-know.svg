@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="107mm" height="107mm" role="img" aria-label="Beer mat: ask the barperson. They know who's next. They always know.">
+  <title>Beer mat: ask the barperson. They know who's next. They always know.</title>
+  <circle cx="200" cy="200" r="200" fill="#0f5b43"/>
+  <circle cx="200" cy="200" r="186" fill="#fff4dc"/>
+  <circle cx="200" cy="200" r="178" fill="none" stroke="#16161d" stroke-width="3"/>
+  <g font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" fill="#16161d" text-anchor="middle">
+    <text x="200" y="104" font-size="17" font-weight="700" letter-spacing="2" opacity="0.75">ASK THE BARPERSON</text>
+    <text x="200" y="194.0" font-size="84" font-weight="900" letter-spacing="-1.7">THEY</text>
+    <text x="200" y="266.5" font-size="84" font-weight="900" letter-spacing="-1.7">KNOW</text>
+    <text x="200" y="300" font-size="17" font-weight="700" letter-spacing="2" opacity="0.75">WHO'S NEXT.</text>
+    <text x="200" y="324" font-size="17" font-weight="700" letter-spacing="2" opacity="0.75">THEY ALWAYS KNOW.</text>
+  </g>
+</svg>

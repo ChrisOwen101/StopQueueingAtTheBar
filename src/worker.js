@@ -84,6 +84,24 @@ export default {
       return json({ error: 'Server error' }, 500);
     }
 
+    // The home page gets absolute URLs in its social meta tags (og:image etc.),
+    // built from whatever domain it is served on.
+    if (pathname === '/' && request.method === 'GET') {
+      const res = await env.ASSETS.fetch(request);
+      if (!res.headers.get('Content-Type')?.includes('text/html')) return res;
+      const origin = new URL(request.url).origin;
+      const absolutise = (attr) => ({
+        element(el) {
+          el.setAttribute(attr, origin + el.getAttribute('data-abs'));
+          el.removeAttribute('data-abs');
+        },
+      });
+      return new HTMLRewriter()
+        .on('meta[data-abs]', absolutise('content'))
+        .on('link[data-abs]', absolutise('href'))
+        .transform(res);
+    }
+
     // Anything else falls through to the static site.
     return env.ASSETS.fetch(request);
   },

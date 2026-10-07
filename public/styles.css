@@ -357,42 +357,23 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   margin: 5vh 0 2vh;
 }
 
+/* The mats are the real print artwork: /mats/*.svg, built by scripts/build-mats.mjs. */
 .mat {
   --r: 0deg;
-  width: clamp(220px, 28vw, 330px);
+  width: clamp(190px, 19vw, 270px);
+  height: auto;
   aspect-ratio: 1;
-  display: grid;
-  place-content: center;
-  gap: 0.5em;
-  padding: 14%;
-  border-radius: 50%;
-  background: var(--cream);
-  color: var(--ink);
-  border: 14px solid var(--red);
-  box-shadow: inset 0 0 0 5px var(--cream), inset 0 0 0 9px var(--ink), 0 12px 0 rgba(22, 22, 29, 0.25);
+  flex: none;
+  display: block;
   rotate: var(--r);
+  filter: drop-shadow(0 10px 0 rgba(22, 22, 29, 0.25));
   animation: wobble 4s ease-in-out infinite alternate;
 }
 
-.mat strong {
-  font-size: clamp(1.4rem, 3.4vw, 2.3rem);
-  line-height: 0.95;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-}
-
-.mat small {
-  font-size: clamp(0.65rem, 1.3vw, 0.9rem);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  opacity: 0.75;
-}
-
 .mat.m1 { --r: -8deg; }
-.mat.m2 { --r: 5deg;  border-color: var(--blue); animation-delay: -1.3s; }
-.mat.m3 { --r: -3deg; border-color: var(--green); animation-delay: -2.4s; }
+.mat.m2 { --r: 5deg;  animation-delay: -1.3s; }
+.mat.m3 { --r: -3deg; animation-delay: -2.4s; }
+.mat.m4 { --r: 6deg;  animation-delay: -3.1s; }
 
 @keyframes wobble {
   from { transform: rotate(-4deg) scale(1); }

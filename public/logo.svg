@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-labelledby="t">
+  <title id="t">Don't Queue At The Bar</title>
+  <defs>
+    <path id="top" d="M 60,200 A 140,140 0 0 1 340,200"/>
+    <path id="bottom" d="M 35,200 A 165,165 0 0 0 365,200"/>
+  </defs>
+
+  <!-- badge -->
+  <circle cx="200" cy="200" r="198" fill="#16161d"/>
+  <circle cx="200" cy="200" r="190" fill="none" stroke="#fff4dc" stroke-width="2"/>
+  <circle cx="200" cy="200" r="124" fill="#fff4dc"/>
+  <circle cx="200" cy="200" r="116" fill="none" stroke="#16161d" stroke-width="2"/>
+
+  <!-- words around the outside -->
+  <g font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="900" fill="#fff4dc">
+    <text font-size="31" text-anchor="middle" letter-spacing="1">
+      <textPath href="#top" startOffset="50%" textLength="395" lengthAdjust="spacingAndGlyphs">DON'T QUEUE AT THE BAR</textPath>
+    </text>
+    <text font-size="26" text-anchor="middle" letter-spacing="1">
+      <textPath href="#bottom" startOffset="50%" textLength="385" lengthAdjust="spacingAndGlyphs">SPREAD ALONG THE BAR</textPath>
+    </text>
+  </g>
+
+  <!-- separators -->
+  <circle cx="46" cy="200" r="6" fill="#fff4dc"/>
+  <circle cx="354" cy="200" r="6" fill="#fff4dc"/>
+
+  <!-- no sign -->
+  <g fill="none" stroke="#16161d" stroke-width="12" stroke-linecap="round">
+    <circle cx="200" cy="200" r="84"/>
+    <line x1="141" y1="141" x2="259" y2="259"/>
+  </g>
+
+  <!-- top-down view, drawn over the sign: the bar along the top and one
+       single-file line of people leading to it. Cream outlines separate
+       the people from the sign. -->
+  <g fill="#16161d" stroke="#fff4dc" stroke-width="3.5" paint-order="stroke">
+    <rect x="138" y="134" width="124" height="11" rx="5.5"/>
+    <g id="p">
+      <ellipse cx="200" cy="171" rx="13" ry="6.5"/>
+      <circle cx="200" cy="166" r="6.5"/>
+    </g>
+    <use href="#p" y="23"/>
+    <use href="#p" y="46"/>
+    <use href="#p" y="69"/>
+    <use href="#p" y="92"/>
+  </g>
+</svg>

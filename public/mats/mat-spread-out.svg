@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="107mm" height="107mm" role="img" aria-label="Beer mat: please spread out. Catch the eye. Trust the barperson.">
+  <title>Beer mat: please spread out. Catch the eye. Trust the barperson.</title>
+  <circle cx="200" cy="200" r="200" fill="#e63946"/>
+  <circle cx="200" cy="200" r="186" fill="#fff4dc"/>
+  <circle cx="200" cy="200" r="178" fill="none" stroke="#16161d" stroke-width="3"/>
+  <g font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" fill="#16161d" text-anchor="middle">
+    <text x="200" y="104" font-size="17" font-weight="700" letter-spacing="2" opacity="0.75">PLEASE</text>
+    <text x="200" y="176.0" font-size="62" font-weight="900" letter-spacing="-1.2">SPREAD</text>
+    <text x="200" y="268.6" font-size="112" font-weight="900" letter-spacing="-2.2">OUT</text>
+    <text x="200" y="300" font-size="17" font-weight="700" letter-spacing="2" opacity="0.75">CATCH THE EYE.</text>
+    <text x="200" y="324" font-size="17" font-weight="700" letter-spacing="2" opacity="0.75">TRUST THE BARPERSON.</text>
+  </g>
+</svg>

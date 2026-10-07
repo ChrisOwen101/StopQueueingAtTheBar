@@ -5,9 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Don't Queue At The Bar</title>
   <meta name="description" content="A bar is not a post office. A public campaign to end single-file queueing at the pub, and bring back The Cluster.">
-  <meta property="og:title" content="Don't Queue At The Bar">
-  <meta property="og:description" content="A bar is not a post office. Spread out. Catch the eye. Trust the barman.">
+  <meta name="theme-color" content="#ffb627">
+  <meta name="application-name" content="Don't Queue At The Bar">
+  <meta name="apple-mobile-web-app-title" content="Don't Queue">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+
+  <!-- Elements marked data-abs get the real site origin added by src/worker.js,
+       because social platforms need absolute URLs. The relative values below are
+       the fallback when the page is opened without the Worker. -->
+  <link rel="canonical" href="/" data-abs="/">
+
+  <!-- Open Graph (Facebook, WhatsApp, LinkedIn, Slack, iMessage, Discord...) -->
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Don't Queue At The Bar">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:title" content="Don't Queue At The Bar">
+  <meta property="og:description" content="A bar is not a post office. Spread out. Catch the eye. Trust the barperson.">
+  <meta property="og:url" content="/" data-abs="/">
+  <meta property="og:image" content="/og-image.png" data-abs="/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Don't Queue At The Bar: a round badge showing a single-file queue next to a bar, beside the words 'a bar is not a post office'.">
+
+  <!-- X / Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Don't Queue At The Bar">
+  <meta name="twitter:description" content="A bar is not a post office. Spread out. Catch the eye. Trust the barperson.">
+  <meta name="twitter:image" content="/og-image.png" data-abs="/og-image.png">
+  <meta name="twitter:image:alt" content="Don't Queue At The Bar: a round badge showing a single-file queue next to a bar, beside the words 'a bar is not a post office'.">
+
+  <!-- Icons -->
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
@@ -38,8 +71,8 @@
     <a class="scroll-hint" href="#covid" aria-label="Scroll down">↓</a>
     <div class="marquee" aria-hidden="true">
       <div class="track">
-        <span>Don't queue at the bar ● Spread out ● Catch the eye ● Trust the barman ● </span>
-        <span>Don't queue at the bar ● Spread out ● Catch the eye ● Trust the barman ● </span>
+        <span>Don't queue at the bar ● Spread out ● Catch the eye ● Trust the barperson ● </span>
+        <span>Don't queue at the bar ● Spread out ● Catch the eye ● Trust the barperson ● </span>
       </div>
     </div>
   </section>
@@ -121,7 +154,7 @@
       <h3 class="rule-title"><span class="num">①</span> The Single File</h3>
       <div class="scene" data-mode="single" data-label="single file" role="img"
            aria-label="Animated pub bar: customers form one long queue while three of four staff stand idle"></div>
-      <p class="mid">Wait at the back. One barman works. <br>The other three watch.</p>
+      <p class="mid">Wait at the back. One barperson works. <br>The other three watch.</p>
       <p class="tag">✗ not recommended</p>
     </div>
   </section>
@@ -180,8 +213,8 @@
 
   <section class="screen c-green rule">
     <div class="inner reveal">
-      <h3 class="rule-title"><span class="num">④</span> Trust <br>the barman.</h3>
-      <p class="mid">He knows who's next. <br>He always knows. <br>It's his entire job.</p>
+      <h3 class="rule-title"><span class="num">④</span> Trust <br>the barperson.</h3>
+      <p class="mid">They know who's next. <br>They always know. <br>It's their entire job.</p>
     </div>
   </section>
 
@@ -234,7 +267,7 @@
   <section class="screen c-ink">
     <div class="inner reveal">
       <h3 class="big">The Landlord</h3>
-      <p class="mid">knows exactly who's next. <br>Do not test him.</p>
+      <p class="mid">knows exactly who's next. <br>Do not test them.</p>
     </div>
   </section>
 
@@ -244,10 +277,11 @@
       <p class="small">for pubs</p>
       <h2 class="mega">Beer mats.</h2>
       <p class="mid">A polite reminder, under a pint.</p>
-      <div class="mats" aria-hidden="false">
-        <div class="mat m1"><small>please</small><strong>Spread out</strong><small>catch the eye. trust the barman.</small></div>
-        <div class="mat m2"><small>this is a bar</small><strong>Not a post office</strong><small>you may stop queueing now.</small></div>
-        <div class="mat m3"><small>ask the barman</small><strong>He knows</strong><small>who's next. he always knows.</small></div>
+      <div class="mats">
+        <img class="mat m1" src="/mats/mat-spread-out.svg" width="400" height="400" loading="lazy" alt="Beer mat: please spread out. Catch the eye. Trust the barperson.">
+        <img class="mat m2" src="/mats/mat-post-office.svg" width="400" height="400" loading="lazy" alt="Beer mat: this is a bar, not a post office. You may stop queueing now.">
+        <img class="mat m3" src="/mats/mat-they-know.svg" width="400" height="400" loading="lazy" alt="Beer mat: ask the barperson. They know who's next. They always know.">
+        <img class="mat m4" src="/mats/mat-back.svg" width="400" height="400" loading="lazy" alt="The back of the beer mat: a large QR code to the website, with the web address printed round the edge.">
       </div>
       <p class="mid">Coming soon. <a class="plain" href="#petition-section">Sign the petition</a> and we'll tell you first.</p>
     </div>
