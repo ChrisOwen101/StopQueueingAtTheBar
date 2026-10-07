@@ -241,12 +241,20 @@
     const nojs = main.querySelector('.hzp-nojs');
     if (nojs) nojs.remove();
 
+    // Browsers won't let a page opened from a file fetch other files, so say how to open it.
+    if (location.protocol === 'file:') {
+      const p = el('p', 'hzp-error', "This page can't read the tests from a file on your computer. Open /hazard-preview on the website, or run npm run dev and use the local address.");
+      p.setAttribute('role', 'alert');
+      main.append(p);
+      return;
+    }
+
     let tests;
     try {
       tests = await findTests();
       if (!tests.length) throw new Error(`Found no test links (a.hz-door) on ${HUB}.`);
     } catch (err) {
-      const p = el('p', 'hzp-error', `Couldn't find the tests. ${err.message}`);
+      const p = el('p', 'hzp-error', `Couldn't find the tests (${err.message}). Check your connection and refresh the page.`);
       p.setAttribute('role', 'alert');
       main.append(p);
       console.warn('Clip preview:', err);
