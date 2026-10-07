@@ -63,7 +63,7 @@ No build step. Edit the files in `public/` and deploy.
 7. Additional Bar Rulings (`#rulings`): The Round, The Hoverer, The Phantom Queue, alignment chart, The Landlord.
 8. Beer mats (`#mats`): the front (logo badge) and the back as SVG images, marked "coming soon". Nothing is for sale yet.
 9. Petition (`#petition-section`): pledges for pubs, the public and Parliament (mock), plus the form.
-10. Footer: sources and the non-affiliation line.
+10. Footer: sources, the non-affiliation line, and the beer fund line ("Made with 🍻 by people who just want a pint. Chip in to the beer fund. No queue."), a plain link to a Stripe Payment Link. It's a tip jar for a few people running a campaign, not a charity, so never call it a donation to charity or mention Gift Aid.
 
 A **fixed timeline rail** sits on the left and tracks the 9 chapters above. Anchors it uses: `#covid`, `#after`, `#hackney`, `#rule`, `#howto`, `#test`, `#rulings`, `#mats`, `#petition-section`. If you add, rename or remove a chapter, update both the `<nav class="timeline">` list and the matching section `id`s.
 
@@ -121,6 +121,7 @@ npm run check      # wrangler deploy --dry-run
 - **Rotate the Neon password.** It was pasted into chat during setup. Reset it in Neon (Roles -> `neondb_owner`), then run `npx wrangler hyperdrive update 88c5a2e2902f470995344cd16411c3fc --connection-string=...` (logged into the current account). The old personal-account Hyperdrive config also holds the password, so delete it or update it too. Better still, make a limited role that can only read and write `signatures`.
 - **Spam protection:** add Cloudflare Turnstile or a WAF rate-limit rule before promoting the site.
 - **Privacy:** add a privacy notice and a way to delete a signature on request (UK GDPR and PECR). The consent box covers the petition plus campaign and beer mat updates, so make sure the notice matches.
+- **Beer fund link:** the footer links to a Stripe **test mode** Payment Link (`buy.stripe.com/test_…`, one place in `public/index.html`). Test links only take Stripe's test cards, so no real money arrives. Before promoting the site, create the live version in the Stripe Dashboard (switch off test mode, Payment Links -> New -> "Customers choose what to pay") and swap the href. It's a plain outbound link, so the CSP in `src/worker.js` doesn't need changing.
 - **Beer mats:** no ordering route yet. Options are an email sign-up only, or a shop (Shopify, Stripe, Printful).
 - **Domain and contact details:** none yet. Custom domain goes under Workers & Pages -> the Worker -> Settings -> Domains & Routes. Earlier ideas: `bartheline.uk`, `thebarparty.uk`, `stoptheline.uk` (availability unchecked).
 - **Hackney Church Brew Co:** the page quotes and names them. Consider giving them a heads-up.

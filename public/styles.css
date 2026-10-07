@@ -528,6 +528,14 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 .site-footer a { color: var(--amber); text-decoration: underline; text-underline-offset: 4px; }
 .emoji { font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: 0.3em; }
 
+/* The beer fund: the footer's one ask, so full cream and a heavier link. */
+.site-footer .beer-fund { margin-top: 1.4em; color: var(--cream); font-size: 1.15em; font-weight: 600; text-wrap: pretty; }
+.site-footer .beer-fund a { font-weight: 900; text-decoration-thickness: 3px; white-space: nowrap; }
+.site-footer .beer-fund a:hover { text-decoration-thickness: 5px; }
+
+/* Screen-reader-only text. */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
 /* ---------- Timeline rail (fixed, left) ---------- */
 
 .timeline {
@@ -654,7 +662,7 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 
 /* Make room for the rail on narrower screens */
 @media (max-width: 900px) {
-  .screen { padding-inline: 52px; }
+  .screen, .site-footer { padding-inline: 52px; }
   .timeline { padding: 12px 7px; }
   .timeline ol { height: min(50vh, 380px); }
   .timeline li.active .lbl { opacity: 0; } /* dots only; labels on tap/hover */
