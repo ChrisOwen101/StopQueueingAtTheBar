@@ -1,0 +1,266 @@
+/* Stop Queueing at the Bar — placeholder styling inspired by cuberule.com
+   Big type, one idea per screen, scrolling down a very long page. */
+
+:root {
+  --cream: #fff4dc;
+  --ink:   #16161d;
+  --green: #0f5b43;
+  --amber: #ffb627;
+  --red:   #e63946;
+  --pink:  #ff9ec1;
+  --blue:  #2447f5;
+
+  --font: "Avenir Next", "Helvetica Neue", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--cream);
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ---------- Screens (full-viewport sections) ---------- */
+
+.screen {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 12vh 6vw;
+  scroll-snap-align: start;
+  overflow: hidden;
+}
+
+.inner { width: min(1200px, 100%); }
+
+.c-cream { background: var(--cream); color: var(--ink); }
+.c-ink   { background: var(--ink);   color: var(--cream); }
+.c-green { background: var(--green); color: var(--cream); }
+.c-amber { background: var(--amber); color: var(--ink); }
+.c-red   { background: var(--red);   color: var(--cream); }
+.c-pink  { background: var(--pink);  color: var(--ink); }
+.c-blue  { background: var(--blue);  color: var(--cream); }
+
+/* ---------- Type ---------- */
+
+h1, h2, h3, p { margin: 0; }
+
+.mega {
+  font-size: clamp(3rem, 12vw, 11rem);
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+}
+
+.big {
+  font-size: clamp(2.2rem, 7vw, 6rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.mid {
+  font-size: clamp(1.3rem, 3.2vw, 2.6rem);
+  line-height: 1.2;
+  font-weight: 600;
+  margin-top: 0.8em;
+}
+
+.small {
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  opacity: 0.8;
+  margin: 0.8em 0;
+}
+
+.dim { opacity: 0.45; }
+.accent { color: var(--amber); }
+.c-amber .accent, .c-pink .accent { color: var(--red); }
+.alt { color: var(--red); }
+.mega + .mid, .big + .mid, .mid + .big { margin-top: 1em; }
+
+/* ---------- Hero ---------- */
+
+.hero .mega { font-size: clamp(3.2rem, 13vw, 12rem); text-transform: none; }
+
+.asseen { margin-top: 8vh; }
+.asseen ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.4em 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6em 2em;
+  font-weight: 800;
+  font-size: clamp(0.95rem, 1.8vw, 1.4rem);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 3vh;
+  left: 50%;
+  translate: -50% 0;
+  font-size: 3rem;
+  font-weight: 900;
+  color: inherit;
+  text-decoration: none;
+  animation: bob 1.6s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(12px); }
+}
+
+/* ---------- Bar diagrams (built by script.js) ---------- */
+
+.diagram {
+  display: grid;
+  gap: clamp(6px, 1.2vw, 14px);
+  width: min(560px, 80vw);
+  margin: 6vh auto;
+}
+
+.diagram .cell {
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.diagram .bar {
+  grid-column: span 1;
+  border-radius: 8px;
+  aspect-ratio: auto;
+  height: clamp(14px, 2.4vw, 26px);
+  background: currentColor;
+  opacity: 0.9;
+}
+
+.diagram .person { background: currentColor; }
+.diagram .seated { background: currentColor; border-radius: 22%; opacity: 0.8; }
+.diagram .buyer  {
+  background: var(--amber);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--amber) 35%, transparent);
+  scale: 1.35;
+}
+
+/* Diagram in the "bars" row needs a shorter row than people rows */
+.diagram .bar { align-self: center; }
+
+/* ---------- Rule sections ---------- */
+
+.rule-title {
+  font-size: clamp(2.6rem, 9vw, 8rem);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+}
+
+.rule-title .num {
+  display: block;
+  font-size: 1.1em;
+  opacity: 0.55;
+}
+
+.examples {
+  list-style: none;
+  margin: 1.2em 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem;
+}
+
+.examples li {
+  width: clamp(150px, 24vw, 260px);
+  padding: 1.4em 1em;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 3px solid currentColor;
+  font-weight: 700;
+  font-size: clamp(1rem, 1.8vw, 1.4rem);
+}
+
+.examples li span {
+  display: block;
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  margin-bottom: 0.2em;
+}
+
+/* ---------- Alignment chart ---------- */
+
+.chart {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: min(640px, 90vw);
+  margin: 5vh auto 2vh;
+}
+
+.chart div {
+  aspect-ratio: 1.6;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: clamp(0.7rem, 1.8vw, 1.2rem);
+  line-height: 1.1;
+}
+
+.chart div:nth-child(even) { background: var(--blue); }
+.chart div:nth-child(5)    { background: var(--red); }
+
+/* ---------- Footer ---------- */
+
+.refs {
+  list-style: none;
+  padding: 0;
+  margin: 1.2em 0 2em;
+  font-size: clamp(0.9rem, 1.6vw, 1.3rem);
+  opacity: 0.7;
+  word-break: break-all;
+}
+
+.refs li + li { margin-top: 0.4em; }
+.footer a { color: var(--amber); text-decoration: underline; text-underline-offset: 4px; }
+.emoji { font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: 0.3em; margin-top: 1.5em; }
+
+/* ---------- Scroll reveal ---------- */
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(60px) scale(0.97);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(.2, .8, .2, 1);
+}
+
+.js .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; scroll-snap-type: none; }
+  .scroll-hint { animation: none; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+}
