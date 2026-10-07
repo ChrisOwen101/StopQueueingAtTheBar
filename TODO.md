@@ -12,6 +12,7 @@
 - Remove subtitle from under the animation
 - End of the HPT should be more celebratory (e.g. confetti animation)
 - Make better beer matts and logos
+- ~~Remove the animated ticker from the home page hero~~
 
 
 ## Above & Beyond
