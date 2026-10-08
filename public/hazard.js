@@ -505,6 +505,11 @@
         row
       );
       again.focus({ preventScroll: true });
+
+      // The certificate on a perfect run, or a line saying how to earn it (hazard-badge.js).
+      import('./hazard-badge.js')
+        .then((badge) => badge.result({ root, panel, score, n }))
+        .catch((err) => console.warn(`HazardTest: no certificate (${err.message})`));
     };
 
     function start() {
