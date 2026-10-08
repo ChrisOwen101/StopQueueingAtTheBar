@@ -1,14 +1,9 @@
 // Barperson hazard perception test: first person from behind the bar.
-// Clip markup and keyframes: hazard-barperson.html / .css.
+// Clip markup: hazard-barperson.html. Drawing: hazard-kit.js/.css; this test's wall
+// colour is in hazard-barperson.css.
 
-// Copy the shared scenery into every view before the player reads the clips.
-document.querySelectorAll('[data-decor]').forEach((view) => {
-  const tpl = document.getElementById(`bm-decor-${view.dataset.decor}`);
-  view.prepend(tpl.content.cloneNode(true));
-});
-
-HazardTest.init(document.getElementById('hpt'), {
-  posterAt: 3300,
+const config = {
+  posterAt: 9600, // clip 1 settled: five regulars spread along the counter, faces to camera, no bubbles
   links: [
     { href: 'hazard-customer.html', text: 'Now try it as a customer' },
     { href: '/#petition-section', text: 'Sign the petition' },
@@ -22,10 +17,11 @@ HazardTest.init(document.getElementById('hpt'), {
   ],
   clips: [
     {
-      label: 'Opening time. The bar is empty, then customers arrive and line up one behind the other, straight in front of you.',
+      label: 'Opening time, seen from behind the bar. The bar is empty. Five customers come in through the door one at a time and line up one behind the other, from straight in front of you back towards the door, while the rest of the bar stays empty.',
       // Opening time. They come in one behind the other, straight at you.
       sounds: [
         [600, 'door'],
+        [8800, 'clink'], // the front one's pint, once everyone has spread along the bar
       ],
       question: 'A single file is forming right in front of you. What do you do?',
       options: [
@@ -37,13 +33,14 @@ HazardTest.init(document.getElementById('hpt'), {
     {
       dur: 13000,
       cue: 6000,
-      label: 'A customer orders a Guinness. You turn to the taps and pour it three-quarters full. It needs to settle, and another customer is waiting.',
+      label: 'A grey-haired regular at the bar orders a Guinness, and a second customer comes over and waits on the right. You turn round to the taps and pour the Guinness three-quarters full. It sits on the drip tray, settling, while the mirror behind the taps shows the second customer still waiting, drumming their fingers.',
       sounds: [
-        [2500, 'whoosh'], // turn to the taps
+        [2500, 'whoosh'], // turn round to the taps
         [3400, 'surge'], // three-quarters full, then it has to settle
         [6150, 'whoosh'], // leave it, turn back, take the next order
-        [8700, 'whoosh'],
-        [9500, 'pour'], // two lagers, then top up the Guinness
+        [9000, 'whoosh'], // back to the taps
+        [9700, 'pour'], // two lagers, then top up the Guinness
+        [11600, 'whoosh'], // turn back with all three
         [12300, 'clink'],
       ],
       question: 'The Guinness has to settle. Someone else is waiting. What do you do?',
@@ -54,13 +51,13 @@ HazardTest.init(document.getElementById('hpt'), {
       ],
     },
     {
-      dur: 12000,
+      dur: 11000,
       cue: 6000,
-      label: 'While you serve a gin and tonic, one customer arrives on the right. You turn to pour, and in the back-bar mirror you see another arrive in the middle.',
+      label: 'A customer on the left orders a gin and tonic, and while they do, another customer walks along the bar and stops on the right. You turn round to pour the tonic, and in the mirror behind the taps you see a third customer come in through the door and stop in the middle of the bar. You turn back with the drink. The one on the right and the one in the middle are both waiting.',
       sounds: [
-        [2600, 'whoosh'], // turn to pour; the mirror shows someone arrive in the middle
+        [2400, 'whoosh'], // turn round to pour; the mirror shows someone arrive in the middle
         [3400, 'fizz'],
-        [5300, 'whoosh'], // turn back; nod to the middle, serve the right
+        [4500, 'whoosh'], // turn back; nod to the middle, serve the right
         [9400, 'clink'],
       ],
       question: 'Two people waiting. Who do you serve next?',
@@ -71,7 +68,7 @@ HazardTest.init(document.getElementById('hpt'), {
       ],
     },
     {
-      label: 'A customer pays by card. The card machine is slow to connect, and another customer is waiting on the right.',
+      label: 'Seen from behind the bar. A customer on the left with a gin and a Guinness pays by card. You hold the card machine out; it shows the amount, they tap, and it starts connecting, a spinner going round and round. Meanwhile another customer comes in, waits at the bar on the right and watches the machine, drumming their fingers.',
       sounds: [
         [1000, 'door'], // someone new on the right
         [7400, 'beep'], // approved, while you take the next order
@@ -85,16 +82,16 @@ HazardTest.init(document.getElementById('hpt'), {
       ],
     },
     {
-      dur: 12000,
+      dur: 12800,
       cue: 6000,
-      label: 'One customer orders a round of five lagers and a Guinness. You turn to the taps with six empty glasses.',
+      label: 'A grey-haired regular orders a round of five lagers and a Guinness. You turn round to the taps and set out six empty glasses in a row on the back counter, under four taps: two lager taps and the Guinness tap between them. The mirror above shows the customer waiting.',
       sounds: [
-        [2500, 'whoosh'], // turn to the taps: six glasses
-        [6200, 'surge'], // Guinness first
-        [7000, 'pour'], // lagers while it settles
-        [8400, 'pour'],
-        [9800, 'pour'],
-        [11600, 'clink'], // topped up: six drinks, one trip
+        [3000, 'whoosh'], // turn round to the taps: six glasses
+        [6550, 'surge'], // Guinness first
+        [7700, 'pour'], // lagers, two at a time, while it settles
+        [9300, 'pour'],
+        [10950, 'pour'], // the last lager, and the Guinness topped up
+        [12100, 'clink'], // six drinks, ready at once
       ],
       question: 'Six drinks. One of them is a Guinness. What do you pour first?',
       options: [
@@ -104,7 +101,7 @@ HazardTest.init(document.getElementById('hpt'), {
       ],
     },
     {
-      label: 'Two customers at the bar. The one on the left was there first and waits quietly. The one on the right comes in later and waves a ten pound note at you.',
+      label: 'Two customers at the bar, seen from behind it. The one on the left was there first and waits quietly, hands on the bar. The one on the right walks in from the door, stops at the bar, holds a ten pound note up high and waves it at you.',
       sounds: [
         [500, 'door'], // the waver comes in after the quiet one
         [6900, 'pour'], // the quiet one's lager
@@ -120,11 +117,11 @@ HazardTest.init(document.getElementById('hpt'), {
     {
       dur: 12000,
       cue: 6000,
-      label: 'You take a lager order and turn to pour. In the back-bar mirror you see someone come in and stop a metre short of the bar, then someone else walk straight up to it. You turn back.',
+      label: 'A customer on the right orders a lager and you turn round to pour it. In the mirror behind the taps you see someone come in through the door and stop a metre short of the bar, then someone else come in after them and walk straight up to the bar on the left. You turn back. The first one is still standing a metre back, shifting from foot to foot in the middle.',
       sounds: [
-        [2300, 'whoosh'], // turn to pour; the mirror shows who comes in first
-        [2700, 'door'],
-        [3000, 'pour'],
+        [2000, 'whoosh'], // turn round to pour; the mirror shows who comes in first
+        [2400, 'door'],
+        [2850, 'pour'],
         [4500, 'whoosh'], // turn back
         [5300, 'clink'],
         [10300, 'clink'], // the Hoverer's cider
@@ -137,10 +134,10 @@ HazardTest.init(document.getElementById('hpt'), {
       ],
     },
     {
-      label: 'The bar is empty. A queue for the toilets runs along the back wall, behind the pool table. New customers come in and join the end of it, thinking it is the queue for the bar.',
+      label: 'Seen from behind the bar. The bar is empty. A queue for the toilets runs along the back wall, in front of the pool table, up to the WC door. Three customers come in through the front door, walk along the wall and join the end of it, thinking it is the queue for the bar. The last one asks if this is the bar queue.',
       sounds: [
+        [500, 'door'], // newcomers come in and follow the line along the wall
         [700, 'flush'], // someone goes in; the toilet queue shuffles up
-        [1600, 'door'], // newcomers join the end of it
         [7000, 'pour'],
         [7600, 'clink'],
         [9000, 'clink'],
@@ -153,12 +150,13 @@ HazardTest.init(document.getElementById('hpt'), {
       ],
     },
     {
-      label: 'Two customers wait, one on the left and one on the right. You and a colleague both go to the one on the left and ask what they would like, at the same time. The one on the right says hello.',
+      dur: 11000,
+      label: 'Seen from behind the bar. One customer waits on the left; another comes in and waits on the right. Your colleague steps in front of you from the right, and you both ask the one on the left what they would like, at the same time. They look from one of you to the other. The one on the right raises a hand and says hello.',
       sounds: [
         [400, 'door'],
         [7300, 'clink'], // your colleague serves the left
-        [8100, 'pour'],
-        [9100, 'clink'], // you serve the right
+        [8600, 'pour'],
+        [9800, 'clink'], // you serve the right
       ],
       question: "You and a colleague are both going for the same customer. What do you do?",
       options: [
@@ -168,15 +166,15 @@ HazardTest.init(document.getElementById('hpt'), {
       ],
     },
     {
-      dur: 11500,
+      dur: 12000,
       cue: 5000,
-      label: 'You ask a customer what they would like. They turn round to ask their table, and the table asks them back. Another customer on the right is waiting, ready to order.',
+      label: 'You ask a customer at the bar on the right what they would like. They turn their back to the bar to ask their friends at a table behind them, and the table shrugs and asks them back. Another customer, who came in through the door, is waiting at the bar on the left, ready to order.',
       sounds: [
         [500, 'door'],
-        [7100, 'whoosh'], // turn to pour the next customer's IPA
-        [7700, 'pour'],
-        [9000, 'whoosh'], // turn back, just as the round is decided
-        [9700, 'clink'],
+        [7300, 'whoosh'], // turn round to pour the next customer's IPA
+        [7950, 'pour'],
+        [9100, 'whoosh'], // turn back, just as the round is decided
+        [9800, 'clink'],
       ],
       question: "They're asking their table what everyone wants. What do you do?",
       options: [
@@ -186,4 +184,9 @@ HazardTest.init(document.getElementById('hpt'), {
       ],
     },
   ],
-});
+};
+
+const root = document.getElementById('hpt');
+// Build the cartoon clips (figures, set, the pundit freeze) before the player reads them.
+HazardKit.build(root, config.clips);
+HazardTest.init(root, config);

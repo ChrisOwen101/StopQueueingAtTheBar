@@ -107,7 +107,7 @@ Density is low and the volume is high. There is one idea per full-screen block, 
 - Enormous lowercase Avenir-style type at weight 900 with tight tracking.
 - Chunky, cheerful forms: pills, thick outlines, generous radii, tilted stamps.
 - Pub-night palette used as a rotation of whole screens, not as accents.
-- Animated dot diagrams on a near-black stage are the only illustration.
+- Animated dot diagrams on a near-black stage are the only illustration on the home page; the hazard tests use the flat cut-out cartoon described under "Hazard test illustration".
 - Page works without JS and respects `prefers-reduced-motion`.
 
 ## Colors
@@ -225,6 +225,22 @@ A tall 16px-radius track in 12% ink with an ink fill, or red for the alternative
 ### Beer mats
 Real print artwork loaded from `/mats/*.svg` (generated from the logo by `scripts/build-mats.mjs`), shown at `clamp(220px, 30vw, 380px)`, tilted and wobbling, with a flat offset drop shadow.
 
+## Hazard test illustration
+
+The one approved exception to the dot-diagram rule, and only on the hazard test pages (`hazard-*.html`). The home page sims stay as dots.
+
+**Style: "Public Information Cartoon".** Flat, geometric, cut-out characters in the spirit of 1970s COI public information cartoons and modern cut-out animation. Big heads (about 40% of standing height), capsule bodies, stubby legs, mitten hands, no outlines, shapes meeting edge to edge. The pub is lit like a poster, not dark. No photos, gradients, shadows, blur or textures.
+
+**One world.** One pub, one cast ("the Regulars", 12 customers and 4 staff defined once in `public/hazard-kit.js`, the same look in every clip), one set, two cameras: the staff-side camera (behind the bar, customers face us; the barperson test's view) and the customer-side camera (in the room, staff face us, customers seen from behind). Both sit slightly above head height, so people further away stand higher and smaller, and a queue reads as a column of heads.
+
+**Palette roles.** Back wall: one flat colour per test (customer test Pink Gin, barperson test Quiz Night Blue), never red or green. Floor: Last Orders Ink. Counter: Bar Wood top, Bar Wood Edge lip and front. Staff: ink top, cream apron with bar-wood ties, never colour. Customers' tops: pink, light blue (#7f95ff), blue, cream or pale yellow (#ffd36a, sparingly), never ink (lost on the floor) or bar wood (lost on the counter). Six flat skin tones, six hair colours, cream eyeballs with ink pupils on every face so gaze reads at any size. Bubbles: ink on cream; your own first-person lines in the barperson test are cream on ink with a cream outline. The YOU marker is a cream pill, not amber.
+
+**The One Amber Rule, applied.** At the cue, amber is only the pundit freeze (circle, sightline, stamp), the hazard prop at its moment (the tenner) and a served pint. Red and green never appear in the clips.
+
+**The pundit freeze.** 600 to 900 ms before the cue the camera pushes in on the hazard (scale 1.2 to 1.5), an ink scrim at 45% dims everything outside a round hole, an amber circle draws on round the hazard, a dashed amber sightline joins eyes to eyes where gaze is the hazard, and a tilted outlined stamp names the situation, never the answer. All of it is complete on the cue frame. Within about 400 ms after the cue it lifts and the clip plays the right behaviour, ending settled.
+
+**Motion.** Transform and opacity only (plus stroke-dashoffset for draw-ons). Anticipation dip before a walk, spring overshoot on arrival, legs swapping on `steps()`, a breathing bob and staggered blinks on everyone. Nothing faster than 250 ms except cuts; a gesture holds at least 600 ms; a bubble stays 1.2 s plus 60 ms per character.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -239,7 +255,7 @@ Real print artwork loaded from `/mats/*.svg` (generated from the logo by `script
 - **Do** mark jokes as jokes and keep real, cited figures visually distinct.
 
 ### Don't:
-- **Don't** use photos or stock imagery; the only illustration is the animated dot diagram and the beer mat art.
+- **Don't** use photos or stock imagery; the only illustration is the animated dot diagram, the beer mat art and the hazard test cartoons (see "Hazard test illustration").
 - **Don't** use gradients, soft shadows, glass cards or hairline borders.
 - **Don't** add small accent colours to a neutral page; colour belongs to whole screens.
 - **Don't** introduce web fonts or a second typeface.

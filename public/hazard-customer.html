@@ -7,8 +7,9 @@
   <meta name="description" content="The hazard perception test for customers. Five clips, picked at random from ten. Spot the hazard before you join a queue.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="hazard.css">
-  <link rel="stylesheet" href="hazard-customer.css">
+  <link rel="stylesheet" href="hazard-kit.css">
   <script src="hazard.js" defer></script>
+  <script src="hazard-kit.js" defer></script>
   <script src="hazard-customer.js" defer></script>
 </head>
 <body class="hz-page c-ink">
@@ -26,206 +27,246 @@
       </div>
 
       <div class="hpt-stage" role="img" aria-label="Animated pub bar clip">
-        <div class="hpt-bar"></div>
 
-        <!-- Clip 1: the single file. You arrive. -->
-        <div class="hpt-shot">
+        <!-- Clip 1: the single file. A column at one barperson, three idle, the rest of the bar empty. You walk in. -->
+        <div class="hpt-shot" data-cam="cc">
           <i class="hpt-clock"></i>
-          <i class="a staff idle" style="--x:18;--y:8"></i>
-          <i class="a staff busy" style="--x:39;--y:8"></i>
-          <i class="a staff idle" style="--x:61;--y:8"></i>
-          <i class="a staff idle k1-staff" style="--x:82;--y:8"></i>
-          <div class="hpt-zone k1-zone" style="--x:51;--w:44"><span>empty bar</span></div>
-          <i class="a cust c0 k1-leave" style="--x:39;--y:28"></i>
-          <i class="a cust c1 k1-step" style="--x:41;--y:37.5"></i>
-          <i class="a cust c2 k1-step" style="--x:37;--y:47"></i>
-          <i class="a cust c3 k1-step" style="--x:40;--y:56.5"></i>
-          <i class="a cust c4 k1-step" style="--x:38;--y:66"></i>
-          <i class="a you k1-you"></i>
-          <i class="pint k1-pint" style="--x:74"></i>
+          <div class="hk-set" data-set="bar"></div>
+          <i class="hk-person" data-cast="s1" data-pos="30,s" data-act="0: pour look-dl; 5600: bar look-down; 6400: pour look-dl"></i>
+          <i class="hk-person" data-cast="s2" data-pos="52,s" data-act="0: bar look-ll; 1100: mouth-o; 1700: mouth-line; 6900: look-dl brow-r; 7500: smile brows-0"></i>
+          <i class="hk-person" data-cast="s3" data-pos="70,s" data-act="0: bar look-ll drum(1400); 3800: drum(1000); 5700: look-down brow-r; 6300: smile; 6800: pour look-down brows-0; 8500: bar look-cam smile"></i>
+          <i class="hk-person" data-cast="s4" data-pos="88,s" data-act="0: bar look-cam; 1200: look-ll; 3900: tilt"></i>
+          <i class="hk-person" data-cast="c4" data-view="back" data-pos="30,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c1" data-view="back" data-pos="19,1"></i>
+          <i class="hk-person" data-cast="c6" data-view="back" data-pos="52,0" data-act="0: at(8,2); 6600: go(52,0); 8000: bar"></i>
+          <i class="hk-person" data-cast="c10" data-view="back" data-pos="-3,3"></i>
+          <i class="hk-person" data-cast="c12" data-view="back" data-pos="70,0" data-you data-act="0: at(64,2) hide; 3700: show; 5500: go(70,0); 6100: bar; 6200: nod"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:62.5;--y:50" data-on="8800"></i>
+          <div class="hk-cut" data-cam="sc" data-on="1500-3700">
+            <div class="hk-set" data-set="room"></div>
+            <i class="hk-person" data-cast="c4" data-pos="66,0" data-life="0" data-act="0: bar look-down"></i>
+            <i class="hk-person" data-cast="c1" data-pos="75,1" data-act="0: phone"></i>
+            <i class="hk-person" data-cast="c6" data-pos="82,2" data-act="0: idle look-cam; 2600: look-ll"></i>
+            <i class="hk-person" data-cast="c10" data-pos="88,3" data-life="0" data-act="0: idle tilt"></i>
+            <i class="hk-person" data-cast="c12" data-pos="36,2" data-you data-act="0: at(9,3) hide; 1500: show; 1550: go(36,2); 3000: look-rr; 3200: brow-r"></i>
+          </div>
+          <div class="hk-freeze" data-at="62,42" data-zoom="1.3" data-ring="70,33" data-r="11" data-stamp="the single file" data-stamp-at="tl"></div>
         </div>
 
-        <!-- Clip 2: catch the eye. -->
-        <div class="hpt-shot">
+        <!-- Clip 2: catch the eye. Customer-side camera; a cut to the staff side for your nod. -->
+        <div class="hpt-shot" data-cam="cc">
           <i class="hpt-clock"></i>
-          <i class="a staff busy" style="--x:18;--y:8"></i>
-          <i class="a staff busy" style="--x:32;--y:8"></i>
-          <i class="a staff k2-staff" style="--x:68;--y:8"></i>
-          <i class="a staff busy" style="--x:86;--y:8"></i>
-          <i class="hpt-gaze k2-gaze" style="--x:68"></i>
-          <i class="a cust c1" style="--x:16;--y:28"></i>
-          <i class="a cust c2" style="--x:30;--y:28"></i>
-          <i class="a cust c3 k2-leave" style="--x:70;--y:28"></i>
-          <i class="a cust c4" style="--x:86;--y:28"></i>
-          <i class="pint k2-pint-a" style="--x:70"></i>
-          <i class="a you k2-you"></i>
-          <p class="hpt-bubble me say-r pop" style="--x:50;--y:28;--a:5200;--b:6900">*nod*</p>
-          <i class="pint k2-pint" style="--x:50"></i>
+          <div class="hk-set" data-set="bar"></div>
+          <i class="hk-person" data-cast="s1" data-pos="18,s" data-act="0: pour look-dr"></i>
+          <i class="hk-person" data-cast="s2" data-pos="34,s" data-act="0: lean look-down talk(2400); 2600: bar look-down"></i>
+          <i class="hk-person" data-cast="s4" data-pos="87,s" data-act="0: bar look-down"></i>
+          <i class="hk-person" data-cast="s3" data-pos="50,s" data-act="0: at(66,s) hold-r(pint) look-down; 2400: bar look-down; 2900: look-rr; 3500: look-l; 4100: look-ll brow-r smile; 6200: go(50,s); 7200: pour look-down brows-0 mouth-line; 8700: bar look-cam smile"></i>
+          <i class="hk-person" data-cast="c6" data-view="back" data-pos="20,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c3" data-view="back" data-pos="36,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c10" data-view="back" data-pos="86,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c7" data-view="back" data-pos="80,1" data-act="0: at(70,0) bar; 2900: hold-r(pint); 3100: go(80,1); 3800: hide"></i>
+          <i class="hk-person" data-cast="c12" data-view="back" data-pos="50,0" data-you data-act="0: bar; 5300: nod"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:70;--y:50" data-on="2600-3000"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:50;--y:50" data-on="8800"></i>
+          <div class="hk-cut" data-cam="sc" data-on="5400-7000">
+            <div class="hk-set" data-set="room"></div>
+            <i class="hk-person" data-cast="c6" data-pos="80,0" data-act="0: bar look-r"></i>
+            <i class="hk-person" data-cast="c3" data-pos="64,0" data-act="0: bar look-cam"></i>
+            <i class="hk-person" data-cast="c10" data-pos="14,0" data-act="0: bar look-l"></i>
+            <i class="hk-person" data-cast="c12" data-pos="50,0" data-you data-act="0: bar look-cam; 5500: nod; 5700: brow-r; 6000: smile"></i>
+          </div>
+          <div class="hk-freeze" data-at="59,44" data-zoom="1.3" data-ring="66,29" data-r="9" data-sight="66,30 50,60" data-stamp="the look" data-stamp-at="tl"></div>
         </div>
 
-        <!-- Clip 3: trust the barperson. -->
-        <div class="hpt-shot">
+        <!-- Clip 3: trust the barperson. They got there first; the barperson points at you: you're next. Customer-side camera. -->
+        <div class="hpt-shot" data-cam="cc">
           <i class="hpt-clock"></i>
-          <i class="a staff busy" style="--x:18;--y:8"></i>
-          <i class="a staff busy k3-staff" style="--x:61;--y:8"></i>
-          <i class="a staff busy" style="--x:86;--y:8"></i>
-          <i class="a cust c1" style="--x:16;--y:28"></i>
-          <i class="a cust c4" style="--x:86;--y:28"></i>
-          <i class="a cust c3 k3-them"></i>
-          <i class="a you k3-you"></i>
-          <p class="hpt-bubble say-l pop" style="--x:66;--y:8;--a:4400;--b:6500">← you're next</p>
-          <i class="pint k3-pint-a" style="--x:66"></i>
-          <i class="pint k3-pint" style="--x:40"></i>
+          <div class="hk-set" data-set="bar"></div>
+          <i class="hk-person" data-cast="s1" data-pos="14,s" data-act="0: pour look-dl"></i>
+          <i class="hk-person" data-cast="s3" data-pos="34,s" data-act="0: lean look-down talk(1800); 2000: bar look-down"></i>
+          <i class="hk-person" data-cast="s4" data-pos="90,s" data-act="0: bar look-down"></i>
+          <i class="hk-person" data-cast="s2" data-pos="64,s" data-act="0: at(74,s) bar look-down; 1500: look-dr brow-r; 2000: smile brows-0; 3100: look-dl mouth-line; 3600: point-ld brow-r smile; 5500: bar look-dr brows-0; 5800: pour look-down; 6600: bar look-dr smile; 7000: look-dl; 7100: go(64,s); 7700: pour look-dl mouth-line; 8900: bar look-down smile">
+            <p class="hk-bub" data-side="l" data-on="3700-5900">you're next</p>
+          </i>
+          <i class="hk-person" data-cast="c3" data-view="back" data-pos="14,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c10" data-view="back" data-pos="34,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c5" data-view="back" data-pos="118,1" data-act="0: at(118,1); 500: go(86,0); 1800: bar; 6900: hold-r(pint); 7100: go(118,1)"></i>
+          <i class="hk-person" data-cast="c12" data-view="back" data-pos="62,0" data-you data-act="0: at(-14,1); 1100: go(62,0); 3200: bar; 5400: nod"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:84;--y:50" data-on="6400-6900"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:54.5;--y:50" data-on="9200"></i>
+          <div class="hk-freeze" data-at="66,40" data-zoom="1.35" data-ring="70,36" data-r="12" data-stamp="who's first" data-stamp-at="tl"></div>
         </div>
 
-        <!-- Clip 4: the round. -->
-        <div class="hpt-shot">
+        <!-- Clip 4: the round. A tactics board shows the table of six; you walk up and the barperson asks. Customer-side camera. -->
+        <div class="hpt-shot" data-cam="cc">
           <i class="hpt-clock"></i>
-          <i class="a staff busy k4-staff" style="--x:39;--y:8"></i>
-          <i class="a staff busy" style="--x:63;--y:8"></i>
-          <i class="a staff busy" style="--x:84;--y:8"></i>
-          <i class="a cust c2" style="--x:63;--y:28"></i>
-          <i class="a cust c1" style="--x:84;--y:28"></i>
-          <i class="hpt-table" style="--x:22;--y:76"></i>
-          <i class="a cust c0" style="--x:12;--y:72"></i>
-          <i class="a cust c1" style="--x:22;--y:62"></i>
-          <i class="a cust c3" style="--x:32;--y:72"></i>
-          <i class="a cust c4" style="--x:15;--y:87"></i>
-          <i class="a cust c2" style="--x:29;--y:87"></i>
-          <i class="a you k4-you"></i>
-          <p class="hpt-bubble say-l pop" style="--x:47;--y:8;--a:4000;--b:5700">what are you having?</p>
-          <p class="hpt-bubble me say-b pop" style="--x:47;--y:28;--a:5800;--b:7600">4 lagers, a Guinness, a lime &amp; soda</p>
-          <i class="pint k4-p" style="--x:40;--i:0"></i>
-          <i class="pint k4-p" style="--x:43;--i:1"></i>
-          <i class="pint k4-p" style="--x:46;--i:2"></i>
-          <i class="pint k4-p" style="--x:49;--i:3"></i>
-          <i class="pint k4-p" style="--x:52;--i:4"></i>
-          <i class="pint k4-p" style="--x:55;--i:5"></i>
+          <div class="hk-set" data-set="bar"></div>
+          <i class="hk-person" data-cast="s1" data-pos="11,s" data-act="0: bar look-dl talk(1200); 1500: pour look-dl"></i>
+          <i class="hk-person" data-cast="s3" data-pos="27,s" data-act="0: pour look-dl"></i>
+          <i class="hk-person" data-cast="s2" data-pos="54,s" data-act="0: pour look-down; 2300: bar look-dr brow-r; 3400: lean talk(900); 4400: mouth-o brows; 5500: bar nod mouth-line brows-0; 5900: smile; 6400: pour look-down; 8900: bar look-dr smile">
+            <p class="hk-bub" data-side="r" data-on="3400-5900" style="max-width:26cqw">what are you having?</p>
+          </i>
+          <i class="hk-person" data-cast="c10" data-view="back" data-pos="11,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c2" data-view="back" data-pos="27,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c11" data-view="back" data-pos="88,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c12" data-view="back" data-pos="64,0" data-you data-act="0: at(-14,1); 500: go(64,0); 2500: bar">
+            <p class="hk-bub" data-side="r" data-on="5400-8800" style="max-width:30cqw">4 lagers, a Guinness, a lime &amp; soda</p>
+          </i>
+          <i class="hk-prop" data-prop="pint" style="--x:37.5;--y:50" data-on="7000"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:40.9;--y:50" data-on="7300"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:44.3;--y:50" data-on="7600"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:47.7;--y:50" data-on="7900"></i>
+          <i class="hk-prop" data-prop="stout" style="--x:51.1;--y:50" data-on="8200"></i>
+          <i class="hk-prop" data-prop="gin" style="--x:54.5;--y:50" data-on="8600"></i>
+          <div class="hk-board" style="--x:74;--y:4;--w:24" data-on="0-2700" aria-hidden="true">
+            <div class="bar"></div>
+            <i class="staff" style="--x:16;--y:7"></i><i class="staff" style="--x:36;--y:7"></i><i class="staff" style="--x:56;--y:7"></i>
+            <i style="--x:16;--y:30"></i><i style="--x:36;--y:30"></i><i style="--x:86;--y:30"></i>
+            <div class="tbl" style="--x:26;--y:72"></div>
+            <i style="--x:12;--y:72"></i><i style="--x:40;--y:72"></i><i style="--x:18;--y:56"></i><i style="--x:18;--y:88"></i><i style="--x:34;--y:88"></i>
+            <i style="--x:34;--y:56;background:var(--blue);outline:max(1px,0.35cqw) solid var(--cream)" data-on="0-1100"></i>
+            <i style="--x:50;--y:44;background:var(--blue);outline:max(1px,0.35cqw) solid var(--cream)" data-on="1100-1700"></i>
+            <i style="--x:64;--y:30;background:var(--blue);outline:max(1px,0.35cqw) solid var(--cream)" data-on="1700"></i>
+          </div>
+          <div class="hk-freeze" data-at="57,34" data-zoom="1.35" data-ring="55,30" data-r="9" data-stamp="the round" data-stamp-at="bl"></div>
         </div>
 
-        <!-- Clip 5: the phantom queue. A line by the pool table, an empty bar. -->
-        <div class="hpt-shot">
+        <!-- Clip 5: the phantom queue. A line stretches from the pool table; the bar is empty. Staff-side camera, a cut to the room side for the serve. -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <i class="a staff idle k5-sa" style="--x:18;--y:8"></i>
-          <i class="a staff idle k5-sb" style="--x:39;--y:8"></i>
-          <i class="a staff idle k5-sc" style="--x:61;--y:8"></i>
-          <i class="a staff idle k5-sd" style="--x:82;--y:8"></i>
-          <i class="hpt-pool" style="--x:21;--y:66;--w:26;--h:24"><i style="--x:30;--y:62"></i><i style="--x:64;--y:36"></i></i>
-          <i class="hpt-cue" style="--x:36;--y:44;--r:128deg"></i>
-          <i class="a cust c2" style="--x:36;--y:44"></i>
-          <i class="a cust c1 k5-s2"></i>
-          <i class="a cust c3 k5-s3"></i>
-          <i class="a cust c4 k5-s4"></i>
-          <i class="a cust c0 k5-s5"></i>
-          <i class="a you k5-you"></i>
-          <i class="pint pop" style="--x:76;--a:7400"></i>
+          <div class="hk-set" data-set="room"></div>
+          <i class="hk-person" data-cast="c1" data-pos="74,2" data-life="0" data-act="0: cue-r look-rr face-r; 2600: look-cam; 3400: look-rr"></i>
+          <i class="hk-person" data-cast="c3" data-pos="62,2" data-act="0: idle look-r face-r"></i>
+          <i class="hk-person" data-cast="c4" data-pos="50,2" data-act="0: idle look-rr; 2200: look-cam; 3000: look-rr"></i>
+          <i class="hk-person" data-cast="c6" data-pos="38,2" data-act="0: idle look-r face-r"></i>
+          <i class="hk-person" data-cast="c11" data-pos="26,2" data-act="0: phone"></i>
+          <i class="hk-person" data-cast="c12" data-pos="30,0" data-you data-life="0" data-act="0: at(9,3) hide; 300: show; 350: go(14,2); 1500: look-rr brow-r; 2400: hover(1600); 4200: look-r; 5300: look-dr brows-0 smile; 5600: go(30,0); 6600: bar look-cam"></i>
+          <div class="hk-cut" data-cam="cc" data-on="6600">
+            <div class="hk-set" data-set="bar"></div>
+            <i class="hk-person" data-cast="s1" data-pos="14,s" data-act="0: bar look-r"></i>
+            <i class="hk-person" data-cast="s2" data-pos="34,s" data-act="0: bar look-dr"></i>
+            <i class="hk-person" data-cast="s3" data-pos="54,s" data-act="0: bar look-dr"></i>
+            <i class="hk-person" data-cast="s4" data-pos="72,s" data-act="0: at(86,s) bar look-dl brow-r smile; 6800: go(72,s); 7400: pour look-down brows-0; 8500: bar look-down smile"></i>
+            <i class="hk-person" data-cast="c12" data-view="back" data-pos="70,0" data-you data-act="0: bar; 6900: nod"></i>
+            <i class="hk-prop" data-prop="pint" style="--x:62.5;--y:50" data-on="8400"></i>
+          </div>
+          <div class="hk-freeze" data-at="44,46" data-zoom="1.25" data-ring="76,45" data-r="8.5" data-stamp="the phantom queue" data-stamp-at="tl"></div>
         </div>
 
-        <!-- Clip 6: someone lines up behind you. -->
-        <div class="hpt-shot">
+        <!-- Clip 6: someone lines up behind you. Customer-side camera; a cut to the staff side for your point. -->
+        <div class="hpt-shot" data-cam="cc">
           <i class="hpt-clock"></i>
-          <i class="a staff busy" style="--x:18;--y:8"></i>
-          <i class="a staff busy k6-sb" style="--x:54;--y:8"></i>
-          <i class="a staff busy k6-sc" style="--x:84;--y:8"></i>
-          <i class="a cust c3" style="--x:16;--y:28"></i>
-          <i class="a cust c4" style="--x:86;--y:28"></i>
-          <i class="a you" style="--x:38;--y:28"></i>
-          <i class="a cust c1 k6-them"></i>
-          <i class="a ghost pop" style="--x:38;--y:54;--a:3900;--b:5500"></i>
-          <i class="a ghost pop" style="--x:38;--y:66;--a:4200;--b:5500"></i>
-          <i class="a ghost pop" style="--x:38;--y:78;--a:4500;--b:5500"></i>
-          <p class="hpt-bubble me say-r pop" style="--x:38;--y:28;--a:5300;--b:6600">plenty of room here</p>
-          <p class="hpt-bubble say-b pop" style="--x:64;--y:28;--a:7300;--b:8700">cheers</p>
-          <i class="pint pop" style="--x:38;--a:8000"></i>
-          <i class="pint pop" style="--x:64;--a:9400"></i>
+          <div class="hk-set" data-set="bar"></div>
+          <i class="hk-person" data-cast="s2" data-pos="30,s" data-act="0: pour look-dr; 3200: bar look-down"></i>
+          <i class="hk-person" data-cast="s3" data-pos="84,s" data-act="0: lean look-down talk(2400); 2600: bar look-down smile"></i>
+          <i class="hk-person" data-cast="c11" data-view="back" data-pos="9,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c6" data-view="back" data-pos="24,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c12" data-view="back" data-pos="60,0" data-you data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c4" data-view="back" data-pos="77,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c7" data-view="back" data-pos="92,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c10" data-view="back" data-pos="63,1" data-act="0: at(-18,1) hide; 700: show; 750: go(63,1); 3000: hover(2800) look-l"></i>
+          <div class="hk-cut" data-cam="sc" data-on="5400">
+            <div class="hk-set" data-set="room"></div>
+            <i class="hk-person" data-cast="c7" data-pos="8,0" data-act="0: bar look-r"></i>
+            <i class="hk-person" data-cast="c4" data-pos="20,0" data-act="0: bar look-r"></i>
+            <i class="hk-person" data-cast="c6" data-pos="76,0" data-act="0: bar look-l"></i>
+            <i class="hk-person" data-cast="c11" data-pos="91,0" data-act="0: bar look-cam"></i>
+            <i class="hk-person" data-cast="c10" data-pos="58,0" data-act="0: at(30,1) idle look-dr; 5900: mouth-o brows; 6400: smile look-r brows-0; 6700: go(58,0); 7800: bar look-l smile; 7900: talk(700)">
+              <p class="hk-bub" data-side="r" data-on="7800-9400">cheers</p>
+            </i>
+            <i class="hk-person" data-cast="c12" data-pos="40,0" data-you data-act="0: bar look-cam; 5600: face-l look-up brow-r; 5900: point-r smile talk(900); 6900: bar look-r face-c brows-0; 8300: look-cam">
+              <p class="hk-bub" data-side="l" data-on="5800-8100">plenty of room here</p>
+            </i>
+            <i class="hk-prop" data-prop="pint" style="--x:40;--y:76;--w:3.6" data-on="8000"></i>
+            <i class="hk-prop" data-prop="pint" style="--x:58;--y:76;--w:3.6" data-on="9400"></i>
+          </div>
+          <div class="hk-freeze" data-at="56,74" data-zoom="1.35" data-ring="63,72" data-r="9.5" data-stamp="the single file" data-stamp-at="bl"></div>
         </div>
 
-        <!-- Clip 7: you've been served. Two people are waiting for a gap. -->
-        <div class="hpt-shot">
+        <!-- Clip 7: you've been served. Two people are waiting for a gap. Staff-side camera: their faces are the cue. -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <i class="a staff busy" style="--x:18;--y:8"></i>
-          <i class="a staff busy k7-sb" style="--x:50;--y:8"></i>
-          <i class="a staff busy" style="--x:70;--y:8"></i>
-          <i class="a staff busy" style="--x:88;--y:8"></i>
-          <i class="a cust c1" style="--x:14;--y:28"></i>
-          <i class="a cust c2" style="--x:26;--y:28"></i>
-          <i class="a cust c3" style="--x:38;--y:28"></i>
-          <i class="a cust c4" style="--x:62;--y:28"></i>
-          <i class="a cust c0" style="--x:74;--y:28"></i>
-          <i class="a cust c1" style="--x:86;--y:28"></i>
-          <i class="hpt-table" style="--x:80;--y:79"></i>
-          <i class="a cust c3" style="--x:68;--y:76"></i>
-          <i class="a cust c2" style="--x:92;--y:76"></i>
-          <i class="a cust c2 k7-w1"></i>
-          <i class="a cust c1 k7-w2"></i>
-          <i class="pint pop" style="--x:47;--a:1400;--b:5200"></i>
-          <i class="pint pop" style="--x:53;--a:2400;--b:5200"></i>
-          <i class="a you k7-you"><i class="pint pop" style="--x:-30;--a:5200"></i><i class="pint pop" style="--x:130;--a:5200"></i></i>
-          <p class="hpt-bubble say-l pop" style="--x:44;--y:43;--a:3800;--b:5600">ahem</p>
-          <i class="pint pop" style="--x:50;--a:9000"></i>
+          <div class="hk-set" data-set="room"></div>
+          <i class="hk-table" style="--x:33;--y:45;--w:10;z-index:13"></i>
+          <i class="hk-person" data-cast="c11" data-pos="43,0" data-act="0: at(29,1) idle look-dr; 1500: hover(4200); 2600: look-r; 3300: look-dr brows; 3700: mouth-o; 4300: mouth-line; 6200: smile brows-0 look-r; 6700: go(43,0); 7300: bar look-cam smile; 7700: lean talk(900); 8700: bar smile">
+            <p class="hk-bub" data-side="l" data-on="3700-5400">ahem</p>
+          </i>
+          <i class="hk-person" data-cast="c5" data-pos="59,1" data-act="0: idle look-dl; 1800: glance(2200); 4200: look-dl brow-l; 6400: look-l brows-0; 7400: look-dl"></i>
+          <i class="hk-person" data-cast="c7" data-pos="8,0" data-act="0: bar look-r"></i>
+          <i class="hk-person" data-cast="c4" data-pos="25,0" data-act="0: bar look-cam"></i>
+          <i class="hk-person" data-cast="c10" data-pos="61,0" data-act="0: bar look-cam"></i>
+          <i class="hk-person" data-cast="c3" data-pos="78,0" data-act="0: bar look-l"></i>
+          <i class="hk-person" data-cast="c1" data-pos="94,0" data-act="0: bar look-cam"></i>
+          <i class="hk-person" data-cast="c12" data-pos="33,3" data-you data-life="0" data-act="0: at(43,0) bar look-cam; 1500: smile; 2900: tap; 3500: lean look-cam smile; 5400: carry look-down; 5900: turn-back; 6050: go(33,3); 7800: turn-front smile"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:40;--y:76;--w:3.6" data-on="1400-5500"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:46;--y:76;--w:3.6" data-on="2400-5500"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:43;--y:76;--w:3.6" data-on="9000"></i>
+          <div class="hk-freeze" data-at="43,60" data-zoom="1.3" data-ring="43,71" data-r="7" data-sight="30,44 41,69;58,44 45,69" data-stamp="served" data-stamp-at="tl"></div>
         </div>
 
-        <!-- Clip 8: "who's next?" They got there first. -->
-        <div class="hpt-shot">
+        <!-- Clip 8: "who's next?" They got there first. Customer-side camera; a cut to the staff side for your point. -->
+        <div class="hpt-shot" data-cam="cc">
           <i class="hpt-clock"></i>
-          <i class="a staff busy" style="--x:18;--y:8"></i>
-          <i class="a staff k8-sb" style="--x:52;--y:8"></i>
-          <i class="a staff busy" style="--x:84;--y:8"></i>
-          <i class="a cust c1" style="--x:16;--y:28"></i>
-          <i class="a cust c4" style="--x:86;--y:28"></i>
-          <i class="a cust c2 k8-them"></i>
-          <i class="a you k8-you"></i>
-          <p class="hpt-bubble say-r pop" style="--x:52;--y:8;--a:4200;--b:5700">who's next?</p>
-          <p class="hpt-bubble me say-b pop" style="--x:62;--y:28;--a:5200;--b:6800">they were first</p>
-          <p class="hpt-bubble say-b pop" style="--x:42;--y:28;--a:7400;--b:8800">cheers</p>
-          <i class="pint pop" style="--x:42;--a:7000"></i>
-          <i class="pint pop" style="--x:62;--a:9200"></i>
+          <div class="hk-set" data-set="bar"></div>
+          <i class="hk-person" data-cast="s1" data-pos="20,s" data-act="0: pour look-dr"></i>
+          <i class="hk-person" data-cast="s4" data-pos="38,s" data-act="0: reader look-dl smile"></i>
+          <i class="hk-person" data-cast="s2" data-pos="71,s" data-act="0: at(52,s) pour look-dl; 2600: go(71,s); 3700: shrug look-down; 3900: talk(900); 5500: bar look-dl brows-0; 7700: hold-r(pint) look-r smile; 8800: bar look-r smile"><p class="hk-bub" data-side="l" data-on="3800-6000">who's next?</p></i>
+          <i class="hk-person" data-cast="c1" data-view="back" data-pos="11,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c4" data-view="back" data-pos="31,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c6" data-view="back" data-pos="62,0" data-act="0: at(-16,1) hide; 200: show; 250: pace(340) go(62,0); 2100: bar"><p class="hk-bub" data-side="l" data-on="7800-9400">cheers</p></i>
+          <i class="hk-person" data-cast="c12" data-view="back" data-pos="80,0" data-you data-act="0: at(118,1) hide; 1400: show; 1500: go(80,0); 2600: bar; 8100: nod"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:62;--y:50" data-on="7000"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:76;--y:50" data-on="8900"></i>
+          <div class="hk-cut" data-cam="sc" data-on="5400-7700">
+            <div class="hk-set" data-set="room"></div>
+            <i class="hk-person" data-cast="c4" data-pos="69,0" data-act="0: bar look-l"></i>
+            <i class="hk-person" data-cast="c1" data-pos="89,0" data-act="0: bar look-l"></i>
+            <i class="hk-person" data-cast="c6" data-pos="45,0" data-act="0: bar look-cam; 5600: look-l face-l; 5900: brows mouth-o; 6500: smile brow-r brows-0; 7100: look-cam smile"></i>
+            <i class="hk-person" data-cast="c12" data-pos="17,0" data-you data-act="0: bar look-cam; 5500: point-r look-r face-r smile; 6900: bar look-cam face-c">
+              <p class="hk-bub" data-side="r" data-on="5500-7600">they were first</p>
+            </i>
+            <i class="hk-prop" data-prop="pint" style="--x:45;--y:76;--w:3.6" data-on="7000"></i>
+          </div>
+          <div class="hk-freeze" data-at="68,42" data-zoom="1.35" data-ring="71,35" data-r="9.5" data-sight="71,30 62,58;71,30 80,58" data-stamp="who's next" data-stamp-at="bl"></div>
         </div>
 
-        <!-- Clip 9: five of you, one round. -->
-        <div class="hpt-shot">
+        <!-- Clip 9: five of you, one round. Staff-side camera: the door, the room and the table are on this side. -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <i class="a staff busy" style="--x:18;--y:8"></i>
-          <i class="a staff idle k9-sb" style="--x:39;--y:8"></i>
-          <i class="a staff idle k9-sc" style="--x:61;--y:8"></i>
-          <i class="a staff busy" style="--x:84;--y:8"></i>
-          <i class="a cust c1" style="--x:16;--y:28"></i>
-          <i class="a cust c4" style="--x:86;--y:28"></i>
-          <i class="hpt-table" style="--x:20;--y:69"></i>
-          <i class="a ghost pop" style="--x:32;--y:28;--a:3800;--b:5300"></i>
-          <i class="a ghost pop" style="--x:41;--y:28;--a:4000;--b:5300"></i>
-          <i class="a ghost pop" style="--x:50;--y:28;--a:4200;--b:5300"></i>
-          <i class="a ghost pop" style="--x:59;--y:28;--a:4400;--b:5300"></i>
-          <i class="a ghost pop" style="--x:68;--y:28;--a:4600;--b:5300"></i>
-          <i class="a cust c0 k9-m1"></i>
-          <i class="a cust c2 k9-m2"></i>
-          <i class="a cust c3 k9-m3"></i>
-          <i class="a cust c1 k9-m4"></i>
-          <i class="a cust c0 k9-new"></i>
-          <i class="a you k9-you"></i>
-          <p class="hpt-bubble me say-t pop" style="--x:50;--y:52;--a:5100;--b:6100">I'll get these</p>
-          <i class="pint pop" style="--x:44;--a:7600"></i>
-          <i class="pint pop" style="--x:47;--a:7900"></i>
-          <i class="pint pop" style="--x:50;--a:8200"></i>
-          <i class="pint pop" style="--x:53;--a:8500"></i>
-          <i class="pint pop" style="--x:56;--a:8800"></i>
+          <div class="hk-set" data-set="room"></div>
+          <i class="hk-table" style="--x:25;--y:45;--w:18;z-index:13"></i>
+          <i class="hk-person" data-cast="c1" data-pos="9,0" data-life="0" data-act="0: bar look-r"></i>
+          <i class="hk-person" data-cast="c4" data-pos="91,0" data-life="0" data-act="0: bar look-l"></i>
+          <i class="hk-person" data-cast="c8" data-pos="91,3" data-life="0" data-act="0: vanish; 6600: appear look-l"></i>
+          <i class="hk-person" data-cast="c2" data-pos="21,3" data-life="0" data-act="0: at(10,3) hide; 450: show; 500: go(43,2); 3200: look-l smile; 4100: look-cam; 5600: go(21,3); 7300: look-r smile"></i>
+          <i class="hk-person" data-cast="c5" data-pos="29,3" data-life="0" data-act="0: at(11,3) hide; 750: show; 800: go(58,2); 3400: look-r; 4100: look-cam; 5700: go(29,3); 7500: look-l smile"></i>
+          <i class="hk-person" data-cast="c7" data-pos="15,3" data-life="0" data-act="0: at(9,3) hide; 300: show; 350: go(36,1); 3000: look-r smile talk(900); 4100: look-cam mouth-line; 5500: go(15,3); 7100: look-r smile"></i>
+          <i class="hk-person" data-cast="c11" data-pos="35,3" data-life="0" data-act="0: at(10,3) hide; 900: show; 950: go(66,1); 3500: look-l brows; 4100: look-cam brows-0; 5800: go(35,3); 7400: look-l smile"></i>
+          <i class="hk-person" data-cast="c12" data-pos="50,0" data-you data-life="0" data-act="0: at(9,3) hide; 600: show; 650: go(50,1); 3300: look-l; 4100: look-cam; 5300: go(50,0); 5900: bar look-cam smile; 8900: brow-r">
+            <p class="hk-bub" data-side="r" data-on="6600-8700">I'll get these</p>
+          </i>
+          <i class="hk-prop" data-prop="pint" style="--x:44;--y:76;--w:3.2" data-on="7600"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:47;--y:76;--w:3.2" data-on="7900"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:50;--y:76;--w:3.2" data-on="8200"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:53;--y:76;--w:3.2" data-on="8500"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:56;--y:76;--w:3.2" data-on="8800"></i>
+          <div class="hk-freeze" data-at="50,52" data-zoom="1.25" data-ring="51,54" data-r="24" data-stamp="the round" data-stamp-at="tl"></div>
         </div>
 
-        <!-- Clip 10: they're pouring your last pint. -->
-        <div class="hpt-shot">
+        <!-- Clip 10: they're pouring your last pint. Customer-side camera. -->
+        <div class="hpt-shot" data-cam="cc">
           <i class="hpt-clock"></i>
-          <i class="a staff busy" style="--x:18;--y:8"></i>
-          <i class="a staff busy k10-sb" style="--x:50;--y:8"></i>
-          <i class="a staff busy" style="--x:84;--y:8"></i>
-          <i class="a cust c1" style="--x:16;--y:28"></i>
-          <i class="a cust c3" style="--x:32;--y:28"></i>
-          <i class="a cust c2" style="--x:68;--y:28"></i>
-          <i class="a cust c4" style="--x:86;--y:28"></i>
-          <i class="pint pop" style="--x:47;--a:1200;--b:8800"></i>
-          <i class="pint glass k10-glass" style="--x:53"><b class="k10-beer"></b></i>
-          <i class="hpt-ring pop" style="--x:53;--y:16;--s:6;--a:4300;--b:5400"></i>
-          <i class="hpt-reader k10-reader" style="--x:58;--y:17"><b class="k10-paid"></b></i>
-          <i class="a you k10-you"><i class="card k10-card"></i><i class="pint pop" style="--x:-30;--a:8800"></i><i class="pint pop" style="--x:130;--a:8800"></i></i>
+          <div class="hk-set" data-set="bar"></div>
+          <i class="hk-person" data-cast="s1" data-pos="19,s" data-act="0: lean look-dl talk(2000); 2200: pour look-dl"></i>
+          <i class="hk-person" data-cast="s4" data-pos="85,s" data-act="0: bar look-dl smile"></i>
+          <i class="hk-person" data-cast="s2" data-pos="47,s" data-act="0: hold-r(pint) look-dl; 1200: bar look-down; 1900: pour look-dr; 6000: bar look-down; 6200: reader look-down smile; 7700: bar look-dr; 8000: hold-r(pint) look-down; 8500: bar look-down smile"></i>
+          <i class="hk-person" data-cast="c3" data-view="back" data-pos="28,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c10" data-view="back" data-pos="73,0" data-act="0: bar"></i>
+          <i class="hk-person" data-cast="c12" data-view="back" data-pos="47,1" data-you data-act="0: at(47,0) bar; 5500: card; 7100: lean tap; 7900: bar; 8900: carry; 9100: turn-front smile; 9300: go(47,1)"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:41;--y:50" data-on="1200-8900"></i>
+          <i class="hk-prop" data-prop="glass" style="--x:57;--y:53;--w:4.4;--f:0.9" data-on="1900-7900" data-fill="2000" data-fillms="4000" data-head="6000"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:53;--y:50" data-on="8500-8900"></i>
+          <div class="hk-freeze" data-at="55,52" data-zoom="1.6" data-ring="57,48" data-r="8" data-stamp="last pint" data-stamp-at="tr"></div>
         </div>
       </div>
     </div>
