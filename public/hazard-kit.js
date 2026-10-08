@@ -556,6 +556,8 @@
   /* ---------- Build ---------- */
 
   function build(root, clips) {
+    // No stage, e.g. the clip preview reading the test's config: nothing to draw.
+    if (!root) return;
     let seed = 0;
     root.querySelectorAll('.hpt-shot').forEach((shot, i) => {
       if (!shot.querySelector('.hk-set, .hk-person, .hk-freeze')) return; // not a kit clip
