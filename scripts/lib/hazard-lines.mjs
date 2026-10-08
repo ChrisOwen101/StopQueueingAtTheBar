@@ -76,13 +76,14 @@ function lineRoles(config, lines) {
 export function loadTests() {
   const files = fs
     .readdirSync(PUBLIC)
-    .filter((f) => /^hazard-[\w-]+\.js$/.test(f) && fs.readFileSync(path.join(PUBLIC, f), 'utf8').includes('HazardTest.init('))
+    .filter((f) => /^hazard-[\w-]+\.js$/.test(f) && f !== 'hazard-kit.js' && fs.readFileSync(path.join(PUBLIC, f), 'utf8').includes('HazardTest.init('))
     .sort();
 
   return files.map((file) => {
     const ctx = sandbox();
     const configs = [];
     ctx.HazardTest = { init: (_root, config) => configs.push(config) };
+    ctx.HazardKit = inert(); // the illustration kit only draws; it has no lines or sounds
     vm.runInContext(fs.readFileSync(path.join(PUBLIC, file), 'utf8'), ctx, { filename: file });
     if (configs.length !== 1) throw new Error(`${file}: expected one HazardTest.init call, got ${configs.length}`);
     const lines = ctx.window.HazardTest.spokenLines(configs[0]);

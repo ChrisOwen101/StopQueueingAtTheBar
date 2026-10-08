@@ -1,0 +1,831 @@
+/* Hazard test illustration kit: "Public Information Cartoon".
+   One pub, one cast (the Regulars), two cameras, shared by both hazard tests.
+   hazard-kit.js turns <i class="hk-person" data-cast="c3" ...> placeholders into
+   inline SVG figures and compiles each element's data-act script into @keyframes,
+   so everything that moves is a CSS animation the player can seek (hazard.js).
+   Positions: --x is % of the stage width, --y % of its height (feet or base point).
+   Sizes are in cqw (the stage is a size container; its height is 68.75cqw).
+   Flat colour only. Red and green never appear here. Amber is the hazard only. */
+
+.hpt-stage {
+  container-type: inline-size;
+  --wall: var(--pink);
+  --floor: var(--ink);
+  --wood: #c98a3e;
+  --wood2: #8a5a22;
+  --sky: #7f95ff;
+}
+
+/* Keep the clip's z-indexes below the player's badge and start cover. */
+.hpt-shot { isolation: isolate; }
+
+/* The player's hazard stamp sits bottom centre; ours goes top left (see .hk-stamp). */
+
+/* ---------- Camera ---------- */
+
+.hk-cam {
+  position: absolute;
+  inset: 0;
+  transform-origin: calc(var(--cx, 50) * 1%) calc(var(--cy, 50) * 1%);
+}
+
+.hk-set, .hk-cut, .hk-view { position: absolute; inset: 0; }
+.hk-cut { z-index: 90; }
+.hk-pan { position: absolute; top: 0; left: 0; width: 200%; height: 100%; }
+.hk-pan .hk-view { width: 50%; }
+.hk-pan .hk-view + .hk-view { left: 50%; }
+
+/* ---------- The room, from behind the bar (staff-side camera) ---------- */
+
+.hk-room > * , .hk-bar > * { position: absolute; }
+/* Set pieces a clip adds outside a set still sit where their --x/--y say. */
+.hk-door, .hk-wc, .hk-lamp, .hk-frame, .hk-chalk, .hk-dart, .hk-pool, .hk-table, .hk-shelf, .hk-mirror, .hk-taps, .hk-till, .hk-mat, .hk-tray, .hk-font, .hk-mirrorbb { position: absolute; }
+
+/* The camera sits just above head height: the floor line is at 44%, the counter at 76%,
+   so people at the counter fill the middle of the frame and the upper wall holds the decor. */
+.hk-room .wall { inset: 0 0 56% 0; background: var(--wall); }
+.hk-room .floor { inset: 44% 0 0 0; background: var(--floor); }
+
+.hk-door, .hk-wc {
+  top: 8%;
+  width: 9%;
+  height: 36%;
+  background: var(--wood2);
+  border-radius: 1.2cqw 1.2cqw 0 0;
+}
+
+/* Wall decor: picture frames, a chalkboard and a dartboard. Flat, and none of it amber. */
+.hk-frame {
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 7%;
+  height: 11%;
+  border: 0.7cqw solid var(--wood2);
+  background: var(--c, var(--cream));
+}
+
+.hk-chalk {
+  left: 38%;
+  top: 7%;
+  width: 22%;
+  height: 17%;
+  display: grid;
+  align-content: center;
+  gap: 1.1cqw;
+  padding: 0 1.6cqw;
+  border: 0.8cqw solid var(--wood2);
+  background: var(--ink);
+}
+
+.hk-chalk i { height: 0.7cqw; border-radius: 99px; background: var(--cream); opacity: 0.8; }
+.hk-chalk i:nth-child(1) { width: 70%; }
+.hk-chalk i:nth-child(2) { width: 45%; }
+.hk-chalk i:nth-child(3) { width: 58%; }
+
+.hk-dart {
+  left: 66%;
+  top: 9%;
+  width: 8%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 0.9cqw solid var(--cream);
+  background: var(--ink);
+}
+
+.hk-dart::after {
+  content: "";
+  position: absolute;
+  inset: 32%;
+  border-radius: 50%;
+  border: 0.6cqw solid var(--cream);
+}
+
+.hk-door { left: 5%; }
+.hk-wc { right: 6%; }
+
+.hk-door::before, .hk-wc::before {
+  content: "";
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  top: 14%;
+  height: 26%;
+  border-radius: 0.6cqw;
+  background: var(--cream);
+}
+
+.hk-wc::before {
+  content: "WC";
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  font-weight: 900;
+  font-size: max(7px, 1.3cqw);
+  letter-spacing: 0.04em;
+}
+
+.hk-door::after {
+  content: "";
+  position: absolute;
+  right: 14%;
+  top: 52%;
+  width: 14%;
+  height: 4%;
+  border-radius: 99px;
+  background: var(--wood);
+}
+
+.hk-lamp {
+  top: 0;
+  left: calc(var(--x) * 1%);
+  width: 0.6cqw;
+  height: 6%;
+  translate: -50% 0;
+  background: var(--wood2);
+}
+
+.hk-lamp::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 7cqw;
+  height: 3.2cqw;
+  translate: -50% 0;
+  border-radius: 7cqw 7cqw 0.6cqw 0.6cqw / 6cqw 6cqw 0.6cqw 0.6cqw;
+  background: var(--cream);
+}
+
+.hk-pool {
+  left: calc(var(--x, 62) * 1%);
+  top: calc(var(--y, 42) * 1%);
+  width: calc(var(--w, 26) * 1%);
+  height: 15%;
+  background: var(--wood2);
+  border-radius: 0.9cqw;
+}
+
+.hk-pool::before {
+  content: "";
+  position: absolute;
+  inset: 12% 6% 30%;
+  border-radius: 0.5cqw;
+  background: var(--blue);
+}
+
+.hk-pool i {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 1.6cqw;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--cream);
+}
+
+.hk-pool i + i { background: var(--ink); }
+
+.hk-table {
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--w, 16) * 1%);
+  height: 6%;
+  translate: -50% 0;
+  background: var(--wood);
+  border-radius: 50%;
+}
+
+.hk-table::after {
+  content: "";
+  position: absolute;
+  left: 46%;
+  top: 60%;
+  width: 8%;
+  height: 170%;
+  background: var(--wood2);
+}
+
+/* The counter, nearest you. Customers at it stand behind it, cut at the hips. */
+.hk-room .counter {
+  inset: 76% 0 0 0;
+  z-index: 40;
+  background: var(--wood2);
+}
+
+.hk-room .counter::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 72% 0;
+  background: var(--wood);
+}
+
+.hk-room .counter::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 28%;
+  height: 8%;
+  background: var(--ink);
+  opacity: 0.25;
+}
+
+/* ---------- The bar, from the room (customer-side camera) ---------- */
+
+.hk-bar .wall { inset: 0 0 54% 0; background: var(--wall); }
+.hk-bar .floor { inset: 54% 0 0 0; background: var(--floor); }
+
+.hk-shelf {
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y, 9) * 1%);
+  width: calc(var(--w, 24) * 1%);
+  height: 13%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  border-bottom: 1cqw solid var(--wood2);
+}
+
+.hk-shelf i {
+  width: 10%;
+  height: calc(var(--h, 80) * 1%);
+  border-radius: 0.6cqw 0.6cqw 0.2cqw 0.2cqw;
+  background: var(--c, var(--ink));
+}
+
+.hk-mirror {
+  left: 36%;
+  top: 5%;
+  width: 28%;
+  height: 30%;
+  border: 1cqw solid var(--wood2);
+  background: var(--sky);
+}
+
+.hk-mirror::after {
+  content: "";
+  position: absolute;
+  inset: 0 56% 0 0;
+  background: var(--cream);
+  opacity: 0.35;
+}
+
+.hk-bar .counter {
+  inset: 46% 0 34% 0;
+  z-index: 40;
+  background: var(--wood2);
+}
+
+.hk-bar .counter::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 60% 0;
+  background: var(--wood);
+}
+
+/* Taps on the counter top: a cream font with ink handles. */
+.hk-taps {
+  left: calc(var(--x, 50) * 1%);
+  top: 38%;
+  width: calc(var(--w, 22) * 1%);
+  height: 9%;
+  translate: -50% 0;
+  z-index: 41;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  border-bottom: 1.6cqw solid var(--cream);
+}
+
+.hk-taps i {
+  width: 11%;
+  height: 100%;
+  border-radius: 99px 99px 0.3cqw 0.3cqw;
+  background: var(--wood2);
+}
+
+.hk-taps i::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -0.9cqw;
+  width: 2.2cqw;
+  aspect-ratio: 1;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: var(--c, var(--cream));
+}
+
+.hk-taps i { position: relative; }
+
+.hk-till {
+  right: 6%;
+  top: 36%;
+  width: 11%;
+  height: 11%;
+  z-index: 41;
+  border-radius: 0.8cqw 0.8cqw 0 0;
+  background: var(--ink);
+}
+
+.hk-till::before {
+  content: "";
+  position: absolute;
+  inset: 12% 14% 54%;
+  border-radius: 0.3cqw;
+  background: var(--cream);
+}
+
+.hk-mat {
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 4cqw;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  z-index: 41;
+  border-radius: 50%;
+  background: var(--c, var(--pink));
+  border: 0.45cqw solid var(--cream);
+}
+
+/* A lowered section of the counter for a wheelchair user. */
+.hk-low { position: absolute; z-index: 41; background: var(--wood); }
+
+/* ---------- The back bar: what you see when you turn round to the taps ----------
+   Lives in the second .hk-view of a 200%-wide .hk-pan strip (data-pan slides it in).
+   The mirror shows the room behind you, flipped: figures inside it use data-cam="mirror"
+   with the same x as in the room, and the flip makes them appear on the correct side. */
+
+.hk-back > * { position: absolute; }
+.hk-back .wall { inset: 0; background: var(--wall); }
+
+.hk-mirrorbb {
+  left: 24%;
+  top: 2%;
+  width: 52%;
+  height: 44%;
+  z-index: 1;
+  isolation: isolate;
+  box-sizing: border-box;
+  border: 1.1cqw solid var(--wood2);
+  background: var(--sky);
+  overflow: hidden;
+}
+
+.hk-mirror-in { position: absolute; inset: 0; overflow: hidden; transform: scaleX(-1); }
+.hk-mirror-in > * { position: absolute; }
+.hk-mirror-in .hk-mirror-room { inset: 0; }
+.hk-mirror-in .mwall { inset: 0 0 60% 0; background: var(--wall); }
+.hk-mirror-in .mfloor { inset: 40% 0 0 0; background: var(--floor); }
+.hk-mirror-in .mdoor { left: 6%; top: 10%; width: 10%; height: 30%; border-radius: 0.8cqw 0.8cqw 0 0; background: var(--wood2); }
+.hk-mirror-in .mdoor::before { content: ""; position: absolute; left: 22%; right: 22%; top: 14%; height: 26%; border-radius: 0.4cqw; background: var(--cream); }
+.hk-mirror-in .mlamp { left: calc(var(--x) * 1%); top: 0; width: 5cqw; height: 2.4cqw; translate: -50% 0; border-radius: 0 0 5cqw 5cqw / 0 0 2.4cqw 2.4cqw; background: var(--cream); }
+.hk-mirror-in .mcounter { inset: 86% 0 0 0; z-index: 40; background: var(--wood); }
+.hk-mirrorbb .tint { position: absolute; inset: 0; z-index: 70; background: var(--sky); opacity: 0.2; }
+.hk-mirrorbb .sheen { position: absolute; inset: 0 58% 0 0; z-index: 71; background: var(--cream); opacity: 0.18; }
+
+.hk-back .bcounter { inset: 80% 0 0 0; z-index: 40; background: var(--wood2); }
+.hk-back .bcounter::before { content: ""; position: absolute; inset: 0 0 70% 0; background: var(--cream); }
+
+.hk-tray { left: 29%; top: 75.5%; width: 42%; height: 5%; z-index: 41; border-radius: 0.6cqw; background: var(--ink); }
+
+/* The tap font: a cream bar with wood handles above and ink nozzles below. */
+.hk-font { left: 28%; top: 56%; width: 44%; height: 6%; z-index: 42; border-radius: 0.8cqw; background: var(--cream); }
+
+.hk-font i {
+  position: absolute;
+  bottom: 100%;
+  left: calc(var(--x) * 1%);
+  width: 7%;
+  height: 150%;
+  translate: -50% 0;
+  transform-origin: 50% 100%;
+  border-radius: 99px 99px 0.3cqw 0.3cqw;
+  background: var(--wood2);
+}
+
+.hk-font i::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -1cqw;
+  width: 2.6cqw;
+  aspect-ratio: 1;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: var(--c, var(--cream));
+}
+
+/* The stout tap: an ink knob and a cream band, so it reads as different. */
+.hk-font i.stout::after { content: ""; position: absolute; left: 8%; right: 8%; top: 32%; height: 16%; background: var(--cream); }
+
+/* A stream from a nozzle into a glass while a tap is pulled (data-on for the window). */
+.hk-stream {
+  position: absolute;
+  z-index: 43;
+  left: calc(var(--x) * 1%);
+  top: 62%;
+  width: 0.7cqw;
+  height: 14%;
+  translate: -50% 0;
+  background: var(--c, var(--amber));
+}
+
+.hk-font b {
+  position: absolute;
+  top: 100%;
+  left: calc(var(--x) * 1%);
+  width: 3.2%;
+  height: 70%;
+  translate: -50% 0;
+  border-radius: 0 0 0.3cqw 0.3cqw;
+  background: var(--ink);
+}
+
+.hk-back .hk-till { right: 3%; top: 58%; width: 13%; height: 15%; z-index: 43; }
+.hk-back .hk-shelf { height: 11%; }
+
+/* Your own arm, first person: a sleeve from the bottom edge up to a hand on the tap.
+   --side: 1 (default) brings it in from the left, -1 from the right; keep it off the glasses. */
+.hk-arm1p {
+  position: absolute;
+  z-index: 60;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  bottom: -14%;
+  width: 7.5cqw;
+  translate: -50% 0;
+  rotate: calc(var(--side, 1) * 26deg);
+  transform-origin: 50% 3.4cqw;
+}
+
+.hk-arm1p svg { display: block; width: 100%; height: 100%; transform-origin: 50% 100%; }
+
+@keyframes hk-wave1p {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-9deg); }
+  75%      { transform: rotate(9deg); }
+}
+
+@keyframes hk-fizz {
+  0%   { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-16px); opacity: 0; }
+}
+
+/* A figure that turns round: both views are drawn and swapped by the clip (turn-back / turn-front). */
+.hk-vb { opacity: 0; }
+
+/* Pourable glasses: the beer rect scales up from the bottom to --f; a stout surges, settles dark
+   to the same level, then tops up. The thin head sits on the liquid line (at the rim when full). */
+.hk-prop .beer, .hk-prop .dark { transform-origin: 50% 100%; }
+.hk-prop .dark { transform: scaleY(0); }
+.hk-prop .head { opacity: 0; transform: translateY(calc((25 - 28 * var(--f, 1)) * 1px)); }
+
+@keyframes hk-fill { from { transform: scaleY(0); } to { transform: scaleY(var(--f, 1)); } }
+@keyframes hk-top { from { transform: scaleY(var(--f, 1)); } to { transform: scaleY(1); } }
+@keyframes hk-settle { from { transform: scaleY(0); } to { transform: scaleY(var(--f, 1)); } }
+@keyframes hk-headup { from { transform: translateY(calc((25 - 28 * var(--f, 1)) * 1px)); } to { transform: translateY(-3px); } }
+
+/* ---------- Figures ---------- */
+
+.hk-person {
+  --w: 19;
+  --s: 1;
+  position: absolute;
+  z-index: 10;
+  left: calc(var(--x, 50) * 1%);
+  top: calc(var(--y, 90) * 1%);
+  width: calc(var(--w) * 1cqw);
+  translate: -50% -100%;
+  transform-origin: 50% 100%;
+}
+
+.hk-fig { display: block; width: 100%; height: auto; overflow: visible; }
+
+.hk-fig * { transform-box: view-box; }
+.hk-root, .hk-bob { transform-origin: 50px 150px; }
+.hk-head, .hk-lag { transform-origin: 50px 62px; }
+.hk-lids { transform-origin: 50px 30px; }
+.hk-browL { transform-origin: 38px 16px; }
+.hk-browR { transform-origin: 62px 16px; }
+.hk-legL { transform-origin: 40px 118px; }
+.hk-legR { transform-origin: 60px 118px; }
+.hk-up, .hk-fore, .hk-hand, .hk-sw, .hk-fs { transform-origin: 0 0; }
+
+/* The YOU marker: a cream pill above the head, never amber. */
+.hk-you {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.8cqw);
+  translate: -50% 0;
+  scale: calc(1 / var(--s));
+  transform-origin: 50% 100%;
+  padding: 0.25em 0.7em;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 900;
+  font-size: max(9px, 1.5cqw);
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hk-you::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  translate: -50% 0;
+  border: 0.6cqw solid transparent;
+  border-top-color: var(--cream);
+  border-bottom: 0;
+}
+
+/* ---------- Acting loops (started by hazard-kit.js with inline delays and counts) ----------
+   Every loop is neutral at 0% and 100% and runs with fill-mode none, so loops can stack on
+   one part and a figure is always "planted" between them. Distances are viewBox units
+   (150 = standing height), so they scale with the figure and still read at 390px wide. */
+
+@keyframes hk-breath {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px) scale(1.01); }
+}
+
+@keyframes hk-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%, 97%      { transform: scaleY(0.08); }
+}
+
+/* One stride: the left foot lifts in the first half, the right in the second. */
+@keyframes hk-liftL {
+  0%, 8%    { transform: none; }
+  25%       { transform: translateY(-10px) scaleY(0.8); }
+  44%, 100% { transform: none; }
+}
+
+@keyframes hk-liftR {
+  0%, 58%   { transform: none; }
+  75%       { transform: translateY(-10px) scaleY(0.8); }
+  94%, 100% { transform: none; }
+}
+
+/* Side-on waddle: the body rocks over the planted foot, hops, squashes on landing. */
+@keyframes hk-gaitSide {
+  0%, 50%, 100% { transform: none; }
+  10%  { transform: rotate(4deg) scale(1.02, 0.97); }
+  25%  { transform: translateY(-5px) rotate(5deg) scale(0.98, 1.03); }
+  44%  { transform: rotate(1deg) scale(1.02, 0.97); }
+  60%  { transform: rotate(-4deg) scale(1.02, 0.97); }
+  75%  { transform: translateY(-5px) rotate(-5deg) scale(0.98, 1.03); }
+  94%  { transform: rotate(-1deg) scale(1.02, 0.97); }
+}
+
+/* Towards or away from the camera: shoulder sway, lift, squash and stretch. */
+@keyframes hk-gaitDepth {
+  0%, 50%, 100% { transform: none; }
+  25%  { transform: translate(2.5px, -3px) rotate(1.5deg) scale(0.98, 1.03); }
+  44%  { transform: scale(1.02, 0.97); }
+  75%  { transform: translate(-2.5px, -3px) rotate(-1.5deg) scale(0.98, 1.03); }
+  94%  { transform: scale(1.02, 0.97); }
+}
+
+/* Carrying drinks: short careful steps, less bob, no squash. */
+@keyframes hk-gaitCarry {
+  0%, 50%, 100% { transform: none; }
+  25%  { transform: translateY(-2px) rotate(1.5deg); }
+  75%  { transform: translateY(-2px) rotate(-1.5deg); }
+}
+
+/* Upper arms counter-swing against the legs; forearms trail (same curve, delayed). */
+@keyframes hk-swingL {
+  0%, 50%, 100% { transform: none; }
+  25% { transform: rotate(-13deg); }
+  75% { transform: rotate(13deg); }
+}
+
+@keyframes hk-swingR {
+  0%, 50%, 100% { transform: none; }
+  25% { transform: rotate(13deg); }
+  75% { transform: rotate(-13deg); }
+}
+
+@keyframes hk-trailL {
+  0%, 50%, 100% { transform: none; }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+
+@keyframes hk-trailR {
+  0%, 50%, 100% { transform: none; }
+  25% { transform: rotate(8deg); }
+  75% { transform: rotate(-8deg); }
+}
+
+/* Follow-through: the head lags the body with a small counter-tilt; buns bounce. */
+@keyframes hk-lag {
+  0%, 50%, 100% { transform: none; }
+  25% { transform: translateY(2px) rotate(-2deg); }
+  75% { transform: translateY(2px) rotate(2deg); }
+}
+
+@keyframes hk-bounce {
+  0%, 50%, 100% { transform: none; }
+  25%, 75% { transform: translateY(3px); }
+}
+
+@keyframes hk-nod {
+  0%, 100%  { transform: translateY(0) rotate(0deg); }
+  25%, 75%  { transform: translateY(6px) rotate(3deg); }
+  50%       { transform: translateY(1px) rotate(0deg); }
+}
+
+@keyframes hk-wiggle {
+  0%, 50%, 100% { transform: none; }
+  25% { transform: rotate(-14deg); }
+  75% { transform: rotate(16deg); }
+}
+
+@keyframes hk-hover {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(5px) rotate(1.5deg); }
+}
+
+@keyframes hk-hovergaze {
+  0%, 100%  { transform: none; }
+  30%, 45%  { transform: translate(-4px, 0); }
+  60%, 85%  { transform: translate(4px, -1px); }
+}
+
+@keyframes hk-drum {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(-10deg); }
+}
+
+@keyframes hk-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Props on the counter ---------- */
+
+.hk-prop {
+  position: absolute;
+  z-index: 42;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--w, 3.2) * 1cqw);
+  translate: -50% -100%;
+  transform-origin: 50% 100%;
+}
+
+.hk-prop svg { display: block; width: 100%; height: auto; overflow: visible; }
+.hk-prop .beer { transform-origin: 50% 100%; }
+
+/* ---------- Speech bubbles ---------- */
+
+/* Inside a speaker's .hk-person: above the head, on the side with room (data-side l or r),
+   tail toward the mouth. Counter-scaled so depth doesn't shrink the text. */
+.hk-bub {
+  --side: 1;
+  position: absolute;
+  z-index: 80;
+  bottom: 96%;
+  left: 50%;
+  width: max-content;
+  max-width: 40cqw;
+  margin: 0;
+  padding: 0.45em 0.8em;
+  border-radius: 1em;
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: max(11px, 2.3cqw);
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
+  scale: calc(1 / var(--s, 1));
+  transform-origin: 0 100%;
+}
+
+.hk-bub[data-side="l"] { left: auto; right: 50%; transform-origin: 100% 100%; }
+
+/* When the speaker wears the YOU pill, the bubble sits above it. */
+.hk-person[data-you] > .hk-bub { bottom: calc(100% + 4.4cqw); }
+
+.hk-bub::after {
+  content: "";
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 0.6em;
+  border: 0.7em solid transparent;
+  border-top-color: var(--cream);
+  border-left-width: 0;
+  border-bottom: 0;
+}
+
+.hk-bub[data-side="l"]::after { left: auto; right: 0.6em; border-left-width: 0.7em; border-right-width: 0; }
+
+/* Your own lines (first person, the barperson test): ink, cream outline, tail down
+   toward you, on the strip of counter nearest the camera, by whoever you're talking to. */
+.hk-bub.me {
+  bottom: 5%;
+  left: calc(var(--x, 50) * 1%);
+  right: auto;
+  translate: -50% 0;
+  scale: 1;
+  max-width: 60cqw;
+  background: var(--ink);
+  color: var(--cream);
+  border: max(2px, 0.4cqw) solid var(--cream);
+  transform-origin: 50% 100%;
+}
+
+.hk-bub.me::after {
+  left: 50%;
+  translate: -50% 0;
+  border: 0.7em solid transparent;
+  border-top-color: var(--cream);
+  border-bottom: 0;
+}
+
+.hk-bub.me::before {
+  content: "you";
+  margin-right: 0.5em;
+  font-size: 0.7em;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.hk-bub.me.edge-l { translate: -12% 0; }
+.hk-bub.me.edge-r { translate: -88% 0; }
+
+/* ---------- The pundit freeze ---------- */
+
+/* On kit clips the kit's stamp is the one hazard label, so the player's badge stays hidden. */
+.hpt-stage:has(.hk-shot.on) .hpt-badge { display: none; }
+
+.hk-freeze { position: absolute; inset: 0; z-index: 95; pointer-events: none; }
+.hk-freeze svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hk-freeze .scrim { fill: none; stroke: var(--ink); stroke-opacity: 0.45; }
+.hk-freeze .ring { fill: none; stroke: var(--amber); stroke-width: 1.4; stroke-linecap: round; }
+.hk-freeze .sight { fill: none; stroke: var(--amber); stroke-width: 1.1; stroke-dasharray: 2.4 1.8; stroke-linecap: round; }
+.hk-freeze .sightg { transform-origin: 0 0; transform-box: view-box; }
+.hk-freeze .bracket { fill: none; stroke: var(--amber); stroke-width: 1.1; stroke-dasharray: 2 1.6; }
+
+.hk-stamp {
+  position: absolute;
+  left: 4%;
+  top: 6%;
+  margin: 0;
+  padding: 0.35em 0.9em;
+  border: max(2px, 0.45cqw) solid var(--amber);
+  border-radius: 999px;
+  color: var(--amber);
+  font-weight: 900;
+  font-size: max(10px, 1.9cqw);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  rotate: -3deg;
+  transform-origin: 0 50%;
+}
+
+.hk-stamp span { font-weight: 700; opacity: 0.75; }
+
+/* Where the clip keeps the frame clear: data-stamp-at="tl" (default), "tr", "bl" or "br". */
+.hk-stamp.at-tr, .hk-stamp.at-br { left: auto; right: 4%; transform-origin: 100% 50%; }
+.hk-stamp.at-bl, .hk-stamp.at-br { top: auto; bottom: 7%; }
+
+/* Phones: a darker dim and heavier lines, so the hazard still reads at 390px wide. */
+@container (max-width: 500px) {
+  .hk-freeze .scrim { stroke-opacity: 0.6; }
+  .hk-freeze .ring { stroke-width: 2; }
+  .hk-freeze .sight { stroke-width: 1.5; }
+}
+
+/* ---------- Tactics board insert (plan view, the home page's dot style) ---------- */
+
+.hk-board {
+  position: absolute;
+  z-index: 85;
+  left: calc(var(--x, 4) * 1%);
+  top: calc(var(--y, 6) * 1%);
+  width: calc(var(--w, 30) * 1%);
+  aspect-ratio: 16 / 11;
+  border: max(2px, 0.4cqw) solid var(--cream);
+  border-radius: 1.2cqw;
+  background: #0e0e13;
+  overflow: hidden;
+}
+
+.hk-board .bar { position: absolute; left: 6%; right: 6%; top: 12%; height: 8%; border-radius: 99px; background: var(--wood); }
+.hk-board i { position: absolute; left: calc(var(--x) * 1%); top: calc(var(--y) * 1%); width: 9%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: var(--pink); }
+.hk-board i.staff { background: var(--cream); }
+.hk-board i.you { background: var(--cream); outline: 0.4cqw solid var(--ink); }
+.hk-board .tbl { position: absolute; left: calc(var(--x) * 1%); top: calc(var(--y) * 1%); width: 18%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: var(--wood2); }
+
+@media (prefers-reduced-motion: reduce) {
+  /* The player seeks straight to the cue and the end; nothing else to switch off. */
+}
