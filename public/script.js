@@ -6,26 +6,45 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 const hasIO = 'IntersectionObserver' in window;
 let animPaused = false; // set by the pause control below
 
+// Each part of the page runs on its own, so one that breaks (an old browser, a missing
+// element) never takes the petition form down with it.
+const guard = (label, fn) => {
+  try {
+    return fn();
+  } catch (err) {
+    console.error(`${label} failed`, err);
+    return undefined;
+  }
+};
+
 /* ---------- Reveal each screen as it scrolls into view ---------- */
 
 const revealTargets = document.querySelectorAll('.reveal');
 
+const revealAll = () => revealTargets.forEach((el) => el.classList.add('in'));
+
 if (hasIO) {
+  // A screen taller than the window (a phone on its side, text zoomed to 200%) can never be
+  // 15% inside it, so also reveal once a good slice of the window shows the screen.
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        const slice = entry.rootBounds ? entry.intersectionRect.height / entry.rootBounds.height : 0;
+        if (entry.isIntersecting && (entry.intersectionRatio >= 0.15 || slice >= 0.2)) {
           entry.target.classList.add('in');
           io.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+    { threshold: Array.from({ length: 21 }, (_, i) => i / 20), rootMargin: '0px 0px -8% 0px' }
   );
   revealTargets.forEach((el) => io.observe(el));
 } else {
-  revealTargets.forEach((el) => el.classList.add('in'));
+  revealAll();
 }
+
+// Printing or saving as PDF never scrolls, so show everything.
+window.addEventListener('beforeprint', revealAll);
 
 /* ---------- Pub scenes ----------
    A tiny simulation of a bar. Same arrivals, same four staff, same service time.
@@ -248,7 +267,14 @@ function buildScene(el) {
   };
 }
 
-const scenes = [...document.querySelectorAll('.scene')].map((el) => ({ el, sim: buildScene(el), visible: !hasIO }));
+const scenes = [...document.querySelectorAll('.scene')]
+  .map((el) => guard('scene', () => ({ el, sim: buildScene(el), visible: !hasIO })))
+  .filter(Boolean);
+
+// A hidden tab has no use for four simulations.
+document.addEventListener('visibilitychange', () => {
+  scenes.forEach((s) => (document.hidden ? s.sim.stop() : s.visible && !animPaused && s.sim.start()));
+});
 
 if (hasIO) {
   const sceneIO = new IntersectionObserver(
@@ -300,11 +326,20 @@ if (!reduceMotion) {
 
 const timeline = document.querySelector('.timeline');
 
-if (timeline) {
-  const items = [...timeline.querySelectorAll('li:not(.tl-fill)')];
-  const links = items.map((li) => li.querySelector('a'));
-  const chapters = links.map((a) => document.querySelector(a.getAttribute('href')));
-  const hero = document.getElementById('top');
+if (timeline) guard('timeline', () => {
+  // Keep only the dots whose chapter exists, so a renamed section id can't break the rail.
+  const pairs = [...timeline.querySelectorAll('li:not(.tl-fill)')]
+    .map((li) => {
+      const a = li.querySelector('a');
+      const chapter = a && document.querySelector(a.getAttribute('href'));
+      return chapter ? { li, a, chapter } : null;
+    })
+    .filter(Boolean);
+  if (pairs.length < 2) return; // progress runs dot to dot, so it needs at least two
+  const items = pairs.map((p) => p.li);
+  const links = pairs.map((p) => p.a);
+  const chapters = pairs.map((p) => p.chapter);
+  const hero = document.getElementById('top') || chapters[0];
 
   const updateTimeline = () => {
     const y = window.scrollY;
@@ -346,7 +381,7 @@ if (timeline) {
   }, { passive: true });
   window.addEventListener('resize', updateTimeline);
   updateTimeline();
-}
+});
 
 /* ---------- Petition -> Cloudflare Worker (/api/sign), stored in Postgres ---------- */
 
@@ -357,7 +392,7 @@ if (countEl) {
   fetch('/api/count')
     .then((r) => (r.ok ? r.json() : null))
     .then((d) => {
-      if (d && d.count > 0) {
+      if (d && Number.isFinite(d.count) && d.count > 0) {
         countEl.textContent = `${d.count.toLocaleString('en-GB')} ${d.count === 1 ? 'person has' : 'people have'} signed`;
         countEl.hidden = false;
       }
@@ -389,17 +424,75 @@ if (form) {
     }
   });
 
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // same shape the Worker checks
+  const SUBMIT_TIMEOUT_MS = 15000;
+  const fields = ['name', 'email', 'consent'].map((key) => ({
+    input: form.querySelector(`[name="${key}"]`),
+    err: document.getElementById(`err-${key}`),
+  }));
+  const STILL_HERE = 'Your details are still in the form.';
+
   const show = (text, kind) => {
     msg.textContent = text;
     msg.className = `form-msg ${kind}`;
   };
 
+  // Inline error under a field, tied to it for screen readers; cleared as soon as they edit it.
+  const setFieldError = ({ input, err }, text) => {
+    if (!input || !err) return;
+    err.textContent = text || '';
+    err.hidden = !text;
+    if (text) input.setAttribute('aria-invalid', 'true');
+    else input.removeAttribute('aria-invalid');
+  };
+  const clearErrors = () => fields.forEach((f) => setFieldError(f, ''));
+  fields.forEach((f) => {
+    const clear = () => {
+      if (f.input.getAttribute('aria-invalid')) setFieldError(f, '');
+    };
+    f.input?.addEventListener('input', clear);
+    f.input?.addEventListener('change', clear);
+  });
+
+  // Returns the problems with what was typed, one per field, in page order.
+  const validate = () => {
+    const [name, email, consent] = fields;
+    const problems = [];
+    const nameValue = name.input.value.trim();
+    const emailValue = email.input.value.trim();
+    if (!nameValue) problems.push([name, 'Add your name.']);
+    else if (nameValue.length > 100) problems.push([name, 'Keep your name to 100 characters.']);
+    if (!emailValue) problems.push([email, 'Add your email address.']);
+    else if (emailValue.length > 254 || !EMAIL_RE.test(emailValue)) {
+      problems.push([email, 'That email address doesn\u2019t look right. Check it for typos.']);
+    }
+    if (!consent.input.checked) problems.push([consent, 'Tick the box so we can add you.']);
+    return problems;
+  };
+
+  // Turn a failed request into something a person can act on.
+  const explain = (status, body) => {
+    if (status === 400 || status === 413 || status === 415) {
+      return typeof body?.error === 'string' && body.error ? body.error : `That didn\u2019t go through. ${STILL_HERE}`;
+    }
+    if (status === 403) return `That was blocked. Reload the page and try again. ${STILL_HERE}`;
+    if (status === 429) return `Lots of people are signing at once. Wait a minute, then try again. ${STILL_HERE}`;
+    if (status >= 500) return `That one is on us, not you. Try again in a minute. ${STILL_HERE}`;
+    return `Something went wrong. ${STILL_HERE}`;
+  };
+
+  let submitting = false;
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (submitting) return; // a double tap or a held Enter must not sign twice
 
-    if (!form.checkValidity()) {
-      show('Please add your name, a valid email, and tick the box.', 'error');
-      form.querySelector(':invalid')?.focus();
+    clearErrors();
+    const problems = validate();
+    if (problems.length) {
+      problems.forEach(([field, text]) => setFieldError(field, text));
+      show('Nearly there. Fix the bits marked below.', 'error');
+      problems[0][0].input.focus();
       return;
     }
 
@@ -411,26 +504,47 @@ if (form) {
       website: String(fd.get('website') || ''), // honeypot, should stay empty
     };
 
+    submitting = true;
     button.disabled = true;
-    button.textContent = 'Signing…';
+    button.textContent = 'Signing\u2026';
     form.setAttribute('aria-busy', 'true');
     show('', '');
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), SUBMIT_TIMEOUT_MS);
     try {
-      const res = await fetch('/api/sign', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || `HTTP ${res.status}`);
+      let res;
+      try {
+        res = await fetch('/api/sign', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+          signal: controller.signal,
+        });
+      } catch (err) {
+        if (err.name === 'AbortError') show(`That took too long. Try again in a moment. ${STILL_HERE}`, 'error');
+        else if (navigator.onLine === false) show(`You look to be offline. Try again when you\u2019re back. ${STILL_HERE}`, 'error');
+        else show(`Couldn\u2019t reach the server. Check your connection and try again. ${STILL_HERE}`, 'error');
+        return;
       }
+
+      // An error page from Cloudflare or a hotel wifi login can come back as HTML, so the
+      // body may not be JSON. A real success is JSON with ok: true.
+      const body = await res.json().catch(() => null);
+      if (!res.ok || body?.ok !== true) {
+        show(explain(res.ok ? 502 : res.status, body), 'error');
+        return;
+      }
+
       form.reset();
-      show('Thank you. Now go and stand at the bar. 🍺', 'ok');
+      show('Thank you. Now go and stand at the bar. \uD83C\uDF7A', 'ok');
       if (shareBox) shareBox.hidden = false;
     } catch (err) {
-      show(err.message && !err.message.startsWith('HTTP') ? err.message : 'Something went wrong. Please try again.', 'error');
+      console.error('Sign failed', err);
+      show(`Something went wrong. ${STILL_HERE}`, 'error');
     } finally {
+      clearTimeout(timer);
+      submitting = false;
       button.disabled = false;
       button.textContent = buttonLabel;
       form.removeAttribute('aria-busy');

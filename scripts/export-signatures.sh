@@ -27,8 +27,10 @@ command -v psql >/dev/null || { echo "psql not found (brew install libpq)." >&2;
 mkdir -p exports
 OUT="exports/signatures-$(date +%Y%m%d-%H%M%S).csv"
 
+# Names and emails are typed by strangers. A value starting with = + - @ (or a tab or return)
+# runs as a formula when the CSV is opened in Excel or Sheets, so those get a leading quote.
 psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -c \
-  "\copy (SELECT id, name, email, consent, consent_at, created_at FROM signatures ORDER BY id) TO '$OUT' WITH CSV HEADER"
+  "\copy (SELECT id, CASE WHEN left(name,1) IN ('=','+','-','@',chr(9),chr(13)) THEN '''' || name ELSE name END AS name, CASE WHEN left(email,1) IN ('=','+','-','@',chr(9),chr(13)) THEN '''' || email ELSE email END AS email, consent, consent_at, created_at FROM signatures ORDER BY id) TO '$OUT' WITH CSV HEADER"
 
 COUNT=$(( $(wc -l < "$OUT") - 1 ))
 echo "Exported $COUNT signature(s) to $OUT"

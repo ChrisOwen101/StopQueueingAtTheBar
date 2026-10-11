@@ -47,43 +47,105 @@ async function withDb(env, ctx, fn) {
   }
 }
 
+const MAX_BODY = 4096; // a signature is a few hundred bytes; anything bigger is not one
+const MAX_NAME = 100;
+const MAX_EMAIL = 254;
+
+// A bare HTML page for visitors who post the form without JavaScript (the form's plain
+// action). Same colour blocks and headers as the rest of the site, no scripts.
+const htmlPage = (status, tone, title, text) =>
+  new Response(
+    `<!doctype html><html lang="en-GB"><head><meta charset="utf-8">` +
+      `<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">` +
+      `<title>${title} - Don't Queue At The Bar</title><link rel="stylesheet" href="/styles.css"></head>` +
+      `<body><main><section class="screen ${tone}"><div class="inner"><h1 class="big">${title}</h1>` +
+      `<p class="mid">${text}</p><a class="cta" href="/#petition-section">Back to the site</a>` +
+      `</div></section></main></body></html>`,
+    {
+      status,
+      headers: { ...SECURITY_HEADERS, 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
+    }
+  );
+
+// Tidy a name: NFC, control and bidi-override characters out, runs of whitespace to one space.
+const cleanName = (s) =>
+  s
+    .normalize('NFC')
+    .replace(/[\u0000-\u001f\u007f-\u009f]/g, ' ')
+    .replace(/[\u202a-\u202e\u2066-\u2069\ufeff]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
 async function handleSign(request, env, ctx) {
+  const type = (request.headers.get('Content-Type') || '').toLowerCase();
+  // The form posts as a form when JavaScript is off or has failed, and as JSON otherwise.
+  const isForm = type.includes('application/x-www-form-urlencoded');
+
+  const fail = (status, message) =>
+    isForm ? htmlPage(status, 'c-red', 'That did not work', message) : json({ error: message }, status);
+  const succeed = (status) =>
+    isForm
+      ? htmlPage(200, 'c-amber', 'Thank you.', 'You have signed. Now go and stand at the bar.')
+      : json({ ok: true }, status);
+
   // Only accept submissions from our own site.
   const origin = request.headers.get('Origin');
   if (origin && origin !== new URL(request.url).origin) {
-    return json({ error: 'Forbidden' }, 403);
+    return fail(403, 'Forbidden');
   }
+
+  // Cap the body before parsing it (the header can be absent or wrong, so check the text too).
+  if (Number(request.headers.get('Content-Length')) > MAX_BODY) return fail(413, 'That was too much to send.');
+  const raw = await request.text();
+  if (raw.length > MAX_BODY) return fail(413, 'That was too much to send.');
 
   let data;
-  try {
-    data = await request.json();
-  } catch {
-    return json({ error: 'Invalid JSON' }, 400);
+  if (isForm) {
+    data = Object.fromEntries(new URLSearchParams(raw));
+    data.consent = data.consent === 'on' || data.consent === 'true';
+  } else {
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      return fail(400, 'Invalid JSON');
+    }
   }
+  // JSON can be null, an array or a number. Only an object has fields to read.
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return fail(400, 'Invalid request');
 
   // Honeypot: bots fill hidden fields. Pretend success.
-  if (data.website) return json({ ok: true });
+  if (data.website) return succeed(200);
 
-  const name = String(data.name ?? '').trim();
-  const email = String(data.email ?? '').trim();
+  // Fields must be strings. String({}) would otherwise store "[object Object]".
+  if (typeof data.name !== 'string') return fail(400, 'Please enter your name.');
+  if (typeof data.email !== 'string') return fail(400, 'Please enter a valid email address.');
 
-  if (!name || name.length > 100) return json({ error: 'Please enter your name.' }, 400);
-  if (!EMAIL_RE.test(email) || email.length > 254) {
-    return json({ error: 'Please enter a valid email address.' }, 400);
+  const name = cleanName(data.name);
+  const email = data.email.trim();
+
+  if (!name || name.length > MAX_NAME) return fail(400, 'Please enter your name, up to 100 characters.');
+  // Length first, so the pattern never runs on a huge string.
+  if (email.length > MAX_EMAIL || /[\u0000-\u001f\u007f-\u009f]/.test(email) || !EMAIL_RE.test(email)) {
+    return fail(400, 'Please enter a valid email address.');
   }
-  if (data.consent !== true) return json({ error: 'Consent is required.' }, 400);
+  if (data.consent !== true) return fail(400, 'Consent is required.');
 
   // Duplicates are silently ignored so the endpoint doesn't reveal who has signed.
-  await withDb(env, ctx, (db) =>
-    db.query(
-      `INSERT INTO signatures (name, email, consent)
-       VALUES ($1, $2, TRUE)
-       ON CONFLICT (lower(email)) DO NOTHING`,
-      [name, email]
-    )
-  );
+  try {
+    await withDb(env, ctx, (db) =>
+      db.query(
+        `INSERT INTO signatures (name, email, consent)
+         VALUES ($1, $2, TRUE)
+         ON CONFLICT (lower(email)) DO NOTHING`,
+        [name, email]
+      )
+    );
+  } catch (err) {
+    console.error('Sign error', err);
+    return fail(500, 'Something went wrong on our side. Please try again in a minute.');
+  }
 
-  return json({ ok: true }, 201);
+  return succeed(201);
 }
 
 async function handleCount(env, ctx) {

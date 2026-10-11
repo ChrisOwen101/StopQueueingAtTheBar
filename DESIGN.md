@@ -154,6 +154,9 @@ Sim customer dots also use four light tints (#7f95ff, #4ad295, #ff6b76, #ffd36a)
 - **Mid** (600, `clamp(1.3rem, 3.2vw, 2.6rem)`, 1.2): The supporting line under a headline.
 - **Small** (500, `clamp(1rem, 2vw, 1.6rem)`, 0.04em, lowercase, 80% opacity): Captions and asides.
 - **Label** (900, `clamp(0.9rem, 1.8vw, 1.3rem)`, 0.08em, uppercase): Tags, chart headings, sim scores.
+- **Rule title** (900, `clamp(2.2rem, 9vw, 8rem)`, 1, -0.04em, lowercase): the chapter and step headings (`.rule-title`), one step below Mega.
+
+Running text: `.mid` and `.small` use `text-wrap: balance`, other paragraphs `pretty`. On dark blocks `.mid` gets line-height 1.38 and +0.006em tracking. Nothing the visitor reads is below 1rem except the sim legends, rail labels and the hero sticker's small line (0.75rem floor). Apostrophes in visible copy are typographic (’). Mobile display sizes keep a rem floor so browser text size still applies.
 
 ### Named Rules
 **The Lowercase Shout Rule.** Headlines are lowercase and enormous. Uppercase is only for labels and the occasional `.mega.upper` quote.

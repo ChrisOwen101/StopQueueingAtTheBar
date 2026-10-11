@@ -64,8 +64,8 @@
   <!-- 1. HERO -->
   <section class="screen c-cream hero" id="top">
     <div class="inner">
-      <h1 class="mega">Don't Queue <br>At The Bar</h1>
-      <p class="mid">It's a pub. Not a post office.</p>
+      <h1 class="mega">Don’t Queue <br>At The Bar</h1>
+      <p class="mid">It’s a pub. Not a post office.</p>
     </div>
     <a class="promo" href="#test">
       <span class="promo-big">Get your <em>pub goers</em> licence today</span>
@@ -81,7 +81,7 @@
       <h2 class="rule-title">The Single File</h2>
       <div class="scene" data-mode="single" data-label="single file" role="img"
            aria-label="Animated pub bar: customers form one long queue while three of four staff stand idle"></div>
-      <p class="mid">Everyone queues in one line. One barperson works. <br>The other three watch. It's slow, and it gets in the way.</p>
+      <p class="mid">Everyone queues in one line. One barperson works. <br>The other three watch. It’s slow, and it gets in the way.</p>
       <p class="tag"><span aria-hidden="true">✗</span> not recommended</p>
     </div>
   </section>
@@ -122,7 +122,7 @@
   <section class="screen c-blue rule">
     <div class="inner reveal">
       <h3 class="rule-title"><span class="num">①</span> Walk to <br>the bar.</h3>
-      <p class="mid">Not behind someone. To the bar. <br>It's the long wooden thing.</p>
+      <p class="mid">Not behind someone. To the bar. <br>It’s the long wooden thing.</p>
     </div>
   </section>
 
@@ -143,14 +143,14 @@
   <section class="screen c-green rule">
     <div class="inner reveal">
       <h3 class="rule-title"><span class="num">④</span> Trust <br>the barperson.</h3>
-      <p class="mid">They know who's next. <br>They always know. <br>It's their entire job.</p>
+      <p class="mid">They know who’s next. <br>They always know. <br>It’s their entire job.</p>
     </div>
   </section>
 
   <!-- 5b. HAZARD PERCEPTION TEST (lives on hazard.html) -->
   <section class="screen c-blue" id="test">
     <div class="inner reveal">
-      <p class="small">think you're ready?</p>
+      <p class="small">think you’re ready?</p>
       <h2 class="mega">The Hazard <br>Perception <br>Test</h2>
       <p class="mid">Two tests. Which side <br>of the bar are you on?</p>
       <a class="cta" href="hazard.html">Take the test →</a>
@@ -168,7 +168,7 @@
         <img class="mat m1" src="/mats/mat-front.svg" width="400" height="400" loading="lazy" alt="The front of the beer mat: the Don't Queue At The Bar badge, with a single-file queue shuffling towards a bar and the words 'spread along the bar'.">
         <img class="mat m2" src="/mats/mat-back.svg" width="400" height="400" loading="lazy" alt="The back of the beer mat: a large QR code to the website, with the web address printed round the edge.">
       </div>
-      <p class="mid">Coming soon. <a class="plain" href="#petition-section">Sign the petition</a> and we'll tell you first.</p>
+      <p class="mid">Coming soon. <a class="plain" href="#petition-section">Sign the petition</a> and we’ll tell you first.</p>
     </div>
   </section>
 
@@ -178,22 +178,27 @@
       <h2 class="big">Sign the <br>Petition</h2>
       <p class="mid dim">Stand along the bar. Make eye contact. Let the barperson decide.</p>
       <p class="mid accent sig-count" id="sig-count" hidden></p>
-      <form class="petition" id="petition" novalidate>
+      <!-- method/action make the form work if the script fails to load: the Worker takes the
+           plain form post and answers with a small thank-you page. script.js replaces it with fetch. -->
+      <form class="petition" id="petition" method="post" action="/api/sign" enctype="application/x-www-form-urlencoded" novalidate>
         <div class="hp" aria-hidden="true">
           <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
         </div>
         <label>
           <span>Your name</span>
-          <input type="text" name="name" autocomplete="name" required placeholder="Jane Pint">
+          <input type="text" name="name" autocomplete="name" autocapitalize="words" enterkeyhint="next" dir="auto" maxlength="100" required placeholder="Jane Pint" aria-describedby="err-name">
+          <span class="field-err" id="err-name" hidden></span>
         </label>
         <label>
           <span>Email address</span>
-          <input type="email" name="email" autocomplete="email" required placeholder="jane@example.com">
+          <input type="email" name="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="email" enterkeyhint="send" maxlength="254" required placeholder="jane@example.com" aria-describedby="err-email">
+          <span class="field-err" id="err-email" hidden></span>
         </label>
         <label class="consent">
-          <input type="checkbox" name="consent" required>
+          <input type="checkbox" name="consent" required aria-describedby="err-consent">
           <span>I agree to my details being stored to support this petition, and to be told about the campaign and beer mats. I can ask for them to be removed at any time.</span>
         </label>
+        <p class="field-err" id="err-consent" hidden></p>
         <button type="submit">Sign the petition</button>
         <p class="form-msg" role="status" aria-live="polite"></p>
         <div class="share" hidden>
