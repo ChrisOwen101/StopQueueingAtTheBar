@@ -18,8 +18,6 @@
 
 html {
   scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%; /* phones turned on their side keep the sizes we set */
-  text-size-adjust: 100%;
 }
 
 body {
@@ -120,8 +118,6 @@ a:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; border-r
 
 h1, h2, h3, p { margin: 0; }
 h1, h2, h3 { text-wrap: balance; }
-p { text-wrap: pretty; } /* no one-word last lines */
-.mega, .big, .rule-title { overflow-wrap: break-word; } /* a long word wraps rather than clipping at the screen edge */
 
 .mega {
   font-size: clamp(3rem, 12vw, 11rem);
@@ -145,28 +141,18 @@ p { text-wrap: pretty; } /* no one-word last lines */
   line-height: 1.3;
   font-weight: 600;
   margin-top: 0.8em;
-  text-wrap: balance; /* the long supporting lines break into even halves */
-}
-
-/* Cream on a dark block glows and tightens up: a touch more leading and tracking. */
-.c-ink .mid, .c-green .mid, .c-blue .mid, .c-red .mid {
-  line-height: 1.38;
-  letter-spacing: 0.006em;
 }
 
 .small {
   font-size: clamp(1rem, 2vw, 1.6rem);
-  line-height: 1.3;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: lowercase;
   opacity: 0.8;
   margin: 0.8em 0;
-  text-wrap: balance;
 }
 
-/* 80% cream on red or blue falls under 4.5:1 */
-.c-red .small, .c-blue .small { opacity: 1; }
+.c-red .small { opacity: 1; } /* 80% cream on red falls under 4.5:1 */
 .dim { opacity: 0.55; }
 .accent { color: var(--amber); }
 .mega + .mid, .big + .mid, .mid + .big { margin-top: 1em; }
@@ -207,12 +193,11 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 /* --pf is the promo sticker's font size, which scales the whole sticker. The hero
    keeps that much room free at the bottom so the corner sticker never covers the title. */
 .hero {
-  --pf: clamp(10px, min(2.6vw, 2.1vh), 16px); /* 10px floor keeps the sticker's small line readable on a 320px phone */
+  --pf: clamp(7px, min(2.2vw, 1.8vh), 13px);
   padding-top: 6vh;
   padding-bottom: calc(var(--pf) * 16.5);
 }
 .hero .mega { font-size: clamp(1.8rem, min(13vw, 18vh), 12rem); text-transform: none; }
-.hero .mid { text-wrap: balance; }
 .hero .inner > * { animation: rise 0.9s cubic-bezier(.2, .8, .2, 1) both; }
 .hero .inner > :nth-child(2) { animation-delay: 0.1s; }
 .hero .inner > :nth-child(3) { animation-delay: 0.25s; }
@@ -241,26 +226,20 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 
 /* Very short screens (phones on their side): a smaller title leaves the corner clear. */
 @media (max-height: 450px) {
-  .hero .mega { font-size: max(1.6rem, min(11vw, 14.5vh)); }
+  .hero .mega { font-size: min(11vw, 14.5vh); }
   .hero .mid { font-size: clamp(1rem, 2.4vw, 1.4rem); margin-top: 0.4em; }
 }
 
-/* On narrow screens the sticker takes the bottom right, so the arrow steps left,
-   above the pause button. */
-@media (max-width: 700px) {
-  .scroll-hint { left: 14px; translate: none; bottom: 64px; font-size: 2.4rem; }
-}
-
-/* Kitsch promo sticker: always the bottom right corner of the hero, swelling and
-   shrinking. Everything inside is in em, so one font-size scales the whole sticker
-   with the screen (the smaller of its width and height) and it never has to move. */
+/* Kitsch promo sticker: always the bottom right of the hero, swelling and shrinking.
+   Everything inside is in em, so one font-size (--pf) scales the whole sticker with
+   the screen. The scroll arrow keeps the bottom centre. */
 .promo {
   position: absolute;
   right: max(12px, 1.6em);
   bottom: max(12px, 1.6em);
   z-index: 2;
   font-size: var(--pf);
-  width: 17em;
+  width: 15em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -289,13 +268,13 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   font-size: 1.9em;
   font-weight: 900;
   line-height: 1;
-  letter-spacing: 0.005em; /* capitals want room, not the display tightening */
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   text-shadow: 0.07em 0.07em 0 var(--ink);
 }
 .promo .promo-big em { font-style: normal; color: var(--amber); }
 .promo .promo-small {
-  font-size: max(0.95em, 11px);
+  font-size: 0.95em;
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: 0.04em;
@@ -308,7 +287,21 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 
 @keyframes promo-pulse {
   0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.09); }
+  50%      { transform: scale(1.07); }
+}
+
+/* Phones in portrait: the arrow stays centred at the very bottom and the sticker
+   sits right-aligned just above it, so the two never touch. */
+@media (max-width: 560px) and (min-height: 451px) {
+  .hero {
+    --pf: clamp(8px, 3vw, 12px);
+    padding-bottom: calc(var(--pf) * 16 + 4rem);
+  }
+  .scroll-hint { font-size: 2.4rem; }
+  .promo {
+    right: 12px;
+    bottom: calc(4vh + 3.4rem);
+  }
 }
 
 /* ---------- Pub scenes (built by script.js) ---------- */
@@ -334,7 +327,7 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   left: 4%;
   bottom: 4%;
   font-weight: 900;
-  font-size: clamp(0.75rem, 1.8vw, 1.1rem);
+  font-size: clamp(0.7rem, 1.8vw, 1.1rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0.7;
@@ -360,7 +353,7 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   z-index: 2;
   text-align: right;
   font-weight: 800;
-  font-size: clamp(0.75rem, 1.6vw, 1rem);
+  font-size: clamp(0.7rem, 1.6vw, 1rem);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   line-height: 1.1;
@@ -428,7 +421,7 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 /* ---------- Rule sections ---------- */
 
 .rule-title {
-  font-size: clamp(2.2rem, 9vw, 8rem); /* 2.2rem keeps "barperson." inside a 320px phone */
+  font-size: clamp(2.6rem, 9vw, 8rem);
   line-height: 1;
   font-weight: 900;
   letter-spacing: -0.04em;
@@ -466,7 +459,6 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 .mat {
   --r: 0deg;
   width: clamp(220px, min(30vw, 38vh), 380px);
-  max-width: 100%; /* never wider than a very narrow screen's content area */
   height: auto;
   aspect-ratio: 1;
   flex: none;
@@ -490,17 +482,12 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   width: min(560px, 100%);
   margin: 2em auto;
   display: grid;
-  grid-template-columns: minmax(0, 1fr); /* inputs have a wide intrinsic size; let them shrink to a 320px screen */
   gap: 1rem;
   text-align: left;
 }
 
-.petition label { min-width: 0; }
-.petition input[type="text"],
-.petition input[type="email"] { width: 100%; min-width: 0; }
-
 .petition .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.sig-count { margin-top: 0.8em; font-variant-numeric: tabular-nums; }
+.sig-count { margin-top: 0.8em; }
 
 .petition label { display: grid; gap: 0.4rem; font-weight: 700; font-size: 1.1rem; }
 
@@ -519,27 +506,19 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 .petition input::placeholder { color: rgba(255, 244, 220, 0.6); }
 .petition input:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
 .petition input:user-invalid { border-color: var(--red); }
-.petition input[aria-invalid="true"] { border-color: var(--red-soft); }
-
-/* Inline errors name the problem under the field, in the same soft red as the form message. */
-.field-err { color: var(--red-soft); font-weight: 700; font-size: 1rem; line-height: 1.35; overflow-wrap: anywhere; }
-.field-err[hidden] { display: none; }
 
 .petition .consent {
   grid-template-columns: auto 1fr;
   align-items: start;
   gap: 0.8rem;
   font-weight: 500;
-  font-size: 1rem;
-  line-height: 1.45; /* a long sentence on a dark block needs air */
-  letter-spacing: 0.006em;
+  font-size: 0.95rem;
   opacity: 0.8;
 }
 
 .petition .consent input { width: 1.3rem; height: 1.3rem; accent-color: var(--amber); margin-top: 0.15rem; }
 .petition .consent input:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
-.petition .consent input:user-invalid,
-.petition .consent input[aria-invalid="true"] { outline: 3px solid var(--red-soft); outline-offset: 3px; }
+.petition .consent input:user-invalid { outline: 3px solid var(--red-soft); outline-offset: 3px; }
 
 .petition button {
   font: inherit;
@@ -557,7 +536,7 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 .petition button:hover { transform: scale(1.03); }
 .petition button:focus-visible { outline: 3px solid var(--cream); outline-offset: 4px; }
 .petition button:disabled { opacity: 0.6; cursor: wait; }
-.form-msg { min-height: 1.5em; text-align: center; font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; text-wrap: balance; }
+.form-msg { min-height: 1.5em; text-align: center; font-weight: 700; }
 
 .share { display: grid; justify-items: center; gap: 0.6rem; }
 .share[hidden] { display: none; }
@@ -578,7 +557,7 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   background: var(--ink);
   color: rgba(255, 244, 220, 0.7);
   padding: 6vh 6vw 8vh;
-  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  font-size: clamp(0.85rem, 1.5vw, 1.05rem);
   line-height: 1.5;
 }
 
@@ -706,7 +685,7 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 
 .timeline .lbl small {
   color: var(--amber);
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -727,11 +706,10 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   .timeline a:hover .lbl, .timeline a:focus-visible .lbl { opacity: 1; }
 }
 
-/* rem floors keep these responding to the browser's text size setting */
 @media (max-width: 600px) {
-  .mega { font-size: clamp(2.1rem, 10.5vw, 3.9rem); }
-  .mega.upper { font-size: clamp(1.9rem, 9vw, 3.4rem); }
-  .hero .mega { font-size: max(1.8rem, min(12vw, 18vh)); }
+  .mega { font-size: 10.5vw; }
+  .mega.upper { font-size: 9vw; }
+  .hero .mega { font-size: min(12vw, 18vh); }
 }
 
 /* ---------- Scroll reveal ---------- */
@@ -745,29 +723,6 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 .js .reveal.in {
   opacity: 1;
   transform: none;
-}
-
-/* Without JavaScript the sims are empty black boxes, and nothing needs revealing. */
-html:not(.js) .scene { display: none; }
-
-/* Windows high contrast and other forced colours replace backgrounds, which would erase the
-   sim dots, the timeline marks and the pint glasses. Keep the sim's own colours. */
-@media (forced-colors: active) {
-  .scene { forced-color-adjust: none; border-color: CanvasText; }
-  .timeline { background: Canvas; border-color: CanvasText; }
-  .timeline .mark { background: Canvas; border-color: CanvasText; }
-  .timeline li.done .mark, .timeline li.active .mark { background: Highlight; border-color: Highlight; }
-  .timeline .tl-fill { background: Highlight; }
-  .petition input { border-color: CanvasText; }
-  .petition input[aria-invalid="true"] { border-color: Mark; }
-}
-
-/* Print and save-as-PDF: show every screen and drop the controls that need a screen. */
-@media print {
-  .js .reveal { opacity: 1; transform: none; transition: none; }
-  .timeline, .motion-toggle, .skip, .scroll-hint { display: none; }
-  .screen { min-height: 0; break-inside: avoid; }
-  * { animation: none !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; } /* keep the colour blocks, or cream text lands on white */
 }
 
 @media (prefers-reduced-motion: reduce) {
