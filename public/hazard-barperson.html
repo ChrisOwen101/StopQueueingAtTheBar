@@ -7,8 +7,10 @@
   <meta name="description" content="The hazard perception test for bar staff. Five clips from behind the bar, picked at random from ten. Pour, pay, and know who's next.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="hazard.css">
+  <link rel="stylesheet" href="hazard-kit.css">
   <link rel="stylesheet" href="hazard-barperson.css">
   <script src="hazard.js" defer></script>
+  <script src="hazard-kit.js" defer></script>
   <script src="hazard-barperson.js" defer></script>
 </head>
 <body class="hz-page c-ink">
@@ -27,247 +29,273 @@
 
       <div class="hpt-stage" role="img" aria-label="Animated first-person view from behind a pub bar">
 
-        <!-- Clip 1: opening time. A single file forms straight at you. -->
-        <div class="hpt-shot">
+        <!-- Clip 1: opening time. A single file forms straight at you, back towards the door.
+             Figures are in DOM order for the outcome: c5 and c1 pass behind c12 on their way right. -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <div class="bm-pan">
-            <div class="bm-view bm-front" data-decor="front">
-              <i class="bm-p" style="--x:50;--y:44;--w:14;--z:50;--t:600;--c:#2447f5;--skin:#e0ac69;--hair:#2b1d14"></i>
-              <i class="bm-p" style="--x:52.5;--y:33;--w:11;--z:40;--t:1500;--c:#ff9ec1;--skin:#8d5524;--hair:#16161d;--m:6000;--x2:33;--y2:44;--w2:14;--z2:50"></i>
-              <i class="bm-p" style="--x:48;--y:26;--w:8.6;--z:30;--t:2300;--c:#4ad295;--skin:#ffdbac;--hair:#d9b36c;--m:6300;--x2:67;--y2:44;--w2:14;--z2:50"></i>
-              <i class="bm-p" style="--x:51.5;--y:20.5;--w:6.8;--z:20;--t:3000;--c:#e63946;--skin:#c68642;--hair:#6b4423;--m:6600;--x2:17;--y2:44;--w2:14;--z2:50"></i>
-              <i class="bm-p" style="--x:49;--y:16.5;--w:5.4;--z:10;--t:3600;--c:#7f95ff;--skin:#f1c27d;--hair:#a33b20;--m:6900;--x2:83;--y2:44;--w2:14;--z2:50"></i>
-              <p class="bm-bub me pop" style="--x:50;--a:5150;--b:7000">Spread out, folks. I'll come to you.</p>
-            </div>
-          </div>
+          <div class="hk-set" data-set="room"></div>
+          <i class="hk-person" data-cast="c5" data-pos="86,0" data-act="0: at(9.5,3) hide; 2400: show; 2520: go(30,3); 3700: look-cam; 4300: brows; 5300: brows-0 look-rr; 5900: pace(460) go(86,0); 8400: bar look-cam smile"></i>
+          <i class="hk-person" data-cast="c1" data-pos="68,0" data-act="0: at(9.5,3) hide; 1800: show; 1920: go(35,2); 3300: look-cam; 3900: tilt; 5400: look-rr brows; 5800: go(68,0); 7200: bar look-cam brows-0 smile"></i>
+          <i class="hk-person" data-cast="c10" data-pos="14,0" data-act="0: at(9.5,3) hide; 2850: show; 2970: go(25,3); 4100: look-r; 5300: look-ll brow-r; 5900: go(14,0); 7000: bar look-cam smile"></i>
+          <i class="hk-person" data-cast="c4" data-pos="32,0" data-act="0: at(9.5,3) hide; 1200: show; 1320: go(41,1); 3200: look-cam; 5300: look-ll brows; 5700: go(32,0); 6300: bar look-cam brows-0 smile"></i>
+          <i class="hk-person" data-cast="c12" data-pos="50,0" data-act="0: at(9.5,3) hide; 600: show; 720: go(50,0); 2700: bar look-cam; 3400: smile; 4000: mouth-line brow-r; 5300: brows-0 smile; 8800: look-down; 9200: look-cam"></i>
+          <i class="hk-arm1p" style="--x:74;--y:78;--skin:#e0ac69;--side:1.6" data-hand="point" data-on="5450-6900"></i>
+          <p class="hk-bub me" style="--x:33" data-on="5300-8700">Spread out, folks. I'll come to you.</p>
+          <i class="hk-prop" data-prop="pint" style="--x:50;--y:76;--w:3.6" data-on="8800"></i>
+          <div class="hk-freeze" data-at="38,56" data-zoom="1.1" data-ring="39,58" data-r="25" data-stamp="the single file" data-stamp-at="tr"></div>
         </div>
 
-        <!-- Clip 2: pull a Guinness, take the next order while it settles. -->
-        <div class="hpt-shot">
+        <!-- Clip 2: pull a Guinness, take the next order while it settles. Turns round to the back bar:
+             the stout surges, you leave it to settle (the mirror shows c1 waiting), take c1's order,
+             pour two lagers, top the stout up, and turn back with all three. -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <div class="bm-pan b2-pan">
-            <div class="bm-view bm-front" data-decor="front">
-              <i class="bm-p" style="--x:30;--y:44;--w:14;--c:#ff9ec1;--skin:#ffdbac;--hair:#6b4423"></i>
-              <i class="bm-p" style="--x:70;--y:44;--w:14;--t:900;--c:#ffb627;--skin:#8d5524;--hair:#16161d"></i>
-              <p class="bm-bub pop" style="--x:30;--y:42.5;--a:300;--b:2300">Pint of Guinness, please.</p>
-              <p class="bm-bub me pop" style="--x:70;--a:6900;--b:8300">What can I get you?</p>
-              <p class="bm-bub pop" style="--x:70;--y:42.5;--a:7600;--b:8700">Two lagers, please.</p>
+          <div class="hk-pan" data-pan="0:0; 2500:-50; 6150:0; 9000:-50; 11600:0">
+            <div class="hk-view" data-cam="sc">
+              <div class="hk-set" data-set="room"></div>
+              <i class="hk-person" data-cast="c5" data-pos="26,0" data-act="0: bar look-cam; 150: lean talk(2200); 2400: bar mouth-line; 3300: look-dr; 6150: look-cam; 12300: smile brows">
+                <p class="hk-bub" data-on="150-2700">Pint of Guinness, please.</p>
+              </i>
+              <i class="hk-person" data-cast="c1" data-pos="70,0" data-act="0: at(89,3) hide; 850: show; 900: go(70,0); 2300: bar look-cam; 4000: drum(1600); 5000: brow-r; 6800: brows-0; 7300: lean talk(1500); 8900: bar mouth-line; 12300: smile brow-r">
+                <p class="hk-bub" data-side="l" data-on="7300-9200">Two lagers, please.</p>
+              </i>
+              <i class="hk-prop" data-prop="stout" style="--x:26;--y:76;--w:3.6" data-on="12300"></i>
+              <i class="hk-prop" data-prop="pint" style="--x:66;--y:76;--w:3.6" data-on="12300"></i>
+              <i class="hk-prop" data-prop="pint" style="--x:74;--y:76;--w:3.6" data-on="12300"></i>
             </div>
-            <div class="bm-view bm-back" data-decor="back">
-              <div class="bm-mirror-in">
-                <i class="bm-mfloor"></i><i class="bm-mdoor"></i>
-                <i class="bm-p" style="--x:70;--y:44;--w:12;--c:#ff9ec1;--skin:#ffdbac;--hair:#6b4423"></i>
-                <i class="bm-p" style="--x:30;--y:44;--w:12;--t:900;--x0:90.5;--y0:5;--c:#ffb627;--skin:#8d5524;--hair:#16161d"></i>
-                <i class="bm-mcounter"></i>
+            <div class="hk-view" data-cam="sc">
+              <div class="hk-set" data-set="back" data-pull="2:3300-4500; 1:9650-10350; 4:10150-10850; 2:10950-11500">
+                <i class="hk-person" data-cast="c5" data-pos="26,0" data-act="0: bar look-cam; 2400: bar mouth-line; 3300: look-dr; 6150: look-cam; 12300: smile brows"></i>
+                <i class="hk-person" data-cast="c1" data-pos="70,0" data-act="0: bar look-cam; 4000: drum(1600); 5000: brow-r; 6800: brows-0; 8900: bar mouth-line; 12300: smile brow-r"></i>
               </div>
-              <i class="bm-glass stout" style="--x:66;--y:70;--f:75;--a:3400;--b:11000;--s:4500"><i class="bm-liq fill top"><i class="bm-dark settle"></i></i></i>
-              <i class="bm-glass" style="--x:36;--y:70;--f:100;--a:9500"><i class="bm-liq fill"></i></i>
-              <i class="bm-glass" style="--x:46;--y:70;--f:100;--a:10300"><i class="bm-liq fill"></i></i>
+              <i class="hk-arm1p" style="--x:45;--y:49;--skin:#e0ac69;--side:1" data-on="3100-4700"></i>
+              <i class="hk-prop" data-prop="glass-stout" style="--x:45;--y:80;--w:4.6;--f:0.75" data-fill="3400" data-fillms="1000" data-head="4500" data-settle="4500" data-settlems="3000" data-top="10950"></i>
+              <i class="hk-stream" style="--x:45;--c:var(--wood)" data-on="3400-4400"></i>
+              <i class="hk-arm1p" style="--x:35;--y:49;--skin:#e0ac69;--side:1" data-on="9400-10750"></i>
+              <i class="hk-prop" data-prop="glass" style="--x:35;--y:80;--w:4.6" data-on="9300" data-fill="9700" data-fillms="650" data-head="10300"></i>
+              <i class="hk-stream" style="--x:35" data-on="9700-10300"></i>
+              <i class="hk-arm1p" style="--x:65;--y:49;--skin:#e0ac69;--side:-1" data-on="9900-11200"></i>
+              <i class="hk-prop" data-prop="glass" style="--x:65;--y:80;--w:4.6" data-on="9300" data-fill="10200" data-fillms="650" data-head="10800"></i>
+              <i class="hk-stream" style="--x:65" data-on="10200-10800"></i>
+              <i class="hk-arm1p" style="--x:45;--y:49;--skin:#e0ac69;--side:1" data-on="10800-11850"></i>
+              <i class="hk-stream" style="--x:45;--c:var(--ink)" data-on="10950-11400"></i>
             </div>
           </div>
+          <p class="hk-bub me" style="--x:70" data-on="6750-8300">What can I get you?</p>
+          <div class="hk-freeze" data-at="44,46" data-zoom="1.35" data-ring="45,74.5" data-r="7" data-sight="40,28 44.5,68.5" data-stamp="settling" data-stamp-at="br"></div>
         </div>
 
-        <!-- Clip 3: who's next? One arrives before you turn, one in the mirror. -->
-        <div class="hpt-shot">
+        <!-- Clip 3: who's next? c7 reaches the bar on the right before you turn; while you make the G&T,
+             the mirror shows c8 come in and stop in the middle. Turn back: nod to c8, serve c7. -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <div class="bm-pan b3-pan">
-            <div class="bm-view bm-front" data-decor="front">
-              <i class="bm-p" style="--x:20;--y:44;--w:14;--l:8000;--c:#4ad295;--skin:#c68642;--hair:#16161d"></i>
-              <i class="bm-p" style="--x:80;--y:44;--w:14;--t:900;--c:#7f95ff;--skin:#f1c27d;--hair:#d9b36c"></i>
-              <i class="bm-p" style="--x:50;--y:44;--w:14;--t:3900;--c:#e63946;--skin:#8d5524;--hair:#2b1d14"></i>
-              <p class="bm-bub pop" style="--x:20;--y:42.5;--a:300;--b:2200">Gin and tonic, please.</p>
-              <i class="bm-glass gnt pop" style="--x:20;--y:66;--a:5600;--b:8000"><i class="bm-liq" style="--f:90"></i></i>
-              <i class="bm-ring pop" style="--x:50;--y:48.7;--a:6200;--b:8400"></i>
-              <p class="bm-bub me pop" style="--x:50;--a:6200;--b:7600">You're next, mate.</p>
-              <p class="bm-bub pop" style="--x:80;--y:42.5;--a:7000;--b:8600">Pint of IPA, please.</p>
-              <i class="bm-glass ipa pop" style="--x:80;--y:70;--a:9400"><i class="bm-liq"></i></i>
+          <div class="hk-pan" data-pan="0:0; 2400:-50; 4500:0">
+            <div class="hk-view" data-cam="sc">
+              <div class="hk-set" data-set="room"></div>
+              <i class="hk-person" data-cast="c3" data-pos="20,0" data-act="0: bar look-cam; 150: lean talk(2000); 2300: bar mouth-line; 5200: look-down smile; 5800: look-cam mouth-line">
+                <p class="hk-bub" data-on="150-2600">Gin and tonic, please.</p>
+              </i>
+              <i class="hk-person" data-cast="c8" data-pos="44,0" data-act="0: at(9,3) hide; 2750: show; 2800: go(44,0,1600); 4700: bar look-cam; 6600: nod; 6800: smile; 7800: mouth-line">
+              </i>
+              <i class="hk-person" data-cast="c7" data-pos="78,0" data-act="0: at(112,0); 900: go(78,0); 2000: bar look-cam; 3000: look-l; 4600: look-cam; 7300: lean talk(1600); 9000: bar mouth-line; 9500: smile">
+                <p class="hk-bub" data-side="l" data-on="7300-9300">Pint of IPA, please.</p>
+              </i>
+              <i class="hk-prop" data-prop="gin" style="--x:20;--y:76;--w:3.2" data-on="5150"></i>
+              <i class="hk-prop" data-prop="pint" style="--x:78;--y:76;--w:3.6" data-on="9400"></i>
             </div>
-            <div class="bm-view bm-back" data-decor="back">
-              <div class="bm-mirror-in">
-                <i class="bm-mfloor"></i><i class="bm-mdoor"></i>
-                <i class="bm-p" style="--x:80;--y:44;--w:12;--c:#4ad295;--skin:#c68642;--hair:#16161d"></i>
-                <i class="bm-p" style="--x:20;--y:44;--w:12;--t:900;--x0:90.5;--y0:5;--c:#7f95ff;--skin:#f1c27d;--hair:#d9b36c"></i>
-                <i class="bm-p" style="--x:50;--y:44;--w:12;--t:3900;--x0:90.5;--y0:5;--c:#e63946;--skin:#8d5524;--hair:#2b1d14"></i>
-                <i class="bm-mcounter"></i>
+            <div class="hk-view" data-cam="sc">
+              <div class="hk-set" data-set="back" data-pull="3:3350-4150">
+                <i class="hk-person" data-cast="c3" data-pos="20,0" data-act="0: bar look-cam; 2300: bar mouth-line; 3300: look-dr"></i>
+                <i class="hk-person" data-cast="c8" data-pos="44,0" data-act="0: at(9,3) hide; 2750: show; 2800: go(44,0,1600); 4700: bar look-cam"></i>
+                <i class="hk-person" data-cast="c7" data-pos="78,0" data-act="0: bar look-cam; 3000: look-l; 4600: look-cam"></i>
               </div>
-              <i class="bm-glass gnt" style="--x:50;--y:69;--gw:4.6;--f:90;--a:3400"><i class="bm-liq fill"></i></i>
+              <i class="hk-arm1p" style="--x:55;--y:49;--skin:#e0ac69;--side:1" data-on="3150-4400"></i>
+              <i class="hk-prop" data-prop="glass-gin" style="--x:55;--y:80;--w:4.6;--f:0.9" data-on="3000" data-fill="3400" data-fillms="750" data-fizz="3500"></i>
+              <i class="hk-stream" style="--x:55;--c:var(--cream)" data-on="3400-4150"></i>
             </div>
           </div>
+          <p class="hk-bub me" style="--x:44" data-on="6400-7900">You're next, mate.</p>
+          <div class="hk-freeze" data-at="60,54" data-zoom="1.2" data-ring="60,57.5" data-r="29" data-stamp="who's next" data-stamp-at="tl"></div>
         </div>
 
-        <!-- Clip 4: the card machine thinks; take the next order meanwhile. -->
-        <div class="hpt-shot">
+        <!-- Clip 4: the card machine thinks; hand it over and take the next order meanwhile.
+             c6 comes before c5 in the DOM so c5 stays in front as c6 walks past behind. -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <div class="bm-pan">
-            <div class="bm-view bm-front" data-decor="front">
-              <i class="bm-p" style="--x:34;--y:44;--w:14;--l:8000;--c:#2447f5;--skin:#e0ac69;--hair:#a33b20"></i>
-              <i class="bm-p" style="--x:74;--y:44;--w:14;--t:1000;--c:#ff9ec1;--skin:#c68642;--hair:#2b1d14"></i>
-              <i class="bm-glass pop" style="--x:28;--y:70;--b:8000"><i class="bm-liq"></i></i>
-              <i class="bm-glass pop" style="--x:38;--y:70;--b:8000"><i class="bm-liq"></i></i>
-              <p class="bm-bub me pop" style="--x:34;--a:300;--b:2000">That's £11.40, please.</p>
-              <p class="bm-bub pop" style="--x:34;--y:42.5;--a:1500;--b:2900">Card, please.</p>
-              <div class="bm-reader b4-reader">
-                <span class="bm-screen">
-                  <em class="pop" style="--a:1500;--b:2400">£11.40</em>
-                  <i class="bm-spin" style="--a:2400;--b:7400"></i>
-                  <b class="pop" style="--a:7400">✓</b>
-                </span>
-              </div>
-              <p class="bm-bub pop" style="--x:74;--y:42.5;--a:3500;--b:4950">Whenever you're ready.</p>
-              <p class="bm-bub me pop" style="--x:74;--a:5600;--b:7000">What can I get you?</p>
-              <p class="bm-bub pop" style="--x:74;--y:42.5;--a:6500;--b:8000">Bottle of Peroni.</p>
-              <i class="bm-glass bottle pop" style="--x:74;--y:64;--a:8800"></i>
-            </div>
-          </div>
+          <div class="hk-set" data-set="room"></div>
+          <i class="hk-person" data-cast="c6" data-pos="76,0" data-act="0: at(9.5,3) hide; 1000: show; 1120: go(76,0); 3600: bar look-ll; 3700: talk(500) smile; 4300: mouth-line drum(1600); 5500: look-cam brows-0; 6600: talk(1200) smile; 7900: mouth-line; 8900: look-down smile; 9300: look-cam"><p class="hk-bub" data-side="l" data-on="3700-6300">Whenever you're ready.</p><p class="hk-bub" data-side="l" data-on="6600-9360">A bottle of lager, please.</p></i>
+          <i class="hk-person" data-cast="c5" data-pos="34,0" data-act="0: bar look-cam smile; 1000: look-dr mouth-line; 1500: card; 2300: hold-r(card) look-dr; 3600: frown; 4400: look-dr brow-r; 5800: bar look-dr brows-0; 7400: smile brows; 7700: nod; 8600: look-cam brows-0"></i>
+          <i class="hk-prop" data-prop="gin" style="--x:23;--y:81;--w:3.2"></i>
+          <i class="hk-prop" data-prop="stout" style="--x:27.5;--y:81;--w:3.6"></i>
+          <i class="hk-arm1p" style="--x:48;--y:79;--skin:#e0ac69;--side:1" data-on="900-5700"></i>
+          <i class="hk-prop" data-prop="reader" style="--x:48;--y:84;--w:7" data-on="900" data-move="900: 48,96; 1300: 48,84; 5800: 36,81,0.8" data-screen="1300:£11.40; 2400:spin; 7400:ok"></i>
+          <p class="hk-bub me" style="--x:76" data-on="5600-7950">What can I get you?</p>
+          <i class="hk-prop" data-prop="bottle" style="--x:76;--y:76;--w:2.6" data-on="8800"></i>
+          <div class="hk-freeze" data-at="52,70" data-zoom="1.35" data-ring="48,75" data-r="10" data-sight="72,57 54,70" data-stamp="connecting" data-stamp-at="tl"></div>
         </div>
 
-        <!-- Clip 5: the big round. Guinness first. -->
-        <div class="hpt-shot">
+        <!-- Clip 5: the big round. Guinness first. You turn round and set out six empty glasses on the
+             counter; the stout goes under its tap first and settles while the five lagers go under the
+             two lager taps (left hand tap 1, right hand tap 4) and back into the row; then the top-up. -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <div class="bm-pan b5-pan">
-            <div class="bm-view bm-front" data-decor="front">
-              <i class="bm-p" style="--x:50;--y:44;--w:14;--c:#ffb627;--skin:#ffdbac;--hair:#6b4423"></i>
-              <p class="bm-bub pop" style="--x:50;--y:42.5;--a:300;--b:2400">Five lagers and a Guinness, please.</p>
+          <div class="hk-pan" data-pan="0:0; 3000:-50">
+            <div class="hk-view" data-cam="sc">
+              <div class="hk-set" data-set="room"></div>
+              <i class="hk-person" data-cast="c5" data-pos="50,0" data-act="0: bar look-cam; 150: lean talk(2900) brows; 3100: bar mouth-line brows-0">
+                <p class="hk-bub" data-on="150-3300">Five lagers and a Guinness, please.</p>
+              </i>
             </div>
-            <div class="bm-view bm-back" data-decor="back">
-              <div class="bm-mirror-in">
-                <i class="bm-mfloor"></i><i class="bm-mdoor"></i>
-                <i class="bm-p" style="--x:50;--y:44;--w:12;--c:#ffb627;--skin:#ffdbac;--hair:#6b4423"></i>
-                <i class="bm-mcounter"></i>
+            <div class="hk-view" data-cam="sc">
+              <div class="hk-set" data-set="back" data-pull="2:6550-7300; 1:7700-8300; 4:7700-8300; 1:9300-9900; 4:9300-9900; 1:10950-11500; 2:10950-11500">
+                <i class="hk-person" data-cast="c5" data-pos="50,0" data-act="0: bar look-cam; 3100: bar mouth-line; 4200: look-down; 6500: look-cam; 8000: look-down; 10000: look-cam brow-r; 12100: smile brows"></i>
               </div>
-              <i class="bm-glass" style="--x:31;--y:70;--f:100;--a:7000"><i class="bm-liq fill"></i></i>
-              <i class="bm-glass" style="--x:38.6;--y:70;--f:100;--a:7700"><i class="bm-liq fill"></i></i>
-              <i class="bm-glass" style="--x:46.2;--y:70;--f:100;--a:8400"><i class="bm-liq fill"></i></i>
-              <i class="bm-glass" style="--x:53.8;--y:70;--f:100;--a:9100"><i class="bm-liq fill"></i></i>
-              <i class="bm-glass" style="--x:61.4;--y:70;--f:100;--a:9800"><i class="bm-liq fill"></i></i>
-              <i class="bm-glass stout" style="--x:69;--y:70;--f:75;--a:6200;--b:11000;--s:7600"><i class="bm-liq fill top"><i class="bm-dark settle"></i></i></i>
+              <i class="hk-prop" data-prop="glass" style="--x:32;--y:88;--w:4.6" data-on="3800" data-move="7600: 35,80; 8800: 32,88" data-fill="7700" data-fillms="600" data-head="8300"></i>
+              <i class="hk-prop" data-prop="glass" style="--x:37;--y:88;--w:4.6" data-on="4000" data-move="9200: 35,80; 10400: 37,88" data-fill="9300" data-fillms="600" data-head="9900"></i>
+              <i class="hk-prop" data-prop="glass" style="--x:42;--y:88;--w:4.6" data-on="4200" data-move="10900: 35,80; 12000: 42,88" data-fill="10950" data-fillms="550" data-head="11500"></i>
+              <i class="hk-prop" data-prop="glass-stout" style="--x:48;--y:88;--w:4.6;--f:0.75" data-on="4400" data-move="6500: 45,80; 12100: 48,88" data-fill="6550" data-fillms="750" data-head="7400" data-settle="7400" data-settlems="3000" data-top="10950"></i>
+              <i class="hk-prop" data-prop="glass" style="--x:62;--y:88;--w:4.6" data-on="4600" data-move="9200: 65,80; 10400: 62,88" data-fill="9300" data-fillms="600" data-head="9900"></i>
+              <i class="hk-prop" data-prop="glass" style="--x:68;--y:88;--w:4.6" data-on="4800" data-move="7600: 65,80; 8800: 68,88" data-fill="7700" data-fillms="600" data-head="8300"></i>
+              <i class="hk-stream" style="--x:45;--c:var(--wood)" data-on="6550-7300"></i>
+              <i class="hk-stream" style="--x:35" data-on="7700-8300"></i>
+              <i class="hk-stream" style="--x:65" data-on="7700-8300"></i>
+              <i class="hk-stream" style="--x:35" data-on="9300-9900"></i>
+              <i class="hk-stream" style="--x:65" data-on="9300-9900"></i>
+              <i class="hk-stream" style="--x:35" data-on="10950-11500"></i>
+              <i class="hk-stream" style="--x:45;--c:var(--ink)" data-on="10950-11500"></i>
+              <i class="hk-arm1p" style="--x:45;--y:49;--skin:#e0ac69;--side:1" data-on="6500-7500"></i>
+              <i class="hk-arm1p" style="--x:35;--y:49;--skin:#e0ac69;--side:1" data-on="7650-11700"></i>
+              <i class="hk-arm1p" style="--x:65;--y:49;--skin:#e0ac69;--side:-1" data-on="7650-10200"></i>
+              <i class="hk-arm1p" style="--x:45;--y:49;--skin:#e0ac69;--side:-1" data-on="10600-11800"></i>
             </div>
           </div>
+          <div class="hk-freeze" data-at="46,62" data-zoom="1.3" data-ring="45,52" data-r="7" data-stamp="six drinks" data-stamp-at="tl"></div>
         </div>
 
         <!-- Clip 6: the tenner-waver. The quiet one on the left was here first. -->
-        <div class="hpt-shot">
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <div class="bm-pan">
-            <div class="bm-view bm-front" data-decor="front">
-              <i class="bm-p" style="--x:30;--y:44;--w:14;--c:#7f95ff;--skin:#8d5524;--hair:#16161d"></i>
-              <i class="bm-p" style="--x:70;--y:44;--w:14;--t:500;--c:#ff9ec1;--skin:#ffdbac;--hair:#a33b20"><i class="bm-arm" style="--a:1700;--b:7400;--n:13"></i></i>
-              <p class="bm-bub pop" style="--x:70;--y:42.5;--ax:0.9;--a:2300;--b:5500">Mate! Over here!</p>
-              <p class="bm-bub me pop" style="--x:30;--a:5300;--b:6700">You were first. What'll it be?</p>
-              <p class="bm-bub pop" style="--x:30;--y:42.5;--a:6000;--b:7700">Pint of lager, please.</p>
-              <p class="bm-bub me pop" style="--x:70;--a:7000;--b:8600">You're next. Tenner down.</p>
-              <i class="bm-ring pop" style="--x:70;--y:48.7;--a:7600"></i>
-              <i class="bm-glass pop" style="--x:30;--y:70;--a:8100"><i class="bm-liq"></i></i>
-            </div>
-          </div>
+          <div class="hk-set" data-set="room"></div>
+          <i class="hk-person" data-cast="c3" data-pos="30,0" data-act="0: bar look-cam; 2600: look-rr; 3400: look-cam brow-l; 5300: look-cam brows-0; 6000: lean talk(1500) smile; 7700: bar mouth-line smile; 8300: brow-r"></i>
+          <i class="hk-person" data-cast="c7" data-pos="70,0" data-act="0: at(9,3) hide; 500: show; 550: pace(340) go(70,0); 2350: wave wave(2900) look-cam mouth-wide; 5300: mouth-line; 5500: look-l; 7000: idle look-cam; 7600: brow-r smile">
+            <p class="hk-bub" data-side="l" data-on="2350-5500">Mate! Over here!</p>
+          </i>
+          <p class="hk-bub me" style="--x:30" data-on="5300-6700">You were first. What'll it be?</p>
+          <p class="hk-bub me" style="--x:70" data-on="7000-8600">You're next. Tenner down.</p>
+          <i class="hk-prop" data-prop="note" style="--x:70;--y:76;--w:4.4" data-on="7400"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:30;--y:76;--w:3.6" data-on="8100"></i>
+          <div class="hk-freeze" data-at="72,52" data-zoom="1.3" data-ring="79,49" data-r="11" data-stamp="the tenner" data-stamp-at="tl"></div>
         </div>
 
-        <!-- Clip 7: the Hoverer. The mirror shows they came in first, then stopped a metre short. -->
-        <div class="hpt-shot">
+        <!-- Clip 7: the Hoverer. c4 orders a lager; while you pour it, the mirror shows c10 come in first
+             and stop a metre short of the bar, then c11 walk straight up to it. Wave c10 into the gap. -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <div class="bm-pan b7-pan">
-            <div class="bm-view bm-front" data-decor="front">
-              <i class="bm-p" style="--x:22;--y:44;--w:14;--c:#2447f5;--skin:#f1c27d;--hair:#2b1d14"></i>
-              <i class="bm-p rock" style="--x:49;--y:35;--w:10.5;--z:30;--t:2700;--r:4300;--c:#4ad295;--skin:#c68642;--hair:#6b4423;--m:7000;--x2:49;--y2:44;--w2:14;--z2:50"></i>
-              <i class="bm-p" style="--x:77;--y:44;--w:14;--t:3600;--c:#e63946;--skin:#ffdbac;--hair:#d9b36c"></i>
-              <p class="bm-bub pop" style="--x:22;--y:42.5;--a:300;--b:2000">Pint of lager, please.</p>
-              <i class="bm-glass pop" style="--x:22;--y:70;--a:5300"><i class="bm-liq"></i></i>
-              <p class="bm-bub me pop" style="--x:49;--a:6200;--b:7700">Come on up. You're next.</p>
-              <p class="bm-bub me pop" style="--x:77;--a:8100;--b:9600">You're after them.</p>
-              <p class="bm-bub pop" style="--x:49;--y:42.5;--a:8300;--b:9900">Ooh, thanks. Pint of cider, please.</p>
-              <i class="bm-ring pop" style="--x:77;--y:48.7;--a:8400"></i>
-              <i class="bm-glass pop" style="--x:49;--y:70;--a:10300;--beer:#f2c14e"><i class="bm-liq"></i></i>
+          <div class="hk-pan" data-pan="0:0; 2000:-50; 4500:0">
+            <div class="hk-view" data-cam="sc">
+              <div class="hk-set" data-set="room"></div>
+              <i class="hk-person" data-cast="c4" data-pos="76,0" data-act="0: bar look-cam; 150: lean talk(1900); 2200: bar mouth-line; 5300: look-down smile; 6000: look-cam mouth-line">
+                <p class="hk-bub" data-side="l" data-on="150-2400">Pint of lager, please.</p>
+              </i>
+              <i class="hk-person" data-cast="c10" data-pos="49,0" data-life="0" data-act="0: at(9,3) hide; 2350: show; 2400: pace(440) go(49,2,1760); 4300: idle look-cam hover(2800) glance(4400); 7100: go(49,0,880); 7700: bar look-cam smile; 7800: lean talk(2200); 10000: bar mouth-line smile">
+                <p class="hk-bub" data-on="7700-10200">Ooh, thanks. Cider, please.</p>
+              </i>
+              <i class="hk-person" data-cast="c11" data-pos="24,0" data-act="0: at(9,3) hide; 3250: show; 3300: go(24,0,928); 4400: bar look-cam; 8500: nod; 8800: smile">
+              </i>
+              <i class="hk-prop" data-prop="pint" style="--x:76;--y:76;--w:3.6" data-on="5300"></i>
+              <i class="hk-prop" data-prop="pint" style="--x:49;--y:76;--w:3.6" data-on="10300"></i>
             </div>
-            <div class="bm-view bm-back" data-decor="back">
-              <div class="bm-mirror-in">
-                <i class="bm-mfloor"></i><i class="bm-mdoor"></i>
-                <i class="bm-p" style="--x:78;--y:44;--w:12;--c:#2447f5;--skin:#f1c27d;--hair:#2b1d14"></i>
-                <i class="bm-p rock" style="--x:51;--y:39;--w:9;--z:30;--t:2700;--r:4300;--x0:90.5;--y0:5;--c:#4ad295;--skin:#c68642;--hair:#6b4423"></i>
-                <i class="bm-p" style="--x:23;--y:44;--w:12;--t:3600;--x0:90.5;--y0:5;--c:#e63946;--skin:#ffdbac;--hair:#d9b36c"></i>
-                <i class="bm-mcounter"></i>
+            <div class="hk-view" data-cam="sc">
+              <div class="hk-set" data-set="back" data-pull="1:2850-3850">
+                <i class="hk-person" data-cast="c4" data-pos="76,0" data-act="0: bar look-cam; 2200: bar mouth-line; 2900: look-dl"></i>
+                <i class="hk-person" data-cast="c10" data-pos="49,0" data-act="0: at(9,3) hide; 2350: show; 2400: pace(440) go(49,2,1760); 4300: idle look-cam hover(2800) glance(4400)"></i>
+                <i class="hk-person" data-cast="c11" data-pos="24,0" data-act="0: at(9,3) hide; 3250: show; 3300: go(24,0,928); 4400: bar look-cam"></i>
               </div>
-              <i class="bm-glass" style="--x:36;--y:70;--f:100;--a:3000"><i class="bm-liq fill"></i></i>
+              <i class="hk-arm1p" style="--x:35;--y:49;--skin:#e0ac69;--side:1" data-on="2700-4300"></i>
+              <i class="hk-prop" data-prop="glass" style="--x:35;--y:80;--w:4.6" data-on="2650" data-fill="2850" data-fillms="1000" data-head="3850"></i>
+              <i class="hk-stream" style="--x:35" data-on="2850-3850"></i>
             </div>
           </div>
+          <p class="hk-bub me" style="--x:49" data-on="6300-7800">Come on up. You're next.</p>
+          <p class="hk-bub me" style="--x:24" data-on="8300-9800">You're after them.</p>
+          <div class="hk-freeze" data-at="49,56" data-zoom="1.4" data-ring="49,51" data-r="11.5" data-bracket="49,63 49,76" data-stamp="the hoverer" data-stamp-at="tl"></div>
         </div>
 
-        <!-- Clip 8: the Phantom Queue. Past the toilets, round the pool table. -->
-        <div class="hpt-shot b8">
+        <!-- Clip 8: the Phantom Queue. A queue for the WC along the back wall; newcomers join it. -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <div class="bm-pan">
-            <div class="bm-view bm-front" data-decor="front">
-              <i class="bm-wc"></i>
-              <i class="bm-p" style="--x:77.5;--y:20;--w:6;--z:15;--l:900;--c:#7f95ff;--skin:#e0ac69;--hair:#2b1d14"></i>
-              <i class="bm-p" style="--x:71.5;--y:20;--w:6;--z:15;--c:#ffb627;--skin:#8d5524;--hair:#16161d;--m:1300;--x2:77.5;--y2:20;--w2:6;--z2:15"></i>
-              <i class="bm-p" style="--x:65.5;--y:20;--w:6;--z:15;--c:#e63946;--skin:#f1c27d;--hair:#d9b36c;--m:1500;--x2:71.5;--y2:20;--w2:6;--z2:15"></i>
-              <i class="bm-p" style="--x:65.5;--y:20;--w:6;--z:15;--t:1600;--c:#2447f5;--skin:#ffdbac;--hair:#6b4423;--m:6300;--x2:76;--y2:44;--w2:14;--z2:50"></i>
-              <i class="bm-p" style="--x:59.5;--y:20;--w:6;--z:15;--t:2400;--c:#ff9ec1;--skin:#c68642;--hair:#2b1d14;--m:6000;--x2:50;--y2:44;--w2:14;--z2:50"></i>
-              <i class="bm-p" style="--x:53.5;--y:20;--w:6;--z:15;--t:3100;--c:#4ad295;--skin:#e0ac69;--hair:#a33b20;--m:5700;--x2:24;--y2:44;--w2:14;--z2:50"></i>
-              <i class="bm-pool"></i>
-              <p class="bm-bub pop" style="--x:53.5;--y:18.5;--a:3900;--b:5600">Is this the bar queue?</p>
-              <p class="bm-bub me pop" style="--x:60;--a:5200;--b:6800">The bar's over here! Come on up.</p>
-              <i class="bm-glass pop" style="--x:24;--y:70;--a:7600"><i class="bm-liq"></i></i>
-              <i class="bm-glass pop" style="--x:50;--y:70;--a:8300"><i class="bm-liq"></i></i>
-              <i class="bm-glass pop" style="--x:76;--y:70;--a:9000"><i class="bm-liq"></i></i>
-            </div>
-          </div>
+          <div class="hk-set" data-set="room"></div>
+          <i class="hk-person" data-cast="c2" data-pos="88,3" data-act="0: idle face-r look-rr; 800: look-up brows smile; 1700: face-r look-rr brows-0 mouth-line; 3000: look-cam; 3800: face-r look-rr; 6200: look-ll brow-r; 7400: face-r look-rr brows-0"></i>
+          <i class="hk-person" data-cast="c10" data-pos="81,3" data-act="0: idle face-r look-rr; 2300: look-ll; 3100: face-r look-rr; 6000: look-ll; 7600: face-r look-rr"></i>
+          <i class="hk-person" data-cast="c6" data-pos="74,3" data-act="0: idle face-r look-rr; 3300: look-l; 4000: face-r look-rr; 6400: look-ll smile; 7800: face-r look-rr mouth-line"></i>
+          <i class="hk-person" data-cast="c4" data-pos="82,0" data-act="0: at(9.5,3) hide; 500: show; 620: pace(360) go(67,3); 3600: face-r look-rr; 5400: look-cam face-c brows; 6000: go(82,0); 7200: bar look-cam brows-0 smile"></i>
+          <i class="hk-person" data-cast="c5" data-pos="60,0" data-act="0: at(9.5,3) hide; 1000: show; 1120: pace(420) go(60,3); 3700: face-r look-rr; 4200: look-l shrug; 5400: idle look-cam face-c brow-r; 5900: go(60,0); 6900: bar look-cam brows-0 smile"></i>
+          <i class="hk-person" data-cast="c1" data-pos="38,0" data-act="0: at(9.5,3) hide; 1500: show; 1620: pace(400) go(53,3); 3700: face-r look-rr; 3800: talk(1400) brows; 5400: look-cam face-c brows-0 smile; 5800: go(38,0); 6800: bar look-cam">
+            <p class="hk-bub" data-side="l" data-on="3800-6300">Is this the bar queue?</p>
+          </i>
+          <i class="hk-arm1p" style="--x:16;--y:72;--skin:#e0ac69;--side:1" data-hand="open" data-wave="5700-6900" data-on="5450-7000"></i>
+          <p class="hk-bub me" style="--x:50" data-on="5300-8500">The bar's over here! Come on up.</p>
+          <i class="hk-prop" data-prop="pint" style="--x:38;--y:76;--w:3.6" data-on="7600"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:60;--y:76;--w:3.6" data-on="8300"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:82;--y:76;--w:3.6" data-on="9000"></i>
+          <div class="hk-freeze" data-at="89.5,30" data-zoom="1.2" data-ring="87.5,27" data-r="12" data-sight="57,28 83,19" data-stamp="the phantom queue" data-stamp-at="bl"></div>
         </div>
 
-        <!-- Clip 9: you and a colleague go for the same customer. Call it, split the bar. -->
-        <div class="hpt-shot">
+        <!-- Clip 9: you and a colleague go for the same customer. Call it, split the bar.
+             s3 is your colleague on your side of the counter (lane f, seen from behind). -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <div class="bm-pan">
-            <div class="bm-view bm-front" data-decor="front">
-              <i class="bm-p" style="--x:24;--y:44;--w:14;--c:#4ad295;--skin:#e0ac69;--hair:#6b4423"></i>
-              <i class="bm-p" style="--x:76;--y:44;--w:14;--t:400;--c:#7f95ff;--skin:#8d5524;--hair:#16161d"></i>
-              <i class="bm-p mate" style="--x:37;--y:66;--w:22;--z:105;--t:1500;--x0:115;--y0:66;--w0:22;--hair:#a33b20"><i class="bm-towel"></i></i>
-              <p class="bm-bub pop" style="--x:37;--y:65;--ax:0.15;--a:3000;--b:5600">What can I get you?</p>
-              <p class="bm-bub me pop" style="--x:24;--a:3000;--b:5600">What can I get you?</p>
-              <p class="bm-bub pop" style="--x:76;--y:42.5;--a:3900;--b:6200">Hello?</p>
-              <p class="bm-bub me pop" style="--x:37;--a:5300;--b:6800">You take them. I've got the right.</p>
-              <p class="bm-bub pop" style="--x:37;--y:65;--ax:0.15;--a:6100;--b:7300">On it.</p>
-              <i class="bm-glass pop" style="--x:24;--y:70;--a:7300"><i class="bm-liq"></i></i>
-              <p class="bm-bub me pop" style="--x:76;--a:7000;--b:8300">Sorry. What can I get you?</p>
-              <p class="bm-bub pop" style="--x:76;--y:42.5;--a:7700;--b:9100">Pint of bitter, please.</p>
-              <i class="bm-glass pop" style="--x:76;--y:70;--a:9100;--beer:#b0601e"><i class="bm-liq"></i></i>
-            </div>
-          </div>
+          <div class="hk-set" data-set="room"></div>
+          <i class="hk-person" data-cast="c12" data-pos="78,0" data-act="0: at(9.5,3) hide; 400: show; 520: go(78,0); 3400: bar look-cam; 3900: look-ll; 4300: cup look-cam brows; 4860: mouth-o; 5700: bar smile brows-0; 7500: talk(1300) mouth-line; 9000: smile; 9800: look-down; 10200: look-cam"><p class="hk-bub" data-side="l" data-on="4860-6500">Hello?</p><p class="hk-bub" data-side="l" data-on="7500-10100">Pint of bitter, please.</p></i>
+          <i class="hk-person" data-cast="c8" data-pos="36,0" data-act="0: bar look-cam; 2300: brows; 2900: look-dr; 3500: look-cam; 4000: look-dr; 4500: look-cam; 5700: look-dr smile brows-0; 7300: look-down; 7800: look-dr smile"></i>
+          <i class="hk-person" data-cast="s3" data-view="back" data-pos="55,f" data-act="0: at(118,f); 1000: go(55,f); 2300: lean; 6000: idle; 6600: lean; 7800: idle"><p class="hk-bub" data-side="l" data-on="2300-4640" style="bottom:128%">What can I get you?</p><p class="hk-bub" data-side="l" data-on="6000-7600" style="bottom:128%">On it.</p></i>
+          <p class="hk-bub me" style="--x:36" data-on="2300-4640">What can I get you?</p>
+          <i class="hk-arm1p" style="--x:70;--y:80;--skin:#e0ac69;--side:1" data-hand="point" data-on="5500-7200"></i>
+          <p class="hk-bub me" style="--x:34" data-on="5300-8600">You take them. I've got the right.</p>
+          <i class="hk-prop" data-prop="pint" style="--x:36;--y:76;--w:3.6" data-on="7300"></i>
+          <i class="hk-prop" data-prop="pint" style="--x:78;--y:76;--w:3.6" data-on="9800"></i>
+          <div class="hk-freeze" data-at="56,60" data-zoom="1.15" data-ring="77.3,50.8" data-r="16" data-sight="44,99 37,63; 55,50 42,54" data-stamp="two on one" data-stamp-at="tl"></div>
         </div>
 
-        <!-- Clip 10: The Round. They reach the bar, then ask the table. Serve the next one meanwhile. -->
-        <div class="hpt-shot">
+        <!-- Clip 10: The Round. c3 reaches the bar, then turns round to ask their table (c6, c2, c9).
+             Serve c1, who's ready, while they decide; the mirror shows c3 still turned round. -->
+        <div class="hpt-shot" data-cam="sc">
           <i class="hpt-clock"></i>
-          <div class="bm-pan b10-pan">
-            <div class="bm-view bm-front" data-decor="front">
-              <i class="bm-p" style="--x:77;--y:21.5;--w:5;--z:10;--c:#e63946;--skin:#ffdbac;--hair:#d9b36c"></i>
-              <i class="bm-p" style="--x:83;--y:21;--w:5;--z:10;--c:#ffb627;--skin:#e0ac69;--hair:#16161d"></i>
-              <i class="bm-p" style="--x:89;--y:21.5;--w:5;--z:10;--c:#4ad295;--skin:#8d5524;--hair:#2b1d14"></i>
-              <i class="bm-table" style="--x:83;--y:31;--w:19"></i>
-              <i class="bm-p" style="--x:34;--y:44;--w:14;--c:#2447f5;--skin:#c68642;--hair:#6b4423"><i class="bm-turn swap" style="--a:2200;--b:9900"></i></i>
-              <i class="bm-p" style="--x:72;--y:44;--w:14;--t:500;--c:#ff9ec1;--skin:#f1c27d;--hair:#6b4423"></i>
-              <p class="bm-bub me pop" style="--x:34;--a:300;--b:1600">What can I get you?</p>
-              <p class="bm-bub pop" style="--x:34;--y:42.5;--a:1400;--b:2300">Ooh. Er…</p>
-              <p class="bm-bub pop" style="--x:34;--y:42.5;--a:2600;--b:5600">What's everyone having?</p>
-              <p class="bm-bub pop" style="--x:83;--y:19.5;--a:3600;--b:6600">Dunno. You?</p>
-              <p class="bm-bub me pop" style="--x:72;--a:5300;--b:6500">What can I get you?</p>
-              <p class="bm-bub pop" style="--x:72;--y:42.5;--a:5900;--b:7000">Pint of IPA, please.</p>
-              <i class="bm-glass ipa pop" style="--x:72;--y:70;--a:9700"><i class="bm-liq"></i></i>
-              <p class="bm-bub pop" style="--x:34;--y:42.5;--a:10100">Right! Two gins and a lager, please.</p>
+          <div class="hk-pan" data-pan="0:0; 7300:-50; 9100:0">
+            <div class="hk-view" data-cam="sc">
+              <div class="hk-set" data-set="room"><i class="hk-table" style="--x:81;--y:45;--w:21;z-index:13"></i></div>
+              <i class="hk-person" data-cast="c6" data-pos="74,3" data-act="0: idle look-r; 2500: look-dl; 3700: look-r; 5600: look-dl; 7600: look-r smile; 9200: look-dl"></i>
+              <i class="hk-person" data-cast="c2" data-pos="81,3" data-act="0: idle look-l; 2500: look-dl brows; 3600: shrug talk(1400) look-dl; 6200: idle brows-0; 7000: look-l talk(1200); 8400: look-dl">
+                <p class="hk-bub" data-side="l" data-on="3600-6400">Dunno. You?</p>
+              </i>
+              <i class="hk-person" data-cast="c9" data-pos="88,3" data-act="0: idle look-l; 2500: look-dl; 4100: brow-r; 5600: brows-0; 7400: look-l; 9200: look-dl"></i>
+              <i class="hk-person" data-cast="c3" data-pos="62,0" data-act="0: bar look-cam; 1300: look-up mouth-o brows; 2400: turn-back; 2600: cup; 4800: bar; 9900: turn-front look-cam brows-0 mouth-line; 10100: lean talk(1300) smile; 11300: bar">
+                <p class="hk-bub" data-side="l" data-on="1300-2300">Ooh. Er…</p>
+                <p class="hk-bub" data-side="l" data-on="2600-5600">What's everyone having?</p>
+                <p class="hk-bub" data-side="l" data-on="10200">Right! Two gins and a lager, please.</p>
+              </i>
+              <i class="hk-person" data-cast="c1" data-pos="22,0" data-act="0: at(9,3) hide; 450: show; 500: go(22,0,864); 1500: bar look-cam; 2700: look-rr; 4300: look-cam brow-r; 5700: lean talk(1400) brows-0; 7200: bar mouth-line; 9800: smile">
+                <p class="hk-bub" data-on="5800-7600">Pint of IPA, please.</p>
+              </i>
+              <i class="hk-prop" data-prop="pint" style="--x:22;--y:76;--w:3.6" data-on="9800"></i>
             </div>
-            <div class="bm-view bm-back" data-decor="back">
-              <div class="bm-mirror-in">
-                <i class="bm-mfloor"></i><i class="bm-mdoor"></i>
-                <i class="bm-p" style="--x:23;--y:21.5;--w:4.3;--z:10;--c:#e63946;--skin:#ffdbac;--hair:#d9b36c"></i>
-                <i class="bm-p" style="--x:17;--y:21;--w:4.3;--z:10;--c:#ffb627;--skin:#e0ac69;--hair:#16161d"></i>
-                <i class="bm-p" style="--x:11;--y:21.5;--w:4.3;--z:10;--c:#4ad295;--skin:#8d5524;--hair:#2b1d14"></i>
-                <i class="bm-table" style="--x:17;--y:31;--w:17"></i>
-                <i class="bm-p" style="--x:66;--y:44;--w:12;--c:#2447f5;--skin:#c68642;--hair:#6b4423"><i class="bm-turn swap" style="--a:2200;--b:9900"></i></i>
-                <i class="bm-p" style="--x:28;--y:44;--w:12;--t:500;--x0:90.5;--y0:5;--c:#ff9ec1;--skin:#f1c27d;--hair:#6b4423"></i>
-                <i class="bm-mcounter"></i>
+            <div class="hk-view" data-cam="sc">
+              <div class="hk-set" data-set="back" data-pull="1:7950-8750">
+                <i class="hk-table" style="position:absolute;--x:81;--y:61;--w:21;z-index:13"></i>
+                <i class="hk-person" data-cast="c6" data-pos="74,3" data-act="0: idle look-r; 7600: look-r smile; 9200: look-dl"></i>
+                <i class="hk-person" data-cast="c2" data-pos="81,3" data-act="0: idle look-l; 6200: idle; 7000: look-l talk(1200); 8400: look-dl"></i>
+                <i class="hk-person" data-cast="c9" data-pos="88,3" data-act="0: idle look-l; 7400: look-l; 9200: look-dl"></i>
+                <i class="hk-person" data-cast="c3" data-pos="62,0" data-act="0: bar look-cam; 2400: turn-back; 2600: cup; 4800: bar; 9900: turn-front look-cam"></i>
+                <i class="hk-person" data-cast="c1" data-pos="22,0" data-act="0: bar look-cam; 7200: mouth-line look-dr"></i>
               </div>
-              <i class="bm-glass ipa" style="--x:56;--y:70;--f:100;--a:7700"><i class="bm-liq fill"></i></i>
+              <i class="hk-arm1p" style="--x:35;--y:49;--skin:#e0ac69;--side:1" data-on="7700-9000"></i>
+              <i class="hk-prop" data-prop="glass" style="--x:35;--y:80;--w:4.6" data-on="7700" data-fill="7950" data-fillms="800" data-head="8750"></i>
+              <i class="hk-stream" style="--x:35" data-on="7950-8750"></i>
             </div>
           </div>
+          <p class="hk-bub me" style="--x:62" data-on="200-1700">What can I get you?</p>
+          <p class="hk-bub me" style="--x:22" data-on="5300-6600">What can I get you?</p>
+          <div class="hk-freeze" data-at="70,47" data-zoom="1.25" data-ring="62,57" data-r="11" data-sight="62,49 79,36" data-stamp="the round" data-stamp-at="tl"></div>
         </div>
 
       </div>
@@ -279,43 +307,6 @@
       <p class="hpt-intro">Sound on for the commentary.</p>
     </div>
   </main>
-
-  <!-- Scenery shared by every clip; hazard-barperson.js copies it into each view. -->
-  <template id="bm-decor-front">
-    <div class="bm-wall"></div>
-    <div class="bm-floor"></div>
-    <i class="bm-door"></i>
-    <i class="bm-lamp" style="--x:30"></i>
-    <i class="bm-lamp" style="--x:70"></i>
-    <i class="bm-frame" style="--x:21;--c:#0f5b43"></i>
-    <i class="bm-frame" style="--x:58;--c:#2447f5"></i>
-    <i class="bm-dart"></i>
-    <div class="bm-counter"></div>
-    <i class="bm-tray" style="--x:22"></i>
-    <i class="bm-tray" style="--x:50"></i>
-    <i class="bm-tray" style="--x:78"></i>
-    <i class="bm-mat" style="--x:36;--c:var(--red)"></i>
-    <i class="bm-mat" style="--x:64;--c:var(--blue)"></i>
-  </template>
-
-  <template id="bm-decor-back">
-    <div class="bm-bwall"></div>
-    <div class="bm-mirror"></div>
-    <div class="bm-sheen"></div>
-    <div class="bm-shelf" style="--x:4;--y:6"><i style="--h:80;--c:#2e7d4f"></i><i style="--h:95;--c:#c98a3e"></i><i style="--h:70;--c:#7f95ff"></i><i style="--h:88;--c:#e63946"></i><i style="--h:76;--c:#d9e6f2"></i></div>
-    <div class="bm-shelf" style="--x:4;--y:22"><i style="--h:72;--c:#ffb627"></i><i style="--h:90;--c:#5a3f2a"></i><i style="--h:84;--c:#4ad295"></i><i style="--h:68;--c:#ff9ec1"></i><i style="--h:92;--c:#16161d"></i></div>
-    <div class="bm-shelf" style="--x:75;--y:6"><i style="--h:86;--c:#d9e6f2"></i><i style="--h:74;--c:#e63946"></i><i style="--h:94;--c:#2e7d4f"></i><i style="--h:70;--c:#ffb627"></i><i style="--h:82;--c:#7f95ff"></i></div>
-    <div class="bm-shelf" style="--x:75;--y:22"><i style="--h:90;--c:#c98a3e"></i><i style="--h:70;--c:#4ad295"></i><i style="--h:84;--c:#16161d"></i><i style="--h:76;--c:#ff9ec1"></i><i style="--h:92;--c:#5a3f2a"></i></div>
-    <div class="bm-fridge"></div>
-    <div class="bm-till"></div>
-    <div class="bm-font"></div>
-    <i class="bm-tap" style="--x:36;--c:#ffb627"></i>
-    <i class="bm-tap" style="--x:46;--c:#2447f5"></i>
-    <i class="bm-tap" style="--x:56;--c:#4ad295"></i>
-    <i class="bm-tap" style="--x:66;--c:#16161d;--c2:#f3e2c0"></i>
-    <div class="bm-btray"></div>
-    <div class="bm-bcounter"></div>
-  </template>
 
 </body>
 </html>

@@ -1,0 +1,21 @@
+# Security headers: the single source for the whole site. Cloudflare applies these rules to
+# every response that comes from public/ (pages, CSS, JS, audio, images and 404s), whether it
+# is served directly or fetched by src/worker.js through env.ASSETS (the home page). This file
+# is read by Cloudflare and is never served itself.
+#
+# src/worker.js imports this file and copies the /* block onto the responses it builds itself
+# (/api/*), so edit the values here only.
+#
+# Adding an external script, stylesheet, font, image, audio file, iframe or analytics beacon?
+# Add its origin to the matching CSP directive below (script-src, style-src, font-src, img-src,
+# media-src, frame-src, connect-src), or the browser will block it. A directive that isn't listed
+# falls back to default-src, so when adding one, start it with 'self'. Each line must stay under
+# 2,000 characters. style-src needs 'unsafe-inline' for inline style attributes (the --w bar
+# widths, the hazard clips). Scripts must stay in .js files: inline <script> and on* attributes
+# are blocked.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

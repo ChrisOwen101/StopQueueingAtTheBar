@@ -71,7 +71,9 @@ const sounds = [...soundTests]
   .filter(([name]) => sfxConfig.sounds[name])
   .map(([name, usedBy]) => {
     const spec = sfxConfig.sounds[name];
-    const file = `${hash(['sfx', spec.prompt, spec.duration, sfxConfig.promptInfluence])}.mp3`;
+    // loop joins the hash only when set, so sounds without it keep their files.
+    const loop = spec.loop ? ['loop'] : [];
+    const file = `${hash(['sfx', spec.prompt, spec.duration, sfxConfig.promptInfluence, ...loop])}.mp3`;
     return { kind: 'sfx', key: name, spec, usedBy, file, abs: path.join(SFX_DIR, file), url: `audio/sfx/${file}` };
   });
 
@@ -106,7 +108,7 @@ if (dryRun) {
     console.log(`${fs.existsSync(e.abs) ? '✓' : '·'} line  [${e.usedBy.join(', ')}] ${e.role}${e.source === 'own' ? '' : ' (role default)'}: ${e.key}`);
     if (e.spoken !== e.key) console.log(`        ${takesDirection(voice) ? 'said' : 'directed (not sent)'}: ${e.spoken}`);
   }
-  for (const e of sounds) console.log(`${fs.existsSync(e.abs) ? '✓' : '·'} sound [${e.usedBy.join(', ')}] ${e.key} (${e.spec.duration}s): ${e.spec.prompt}`);
+  for (const e of sounds) console.log(`${fs.existsSync(e.abs) ? '✓' : '·'} sound [${e.usedBy.join(', ')}] ${e.key} (${e.spec.duration}s${e.spec.loop ? ', loop' : ''}): ${e.spec.prompt}`);
   process.exit(noPrompt.length || reworded.length ? 1 : 0);
 }
 if (reworded.length) process.exit(1);

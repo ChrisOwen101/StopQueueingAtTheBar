@@ -1,0 +1,163 @@
+/* Certificate on a perfect hazard test, in the result panel (hazard-badge.js loads this).
+   The badge is the filled master as inline <svg>, so the seal can stamp down on its own.
+   Its ids carry an aw- prefix (#aw-seal) so they can't clash with the page's.
+   The reveal (.is-new) plays once, the first time the badge is half on screen; until
+   then .is-waiting holds it on its first frame. Name edits re-fill the text and never
+   replay it.
+
+   Timeline (ms):   0 card rises in (420)
+                  380 seal drops (460): falls 0-55%, impact at ~633, settles
+                  633 impact: burst ring (520) + card thump (200)
+                 1153 done
+
+   Every animation runs FROM a hidden or offset state TO the default, so with no
+   animation (reduced motion, old browser) the badge is simply there, fully stamped.
+   Flat: transforms and opacity only. */
+
+/* Portrait: once a certificate is up, the clip stops sticking to the top, so it can't
+   cover the badge while a name is typed (or hide the stamp landing). It sticks again on
+   retake, when the state changes. Landscape already has it static. */
+.hpt[data-state="done"]:has(.hpt-award) .hpt-media { position: static; }
+
+.hpt-award {
+  display: grid;
+  gap: 0.9rem;
+  width: min(100%, 420px);
+  margin: 1.2rem 0 1.4rem;
+}
+
+.hpt-award-badge {
+  border-radius: 14px;            /* on the page only; the PNG stays square */
+  overflow: hidden;
+}
+
+/* Inline SVG text inherits from the page, so pin what the master doesn't set. */
+.hpt-award-badge svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  font-variant: normal;
+}
+
+/* ---------- Name field (the design-system input) ---------- */
+
+.hpt-award-field { display: grid; gap: 0.4rem; }
+.hpt-award-field label { font-weight: 800; }
+.hpt-award-opt { font-weight: 600; opacity: 0.7; }
+
+.hpt-award-input {
+  font: inherit;
+  font-size: 1.2rem;
+  padding: 0.9em 1em;
+  border: 3px solid var(--cream);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--cream);
+}
+.hpt-award-input::placeholder { color: rgba(255, 244, 220, 0.4); }
+.hpt-award-input:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+
+.hpt-award-hint { margin: 0; font-size: 0.9rem; font-weight: 600; opacity: 0.7; }
+
+/* ---------- Actions: one amber pill, the rest outlined ---------- */
+
+.hpt-award-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; }
+.hpt-award-actions .hpt-again { font-size: 1.15rem; }
+
+.hpt-award-btn,
+.hpt-actions .hpt-again.hpt-award-quiet {
+  font: inherit;
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 0.55em 1.05em;
+  border: 3px solid currentColor;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cream);
+  cursor: pointer;
+}
+
+/* Hover only where there's a pointer: a tap mustn't leave a cream pill that looks primary. */
+@media (hover: hover) {
+  .hpt-award-btn:hover,
+  .hpt-actions .hpt-again.hpt-award-quiet:hover { background: var(--cream); border-color: var(--cream); color: var(--ink); }
+}
+.hpt-award-btn:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
+
+/* A live region: keep it in the page even when empty (so it's announced), just without the gap. */
+.hpt-award-msg { margin: 0; font-weight: 700; }
+.hpt-award-msg:empty { margin-top: -0.9rem; }
+
+/* ---------- The reveal ---------- */
+
+.hpt-award #aw-seal,
+.hpt-award #aw-seal-burst {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.hpt-award.is-new .hpt-award-badge {
+  animation: award-in 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.hpt-award.is-new .hpt-award-badge svg {
+  animation: award-thump 0.2s 0.633s ease-out;
+}
+
+.hpt-award.is-new #aw-seal {
+  animation: award-stamp 0.46s 0.38s both;
+}
+
+/* forwards, not both: during the delay the ring must keep its opacity="0" */
+.hpt-award.is-new #aw-seal-burst {
+  animation: award-burst 0.52s 0.633s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Must match or beat the .is-new rules (the animation shorthand resets play-state). */
+.hpt-award.is-waiting .hpt-award-badge,
+.hpt-award.is-waiting .hpt-award-badge svg,
+.hpt-award.is-waiting #aw-seal,
+.hpt-award.is-waiting #aw-seal-burst { animation-play-state: paused; }
+
+@keyframes award-in {
+  from { opacity: 0; translate: 0 18px; scale: 0.96; }
+}
+
+/* 0-55%: falls, accelerating (ease-in), opaque from 20% so it lands solid.
+   55%: impact, slightly squashed. 55-100%: settles (ease-out). */
+@keyframes award-stamp {
+  0%   { opacity: 0; transform: scale(1.6) rotate(-10deg); animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45); }
+  20%  { opacity: 1; animation-timing-function: linear; }
+  55%  { transform: scale(0.94) rotate(0deg); animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); }
+  100% { opacity: 1; transform: none; }
+}
+
+@keyframes award-burst {
+  from { opacity: 0.9; transform: scale(1); }
+  to   { opacity: 0;   transform: scale(1.35); }
+}
+
+@keyframes award-thump {
+  40% { scale: 0.985; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hpt-award.is-new .hpt-award-badge,
+  .hpt-award.is-new .hpt-award-badge svg,
+  .hpt-award.is-new #aw-seal,
+  .hpt-award.is-new #aw-seal-burst { animation: none; }
+}
+
+/* Landscape phones: the panel is short and narrow, so a smaller badge and tighter controls. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .hpt-award { gap: 0.6rem; margin-top: 0.9rem; }
+  .hpt-award-badge { width: min(100%, 15rem); border-radius: 10px; }
+  .hpt-award-field label { font-size: 0.95rem; }
+  .hpt-award-input { font-size: 1rem; padding: 0.6em 0.8em; }
+  .hpt-award-hint { font-size: 0.8rem; }
+  .hpt-award-actions { gap: 0.5rem; }
+  .hpt-award-actions .hpt-again, .hpt-award-btn, .hpt-actions .hpt-again.hpt-award-quiet { font-size: 0.95rem; }
+}

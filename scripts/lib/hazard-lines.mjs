@@ -72,16 +72,18 @@ function lineRoles(config, lines) {
 }
 
 // [{ test: 'customer', file: 'hazard-customer.js', lines: [...], sounds: [...], roles: Map(line → { role, score? }) }]
+// A test is a public/hazard-*.js file that calls HazardTest.init (so not the clip preview).
 export function loadTests() {
   const files = fs
     .readdirSync(PUBLIC)
-    .filter((f) => /^hazard-[\w-]+\.js$/.test(f))
+    .filter((f) => /^hazard-[\w-]+\.js$/.test(f) && f !== 'hazard-kit.js' && fs.readFileSync(path.join(PUBLIC, f), 'utf8').includes('HazardTest.init('))
     .sort();
 
   return files.map((file) => {
     const ctx = sandbox();
     const configs = [];
     ctx.HazardTest = { init: (_root, config) => configs.push(config) };
+    ctx.HazardKit = inert(); // the illustration kit only draws; it has no lines or sounds
     vm.runInContext(fs.readFileSync(path.join(PUBLIC, file), 'utf8'), ctx, { filename: file });
     if (configs.length !== 1) throw new Error(`${file}: expected one HazardTest.init call, got ${configs.length}`);
     const lines = ctx.window.HazardTest.spokenLines(configs[0]);
@@ -174,10 +176,11 @@ export const tts = (voice, text, key) =>
     key
   );
 
-export const soundEffect = ({ prompt, duration }, promptInfluence, key) =>
+// loop (optional) asks for a recording that repeats seamlessly, for ambience beds.
+export const soundEffect = ({ prompt, duration, loop }, promptInfluence, key) =>
   post(
     'https://api.elevenlabs.io/v1/sound-generation?output_format=mp3_44100_128',
-    { text: prompt, duration_seconds: duration, prompt_influence: promptInfluence },
+    { text: prompt, duration_seconds: duration, prompt_influence: promptInfluence, ...(loop && { loop: true }) },
     key
   );
 
