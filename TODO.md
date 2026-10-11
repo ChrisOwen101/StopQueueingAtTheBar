@@ -6,14 +6,14 @@
 
 ## Priority
 
-- Refine home page copy to make it actually good
+- ~~Refine home page copy to make it actually good~~
 - Setup email addresses for team members
 - ~~Fix timing issues with the hazard perception test~~
 - ~~Remove subtitle from under the animation~~
-- End of the HPT should be more celebratory (e.g. confetti animation)
+- ~~End of the HPT should be more celebratory (e.g. confetti animation)~~
 - Make better beer matts and logos
 - ~~Remove the animated ticker from the home page hero~~
-
+- Make the copy across the website less written like it's like AI (e.g. "It's not X, it's Y")
 
 ## Above & Beyond
 

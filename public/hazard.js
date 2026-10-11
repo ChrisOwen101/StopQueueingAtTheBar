@@ -548,6 +548,13 @@
       sound.play(score / n >= 0.75 ? 'fanfare' : 'sad');
       sound.say(resultLine(grades, score, n), 700);
 
+      // A perfect run gets confetti from the bottom of the screen.
+      if (n > 0 && score === n) {
+        import('./hazard-confetti.js')
+          .then((c) => state === 'done' && c.burst())
+          .catch((err) => console.warn(`HazardTest: no confetti (${err.message})`));
+      }
+
       cover.replaceChildren(
         el('p', 'small', 'your result'),
         el('p', 'hpt-score', `${score}/${n}`),
