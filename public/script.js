@@ -27,44 +27,6 @@ if (hasIO) {
   revealTargets.forEach((el) => el.classList.add('in'));
 }
 
-/* ---------- Count-up numbers ---------- */
-
-function formatCount(el, value) {
-  return `${el.dataset.prefix || ''}${value}${el.dataset.suffix || ''}`;
-}
-
-function runCount(el) {
-  const to = Number(el.dataset.count);
-  const start = performance.now();
-  const duration = 1400;
-
-  const frame = (now) => {
-    const p = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - p, 3);
-    el.textContent = formatCount(el, Math.round(to * eased));
-    if (p < 1) requestAnimationFrame(frame);
-  };
-  requestAnimationFrame(frame);
-}
-
-const counters = document.querySelectorAll('[data-count]');
-
-if (hasIO && !reduceMotion) {
-  counters.forEach((el) => (el.textContent = formatCount(el, 0)));
-  const countIO = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          runCount(entry.target);
-          countIO.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.6 }
-  );
-  counters.forEach((el) => countIO.observe(el));
-}
-
 /* ---------- Pub scenes ----------
    A tiny simulation of a bar. Same arrivals, same four staff, same service time.
    - single:  one queue, only one member of staff can reach the front
@@ -85,15 +47,22 @@ const STAFF_X = [18, 39, 61, 82];
 const SLOTS = Array.from({ length: 8 }, (_, i) => 10 + i * (80 / 7));
 const SERVICE_TICKS = 3;
 const TICK_MS = 800;
-const ARRIVAL_CHANCE = 0.8;
+const DRINK_MS = 400;        // pint slides from staff to customer, then they walk off
+const ARRIVAL_NONE = 0.12;   // chance nobody turns up this tick
+const ARRIVAL_PAIR = 0.78;   // chance two turn up together (otherwise one)
 const MAX_SINGLE = 8;
 const QUEUE_X = 39;
-const BAR_ROW_Y = 28;
+const SERVE_Y = 24;          // where the front of the single file steps up to the bar
+const BAR_ROW_Y = 28;        // cluster: front row
+const BACK_ROW_Y = 38;       // cluster: second row, behind someone
+const BACK_ROW_CHANCE = 0.3; // cluster: someone stands behind rather than finding a gap
+const STAFF_REACH = 7;       // cluster: how far staff slide along the bar to serve
 
 function buildScene(el) {
   const mode = el.dataset.mode;
   const arrivals = mulberry32(7);
   const choices = mulberry32(21);
+  const sway = mulberry32(99);
 
   el.innerHTML = '<div class="scene-stage"><div class="scene-bar"></div></div>' +
     '<div class="scene-score">pints served<b>0</b></div>';
@@ -117,6 +86,7 @@ function buildScene(el) {
   const staff = STAFF_X.map((x, i) => ({
     i,
     x,
+    curX: x,
     el: makeDot('staff', x, 8),
     target: null,
     doneAt: 0,
@@ -127,39 +97,87 @@ function buildScene(el) {
   let score = 0;
   let nextColour = 0;
 
+  const move = (c, x, y) => {
+    c.x = x;
+    c.y = y;
+    place(c.el, x, y);
+  };
+
+  // Single file: everyone in one line. Whoever is at the front steps up to the bar.
   const layoutSingle = () => {
-    customers.forEach((c, i) => place(c.el, QUEUE_X + Math.sin(i * 1.1) * 5, 28 + i * 9.5));
+    customers.forEach((c, i) => {
+      if (c.serving) move(c, QUEUE_X, SERVE_Y);
+      else move(c, QUEUE_X + Math.sin(i * 1.1) * 5, 28 + i * 9.5);
+    });
   };
 
   const arrive = () => {
     if (mode === 'single') {
       if (customers.length >= MAX_SINGLE) return;
-      const c = { el: makeDot(`cust c${nextColour++ % 5}`, QUEUE_X, 108), serving: false, slot: null };
-      customers.push(c);
+      customers.push({ el: makeDot(`cust c${nextColour++ % 5}`, QUEUE_X, 108), x: QUEUE_X, y: 108, serving: false });
       layoutSingle();
-    } else {
-      const free = SLOTS.map((_, i) => i).filter((i) => !customers.some((c) => c.slot === i));
-      if (!free.length) return;
-      const slot = free[Math.floor(choices() * free.length)];
-      const startX = Math.min(95, Math.max(5, SLOTS[slot] + (choices() * 12 - 6)));
-      const c = { el: makeDot(`cust c${nextColour++ % 5}`, startX, 108), serving: false, slot };
-      customers.push(c);
-      place(c.el, SLOTS[slot], BAR_ROW_Y);
+      return;
     }
+
+    // Cluster: most people find a gap along the bar. Some end up standing behind someone.
+    const taken = (slot, row) => customers.some((c) => c.slot === slot && c.row === row);
+    const all = SLOTS.map((_, i) => i);
+    const front = all.filter((i) => !taken(i, 0));
+    const back = all.filter((i) => taken(i, 0) && !taken(i, 1));
+    let slot;
+    let row;
+    if (front.length && (!back.length || choices() > BACK_ROW_CHANCE)) {
+      slot = front[Math.floor(choices() * front.length)];
+      row = 0;
+    } else if (back.length) {
+      slot = back[Math.floor(choices() * back.length)];
+      row = 1;
+    } else {
+      return;
+    }
+    const startX = Math.min(95, Math.max(5, SLOTS[slot] + (choices() * 12 - 6)));
+    const c = { el: makeDot(`cust c${nextColour++ % 5}`, startX, 108), x: startX, y: 108, serving: false, slot, row };
+    customers.push(c);
+    move(c, SLOTS[slot], row ? BACK_ROW_Y : BAR_ROW_Y);
   };
 
-  const finish = (c) => {
+  // Drink in hand: walk away from the bar and fade out.
+  const leave = (c) => {
+    c.el.classList.remove('serving');
+    c.el.classList.add('leaving', 'has-drink');
+    if (mode === 'single') move(c, -12, SERVE_Y + 2);
+    else move(c, c.x + (c.x < 50 ? -9 : 9), 112);
+    c.el.style.opacity = '0';
+    setTimeout(() => c.el.remove(), 1600);
+  };
+
+  const finish = (c, s) => {
     customers = customers.filter((x) => x !== c);
     score += 1;
     scoreEl.textContent = score;
-    c.el.style.opacity = '0';
+
     if (mode === 'single') {
-      c.el.style.left = '-8%';
-      layoutSingle();
+      layoutSingle(); // everyone shuffles up one
     } else {
-      c.el.style.top = '112%';
+      // Anyone standing behind steps into the gap.
+      const next = customers.find((x) => x.slot === c.slot && x.row === 1);
+      if (next) {
+        next.row = 0;
+        move(next, SLOTS[next.slot], BAR_ROW_Y);
+      }
     }
-    setTimeout(() => c.el.remove(), 800);
+
+    // The pint slides across the bar to the customer, who then takes it and goes.
+    const pint = document.createElement('div');
+    pint.className = 'pint';
+    place(pint, s.curX, 16);
+    stage.appendChild(pint);
+    void pint.offsetWidth;
+    place(pint, c.x, c.y - 4);
+    setTimeout(() => {
+      pint.remove();
+      leave(c);
+    }, DRINK_MS);
   };
 
   const choose = (s) => {
@@ -169,7 +187,8 @@ function buildScene(el) {
       const front = customers[0];
       return front && !front.serving ? front : null;
     }
-    const waiting = customers.filter((c) => !c.serving);
+    // Only people at the bar itself can be served, not those standing behind.
+    const waiting = customers.filter((c) => !c.serving && c.row === 0);
     if (!waiting.length) return null;
     waiting.sort((a, b) => Math.abs(SLOTS[a.slot] - s.x) - Math.abs(SLOTS[b.slot] - s.x));
     return waiting[0];
@@ -177,11 +196,13 @@ function buildScene(el) {
 
   const step = () => {
     tick += 1;
-    if (arrivals() < ARRIVAL_CHANCE) arrive();
+    const r = arrivals();
+    const arriving = r < ARRIVAL_NONE ? 0 : r > ARRIVAL_PAIR ? 2 : 1;
+    for (let n = 0; n < arriving; n++) arrive();
 
     staff.forEach((s) => {
       if (s.target && tick >= s.doneAt) {
-        finish(s.target);
+        finish(s.target, s);
         s.target = null;
       }
       if (!s.target) {
@@ -191,10 +212,19 @@ function buildScene(el) {
           c.serving = true;
           c.el.classList.add('serving');
           s.doneAt = tick + SERVICE_TICKS;
+          if (mode === 'single') move(c, QUEUE_X, SERVE_Y); // step up to the bar
         }
       }
       s.el.classList.toggle('busy', !!s.target);
       s.el.classList.toggle('idle', !s.target);
+
+      // Busy staff in the cluster slide along the bar to their customer.
+      // Idle staff sway a little from side to side.
+      let x = s.x;
+      if (!s.target) x = s.x + (sway() - 0.5) * 7;
+      else if (mode === 'cluster') x = s.x + Math.max(-STAFF_REACH, Math.min(STAFF_REACH, (s.target.x - s.x) * 0.5));
+      s.curX = x;
+      s.el.style.left = `${x}%`;
     });
   };
 

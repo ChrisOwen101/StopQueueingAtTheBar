@@ -10,19 +10,13 @@ Hosted on Cloudflare Workers, on the team's current Cloudflare account (set up b
 - **Goal:** Get people to stop, in a funny way. The site is a petition plus a merch route (beer mats for pubs).
 - **Name:** "Don't Queue At The Bar". It was earlier called "Stop Queueing at the Bar" and "Bar the Line / The Bar Party" (see the old notes at the bottom).
 - **Name for the right behaviour:** **The Cluster**. The wrong behaviour is **The Single File**.
-- **Tone:** Direct, dry British humour. Short, punchy lines. The format is mock-scientific (the "Bar Rule", rulings, alignment chart), copied from cuberule.com.
+- **Tone:** Direct, dry British humour. Short, punchy lines.
 - **Gender-neutral language (always):** Never use gendered terms for pub staff or the people in the jokes. Say **barperson** (never barman, barmaid, bartender-as-"he"), **bar staff**, or **landlord** (neutral here). Refer to staff with **they/them/their**, never he/she/him/his/her. This applies to all copy: page text, meta/OG/Twitter tags, `site.webmanifest`, beer mats (`scripts/build-mats.mjs`), the petition and any new docs. Before finishing any copy change, grep `public/`, `scripts/` and `src/` for `barman|barmen|barmaid|\bhe\b|\bhis\b|\bhim\b|\bshe\b|\bher\b`.
 - **Look:** Very bold. Huge lowercase type. One idea per full-screen colour block, scrolling down a long page. Simple diagrams with animation. No photos.
 
-## Real facts the page uses
+## Facts and claims
 
-Source: [East London Times, 29 Aug 2026](https://eastlondontimes.co.uk/local/hackney/hackney-church-brew-co-sales-spike-after-single-file-queue-ban-hackney-2026/), which reports Hamish Glenn (Broadsheet London), MyLondon and YouGov.
-
-- Hackney Church Brew Co posted on 14 Aug 2026: "A BAR IS NOT A POST OFFICE". Their bar is about 20 ft with 4 staff.
-- Like-for-like sales rose **25%** on the following Thursday (£3.50 pints) when people spread along the bar. Footfall was steady; spend per head rose.
-- YouGov: **40%** prefer single-file, **39%** prefer along the bar. London: only 37% back single-file. Midlands, North and Wales: 42%. Ages 25 to 49 favour along the bar most.
-- The site is **not affiliated** with Hackney Church Brew Co and says so in the footer. Consider telling them.
-- Everything else (the animated sim scores, alignment chart, rulings) is jokes.
+The page no longer quotes outside stats or sources (the Hackney Church Brew Co +25% and the YouGov split were removed). The animated sim scores are illustrative, not real data. Background if it's ever needed: [East London Times, 29 Aug 2026](https://eastlondontimes.co.uk/local/hackney/hackney-church-brew-co-sales-spike-after-single-file-queue-ban-hackney-2026/).
 
 ## Project layout
 
@@ -55,23 +49,20 @@ No build step. Edit the files in `public/` and deploy.
 ## Page structure (`public/index.html`)
 
 1. Hero: the name and "It's a pub. Not a post office." with a bobbing scroll hint.
-2. Story: "Stand on the sticker" (2020), "it ended" (`#after`), "20 feet of bar".
-3. Evidence (`#hackney`): "A bar is not a post office", count-up **+25%**, YouGov bars.
-4. The Bar Rule (`#rule`): ① The Single File (red), ② The Cluster (green), and a side-by-side "Same pub. Same Thursday." scoreboard.
-5. How to do The Cluster (`#howto`): 4 steps (walk to the bar, pick a gap, catch an eye, trust the barperson).
-6. Hazard Perception Test (`#test`): a teaser with a link out to `hazard.html`. The tests live on their own pages.
-7. Additional Bar Rulings (`#rulings`): The Round, The Hoverer, The Phantom Queue, alignment chart, The Landlord.
-8. Beer mats (`#mats`): the front (logo badge) and the back as SVG images, marked "coming soon". Nothing is for sale yet.
-9. Petition (`#petition-section`): pledges for pubs, the public and Parliament (mock), plus the form.
-10. Footer: sources, the non-affiliation line, and the beer fund line ("Made with 🍻 by people who just want a pint. Chip in to the beer fund. No queue."), a plain link to a Stripe Payment Link. It's a tip jar for a few people running a campaign, not a charity, so never call it a donation to charity or mention Gift Aid.
+2. The problem (`#problem`, red): The Single File animation. One queue, one barperson working, the rest idle.
+3. The solution (`#solution`, green): The Cluster animation, then the side-by-side "Same pub. Same Thursday." scoreboard.
+4. How to do The Cluster (`#howto`): 4 steps (walk to the bar, pick a gap, catch an eye, trust the barperson).
+5. Hazard Perception Test (`#test`): a teaser with a link out to `hazard.html`. The tests live on their own pages.
+6. Beer mats (`#mats`): the front (logo badge) and the back as SVG images, marked "coming soon". Nothing is for sale yet.
+7. Petition (`#petition-section`): pledges for pubs, the public and Parliament (mock), plus the form.
+8. Footer: the beer fund line ("Made with 🍻 by people who just want a pint. Chip in to the beer fund. No queue."), a plain link to a Stripe Payment Link. It's a tip jar for a few people running a campaign, not a charity, so never call it a donation to charity or mention Gift Aid.
 
-A **fixed timeline rail** sits on the left and tracks the 9 chapters above. Anchors it uses: `#covid`, `#after`, `#hackney`, `#rule`, `#howto`, `#test`, `#rulings`, `#mats`, `#petition-section`. If you add, rename or remove a chapter, update both the `<nav class="timeline">` list and the matching section `id`s.
+A **fixed timeline rail** sits on the left and tracks the 6 chapters above. Anchors it uses: `#problem`, `#solution`, `#howto`, `#test`, `#mats`, `#petition-section`. If you add, rename or remove a chapter, update both the `<nav class="timeline">` list and the matching section `id`s.
 
 ## How the interactive bits work (`public/script.js`)
 
 - **Reveal:** `.reveal` sections fade up via IntersectionObserver. The `js` class on `<html>` gates this, so the page works without JS.
-- **Count-ups:** elements with `data-count` (plus optional `data-prefix` and `data-suffix`) animate when scrolled to.
-- **Pub scenes:** `.scene[data-mode="single"|"cluster"]` run a small simulation (seeded random, same arrivals, 4 staff). In single mode only one member of staff can reach the queue front, so it serves far fewer pints. It starts and stops with visibility. Tunables are the constants near `STAFF_X`, `SERVICE_TICKS`, `ARRIVAL_CHANCE`.
+- **Pub scenes:** `.scene[data-mode="single"|"cluster"]` run a small simulation (seeded random, same arrivals, 4 staff). In single mode only one member of staff can reach the queue front, so it serves far fewer pints. Each served customer gets a pint slid across the bar, then walks off with it. Idle staff sway side to side; in the cluster, busy staff slide along the bar to their customer and some customers stand a row back (`BACK_ROW_CHANCE`) until a gap opens. It starts and stops with visibility. Tunables are the constants near `STAFF_X`, `SERVICE_TICKS`, `ARRIVAL_NONE`/`ARRIVAL_PAIR`, `BACK_ROW_CHANCE`.
 - **Timeline rail:** computed from scroll position. It hides on the hero, fills dot to dot, marks the active chapter (`.active`) and passed ones (`.done`).
 - **Petition form:** POSTs JSON to `/api/sign`, and shows the running total from `/api/count`.
 - `prefers-reduced-motion` is respected throughout. Otherwise a fixed **pause animations** button (built in `script.js`, hidden for reduced-motion users) stops the sims, scroll hint and mat wobble (WCAG 2.2.2).
@@ -125,7 +116,6 @@ npm run check      # wrangler deploy --dry-run
 - **Beer fund link:** the footer links to a Stripe **test mode** Payment Link (`buy.stripe.com/test_…`, one place in `public/index.html`). Test links only take Stripe's test cards, so no real money arrives. Before promoting the site, create the live version in the Stripe Dashboard (switch off test mode, Payment Links -> New -> "Customers choose what to pay") and swap the href. It's a plain outbound link, so the CSP in `src/worker.js` doesn't need changing.
 - **Beer mats:** no ordering route yet. Options are an email sign-up only, or a shop (Shopify, Stripe, Printful).
 - **Domain and contact details:** none yet. Custom domain goes under Workers & Pages -> the Worker -> Settings -> Domains & Routes. Earlier ideas: `bartheline.uk`, `thebarparty.uk`, `stoptheline.uk` (availability unchecked).
-- **Hackney Church Brew Co:** the page quotes and names them. Consider giving them a heads-up.
 - **Not done:** press release, logo, OG share image, favicon.
 - **Possible extras:** an admin export of signatures, a "share" button, a pub-pledge form for venues.
 
