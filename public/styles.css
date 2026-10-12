@@ -54,44 +54,6 @@ a:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; border-r
 }
 .skip:focus-visible { translate: 0 0; outline: none; }
 
-/* Pause control (built by script.js): WCAG 2.2.2 for the sims and the mat wobble. */
-.motion-toggle {
-  position: fixed;
-  left: 10px;
-  bottom: 10px;
-  z-index: 60;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0 14px;
-  font: inherit;
-  font-weight: 900;
-  font-size: 0.85rem;
-  letter-spacing: 0.04em;
-  text-transform: lowercase;
-  color: var(--cream);
-  background: var(--ink);
-  border: 2px solid rgba(255, 244, 220, 0.6);
-  border-radius: 999px;
-  cursor: pointer;
-}
-.motion-toggle svg { width: 16px; height: 16px; flex: none; fill: currentColor; }
-.motion-toggle .play { display: none; }
-.motion-toggle[aria-pressed="true"] .pause { display: none; }
-.motion-toggle[aria-pressed="true"] .play { display: block; }
-.motion-toggle:hover { border-color: var(--amber); }
-.motion-toggle:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
-@media (max-width: 900px) {
-  .motion-toggle { padding: 0; justify-content: center; width: 44px; }
-  .motion-toggle .txt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-}
-
-.paused .mat,
-.paused .scroll-hint,
-.paused .promo { animation-play-state: paused; }
-
 /* ---------- Screens (full-viewport sections) ---------- */
 
 .screen {
@@ -152,7 +114,7 @@ h1, h2, h3 { text-wrap: balance; }
   margin: 0.8em 0;
 }
 
-.c-red .small { opacity: 1; } /* 80% cream on red falls under 4.5:1 */
+.c-red .small, .c-blue .small { opacity: 1; } /* 80% cream on red or blue falls under 4.5:1 */
 .dim { opacity: 0.55; }
 .accent { color: var(--amber); }
 .mega + .mid, .big + .mid, .mid + .big { margin-top: 1em; }

@@ -28,7 +28,7 @@
   border-radius: 999px;
   color: var(--cream);
   font-weight: 800;
-  font-size: 0.95rem;
+  font-size: 1rem;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -38,13 +38,21 @@
 
 .hz-page.c-blue { background: var(--blue); }
 
-.hz-title {
+/* Labels (the header's test name, the clip count) use the Label scale. */
+.hz-title,
+.hpt-clipno {
   font-weight: 900;
-  font-size: clamp(0.7rem, 1.6vw, 0.85rem);
+  font-size: clamp(0.9rem, 1.8vw, 1.3rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0.75;
-  text-align: right;
+}
+
+.hz-title { text-align: right; }
+
+/* On a phone the header would wrap; the line above the clip (.hpt-head) names the test. */
+@media (max-width: 600px) {
+  .hz-title { display: none; }
 }
 
 /* ---------- Player layout ---------- */
@@ -73,7 +81,6 @@
 
 .hpt-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
 .hpt-head .small { margin: 0; }
-.hpt-clipno { font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; font-size: clamp(0.75rem, 1.6vw, 0.95rem); }
 
 .hpt-panel { min-height: 14rem; padding-top: 0.6rem; }
 
@@ -166,6 +173,7 @@
 }
 
 .hpt-cover[hidden] { display: none; }
+.hpt[data-state="done"] .hpt-cover { background: #0e0e13; }
 .hpt-cover .small { margin: 0; }
 
 .hpt-start,
@@ -188,7 +196,7 @@
 .hpt-start:focus-visible, .hpt-again:focus-visible,
 .hpt-btn:focus-visible, .hpt-opt:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
 
-.hpt-note { font-weight: 600; font-size: clamp(0.8rem, 1.8vw, 1.05rem); opacity: 0.7; }
+.hpt-note { font-weight: 600; font-size: clamp(1rem, 1.8vw, 1.1rem); opacity: 0.7; }
 
 .hpt-score {
   font-size: clamp(3.2rem, 12vw, 8rem);
@@ -223,6 +231,7 @@
 }
 
 .hpt-btn svg { width: 20px; height: 20px; fill: currentColor; }
+.hpt-btn:hover:not(:disabled) { border-color: var(--amber); }
 .hpt-btn:disabled { opacity: 0.35; cursor: default; }
 .hpt .i-pause, .hpt .i-off { display: none; }
 .hpt[data-running] .i-play { display: none; }
@@ -262,7 +271,7 @@
 .hpt-time {
   flex: none;
   font-weight: 800;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-variant-numeric: tabular-nums;
   opacity: 0.8;
 }
@@ -304,7 +313,7 @@
   gap: 0.9em;
   padding: 0.8em 1em;
   border: 3px solid rgba(255, 244, 220, 0.5);
-  border-radius: 18px;
+  border-radius: 14px;
   background: transparent;
   color: var(--cream);
   font: inherit;
@@ -359,7 +368,7 @@
   line-height: 1.3;
 }
 
-.hpt-answer { margin-top: 0.8em; font-weight: 700; opacity: 0.9; }
+.hpt-answer { margin-top: 0.8em; font-weight: 700; } /* full cream: 90% on red is 3.9:1 */
 
 .hpt-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.6rem; margin-top: 1.2rem; }
 .hpt-actions .hpt-again { font-size: 1.15rem; }
@@ -385,20 +394,20 @@
   text-align: center;
 }
 
-.hz-hub-title .mega { font-size: clamp(2.8rem, 9vw, 8rem); }
-
+/* Each door is a poster: centred, like every screen on the home page. */
 .hz-door {
   display: grid;
   align-content: center;
-  justify-items: start;
+  justify-items: center;
   gap: 0.8rem;
   min-height: 48svh;
   padding: clamp(2.2rem, 7vh, 5rem) clamp(1.5rem, 5vw, 4.5rem);
+  text-align: center;
   text-decoration: none;
 }
 
 .hz-door .big { text-transform: lowercase; }
-.hz-door p:not(.big) { max-width: 32ch; font-weight: 600; font-size: clamp(1.05rem, 1.8vw, 1.35rem); line-height: 1.4; }
+.hz-door p { max-width: 32ch; font-weight: 600; font-size: clamp(1.05rem, 1.8vw, 1.35rem); line-height: 1.4; text-wrap: pretty; }
 
 .hz-go {
   margin-top: 0.8rem;
@@ -421,7 +430,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hpt-opt, .hpt-verdict, .hpt[data-state="asking"] .hpt-badge { animation: none; }
-  .hz-go, .hpt-start, .hpt-again { transition: none; }
+  .hz-go, .hpt-start, .hpt-again, .hpt-opt { transition: none; }
+  .hpt-opt:hover { translate: none; }
 }
 
 /* Landscape phones: every pixel of height counts. */
@@ -433,12 +443,12 @@
   .hpt-btn { width: 36px; height: 36px; }
   .hpt-btn svg { width: 16px; height: 16px; }
   .hpt-mark { width: 9px; height: 9px; border-width: 1.5px; }
-  .hpt-time { font-size: 0.8rem; }
+  .hpt-time { font-size: 0.9rem; }
   .hpt-h { font-size: 1.9rem; }
   .hpt-q { font-size: 1.15rem; }
   .hpt-opts { gap: 0.5rem; margin-top: 0.7rem; }
-  .hpt-opt { padding: 0.55em 0.8em; font-size: 0.92rem; }
+  .hpt-opt { padding: 0.55em 0.8em; font-size: 1rem; }
   .hpt-say { font-size: 1rem; }
-  .hpt-intro, .hpt-wait { font-size: 0.95rem; }
+  .hpt-intro, .hpt-wait { font-size: 1rem; }
   .hpt-stage { border-width: 3px; border-radius: 16px; }
 }
