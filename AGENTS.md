@@ -16,7 +16,12 @@ Hosted on Cloudflare Workers, on the team's current Cloudflare account (set up b
 
 ## Facts and claims
 
-The page no longer quotes outside stats or sources (the Hackney Church Brew Co +25% and the YouGov split were removed). The animated sim scores are illustrative, not real data. Background if it's ever needed: [East London Times, 29 Aug 2026](https://eastlondontimes.co.uk/local/hackney/hackney-church-brew-co-sales-spike-after-single-file-queue-ban-hackney-2026/).
+The maths and history screens quote real, dated sources, each with a visible linked source line on the page and in the footer's sources line. **`RESEARCH.md` is the register:** every figure, date and quote on the site has a row there with its source, type, confidence and a click-through box, plus the derived arithmetic, reserve figures and an avoid list. Nothing factual goes on the site without a row in it. Every row is still unverified (the research could only read search extracts), so work through its before-promoting checklist before the site is promoted.
+
+- The animated sim scores and the maths screen are illustrative, and the page says so ("worked example", "Illustrative, like the sims").
+- The laws quoted are England's; the page says so and notes that Wales was the last to drop table service.
+- COVID normalised the bar queue; it didn't invent it, and the rules never said to queue at the bar. Keep the copy that way.
+- **Hackney Church Brew Co is deliberately unused** (its +25% and "three times as long" are the brewery's own claims, and other outlets reported different numbers). The East London Times article earlier docs cited could not be found; don't cite it.
 
 ## Project layout
 
@@ -24,8 +29,8 @@ The page no longer quotes outside stats or sources (the Hackney Church Brew Co +
 public/            Static site (served by Workers assets)
   _headers         Security headers (CSP and friends) for every response; never served itself
   index.html       All page copy and sections
-  styles.css       Colour blocks, type, scenes, timeline, beer mats, form
-  script.js        Reveal, count-ups, pub simulation, timeline rail, petition form
+  styles.css       Colour blocks, type, scenes, stat bars, history strip, timeline, beer mats, form
+  script.js        Reveal, days-since counter, history strip, pub simulation, timeline rail, petition form
   hazard.html      Hazard perception hub: two buttons, customer test and barperson test
   hazard.js        Shared test player (HazardTest.init): playback, questions, scoring, sound, speech
   hazard.css       Test page chrome and layout, player controls, hub cards
@@ -42,6 +47,7 @@ wrangler.jsonc     Worker, assets and Hyperdrive config
 package.json       wrangler + pg; scripts: dev, deploy, check, db:init:local
 .github/workflows/deploy.yml   Deploys to Cloudflare on push to main
 README.md          Setup steps
+RESEARCH.md        Every figure, date and quote on the site, with sources and a checklist
 ```
 
 No build step. Edit the files in `public/` and deploy.
@@ -55,19 +61,24 @@ No build step. Edit the files in `public/` and deploy.
 1. Hero: the name and "It's a pub. Not a post office." with a bobbing scroll hint.
 2. The problem (`#problem`, red): The Single File animation. One queue, one barperson working, the rest idle.
 3. The solution (`#solution`, green): The Cluster animation, then the side-by-side "Same pub. Same Thursday." scoreboard.
-4. How to do The Cluster (`#howto`): 4 steps (walk to the bar, pick a gap, catch an eye, trust the barperson).
-5. Hazard Perception Test (`#test`): a teaser with a link out to `hazard.html`. The tests live on their own pages.
-6. Beer mats (`#mats`): the front (logo badge) and the back as SVG images, marked "coming soon". Nothing is for sale yet.
-7. Petition (`#petition-section`): pledges for pubs, the public and Parliament (mock), plus the form.
-8. Footer: the beer fund line ("Made with 🍻 by people who just want a pint. Chip in to the beer fund. No queue."), a plain link to a Stripe Payment Link. It's a tip jar for a few people running a campaign, not a charity, so never call it a donation to charity or mention Gift Aid.
+4. The maths (`#maths`, ink): "25 minutes. Or six." Two bars (twenty orders through one spot on the bar vs four staff along it), the Friday capacity line (one spot can do 48 an hour), a "worked example" stamp and a source line that says it's simple arithmetic.
+5. How we got here (`#history`, pink): "Blame 2020. Mostly." A horizontal strip of eight floor-sticker stops, from Kate Fox's invisible queue (1996) through the 2020–21 rules to YouGov's 40/39 split (Sep 2025), ending on a live "days since you were allowed back at the bar" counter. Under it, a line noting the rules are England's and that Wales was last. "Eight stops" is written in the copy, so change it if the number of stops changes (the "1 of 8" total comes from the DOM).
+6. How to do The Cluster (`#howto`): 4 steps (walk to the bar, pick a gap, catch an eye, trust the barperson).
+7. Hazard Perception Test (`#test`): a teaser with a link out to `hazard.html`. The tests live on their own pages.
+8. Beer mats (`#mats`): the front (logo badge) and the back as SVG images, marked "coming soon". Nothing is for sale yet.
+9. Petition (`#petition-section`): pledges for pubs, the public and Parliament (mock), plus the form.
+10. Footer: the sources line for the maths and history screens, then the beer fund line ("Made with 🍻 by people who just want a pint. Chip in to the beer fund. No queue."), a plain link to a Stripe Payment Link. It's a tip jar for a few people running a campaign, not a charity, so never call it a donation to charity or mention Gift Aid.
 
-A **fixed timeline rail** sits on the left and tracks the 6 chapters above. Anchors it uses: `#problem`, `#solution`, `#howto`, `#test`, `#mats`, `#petition-section`. If you add, rename or remove a chapter, update both the `<nav class="timeline">` list and the matching section `id`s.
+A **fixed timeline rail** sits on the left and tracks 8 chapters. Anchors it uses: `#problem`, `#solution`, `#maths`, `#history`, `#howto`, `#test`, `#mats`, `#petition-section`. If you add, rename or remove a chapter, update both the `<nav class="timeline">` list and the matching section `id`s.
 
 ## How the interactive bits work (`public/script.js`)
 
 - **Reveal:** `.reveal` sections fade up via IntersectionObserver. The `js` class on `<html>` gates this, so the page works without JS.
 - **Pub scenes:** `.scene[data-mode="single"|"cluster"]` run a small simulation (seeded random, same arrivals, 4 staff). In single mode only one member of staff can reach the queue front, so it serves far fewer pints. Each served customer gets a pint slid across the bar, then walks off with it. Idle staff sway side to side; in the cluster, busy staff slide along the bar to their customer and some customers stand a row back (`BACK_ROW_CHANCE`) until a gap opens. It starts and stops with visibility. Tunables are the constants near `STAFF_X`, `SERVICE_TICKS`, `ARRIVAL_NONE`/`ARRIVAL_PAIR`, `BACK_ROW_CHANCE`.
 - **Timeline rail:** computed from scroll position. It hides on the hero, fills dot to dot, marks the active chapter (`.active`) and passed ones (`.done`).
+- **Bars (`#maths`):** the fills grow from 0 when the screen is revealed (CSS `clip-path` on `.js .reveal .fill`), the single file first. Full width with reduced motion or no JS. On ink the cluster bar is amber, not green (Snug Green on ink is too low contrast).
+- **Days since (`[data-since]`, the today stop):** at load the script writes the real figure ("1,911 days" on 12 Oct 2026, counted by local calendar day from 19 Jul 2021) into `.count-txt`, so screen readers, print and copy always get it. The count-up is visual only: an `aria-hidden` twin (`.count-vis`, shown through `data-shown`) runs while `.is-counting` hides the real text visually, then clears. Without JS the HTML says "over five years".
+- **History strip (`.strip`):** a native horizontal scroller with `scroll-snap`, so it swipes and scrolls with no JS. The script adds the prev/next buttons (`aria-disabled` at the ends, never `disabled`, so focus stays), ArrowLeft/ArrowRight/Home/End when the strip itself has focus, the "n of 8" counter (`aria-live`) and the `.current` sticker. The strip starts at the content gutter and bleeds to the right only, with `scroll-padding-right: var(--sx)`, so the rail never sits on it. The rail's active label is hidden on `#maths` and `#history` unless the rail is hovered or focused. Stickers are slapped down once on reveal (about a second, so no pause control needed). `@media print` wraps all eight stops.
 - **Petition form:** POSTs JSON to `/api/sign`, and shows the running total from `/api/count`.
 - `prefers-reduced-motion` is respected throughout. Otherwise a fixed **pause animations** button (built in `script.js`, hidden for reduced-motion users) stops the sims, scroll hint and mat wobble (WCAG 2.2.2).
 - **Tell a mate:** after a successful signature the form shows a share button (native share sheet, or copies the link).
@@ -125,10 +136,13 @@ npm run check      # wrangler deploy --dry-run
 - **Hyperdrive error 10157 (config not found):** the id in `wrangler.jsonc` must exist in the account Wrangler is logged into. If `wrangler deploy` fails with 10157, you are probably logged into the wrong account (`npx wrangler whoami`), or the id changed. Check with `npx wrangler hyperdrive list`. `wrangler dev` may rewrite the id.
 - **Old account leftovers:** the previous personal account may still host `dont-queue-at-the-bar` and the older `stop-queueing-at-the-bar` Workers, plus the `bar-petition` Hyperdrive config. They are unused. Clean them up there if you still have access.
 - **Testing animations:** In an automated or hidden browser tab, scroll events and IntersectionObservers don't fire reliably. Force them by dispatching a `scroll` event or adding `in` to `.reveal` elements.
+- **History strip layout traps:** `.history` needs `grid-template-columns: minmax(0, 1fr)` and the strip needs `min-width: 0`, or the strip's `max-content` width widens the screen's grid column and the header slides off-screen. Draw nothing inside the strip with `100vw` offsets (the floor tape is one `::before` on `.stops`): a `right: -100vw` pseudo-element adds hundreds of pixels of empty scroll past the last card. A Playwright element screenshot of a section taller than the viewport resizes the viewport and makes Chrome re-snap the strip, so capture strip states with a tall viewport.
+- **`--sx`:** `.screen` side padding is the `--sx` custom property (6vw, 52px below 900px), which the strip uses to bleed into the right gutter. Change the padding there, not with a new `padding` rule.
 - **Count endpoint:** the first call after a deploy once returned a Cloudflare 1042 error, then worked. Watch for it.
 
 ## Open items
 
+- **Click through `RESEARCH.md` before promoting.** Every source on the maths and history screens was read from search extracts. Open each URL, check the quoted words, swap the 2020 guidance link for the July 2020 version, and tick the rows.
 - **Rotate the Neon password.** It was pasted into chat during setup. Reset it in Neon (Roles -> `neondb_owner`), then run `npx wrangler hyperdrive update 88c5a2e2902f470995344cd16411c3fc --connection-string=...` (logged into the current account). The old personal-account Hyperdrive config also holds the password, so delete it or update it too. Better still, make a limited role that can only read and write `signatures`.
 - **Spam protection:** add Cloudflare Turnstile or a WAF rate-limit rule before promoting the site.
 - **Privacy:** add a privacy notice and a way to delete a signature on request (UK GDPR and PECR). The consent box covers the petition plus campaign and beer mat updates, so make sure the notice matches.

@@ -132,7 +132,7 @@ A rotation of saturated, flat pub-sign colours, one per screen, with cream and i
 - **Scene Night** (#0e0e13): The stage behind every pub simulation.
 - **Bar Wood** (#c98a3e) with **Bar Wood Edge** (#8a5a22): The bar counter in the sim only.
 
-Sim customer dots also use four light tints (#7f95ff, #4ad295, #ff6b76, #ffd36a) to tell people apart; they exist only inside `.scene`.
+Sim customer dots also use four light tints (#7f95ff, #4ad295, #ff6b76, #ffd36a) to tell people apart; they exist only inside `.scene` and the history strip's tiny `.mini` stages.
 
 ### Named Rules
 **The Whole-Screen Rule.** Colour is applied to entire screens (`.c-cream`, `.c-ink`, `.c-green`, `.c-amber`, `.c-red`, `.c-pink`, `.c-blue`), never sprinkled as tints on a neutral page. Text on each block is always cream or ink, whichever is the higher contrast.
@@ -149,7 +149,7 @@ Sim customer dots also use four light tints (#7f95ff, #4ad295, #ff6b76, #ffd36a)
 
 ### Hierarchy
 - **Mega** (900, `clamp(3rem, 12vw, 11rem)`, 0.95, -0.04em, lowercase): One statement per screen. `.mega.upper` is the uppercase variant at `clamp(2.6rem, 10.5vw, 9.5rem)`.
-- **Stat** (900, `clamp(6rem, 30vw, 26rem)`, 0.85, -0.06em, tabular numerals): The giant counted-up number (e.g. +25%).
+- **Stat** (900, `clamp(6rem, 30vw, 26rem)`, 0.85, -0.06em, tabular numerals): The giant counted-up number. Not on the page at present (the maths screen's "25 minutes. Or six." is a Mega); the class was removed with the old +25% screen.
 - **Big** (800, `clamp(2.2rem, 7vw, 6rem)`, 1, -0.03em): Secondary statements and rule titles.
 - **Mid** (600, `clamp(1.3rem, 3.2vw, 2.6rem)`, 1.2): The supporting line under a headline.
 - **Small** (500, `clamp(1rem, 2vw, 1.6rem)`, 0.04em, lowercase, 80% opacity): Captions and asides.
@@ -169,7 +169,7 @@ Every section is a `.screen`: at least one full viewport tall, a centred grid wi
 
 `scroll-snap-type: y proximity` lets screens settle without trapping the visitor. Side-by-side comparisons use an auto-fit grid (`minmax(min(100%, 420px), 1fr)`, 1.5rem gap) and stack on narrow screens. The alignment chart is a fixed 3x3 grid with an 8px gap.
 
-A fixed **timeline rail** sits on the left edge and tracks the eight chapters. Below 900px, screens gain 52px side padding to make room for it, and chapter labels appear only on tap or hover.
+A fixed **timeline rail** sits on the left edge and tracks the eight chapters (`#problem`, `#solution`, `#maths`, `#history`, `#howto`, `#test`, `#mats`, `#petition-section`). Below 900px, screens gain 52px side padding (the `--sx` custom property on `.screen`) to make room for it, and chapter labels appear only on tap or hover.
 
 Mobile type steps down at 600px (`.mega` to 10.5vw). Content must read at a glance on a phone in a pub.
 
@@ -214,7 +214,7 @@ Chunky and round. Pills (999px) for buttons, tags and the timeline rail; 14px fo
 ### Navigation (timeline rail)
 - **Style:** a fixed vertical ink pill (90% opacity, 2px cream border at 30%), eight 14px dots joined by a grey track with an amber progress fill.
 - **States:** done dots fill amber; the active dot scales 1.5x, gets a cream border and an amber halo. Labels (ink pill with an amber uppercase kicker) appear on the active, hovered or focused dot.
-- **Behaviour:** hidden on the hero, fades in after it. On narrow screens only dots show until tap or hover.
+- **Behaviour:** hidden on the hero, fades in after it. On narrow screens only dots show until tap or hover. On `#maths` and `#history` the active label is hidden at every width unless the rail is hovered or focused, because the bars and the history strip run from the content gutter and the label would sit on them.
 
 ### Pub scene (signature component)
 A 16:11 near-black stage with a cream 4px border and 24px radius. A wooden bar runs across the top; staff are cream dots (dim when idle, amber ring when busy), customers are pink or tinted dots, and the person being served turns amber and scales 1.25x. A score block at bottom right shows pints served in a large amber tabular number. Movement eases over 700ms. In "single" mode customers form a line; in "cluster" mode they spread along the bar.
@@ -223,7 +223,18 @@ A 16:11 near-black stage with a cream 4px border and 24px radius. A wooden bar r
 A 3x3 grid of ink cells with cream text and amber uppercase headings; the centre cell is Quiz Night Blue and the bottom row is Pint Glass Red.
 
 ### Bars (stat bars)
-A tall 16px-radius track in 12% ink with an ink fill, or red for the alternative. The fill grows from 0 when its screen is revealed.
+A tall 16px-radius track with a flat fill that grows from 0 (a `clip-path` wipe) when its screen is revealed; full width with reduced motion or no JS. On the ink maths screen the track is 12% cream, the Single File fill is Pint Glass Red and the Cluster fill is Amber Pint, because Snug Green on ink is only 2.2:1 and the better number is the thing to look at. Figures sit above each bar in 900 lowercase with tabular numerals.
+
+### Source lines
+`.src`: 1rem, 500 weight, 75% opacity, underlined links in the text colour. Every real figure, date or quote carries one (publisher and date, linked); worked examples say what they are instead ("Simple arithmetic, not a survey … Illustrative, like the sims"). Paired with a `worked example` stamp where the figure is illustrative.
+
+### History strip (signature component)
+A horizontal timeline inside the pink `#history` screen, built to look nothing like the rail: in the page flow, horizontal, big dated stickers, cards, no dots, no amber progress.
+- **Floor tape:** one 4px dashed ink line (45% opacity) across the whole strip, drawn once on `.stops::before`.
+- **Stickers:** the 2020 floor sticker reused as each stop's date. 6.75rem cream disc, 3px dashed ink border, tilted -4deg, the year at 1.6rem 900 and the day and month above at 1rem. The current stop's sticker turns solid and scales to 1.08. On reveal they are slapped down one after another (scale 1.6 to 1 with a fade, 0.45s each, 70ms apart, about a second in all).
+- **Cards:** cream, 24px radius, ink text: a tiny Scene Night stage (`.mini`, inline SVG in the sims' vocabulary: wood bar, cream staff, dim idle staff, pink and tinted customers), a lowercase 900 heading, one dry line and a source line pinned to the bottom. All cards are the same height. The last card ("today") is inverted (ink, cream text) and carries the screen's one amber: the live days-since number.
+- **Scroll:** native horizontal scroll with mandatory centre snap. The strip starts at the content gutter and bleeds to the right edge only, so the rail never covers it; on a phone the current card fills the content column and the next one peeks in from the right gutter.
+- **Controls:** 56px outlined ink circle buttons with SVG chevrons either side of an uppercase "n of 8" count; at the ends a button fades to 30% and is `aria-disabled`. The controls appear only with JS. Under the strip, a `.src` line says the rules shown are England's.
 
 ### Beer mats
 Real print artwork loaded from `/mats/*.svg` (generated from the logo by `scripts/build-mats.mjs`), shown at `clamp(220px, 30vw, 380px)`, tilted and wobbling, with a flat offset drop shadow.
@@ -258,7 +269,7 @@ The one approved exception to the dot-diagram rule, and only on the hazard test 
 - **Do** mark jokes as jokes and keep real, cited figures visually distinct.
 
 ### Don't:
-- **Don't** use photos or stock imagery; the only illustration is the animated dot diagram, the beer mat art and the hazard test cartoons (see "Hazard test illustration").
+- **Don't** use photos or stock imagery; the only illustration is the animated dot diagram (and its static `.mini` stages on the history strip), the beer mat art and the hazard test cartoons (see "Hazard test illustration").
 - **Don't** use gradients, soft shadows, glass cards or hairline borders.
 - **Don't** add small accent colours to a neutral page; colour belongs to whole screens.
 - **Don't** introduce web fonts or a second typeface.

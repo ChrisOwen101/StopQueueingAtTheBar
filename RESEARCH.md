@@ -12,6 +12,8 @@ Location codes: **M** is the maths screen (`#maths`), **H1** to **H8** are the s
 
 | Where | Wording on the page | Source | Type | Conf. | Checked |
 |---|---|---|---|---|---|
+| M | 25 minutes. Or six. Twenty orders, 75 seconds each. One spot on the bar, or four staff along it. | Derived: plain arithmetic (see below). Stamped “worked example” on the page, with “Simple arithmetic, not a survey … Illustrative, like the sims.” | derived | High | [ ] |
+| M | Friday night, 90 orders an hour? One spot on the bar can do 48. The line just grows. | Derived: 3,600 ÷ 75 = 48 an hour. The 90 is an illustrative Friday demand, not a measurement | derived | High | [ ] |
 | H1 | “The bar counter is the only place in Britain in which anything is sold or served without the formation of a queue.” | Kate Fox, *Passport to the Pub: The Tourist’s Guide to Pub Etiquette* (Brewers and Licensed Retailers Association, 1996), http://www.sirc.org/publik/ptpchap1.html | A | High that it exists, medium on exact wording | [ ] |
 | H2 | 20 Mar 2020. The Prime Minister asks pubs to close “tonight as soon as they reasonably can” | GOV.UK, “PM statement on coronavirus: 20 March 2020”, https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-20-march-2020 | P | High on the fact, medium on wording (the transcript is partly garbled) | [ ] |
 | H2 | Ordering at the bar won’t be rule-free again for 486 days | Derived: 20 Mar 2020 to 19 Jul 2021 (see below) | derived | High | [ ] |
@@ -24,7 +26,7 @@ Location codes: **M** is the maths screen (`#maths`), **H1** to **H8** are the s
 | H7 | 18 Sep 2025. YouGov: single file 40%, along the bar 39%, don’t know 21% | YouGov daily question, 18 Sep 2025, 5,914 GB adults: “And which would you prefer the system for ordering drinks be at pub bars?” https://yougov.co.uk/topics/consumer/survey-results/daily/2025/09/18/59cc2/3 | P | High | [ ] |
 | H8 | 1,911 days (on 12 Oct 2026) since you were allowed back at the bar, counted from 19 Jul 2021, England | Computed live in `script.js` from 19 Jul 2021 (SI 2021/848). Without JS the page says “over five years”, true from 19 Jul 2026 | derived | High | [ ] |
 | HW | Wales was the last to drop table service, on 28 January 2022 | Welsh Government, “Wales completes move to alert level 0”, https://www.gov.wales/wales-completes-move-alert-level-0 | P | High | [ ] |
-| F | The footer lists the sources above | as above | | | [ ] |
+| F | Sources: Kate Fox (1996), GOV.UK 20 Mar 2020, GOV.UK pub guidance (2020), SI 2020/1029, SI 2021/848, Welsh Government 28 Jan 2022, Time Out Jul 2023, YouGov 18 Sep 2025. “The pub sims and the queueing maths are worked examples, not measurements.” | The same links as the rows above. Keep it in step with the cards | | | [ ] |
 
 ## Derived figures (arithmetic, shown so anyone can check it)
 
@@ -96,12 +98,15 @@ Northern Ireland: pubs serving food 3 Jul 2020, others 23 Sep 2020; indoor 24 Ma
 - “COVID invented the bar queue.” Say it normalised it.
 - “The government told us to queue single file at the bar.” It told us not to gather at the bar.
 - Calling the maths screen “Little’s law” or “random arrivals”. It is plain arithmetic for a fixed group of twenty.
+- “No queue. Ever.” before 2020. Bar queues were reported before the pandemic (see the nuances above).
+- “486 days before you could order at the bar.” Ordering at the bar was legal, if discouraged, from 4 Jul to 23 Sep 2020; the page says “won’t be rule-free again for 486 days”.
+- Laws quoted as UK-wide. The SIs are England’s; the page says so, and notes that Wales was last.
 - “Brits spend two months of their life waiting at the bar.” DataSparQ marketing, 2019, no method.
 - **Hackney Church Brew Co: deliberately unused.** The “+25% like-for-like” (from the managing director’s own Broadsheet op-ed, which itself says “One Thursday doesn’t constitute a scientific study”) is the brewery’s claim, and the Evening Standard reported 20%. “Nearly three times as long” (Metro, 19 Aug 2026) is an assertion with no data. Its pint price, bar length and staff count beyond the post’s “four members of staff” were not verified.
 - **The East London Times article** (29 Aug 2026) that earlier docs cited could not be found anywhere. Do not cite it.
 - @QueuesPub’s follower counts and founding year (the WSJ says 2022; the first dated evidence is July 2023). Naming and shaming pubs isn’t our tone anyway.
 - The “Super Saturday” and “Freedom Day” nicknames (not checked).
-- Tottenham’s “10,000 pints a minute”, “200 drinks an hour per bartender” and any average UK pub floor area or bar length (no source exists).
+- Tottenham’s “10,000 pints a minute”, “200 drinks an hour” per member of bar staff and any average UK pub floor area or bar length (no source exists).
 - Flipdish’s “80% of pub-goers want to order on apps” (the company’s own claim).
 
 ## Before-promoting checklist
