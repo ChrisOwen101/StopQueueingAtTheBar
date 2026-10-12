@@ -167,7 +167,7 @@ Running text: `.mid` and `.small` use `text-wrap: balance`, other paragraphs `pr
 
 Every section is a `.screen`: at least one full viewport tall, a centred grid with generous padding (`12vh` top and bottom, `6vw` sides), content centred and capped at 1200px in `.inner`. Text is centred throughout, except forms, bars and sim captions, which are left-aligned inside their own containers. Vertical rhythm comes from the screens, not from spacing inside them: whitespace is one idea of padding, not many small gaps.
 
-`scroll-snap-type: y proximity` lets screens settle without trapping the visitor. Side-by-side comparisons use an auto-fit grid (`minmax(min(100%, 420px), 1fr)`, 1.5rem gap) and stack on narrow screens. The alignment chart is a fixed 3x3 grid with an 8px gap.
+There is no scroll snapping: the page scrolls freely. Side-by-side comparisons use an auto-fit grid (`minmax(min(100%, 420px), 1fr)`, 1.5rem gap) and stack on narrow screens. The alignment chart is a fixed 3x3 grid with an 8px gap.
 
 A fixed **timeline rail** sits on the left edge and tracks the eight chapters. Below 900px, screens gain 52px side padding to make room for it, and chapter labels appear only on tap or hover.
 
@@ -200,6 +200,12 @@ Chunky and round. Pills (999px) for buttons, tags and the timeline rail; 14px fo
 - **Primary (petition submit):** Amber Pint fill, Last Orders Ink text, 900 weight at 1.4rem, `0.8em 1em` padding, no border.
 - **Hover:** scale to 1.03 over 150ms. **Disabled:** 60% opacity and `cursor: wait`.
 - **Focus:** 3px amber outline with 2px offset (inputs); all interactive elements must keep a visible focus ring.
+
+### How-to stage (`#howto`)
+- **Shape:** one sticky full-viewport screen inside a 4.5-viewport section. Copy left (or top on portrait phones), the dot-diagram pub right (or below), the same dark 24px stage as the sims.
+- **States:** intro (cream), steps 1 to 3 (blue), step 4 (green: The Cluster, done). Never amber as a block here, because amber is the ring, the sightline and the pint inside the diagram.
+- **Pills:** four outlined pills (3px `currentColor`, pill radius) joined by a 4px track at 30%; done pills fill with the text colour, the current one fills and scales to 1.18, the track fills as far as the scroll has got.
+- **Motion:** scroll-linked (walk, sightline, pint), with 0.2 to 1s transitions between states so it reverses cleanly. Copy crossfades (0.4s, 28px rise). Only the gap ring pulses on its own.
 
 ### Tags (stamps)
 - **Style:** transparent, 3px `currentColor` border, pill, uppercase 900 label, `0.45em 1.1em` padding, rotated -3deg.

@@ -322,6 +322,80 @@ if (!reduceMotion) {
   document.body.appendChild(toggle);
 }
 
+/* ---------- How to do The Cluster: one sticky stage, four steps, driven by scroll ----------
+   #howto is 4.5 viewports tall and its stage sticks to the top of the window. The scroll
+   position through the section is cut into five equal slices (the intro, then steps 1 to 4).
+   The stage gets the cumulative classes s1..s4, the block colour, and --k (0 to 1, how far
+   through the current slice) so the dots can act each step out as the visitor scrolls. The
+   markup ships the finished frame for visitors without JS; this resets it. */
+
+const howto = document.getElementById('howto');
+
+if (howto) guard('howto', () => {
+  const stick = howto.querySelector('.howto-stick');
+  const head = howto.querySelector('.howto-head');
+  const steps = [...howto.querySelectorAll('.steps > .step')];
+  const pills = [...howto.querySelectorAll('.step-nav li:not(.step-fill)')];
+  const N = steps.length;
+  if (!stick || !head || !N) return;
+  const SLICES = N + 1;
+  const BLOCK = (n) => (n === 0 ? 'c-cream' : n === N ? 'c-green' : 'c-blue');
+  const SERVED_AT = 0.8; // how far through the last step the pint reaches you
+  let current = -1;
+
+  const travel = () => howto.offsetHeight - stick.offsetHeight;
+
+  const setState = (n, k) => {
+    stick.style.setProperty('--k', k.toFixed(3));
+    stick.style.setProperty('--sp', (n === 0 ? 0 : Math.min(1, (n - 1 + k) / (N - 1))).toFixed(3));
+    stick.classList.toggle('served', n === N && k >= SERVED_AT);
+    if (n === current) return;
+    current = n;
+    for (let i = 1; i <= N; i++) stick.classList.toggle(`s${i}`, n >= i);
+    ['c-cream', 'c-blue', 'c-green'].forEach((c) => stick.classList.toggle(c, c === BLOCK(n)));
+    head.classList.toggle('active', n === 0);
+    steps.forEach((li, i) => li.classList.toggle('active', i + 1 === n));
+    pills.forEach((li, i) => {
+      li.classList.toggle('done', i + 1 < n);
+      const a = li.querySelector('a');
+      if (i + 1 === n) a.setAttribute('aria-current', 'step');
+      else a.removeAttribute('aria-current');
+    });
+  };
+
+  const update = () => {
+    const t = travel();
+    const p = t > 0 ? -howto.getBoundingClientRect().top / t : 1;
+    const x = Math.min(SLICES - 1e-6, Math.max(0, p * SLICES));
+    const n = Math.floor(x);
+    setState(n, p >= 1 ? 1 : x - n);
+  };
+
+  // A pill scrolls to the start of its step (the href is the fallback without this script).
+  pills.forEach((li, i) => {
+    li.querySelector('a').addEventListener('click', (event) => {
+      event.preventDefault();
+      const top = howto.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: top + ((i + 1 + 0.02) / SLICES) * travel(), behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  });
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      update();
+    });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  // Paper can't scroll: print the finished frame, then go back to where the reader was.
+  window.addEventListener('beforeprint', () => setState(N, 1));
+  window.addEventListener('afterprint', update);
+  update();
+});
+
 /* ---------- Timeline rail: where am I in the story? ---------- */
 
 const timeline = document.querySelector('.timeline');

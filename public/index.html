@@ -111,39 +111,74 @@
     </div>
   </section>
 
-  <!-- 5. HOW TO -->
-  <section class="screen c-cream" id="howto">
-    <div class="inner reveal">
-      <p class="small">in four easy steps</p>
-      <h2 class="mega">How to do <br>The Cluster</h2>
-    </div>
-  </section>
+  <!-- 5. HOW TO: one sticky stage, four steps acted out by the dots as you scroll.
+       The markup ships the finished frame (all four steps done, all copy shown) so the page
+       reads without JS; script.js resets it and drives the steps from scroll position. -->
+  <section class="howto" id="howto">
+    <div class="screen howto-stick c-green s1 s2 s3 s4 served">
+      <div class="inner howto-grid reveal">
+        <div class="howto-text">
+          <h2 class="small howto-kicker">how to do the cluster</h2>
+          <div class="howto-copy">
+            <div class="howto-head">
+              <p class="rule-title">Four easy <br>steps.</p>
+              <p class="mid">Keep scrolling. <br>You’re the pink one.</p>
+            </div>
+            <ol class="steps">
+              <li class="step" id="howto-1">
+                <h3 class="rule-title"><span class="num">①</span> Walk to <br>the bar.</h3>
+                <p class="mid">Not behind someone. To the bar. <br>It’s the long wooden thing.</p>
+              </li>
+              <li class="step" id="howto-2">
+                <h3 class="rule-title"><span class="num">②</span> Pick <br>a gap.</h3>
+                <p class="mid">Any gap. Leave some elbow room. <br>This is not a cuddle.</p>
+              </li>
+              <li class="step" id="howto-3">
+                <h3 class="rule-title"><span class="num">③</span> Catch <br>an eye.</h3>
+                <p class="mid">A nod. A raised eyebrow. <br>A tenner held with quiet confidence. <br>No waving. No clicking.</p>
+              </li>
+              <li class="step" id="howto-4">
+                <h3 class="rule-title"><span class="num">④</span> Trust <br>the barperson.</h3>
+                <p class="mid">They know who’s next. <br>They always know. <br>It’s their entire job.</p>
+              </li>
+            </ol>
+          </div>
+          <nav class="step-nav" aria-label="Steps">
+            <ol>
+              <li class="step-fill" aria-hidden="true"></li>
+              <li><a href="#howto-1"><span class="sr-only">Step </span>1</a></li>
+              <li><a href="#howto-2"><span class="sr-only">Step </span>2</a></li>
+              <li><a href="#howto-3"><span class="sr-only">Step </span>3</a></li>
+              <li><a href="#howto-4"><span class="sr-only">Step </span>4</a></li>
+            </ol>
+          </nav>
+        </div>
 
-  <section class="screen c-blue rule">
-    <div class="inner reveal">
-      <h3 class="rule-title"><span class="num">①</span> Walk to <br>the bar.</h3>
-      <p class="mid">Not behind someone. To the bar. <br>It’s the long wooden thing.</p>
-    </div>
-  </section>
-
-  <section class="screen c-amber rule">
-    <div class="inner reveal">
-      <h3 class="rule-title"><span class="num">②</span> Pick <br>a gap.</h3>
-      <p class="mid">Any gap. Leave some elbow room. <br>This is not a cuddle.</p>
-    </div>
-  </section>
-
-  <section class="screen c-pink rule">
-    <div class="inner reveal">
-      <h3 class="rule-title"><span class="num">③</span> Catch <br>an eye.</h3>
-      <p class="mid">A nod. A raised eyebrow. <br>A tenner held with quiet confidence. <br>No waving. No clicking.</p>
-    </div>
-  </section>
-
-  <section class="screen c-green rule">
-    <div class="inner reveal">
-      <h3 class="rule-title"><span class="num">④</span> Trust <br>the barperson.</h3>
-      <p class="mid">They know who’s next. <br>They always know. <br>It’s their entire job.</p>
+        <!-- The pub from above, same language as the sims: bar at the top, staff behind it,
+             customers along it. Positions are % of the stage; each step moves things in styles.css. -->
+        <div class="howto-pub" role="img" aria-label="Pub diagram: you walk up to the bar, step into a gap, catch the nearest barperson’s eye, and a pint slides across to you.">
+          <div class="scene-bar"></div>
+          <span class="cap cap-bar" aria-hidden="true">the long wooden thing</span>
+          <span class="cap cap-end" aria-hidden="true">That’s it. That’s the whole method.</span>
+          <div class="dot staff busy" style="left:18%;top:8%"></div>
+          <div class="dot staff idle" style="left:39%;top:8%"></div>
+          <div class="dot staff idle keeper"></div>
+          <div class="dot staff idle" style="left:82%;top:8%"></div>
+          <div class="dot cust c1 serving" style="left:10%;top:28%"></div>
+          <div class="dot cust c2 has-drink" style="left:21.4%;top:28%"></div>
+          <div class="dot cust c0" style="left:32.9%;top:28%"></div>
+          <div class="dot cust c3" style="left:44.3%;top:28%"></div>
+          <div class="dot cust c4" style="left:44.3%;top:38%"></div>
+          <div class="dot cust c2" style="left:55.7%;top:28%"></div>
+          <div class="dot cust c1 has-drink" style="left:78.6%;top:28%"></div>
+          <div class="dot cust c3" style="left:90%;top:28%"></div>
+          <span class="gap" aria-hidden="true"></span>
+          <svg class="sight" viewBox="0 0 160 110" aria-hidden="true"><line x1="107.4" y1="30.8" x2="97.6" y2="8.8" pathLength="1"/></svg>
+          <div class="pint"></div>
+          <div class="dot cust has-drink you" data-label="you"></div>
+          <span class="note" aria-hidden="true"></span>
+        </div>
+      </div>
     </div>
   </section>
 
