@@ -510,53 +510,73 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 
 .poll-head:focus { outline: none; } /* focused by script after a vote, never by the keyboard */
 
-.poll-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.6rem; text-align: left; }
-
-.poll-row {
+/* The results are a horizontal bar chart. Columns: label, plot, figures. The rows share the
+   chart's columns (subgrid), so every bar starts on the same baseline and runs on the same
+   0-100% scale, and the figures line up in a column of their own. Each plot cell fills its
+   row and draws its own gridlines; the rows touch, so the lines run unbroken. */
+.poll-chart {
+  margin: 0;
   display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  gap: 0.4rem 1rem;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  column-gap: clamp(0.75rem, 2vw, 1.5rem);
+  text-align: left;
 }
 
-.poll-label { font-size: clamp(1.4rem, 3.4vw, 2.4rem); font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+.poll-bars,
+.poll-row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
 
-/* A rubber stamp, like .tag */
+.poll-bars { list-style: none; margin: 0; padding: 0; }
+.poll-row { align-items: center; }
+
+.poll-label {
+  grid-column: 1;
+  padding-block: 0.6rem;
+  font-size: clamp(1.2rem, 2.8vw, 2rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* A rubber stamp, like .tag, under the side you picked */
 .poll-you {
-  display: inline-block;
-  margin-left: 0.4em;
-  padding: 0.3em 0.8em;
-  border: 3px solid currentColor;
+  display: block;
+  width: max-content;
+  margin-top: 0.4rem;
+  padding: 0.25em 0.75em;
+  border: 2px solid currentColor;
   border-radius: 999px;
-  font-size: max(0.75rem, 0.4em);
+  font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  vertical-align: middle;
   rotate: -3deg;
 }
 .poll-you[hidden] { display: none; }
 
-.poll-pc {
-  font-size: clamp(2.2rem, 7vw, 5rem);
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  font-variant-numeric: tabular-nums;
+.poll-plot {
+  grid-column: 2;
+  align-self: stretch;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.poll-track {
-  grid-column: 1 / -1;
-  height: clamp(20px, 3.2vw, 32px);
-  border-radius: 16px;
-  background: rgba(22, 22, 29, 0.12);
-  overflow: hidden;
+/* Gridlines: the baseline at 0, hairlines at 50% and 100% */
+.poll-plot::before,
+.poll-plot::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.poll-plot::before {
+  border-left: 2px solid rgba(22, 22, 29, 0.45);
+  border-right: 1px solid rgba(22, 22, 29, 0.15);
 }
+.poll-plot::after { left: 50%; border-left: 1px solid rgba(22, 22, 29, 0.15); }
 
 .poll-fill {
-  display: block;
-  height: 100%;
+  height: clamp(18px, 2.4vw, 24px);
   width: calc(var(--v, 0) * 100%);
-  border-radius: inherit;
+  border-radius: 0 4px 4px 0; /* square on the baseline, rounded at the value end */
   background: var(--ink);
 }
 .poll-row[data-choice="single"] .poll-fill { background: var(--red); }
@@ -565,6 +585,44 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 
 @keyframes poll-grow {
   from { width: 0; }
+}
+
+.poll-fig {
+  grid-column: 3;
+  display: grid;
+  justify-items: end;
+  gap: 0.2rem;
+  padding-block: 0.6rem;
+  font-variant-numeric: tabular-nums; /* a column of figures, so they line up */
+}
+.poll-pc { font-size: clamp(1.6rem, 4.4vw, 3rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.03em; }
+.poll-n { font-size: clamp(0.85rem, 1.4vw, 1rem); font-weight: 600; opacity: 0.75; }
+
+.poll-axis {
+  grid-column: 2;
+  position: relative;
+  height: 1.3em;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+.poll-axis span { position: absolute; top: 0; }
+.poll-axis span:nth-child(1) { left: 0; }
+.poll-axis span:nth-child(2) { left: 50%; translate: -50% 0; }
+.poll-axis span:nth-child(3) { right: 0; }
+
+/* Phones: the label and figures share a line, with the bar full width underneath */
+@media (max-width: 560px) {
+  .poll-chart { grid-template-columns: minmax(0, 1fr) max-content; }
+  .poll-row { grid-template-rows: auto auto; align-items: end; }
+  .poll-label { grid-row: 1; padding-block: 1rem 0.4rem; }
+  .poll-you { display: inline-block; margin: 0 0 0 0.4em; vertical-align: middle; }
+  .poll-you[hidden] { display: none; }
+  .poll-fig { grid-column: 2; grid-row: 1; padding-block: 1rem 0.4rem; }
+  .poll-plot { grid-column: 1 / -1; grid-row: 2; padding-block: 0.3rem; }
+  .poll-axis { grid-column: 1 / -1; }
 }
 
 .poll-total { margin-top: 1.2em; }

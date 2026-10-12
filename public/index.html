@@ -189,18 +189,23 @@
       </form>
       <div class="poll-results" hidden>
         <h3 class="small poll-head" tabindex="-1">the verdict so far</h3>
-        <ul class="poll-bars">
-          <li class="poll-row" data-choice="single">
-            <span class="poll-label">For <span class="poll-you" hidden>your vote</span></span>
-            <span class="poll-pc"></span>
-            <span class="poll-track" aria-hidden="true"><span class="poll-fill"></span></span>
-          </li>
-          <li class="poll-row" data-choice="cluster">
-            <span class="poll-label">Against <span class="poll-you" hidden>your vote</span></span>
-            <span class="poll-pc"></span>
-            <span class="poll-track" aria-hidden="true"><span class="poll-fill"></span></span>
-          </li>
-        </ul>
+        <!-- A horizontal bar chart: label, bar on a shared 0-100% scale, then the figures.
+             src/worker.js draws the same markup for the no-JavaScript results page. -->
+        <figure class="poll-chart">
+          <ul class="poll-bars">
+            <li class="poll-row" data-choice="single">
+              <span class="poll-label">For <span class="poll-you" hidden>your vote</span></span>
+              <span class="poll-plot" aria-hidden="true"><span class="poll-fill"></span></span>
+              <span class="poll-fig"><b class="poll-pc"></b> <span class="poll-n"></span></span>
+            </li>
+            <li class="poll-row" data-choice="cluster">
+              <span class="poll-label">Against <span class="poll-you" hidden>your vote</span></span>
+              <span class="poll-plot" aria-hidden="true"><span class="poll-fill"></span></span>
+              <span class="poll-fig"><b class="poll-pc"></b> <span class="poll-n"></span></span>
+            </li>
+          </ul>
+          <div class="poll-axis" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>
+        </figure>
         <p class="mid poll-total"></p>
         <p class="poll-quip"></p>
       </div>

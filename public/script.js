@@ -407,15 +407,17 @@ if (poll && pollResults) guard('poll', () => {
     // Whole percentages that always add up to 100.
     const forPc = total ? Math.round((single / total) * 100) : 0;
     const pc = { single: forPc, cluster: total ? 100 - forPc : 0 };
+    const votes = { single, cluster };
+    const plural = (n) => `${n.toLocaleString('en-GB')} ${n === 1 ? 'vote' : 'votes'}`;
 
     pollResults.querySelectorAll('.poll-row').forEach((row) => {
       const key = row.dataset.choice;
       row.querySelector('.poll-pc').textContent = `${pc[key]}%`;
+      row.querySelector('.poll-n').textContent = plural(votes[key]);
       row.querySelector('.poll-fill').style.setProperty('--v', pc[key] / 100);
       row.querySelector('.poll-you').hidden = key !== choice;
     });
-    pollResults.querySelector('.poll-total').textContent =
-      `${total.toLocaleString('en-GB')} ${total === 1 ? 'vote' : 'votes'} so far.`;
+    pollResults.querySelector('.poll-total').textContent = `${plural(total)} so far.`;
     pollResults.querySelector('.poll-quip').textContent = QUIPS[choice] || '';
 
     poll.hidden = true;

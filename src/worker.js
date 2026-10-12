@@ -53,12 +53,12 @@ const MAX_EMAIL = 254;
 
 // A bare HTML page for visitors who post a form without JavaScript (the form's plain
 // action). Same colour blocks and headers as the rest of the site, no scripts.
-const htmlPage = (status, tone, title, text, back = '/#petition-section') =>
+const htmlPage = (status, tone, title, text, back = '/#petition-section', figure = '') =>
   new Response(
     `<!doctype html><html lang="en-GB"><head><meta charset="utf-8">` +
       `<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">` +
       `<title>${title} - Don't Queue At The Bar</title><link rel="stylesheet" href="/styles.css"></head>` +
-      `<body><main><section class="screen ${tone}"><div class="inner"><h1 class="big">${title}</h1>` +
+      `<body><main><section class="screen ${tone}"><div class="inner"><h1 class="big">${title}</h1>${figure}` +
       `<p class="mid">${text}</p><a class="cta" href="${back}">Back to the site</a>` +
       `</div></section></main></body></html>`,
     {
@@ -202,6 +202,27 @@ async function networkKey(env, day, network) {
 
 const tallyOf = (row) => ({ single: row.single, cluster: row.cluster });
 
+const votesText = (n) => `${n.toLocaleString('en-GB')} ${n === 1 ? 'vote' : 'votes'}`;
+
+// The results chart for the no-JavaScript page: the same markup as the one in
+// public/index.html (filled in by script.js there), drawn here with the numbers in.
+function pollChart({ single, cluster }, choice) {
+  const total = single + cluster;
+  const forPc = total ? Math.round((single / total) * 100) : 0; // whole numbers that add up to 100
+  const row = (key, label, pc, n) =>
+    `<li class="poll-row" data-choice="${key}"><span class="poll-label">${label}` +
+    (key === choice ? ' <span class="poll-you">your vote</span>' : '') +
+    `</span><span class="poll-plot" aria-hidden="true"><span class="poll-fill" style="--v:${pc / 100}"></span></span>` +
+    `<span class="poll-fig"><b class="poll-pc">${pc}%</b> <span class="poll-n">${votesText(n)}</span></span></li>`;
+  return (
+    `<div class="poll-results"><figure class="poll-chart"><ul class="poll-bars">` +
+    row('single', 'For', forPc, single) +
+    row('cluster', 'Against', total ? 100 - forPc : 0, cluster) +
+    `</ul><div class="poll-axis" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>` +
+    `</figure></div>`
+  );
+}
+
 // This voter's choice and the totals, or no row if they haven't voted. Hyperdrive caches read
 // queries for up to a minute. Keyed on the voter, a cached answer always includes their own vote.
 const VOTER_SQL = `
@@ -247,15 +268,13 @@ async function handlePoll(request, env, ctx) {
   const answer = (status, { choice, results, already }, cookie) => {
     let res;
     if (isForm) {
-      const total = results.single + results.cluster;
-      const forPc = total ? Math.round((results.single / total) * 100) : 0;
       res = htmlPage(
         200,
         'c-cream',
         already ? 'You’ve already voted.' : 'Vote counted.',
-        `For the single file: ${forPc}%. Against: ${total ? 100 - forPc : 0}%.<br>` +
-          `${total.toLocaleString('en-GB')} ${total === 1 ? 'vote' : 'votes'} so far.`,
-        '/#poll'
+        `${votesText(results.single + results.cluster)} so far.`,
+        '/#poll',
+        pollChart(results, choice)
       );
     } else {
       res = json({ voted: true, choice, results }, status);
