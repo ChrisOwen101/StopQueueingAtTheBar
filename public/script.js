@@ -383,6 +383,106 @@ if (timeline) guard('timeline', () => {
   updateTimeline();
 });
 
+/* ---------- Poll: the single file, for or against (/api/poll) ----------
+   Nobody sees the numbers until they've voted. The Worker sends them back with a vote, or to a
+   browser that has voted before (it holds the voter cookie), so returning voters go straight
+   to the results. */
+
+const poll = document.getElementById('poll-form');
+const pollResults = document.querySelector('.poll-results');
+
+if (poll && pollResults) guard('poll', () => {
+  const note = poll.querySelector('.poll-note');
+  const buttons = [...poll.querySelectorAll('button[name="choice"]')];
+  const POLL_TIMEOUT_MS = 15000;
+  const QUIPS = {
+    single: 'You said for. Noted. We’ll keep working on you.',
+    cluster: 'You said against. Correct. Now go and find a gap at the bar.',
+  };
+
+  const showResults = ({ choice, results }, justVoted) => {
+    const single = Number(results?.single) || 0;
+    const cluster = Number(results?.cluster) || 0;
+    const total = single + cluster;
+    // Whole percentages that always add up to 100.
+    const forPc = total ? Math.round((single / total) * 100) : 0;
+    const pc = { single: forPc, cluster: total ? 100 - forPc : 0 };
+
+    pollResults.querySelectorAll('.poll-row').forEach((row) => {
+      const key = row.dataset.choice;
+      row.querySelector('.poll-pc').textContent = `${pc[key]}%`;
+      row.querySelector('.poll-fill').style.setProperty('--v', pc[key] / 100);
+      row.querySelector('.poll-you').hidden = key !== choice;
+    });
+    pollResults.querySelector('.poll-total').textContent =
+      `${total.toLocaleString('en-GB')} ${total === 1 ? 'vote' : 'votes'} so far.`;
+    pollResults.querySelector('.poll-quip').textContent = QUIPS[choice] || '';
+
+    poll.hidden = true;
+    pollResults.hidden = false;
+    // The button they pressed has gone, so take focus to the results.
+    if (justVoted) pollResults.querySelector('.poll-head').focus();
+  };
+
+  fetch('/api/poll')
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => {
+      if (d?.voted) showResults(d, false);
+    })
+    .catch(() => {});
+
+  const explain = (status, body) => {
+    if ((status === 400 || status === 429) && typeof body?.error === 'string' && body.error) return body.error;
+    if (status === 403) return 'That was blocked. Reload the page and try again.';
+    if (status >= 500) return 'That one is on us, not you. Try again in a minute.';
+    return 'Something went wrong. Try again in a minute.';
+  };
+
+  let sending = false;
+
+  poll.addEventListener('submit', async (event) => {
+    const button = event.submitter;
+    // A browser without event.submitter sends the plain form post and gets the results page.
+    if (!button?.value) return;
+    event.preventDefault();
+    if (sending) return;
+
+    sending = true;
+    buttons.forEach((b) => (b.disabled = true));
+    poll.setAttribute('aria-busy', 'true');
+    note.textContent = 'Counting…';
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), POLL_TIMEOUT_MS);
+    let voted = false;
+    try {
+      const res = await fetch('/api/poll', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ choice: button.value }),
+        signal: controller.signal,
+      });
+      const body = await res.json().catch(() => null);
+      if (!res.ok || body?.voted !== true) {
+        note.textContent = explain(res.ok ? 502 : res.status, body);
+        return;
+      }
+      voted = true;
+      showResults(body, true);
+    } catch (err) {
+      if (err.name === 'AbortError') note.textContent = 'That took too long. Try again in a moment.';
+      else if (navigator.onLine === false) note.textContent = 'You look to be offline. Try again when you’re back.';
+      else note.textContent = 'Couldn’t reach the server. Check your connection and try again.';
+    } finally {
+      clearTimeout(timer);
+      sending = false;
+      buttons.forEach((b) => (b.disabled = false));
+      poll.removeAttribute('aria-busy');
+      if (!voted) button.focus(); // disabling it dropped the focus
+    }
+  });
+});
+
 /* ---------- Petition -> Cloudflare Worker (/api/sign), stored in Postgres ---------- */
 
 const form = document.getElementById('petition');

@@ -225,6 +225,9 @@ A 3x3 grid of ink cells with cream text and amber uppercase headings; the centre
 ### Bars (stat bars)
 A tall 16px-radius track in 12% ink with an ink fill, or red for the alternative. The fill grows from 0 when its screen is revealed.
 
+### Poll
+A cream screen. Before a vote: two equal ink pill buttons ("For", "Against", each with a small line under it), so the question stays fair. After: one row per side with a 900-weight label, a large tabular percentage on the right, and a tall 16px-radius track in 12% ink whose fill keeps the colour meanings (red for, green against) and grows from 0 once. The voter's side gets a "your vote" stamp (outlined pill, uppercase, tilted -3deg). Red and green appear only in the fills.
+
 ### Beer mats
 Real print artwork loaded from `/mats/*.svg` (generated from the logo by `scripts/build-mats.mjs`), shown at `clamp(220px, 30vw, 380px)`, tilted and wobbling, with a flat offset drop shadow.
 

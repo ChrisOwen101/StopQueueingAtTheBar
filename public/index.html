@@ -56,6 +56,7 @@
       <li><a href="#howto"><span class="mark"></span><span class="lbl"><small>How to</small> Do The Cluster</span></a></li>
       <li><a href="#test"><span class="mark"></span><span class="lbl"><small>Then</small> Take the Test</span></a></li>
       <li><a href="#mats"><span class="mark"></span><span class="lbl"><small>For pubs</small> Beer Mats</span></a></li>
+      <li><a href="#poll"><span class="mark"></span><span class="lbl"><small>Pick a</small> Side</span></a></li>
       <li><a href="#petition-section"><span class="mark"></span><span class="lbl"><small>Now</small> Sign the Petition</span></a></li>
     </ol>
   </nav>
@@ -169,6 +170,40 @@
         <img class="mat m2" src="/mats/mat-back.svg" width="400" height="400" loading="lazy" alt="The back of the beer mat: a large QR code to the website, with the web address printed round the edge.">
       </div>
       <p class="mid">Coming soon. <a class="plain" href="#petition-section">Sign the petition</a> and we’ll tell you first.</p>
+    </div>
+  </section>
+
+  <!-- 7. THE POLL: the results only show once you've voted (src/worker.js, /api/poll) -->
+  <section class="screen c-cream" id="poll">
+    <div class="inner reveal">
+      <p class="small">pick a side</p>
+      <h2 class="mega">Single file. <br>For or against?</h2>
+      <!-- method/action make the vote work if the script fails to load: the Worker takes the
+           plain form post and answers with a small results page. script.js replaces it with fetch. -->
+      <form class="poll" id="poll-form" method="post" action="/api/poll" enctype="application/x-www-form-urlencoded">
+        <div class="poll-choices">
+          <button type="submit" name="choice" value="single"><b>For</b> <span>one orderly line</span></button>
+          <button type="submit" name="choice" value="cluster"><b>Against</b> <span>spread along the bar</span></button>
+        </div>
+        <p class="poll-note" role="status" aria-live="polite">Vote to see what everyone else said.</p>
+      </form>
+      <div class="poll-results" hidden>
+        <h3 class="small poll-head" tabindex="-1">the verdict so far</h3>
+        <ul class="poll-bars">
+          <li class="poll-row" data-choice="single">
+            <span class="poll-label">For <span class="poll-you" hidden>your vote</span></span>
+            <span class="poll-pc"></span>
+            <span class="poll-track" aria-hidden="true"><span class="poll-fill"></span></span>
+          </li>
+          <li class="poll-row" data-choice="cluster">
+            <span class="poll-label">Against <span class="poll-you" hidden>your vote</span></span>
+            <span class="poll-pc"></span>
+            <span class="poll-track" aria-hidden="true"><span class="poll-fill"></span></span>
+          </li>
+        </ul>
+        <p class="mid poll-total"></p>
+        <p class="poll-quip"></p>
+      </div>
     </div>
   </section>
 
