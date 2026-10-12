@@ -499,8 +499,9 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   gap: 1rem;
 }
 
-.poll button {
+.poll-choices button {
   display: grid;
+  align-content: center;
   gap: 0.25em;
   padding: 0.7em 1em 0.8em;
   border: 0;
@@ -512,12 +513,15 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   transition: scale 0.15s ease;
 }
 
-.poll button b { font-size: clamp(1.8rem, 4.4vw, 3rem); font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
-.poll button span { font-size: 1rem; font-weight: 600; opacity: 0.8; }
-.poll button:hover { scale: 1.03; }
-.poll button:focus-visible { outline: 4px solid var(--ink); outline-offset: 4px; }
-.poll button:disabled { opacity: 0.6; cursor: wait; scale: 1; }
+.poll-choices button b { font-size: clamp(1.8rem, 4.4vw, 3rem); font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+.poll-choices button span { font-size: 1rem; font-weight: 600; opacity: 0.8; }
+.poll-choices button:hover { scale: 1.03; }
+.poll-choices button:focus-visible { outline: 4px solid var(--ink); outline-offset: 4px; }
+.poll-choices button:disabled { opacity: 0.6; cursor: wait; scale: 1; }
 .poll-note { min-height: 1.5em; margin-top: 1.2em; font-weight: 700; }
+.poll-note:focus { outline: none; } /* focused by script on "Changed your mind?" */
+/* The side on record, on its button, after "Changed your mind?" */
+.poll-choices button .poll-you { justify-self: center; margin-top: 0.35rem; font-size: 0.75rem; font-weight: 800; opacity: 1; }
 .poll-small { margin-top: 0.4em; font-size: 1rem; font-weight: 500; opacity: 0.8; text-wrap: balance; }
 
 /* The lead line ("The Cluster is winning.") */
@@ -653,14 +657,14 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   .poll-axis { grid-column: 1 / -1; }
 }
 
-.poll-total { margin-top: 1.4em; font-size: clamp(1.1rem, 1.8vw, 1.4rem); font-weight: 700; }
-.poll-caveat { margin-top: 0.2em; font-size: 1rem; font-weight: 500; opacity: 0.8; text-wrap: balance; }
-.poll-quip { margin-top: 0.4em; font-weight: 800; font-size: clamp(1.1rem, 2.2vw, 1.5rem); text-wrap: balance; }
+.poll-total { margin-top: 1em; font-size: 1rem; font-weight: 500; opacity: 0.8; text-wrap: balance; }
+.poll-quip { margin-top: 0.6em; font-weight: 700; font-size: clamp(1.1rem, 2.2vw, 1.5rem); text-wrap: balance; }
 .poll-next { margin-top: 0.8em; }
 .poll-next[hidden] { display: none; }
 
-.poll-again {
-  margin-top: 1em;
+/* "Changed your mind?" and "Keep my vote" */
+.poll-link {
+  margin-top: 0.5em;
   padding: 0.3em 0.2em;
   border: 0;
   background: none;
@@ -672,8 +676,8 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   text-decoration-thickness: 2px;
   cursor: pointer;
 }
-.poll-again:hover { text-decoration-thickness: 4px; }
-.poll-again:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+.poll-link:hover { text-decoration-thickness: 4px; }
+.poll-link:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
 
 /* Windows High Contrast drops backgrounds, which would leave the chart with no bars */
 @media (forced-colors: active) {
@@ -936,6 +940,6 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   .js .reveal { opacity: 1; transform: none; transition: none; }
   .timeline, .timeline .mark, .timeline .lbl { transition: none; }
   .dot, .dot.cust.leaving, .pint { transition: none; }
-  .poll button { transition: none; }
+  .poll-choices button { transition: none; }
   .reveal.in .poll-fill { animation: none; }
 }

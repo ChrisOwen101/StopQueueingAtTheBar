@@ -397,7 +397,10 @@ if (pollSection && poll && pollResults) guard('poll', () => {
   const NOTE = note.textContent;
   const buttons = [...poll.querySelectorAll('button[name="choice"]')];
   const again = pollResults.querySelector('.poll-again');
+  const keep = poll.querySelector('.poll-keep');
   const POLL_TIMEOUT_MS = 15000;
+  let last = null; // the results with this browser's vote on record, for "Keep my vote"
+  let changing = false; // on the "Changed your mind?" screen
 
   const plural = (n) => `${n.toLocaleString('en-GB')} ${n === 1 ? 'vote' : 'votes'}`;
 
@@ -406,16 +409,22 @@ if (pollSection && poll && pollResults) guard('poll', () => {
   const leadFor = (single, cluster) => {
     if (single + cluster < 50) return 'Early days. The jury’s still at the bar.';
     if (cluster > single) return 'The Cluster is winning.';
-    if (single > cluster) return 'The single file is ahead. We have work to do.';
+    if (single > cluster) return 'The Single File is ahead. We have work to do.';
     return 'Dead heat. Over to the barperson.';
   };
   const QUIPS = {
     single: 'You said for. Noted. Take the hazard perception test, then we’ll talk.',
     cluster: 'You said against. Correct. Now make it official.',
     capped: 'Your connection has had its fill of votes today, so this one didn’t count. Here’s the tally anyway.',
+    missing: 'We couldn’t find your first vote, so nothing changed.',
   };
 
-  const showResults = ({ choice, results, capped }, justVoted) => {
+  // `data` is an answer from /api/poll. A vote over the daily cap (capped) or a change with no
+  // vote on record (missing) wasn't counted: it shows the tally with no stamp.
+  const showResults = (data, justVoted) => {
+    const { choice, results } = data;
+    const counted = !data.capped && !data.missing;
+    if (counted) last = data;
     const single = Number(results?.single) || 0;
     const cluster = Number(results?.cluster) || 0;
     const total = single + cluster;
@@ -430,12 +439,20 @@ if (pollSection && poll && pollResults) guard('poll', () => {
       row.querySelector('.poll-pc').textContent = `${pc[key]}%`;
       row.querySelector('.poll-n').textContent = plural(votes[key]);
       row.querySelector('.poll-fill').style.setProperty('--v', pc[key] / 100);
-      row.querySelector('.poll-you').hidden = capped || key !== choice;
+      row.querySelector('.poll-you').hidden = !counted || key !== choice;
     });
-    pollResults.querySelector('.poll-total').textContent = `${plural(total)} so far.`;
-    pollResults.querySelector('.poll-quip').textContent = capped ? QUIPS.capped : QUIPS[choice] || '';
+    pollResults.querySelector('.poll-total').textContent =
+      `${plural(total)} so far. Self\u2011selecting and unscientific, like every pub argument.`;
+    pollResults.querySelector('.poll-quip').textContent =
+      (data.capped && QUIPS.capped) || (data.missing && QUIPS.missing) || QUIPS[choice] || '';
     pollResults.querySelectorAll('.poll-next').forEach((a) => (a.hidden = a.dataset.for !== choice));
-    again.hidden = Boolean(capped); // a vote that didn't count has nothing to change
+    again.hidden = !counted; // a vote that didn't count has nothing to change
+
+    // Back from the change screen, if that's where they were.
+    changing = false;
+    keep.hidden = true;
+    buttons.forEach((b) => (b.querySelector('.poll-you').hidden = true));
+    note.textContent = NOTE;
 
     pollSection.classList.add('voted');
     poll.hidden = true;
@@ -451,14 +468,22 @@ if (pollSection && poll && pollResults) guard('poll', () => {
     })
     .catch(() => {});
 
-  // "Changed your mind?": back to the buttons. The next vote replaces the old one.
+  // "Changed your mind?": back to the buttons, with the side on record stamped. The question
+  // stays small (#poll keeps .voted), so it doesn't look like a first visit. The next vote
+  // replaces the old one; "Keep my vote" goes back to the results.
   again.addEventListener('click', () => {
-    pollSection.classList.remove('voted');
+    if (!last) return;
+    changing = true;
     pollResults.hidden = true;
     poll.hidden = false;
-    note.textContent = 'Pick again. Your new vote replaces the old one.';
-    buttons[0].focus();
+    buttons.forEach((b) => (b.querySelector('.poll-you').hidden = b.value !== last.choice));
+    keep.hidden = false;
+    note.textContent = `You\u2019re down as ${last.choice === 'cluster' ? 'against' : 'for'}. Pick again to switch.`;
+    // Focus the note, not a vote button, so a held Enter can't vote by accident.
+    note.focus();
   });
+
+  keep.addEventListener('click', () => last && showResults(last, true));
 
   const explain = (status, body) => {
     if ([400, 429, 503].includes(status) && typeof body?.error === 'string' && body.error) return body.error;
@@ -488,16 +513,15 @@ if (pollSection && poll && pollResults) guard('poll', () => {
       const res = await fetch('/api/poll', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ choice: button.value }),
+        body: JSON.stringify(changing ? { choice: button.value, change: true } : { choice: button.value }),
         signal: controller.signal,
       });
       const body = await res.json().catch(() => null);
-      if (!res.ok || !(body?.voted || body?.capped) || !body.results) {
+      if (!res.ok || !(body?.voted || body?.capped || body?.missing) || !body.results) {
         note.textContent = explain(res.ok ? 502 : res.status, body);
         return;
       }
       shown = true;
-      note.textContent = NOTE;
       showResults(body, true);
     } catch (err) {
       if (err.name === 'AbortError') note.textContent = 'That took too long. Try again in a moment.';

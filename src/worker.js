@@ -60,7 +60,8 @@ const htmlPage = (status, tone, title, text, { back = '/#petition-section', labe
       `<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">` +
       `<title>${title} - Don't Queue At The Bar</title><link rel="stylesheet" href="/styles.css"></head>` +
       `<body><main><section class="screen ${tone}"><div class="inner"><h1 class="big">${title}</h1>${figure}` +
-      `<p class="mid">${text}</p><a class="cta" href="${back}">${label}</a>` +
+      (text ? `<p class="mid">${text}</p>` : '') +
+      `<a class="cta" href="${back}">${label}</a>` +
       `</div></section></main></body></html>`,
     {
       status,
@@ -214,27 +215,31 @@ const tallyOf = (row) => ({ single: row.single, cluster: row.cluster });
 const votesText = (n) => `${n.toLocaleString('en-GB')} ${n === 1 ? 'vote' : 'votes'}`;
 
 // The words around the results. public/script.js has the same lines for the page itself;
-// keep the two in step.
-function pollWords({ single, cluster }, choice, capped) {
+// keep the two in step. `status` is how the vote went (see handlePoll).
+function pollWords({ single, cluster }, choice, status) {
   const total = single + cluster;
   let lead = 'Dead heat. Over to the barperson.';
   if (total < 50) lead = 'Early days. The jury’s still at the bar.';
   else if (cluster > single) lead = 'The Cluster is winning.';
-  else if (single > cluster) lead = 'The single file is ahead. We have work to do.';
-  const quip = capped
-    ? 'Your connection has had its fill of votes today, so this one didn’t count. Here’s the tally anyway.'
-    : choice === 'cluster'
-      ? 'You said against. Correct. Now make it official.'
-      : 'You said for. Noted. Take the hazard perception test, then we’ll talk.';
+  else if (single > cluster) lead = 'The Single File is ahead. We have work to do.';
+  const quip =
+    status === 'capped'
+      ? 'Your connection has had its fill of votes today, so this one didn’t count. Here’s the tally anyway.'
+      : status === 'missing'
+        ? 'We couldn’t find your first vote, so nothing changed.'
+        : choice === 'cluster'
+          ? 'You said against. Correct. Now make it official.'
+          : 'You said for. Noted. Take the hazard perception test, then we’ll talk.';
   const next =
     choice === 'cluster'
       ? { back: '/#petition-section', label: 'Sign the petition' }
       : { back: '/hazard.html', label: 'Take the test →' };
-  return { lead, quip, next, total: `${votesText(total)} so far. Self-selecting and unscientific, like every pub argument.` };
+  return { lead, quip, next, total: `${votesText(total)} so far. Self\u2011selecting and unscientific, like every pub argument.` };
 }
 
 // The results chart for the no-JavaScript page: the same markup as the one in
 // public/index.html (filled in by script.js there), drawn here with the numbers in.
+// `mine` is the side to stamp "your vote", if any.
 function pollChart({ single, cluster }, mine) {
   const total = single + cluster;
   const forPc = total ? Math.round((single / total) * 100) : 0; // whole numbers that add up to 100
@@ -244,11 +249,11 @@ function pollChart({ single, cluster }, mine) {
     `</span><span class="poll-plot" aria-hidden="true"><span class="poll-fill" style="--v:${pc / 100}"></span></span>` +
     `<span class="poll-fig"><b class="poll-pc">${pc}%</b> <span class="poll-n">${votesText(n)}</span></span></li>`;
   return (
-    `<div class="poll-results"><figure class="poll-chart"><ul class="poll-bars">` +
+    `<figure class="poll-chart"><ul class="poll-bars">` +
     row('single', 'For', forPc, single) +
     row('cluster', 'Against', total ? 100 - forPc : 0, cluster) +
     `</ul><div class="poll-axis" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>` +
-    `</figure></div>`
+    `</figure>`
   );
 }
 
@@ -265,7 +270,7 @@ const VOTER_SQL = `
   FROM poll_votes v, (SELECT ${TOTALS} FROM poll_votes) t
   WHERE v.voter = $1`;
 
-// Everyone's totals, for a vote over the cap (cached for up to a minute, which is fine there).
+// Everyone's totals, for a vote that wasn't counted (cached for up to a minute, fine there).
 const TOTALS_SQL = `SELECT ${TOTALS} FROM poll_votes`;
 
 // Counts a vote against a network's daily allowance. Returns a row while there is room left.
@@ -307,19 +312,33 @@ async function handlePoll(request, env, ctx) {
       ? htmlPage(status, 'c-red', 'That did not work', message, { back: '/#poll' })
       : json({ error: message }, status);
 
-  const TITLES = { new: 'Vote counted.', same: 'You’ve already voted.', changed: 'Vote changed.', capped: 'That one didn’t count.' };
+  // How a vote went: new, same (voted that way already), changed, or not counted: capped (over
+  // a daily cap) or missing (a change with no vote on record).
+  const TITLES = {
+    new: 'Vote counted.',
+    same: 'You’ve already voted.',
+    changed: 'Vote changed.',
+    capped: 'That one didn’t count.',
+    missing: 'Nothing changed.',
+  };
 
   const answer = ({ status, choice, results, id }) => {
-    const capped = status === 'capped';
+    const counted = status !== 'capped' && status !== 'missing';
     let res;
     if (isForm) {
-      const words = pollWords(results, choice, capped);
-      res = htmlPage(200, 'c-cream', TITLES[status], `${words.lead} ${words.total}<br>${words.quip}`, {
+      const words = pollWords(results, choice, status);
+      res = htmlPage(200, 'c-cream', TITLES[status], '', {
         ...words.next,
-        figure: pollChart(results, capped ? null : choice),
+        figure:
+          `<div class="poll-results"><p class="poll-head">${words.lead}</p>` +
+          pollChart(results, counted ? choice : null) +
+          `<p class="poll-total">${words.total}</p><p class="poll-quip">${words.quip}</p></div>`,
       });
     } else {
-      res = json(capped ? { voted: false, capped: true, choice, results } : { voted: true, choice, results }, status === 'new' ? 201 : 200);
+      res = json(
+        counted ? { voted: true, choice, results } : { voted: false, [status]: true, choice, results },
+        status === 'new' ? 201 : 200
+      );
     }
     if (id) res.headers.append('Set-Cookie', voterCookie(id));
     return res;
@@ -334,11 +353,14 @@ async function handlePoll(request, env, ctx) {
   if (raw.length > POLL_MAX_BODY) return fail(413, 'That was too much to send.');
 
   let choice;
+  let change = false; // sent from the "Changed your mind?" buttons
   if (isForm) {
     choice = new URLSearchParams(raw).get('choice');
   } else {
     try {
-      choice = JSON.parse(raw)?.choice;
+      const data = JSON.parse(raw);
+      choice = data?.choice;
+      change = data?.change === true;
     } catch {
       return fail(400, 'Invalid JSON');
     }
@@ -372,6 +394,12 @@ async function handlePoll(request, env, ctx) {
           const changed = await db.query(CHANGE_SQL, [choice, voter, id]);
           return { status: 'changed', choice, results: tallyOf(changed.rows[0]), id };
         }
+      }
+      // A change with no vote on record (cookies blocked, or the reply to an earlier change was
+      // lost after the id rotated) must not quietly become a second vote.
+      if (change) {
+        const { rows } = await db.query(TOTALS_SQL);
+        return { status: 'missing', choice, results: tallyOf(rows[0]) };
       }
 
       for (const [network, allowance] of networks) {
