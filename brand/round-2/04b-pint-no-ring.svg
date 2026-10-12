@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="A pint whose head is three people, no ring">
+  <path d="M86,96 H314 L306,160 Q322,176 316,196 L288,386 Q288,398 276,398 H124 Q112,398 112,386 L84,196 Q78,176 94,160 Z" fill="#000"/>
+  <g fill="#fff">
+    <rect x="100" y="104" width="200" height="56"/>
+    <g id="h"><circle cx="134" cy="74" r="24"/><path d="M102,160 V132 a32,32 0 0 1 64,0 V160 Z"/></g>
+    <use href="#h" x="66" y="-12"/><use href="#h" x="132"/>
+  </g>
+</svg>
