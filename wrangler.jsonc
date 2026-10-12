@@ -37,5 +37,8 @@
     { "name": "POLL_LIMITER", "namespace_id": "1001", "simple": { "limit": 10, "period": 60 } }
   ],
 
+  // Daily at 00:05 UTC: deletes the poll's past-day network counts (scheduled() in src/worker.js).
+  "triggers": { "crons": ["5 0 * * *"] },
+
   "observability": { "enabled": true }
 }

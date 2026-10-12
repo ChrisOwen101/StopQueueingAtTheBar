@@ -52,14 +52,15 @@ const MAX_NAME = 100;
 const MAX_EMAIL = 254;
 
 // A bare HTML page for visitors who post a form without JavaScript (the form's plain
-// action). Same colour blocks and headers as the rest of the site, no scripts.
-const htmlPage = (status, tone, title, text, back = '/#petition-section', figure = '') =>
+// action). Same colour blocks and headers as the rest of the site, no scripts. `figure` is
+// extra markup between the title and the text (the poll's chart).
+const htmlPage = (status, tone, title, text, { back = '/#petition-section', label = 'Back to the site', figure = '' } = {}) =>
   new Response(
     `<!doctype html><html lang="en-GB"><head><meta charset="utf-8">` +
       `<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">` +
       `<title>${title} - Don't Queue At The Bar</title><link rel="stylesheet" href="/styles.css"></head>` +
       `<body><main><section class="screen ${tone}"><div class="inner"><h1 class="big">${title}</h1>${figure}` +
-      `<p class="mid">${text}</p><a class="cta" href="${back}">Back to the site</a>` +
+      `<p class="mid">${text}</p><a class="cta" href="${back}">${label}</a>` +
       `</div></section></main></body></html>`,
     {
       status,
@@ -158,16 +159,21 @@ async function handleCount(env, ctx) {
 
 /* ---------- Poll: the single file, for or against ----------
    Results only go to people who have voted: in the answer to a vote, or to a browser holding
-   the voter cookie. Three layers keep the numbers honest:
-   1. One vote per browser. The cookie holds a random voter id (UNIQUE in poll_votes).
-   2. A daily cap per network (an IPv4 address or an IPv6 /64). A pub's wifi or a phone network
-      can put many people behind one address, so the cap is generous.
-   3. The POLL_LIMITER binding (wrangler.jsonc) turns away bursts before the database. */
+   the voter cookie. What keeps the numbers honest:
+   1. One vote per browser. The cookie holds a random voter id (UNIQUE in poll_votes). Voting
+      again with it changes that vote, so it never adds one.
+   2. Daily caps per network: an IPv4 address or an IPv6 /64, plus each IPv6 /48 (one person can
+      hold a /48 and hop between its 65,536 /64s). A pub's wifi or a phone network can put many
+      people behind one address, so the caps are generous, and a vote over them still gets to
+      see the tally. Turnstile is the next step if scripts get through.
+   3. The POLL_LIMITER binding (wrangler.jsonc) turns away bursts before the database.
+   The Origin check only stops other websites posting votes on their visitors' behalf. */
 
 const POLL_CHOICES = ['single', 'cluster']; // for the single file, against it
 const POLL_COOKIE = 'dq_poll';
 const POLL_MAX_BODY = 256; // {"choice":"cluster"} is 20 bytes
-const POLL_VOTES_PER_NETWORK_PER_DAY = 20;
+const POLL_VOTES_PER_NETWORK_PER_DAY = 20; // per IPv4 address or IPv6 /64
+const POLL_VOTES_PER_IPV6_48_PER_DAY = 200;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const POLL_COOKIE_RE = new RegExp(`(?:^|;\\s*)${POLL_COOKIE}=([^;]*)`);
 
@@ -179,22 +185,25 @@ const readVoter = (request) => {
 const voterCookie = (voter) =>
   `${POLL_COOKIE}=${voter}; Path=/api/poll; Max-Age=31536000; HttpOnly; Secure; SameSite=Strict`;
 
-// The network a request comes from: an IPv4 address, or the /64 an IPv6 address sits in
-// (one home or phone gets a whole /64 and can pick a new address in it at will).
-function networkOf(ip) {
-  if (!ip.includes(':')) return ip;
-  if (ip.includes('.')) return ip.slice(ip.lastIndexOf(':') + 1); // IPv4-mapped, ::ffff:1.2.3.4
+// The networks a request comes from, each with its daily allowance. The first one also keys
+// the burst limiter.
+function networksOf(ip) {
+  if (!ip.includes(':')) return [[ip, POLL_VOTES_PER_NETWORK_PER_DAY]];
+  if (ip.includes('.')) return [[ip.slice(ip.lastIndexOf(':') + 1), POLL_VOTES_PER_NETWORK_PER_DAY]]; // ::ffff:1.2.3.4
   const [head, tail] = ip.toLowerCase().split('::');
   const h = head ? head.split(':') : [];
   const t = tail ? tail.split(':') : [];
   const groups = tail === undefined ? h : [...h, ...Array(Math.max(0, 8 - h.length - t.length)).fill('0'), ...t];
-  return `${groups.slice(0, 4).map((g) => parseInt(g, 16).toString(16)).join(':')}::/64`;
+  const hex = groups.map((g) => parseInt(g, 16).toString(16));
+  return [
+    [`${hex.slice(0, 4).join(':')}::/64`, POLL_VOTES_PER_NETWORK_PER_DAY],
+    [`${hex.slice(0, 3).join(':')}::/48`, POLL_VOTES_PER_IPV6_48_PER_DAY],
+  ];
 }
 
-// What poll_limits stores instead of the address: a hash of the secret, the day and the network.
-// The day in the hash means yesterday's rows can't be matched to today's.
-async function networkKey(env, day, network) {
-  const secret = env.POLL_SECRET || 'dont-queue-at-the-bar'; // set POLL_SECRET (see AGENTS.md)
+// What poll_limits stores instead of the address: a hash of POLL_SECRET, the day and the
+// network. The day in the hash means yesterday's rows can't be matched to today's.
+async function networkKey(secret, day, network) {
   const bytes = new TextEncoder().encode(`${secret}|${day}|${network}`);
   const hash = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
   return Array.from(hash, (b) => b.toString(16).padStart(2, '0')).join('');
@@ -204,14 +213,34 @@ const tallyOf = (row) => ({ single: row.single, cluster: row.cluster });
 
 const votesText = (n) => `${n.toLocaleString('en-GB')} ${n === 1 ? 'vote' : 'votes'}`;
 
+// The words around the results. public/script.js has the same lines for the page itself;
+// keep the two in step.
+function pollWords({ single, cluster }, choice, capped) {
+  const total = single + cluster;
+  let lead = 'Dead heat. Over to the barperson.';
+  if (total < 50) lead = 'Early days. The jury’s still at the bar.';
+  else if (cluster > single) lead = 'The Cluster is winning.';
+  else if (single > cluster) lead = 'The single file is ahead. We have work to do.';
+  const quip = capped
+    ? 'Your connection has had its fill of votes today, so this one didn’t count. Here’s the tally anyway.'
+    : choice === 'cluster'
+      ? 'You said against. Correct. Now make it official.'
+      : 'You said for. Noted. Take the hazard perception test, then we’ll talk.';
+  const next =
+    choice === 'cluster'
+      ? { back: '/#petition-section', label: 'Sign the petition' }
+      : { back: '/hazard.html', label: 'Take the test →' };
+  return { lead, quip, next, total: `${votesText(total)} so far. Self-selecting and unscientific, like every pub argument.` };
+}
+
 // The results chart for the no-JavaScript page: the same markup as the one in
 // public/index.html (filled in by script.js there), drawn here with the numbers in.
-function pollChart({ single, cluster }, choice) {
+function pollChart({ single, cluster }, mine) {
   const total = single + cluster;
   const forPc = total ? Math.round((single / total) * 100) : 0; // whole numbers that add up to 100
   const row = (key, label, pc, n) =>
     `<li class="poll-row" data-choice="${key}"><span class="poll-label">${label}` +
-    (key === choice ? ' <span class="poll-you">your vote</span>' : '') +
+    (key === mine ? ' <span class="poll-you"><span class="sr-only">, </span>your vote</span>' : '') +
     `</span><span class="poll-plot" aria-hidden="true"><span class="poll-fill" style="--v:${pc / 100}"></span></span>` +
     `<span class="poll-fig"><b class="poll-pc">${pc}%</b> <span class="poll-n">${votesText(n)}</span></span></li>`;
   return (
@@ -223,17 +252,23 @@ function pollChart({ single, cluster }, choice) {
   );
 }
 
+// Totals counted the same way everywhere.
+const TOTALS = `
+  count(*) FILTER (WHERE choice = 'single')::int  AS single,
+  count(*) FILTER (WHERE choice = 'cluster')::int AS cluster`;
+
 // This voter's choice and the totals, or no row if they haven't voted. Hyperdrive caches read
-// queries for up to a minute. Keyed on the voter, a cached answer always includes their own vote.
+// queries for up to a minute. Keyed on the voter, a cached answer always includes their own
+// vote, and changing a vote gives the voter a new id, so it never shows the old one.
 const VOTER_SQL = `
   SELECT v.choice, t.single, t.cluster
-  FROM poll_votes v,
-       (SELECT count(*) FILTER (WHERE choice = 'single')::int  AS single,
-               count(*) FILTER (WHERE choice = 'cluster')::int AS cluster
-        FROM poll_votes) t
+  FROM poll_votes v, (SELECT ${TOTALS} FROM poll_votes) t
   WHERE v.voter = $1`;
 
-// Counts a vote against the network's daily allowance. Returns a row while there is room left.
+// Everyone's totals, for a vote over the cap (cached for up to a minute, which is fine there).
+const TOTALS_SQL = `SELECT ${TOTALS} FROM poll_votes`;
+
+// Counts a vote against a network's daily allowance. Returns a row while there is room left.
 const LIMIT_SQL = `
   INSERT INTO poll_limits (key, day, votes) VALUES ($1, $2, 1)
   ON CONFLICT (key) DO UPDATE SET votes = poll_limits.votes + 1
@@ -244,9 +279,14 @@ const LIMIT_SQL = `
 // which can't see the new row, so it is added back from RETURNING.
 const VOTE_SQL = `
   WITH ins AS (INSERT INTO poll_votes (choice, voter) VALUES ($1, $2) RETURNING choice)
-  SELECT count(*) FILTER (WHERE choice = 'single')::int  AS single,
-         count(*) FILTER (WHERE choice = 'cluster')::int AS cluster
-  FROM (SELECT choice FROM poll_votes UNION ALL SELECT choice FROM ins) v`;
+  SELECT ${TOTALS} FROM (SELECT choice FROM poll_votes UNION ALL SELECT choice FROM ins) v`;
+
+// Changes a vote (and its voter id) and returns the totals with the change. As above, the
+// snapshot still has the old row, so it is swapped for the new one from RETURNING.
+const CHANGE_SQL = `
+  WITH upd AS (UPDATE poll_votes SET choice = $1, voter = $3 WHERE voter = $2 RETURNING choice)
+  SELECT ${TOTALS}
+  FROM (SELECT choice FROM poll_votes WHERE voter <> $2 UNION ALL SELECT choice FROM upd) v`;
 
 async function handlePoll(request, env, ctx) {
   const voter = readVoter(request);
@@ -263,27 +303,29 @@ async function handlePoll(request, env, ctx) {
   const isForm = type.includes('application/x-www-form-urlencoded');
 
   const fail = (status, message) =>
-    isForm ? htmlPage(status, 'c-red', 'That did not work', message, '/#poll') : json({ error: message }, status);
+    isForm
+      ? htmlPage(status, 'c-red', 'That did not work', message, { back: '/#poll' })
+      : json({ error: message }, status);
 
-  const answer = (status, { choice, results, already }, cookie) => {
+  const TITLES = { new: 'Vote counted.', same: 'You’ve already voted.', changed: 'Vote changed.', capped: 'That one didn’t count.' };
+
+  const answer = ({ status, choice, results, id }) => {
+    const capped = status === 'capped';
     let res;
     if (isForm) {
-      res = htmlPage(
-        200,
-        'c-cream',
-        already ? 'You’ve already voted.' : 'Vote counted.',
-        `${votesText(results.single + results.cluster)} so far.`,
-        '/#poll',
-        pollChart(results, choice)
-      );
+      const words = pollWords(results, choice, capped);
+      res = htmlPage(200, 'c-cream', TITLES[status], `${words.lead} ${words.total}<br>${words.quip}`, {
+        ...words.next,
+        figure: pollChart(results, capped ? null : choice),
+      });
     } else {
-      res = json({ voted: true, choice, results }, status);
+      res = json(capped ? { voted: false, capped: true, choice, results } : { voted: true, choice, results }, status === 'new' ? 201 : 200);
     }
-    if (cookie) res.headers.append('Set-Cookie', cookie);
+    if (id) res.headers.append('Set-Cookie', voterCookie(id));
     return res;
   };
 
-  // Only accept votes from our own site.
+  // Only accept votes posted from our own site.
   const origin = request.headers.get('Origin');
   if (origin && origin !== new URL(request.url).origin) return fail(403, 'Forbidden');
 
@@ -303,39 +345,62 @@ async function handlePoll(request, env, ctx) {
   }
   if (!POLL_CHOICES.includes(choice)) return fail(400, 'Pick for or against.');
 
-  const network = networkOf(request.headers.get('CF-Connecting-IP') || '');
+  // Without the secret the stored hashes could be turned back into addresses, so no votes.
+  if (!env.POLL_SECRET) {
+    console.error('POLL_SECRET is not set: run `npx wrangler secret put POLL_SECRET` (see AGENTS.md)');
+    return fail(503, 'The poll isn’t open yet. Try again later.');
+  }
+
+  const networks = networksOf(request.headers.get('CF-Connecting-IP') || '');
   if (env.POLL_LIMITER) {
-    const { success } = await env.POLL_LIMITER.limit({ key: network });
-    if (!success) return fail(429, 'Steady on. Try again in a minute.');
+    const { success } = await env.POLL_LIMITER.limit({ key: networks[0][0] });
+    if (!success) return fail(429, 'Steady on. Lots of votes from your connection just now. Try again in a minute.');
   }
 
   const day = new Date().toISOString().slice(0, 10); // UTC, so every Worker agrees on the day
-  const key = await networkKey(env, day, network);
 
   let outcome;
   try {
     outcome = await withDb(env, ctx, async (db) => {
-      // Voted before: their vote stands and they get the results again.
+      // Voted before: the same answer just gets the results again; a new one changes the vote.
+      // Neither touches the daily allowance, since neither adds a vote.
       if (voter) {
         const { rows } = await db.query(VOTER_SQL, [voter]);
-        if (rows[0]) return { choice: rows[0].choice, results: tallyOf(rows[0]), already: true };
+        if (rows[0]?.choice === choice) return { status: 'same', choice, results: tallyOf(rows[0]) };
+        if (rows[0]) {
+          const id = crypto.randomUUID();
+          const changed = await db.query(CHANGE_SQL, [choice, voter, id]);
+          return { status: 'changed', choice, results: tallyOf(changed.rows[0]), id };
+        }
       }
-      // Past days' keys can never match again (the day is in the hash), so clear them out.
-      await db.query('DELETE FROM poll_limits WHERE day < $1', [day]);
-      const allowed = await db.query(LIMIT_SQL, [key, day, POLL_VOTES_PER_NETWORK_PER_DAY]);
-      if (!allowed.rowCount) return { capped: true };
+
+      for (const [network, allowance] of networks) {
+        const key = await networkKey(env.POLL_SECRET, day, network);
+        const allowed = await db.query(LIMIT_SQL, [key, day, allowance]);
+        if (!allowed.rowCount) {
+          console.warn('Poll vote over the daily cap'); // a count of these says whether the caps bite
+          const { rows } = await db.query(TOTALS_SQL);
+          return { status: 'capped', choice, results: tallyOf(rows[0]) };
+        }
+      }
 
       const id = crypto.randomUUID();
       const { rows } = await db.query(VOTE_SQL, [choice, id]);
-      return { choice, results: tallyOf(rows[0]), id };
+      return { status: 'new', choice, results: tallyOf(rows[0]), id };
     });
   } catch (err) {
     console.error('Poll error', err);
     return fail(500, 'Something went wrong on our side. Please try again in a minute.');
   }
 
-  if (outcome.capped) return fail(429, 'That’s plenty of votes from your connection today. Try again tomorrow.');
-  return answer(outcome.already ? 200 : 201, outcome, outcome.id && voterCookie(outcome.id));
+  return answer(outcome);
+}
+
+// Daily (wrangler.jsonc "triggers"): past days' allowance counts can never match again, since
+// the day is in the hash, so delete them rather than keep them.
+async function purgePollLimits(env, ctx) {
+  const day = new Date().toISOString().slice(0, 10);
+  await withDb(env, ctx, (db) => db.query('DELETE FROM poll_limits WHERE day < $1', [day]));
 }
 
 export default {
@@ -383,5 +448,9 @@ export default {
 
     // Anything else (404s, unknown /api paths) falls through to the static site.
     return env.ASSETS.fetch(request);
+  },
+
+  async scheduled(event, env, ctx) {
+    await purgePollLimits(env, ctx);
   },
 };

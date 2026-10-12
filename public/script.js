@@ -386,21 +386,36 @@ if (timeline) guard('timeline', () => {
 /* ---------- Poll: the single file, for or against (/api/poll) ----------
    Nobody sees the numbers until they've voted. The Worker sends them back with a vote, or to a
    browser that has voted before (it holds the voter cookie), so returning voters go straight
-   to the results. */
+   to the results. Voting again from there changes the vote; it never adds one. */
 
+const pollSection = document.getElementById('poll');
 const poll = document.getElementById('poll-form');
 const pollResults = document.querySelector('.poll-results');
 
-if (poll && pollResults) guard('poll', () => {
+if (pollSection && poll && pollResults) guard('poll', () => {
   const note = poll.querySelector('.poll-note');
+  const NOTE = note.textContent;
   const buttons = [...poll.querySelectorAll('button[name="choice"]')];
+  const again = pollResults.querySelector('.poll-again');
   const POLL_TIMEOUT_MS = 15000;
+
+  const plural = (n) => `${n.toLocaleString('en-GB')} ${n === 1 ? 'vote' : 'votes'}`;
+
+  // src/worker.js has the same lines for the no-JavaScript page; keep the two in step.
+  // The lead line goes by the counts, not the rounded percentages (501 to 499 shows 50/50).
+  const leadFor = (single, cluster) => {
+    if (single + cluster < 50) return 'Early days. The jury’s still at the bar.';
+    if (cluster > single) return 'The Cluster is winning.';
+    if (single > cluster) return 'The single file is ahead. We have work to do.';
+    return 'Dead heat. Over to the barperson.';
+  };
   const QUIPS = {
-    single: 'You said for. Noted. We’ll keep working on you.',
-    cluster: 'You said against. Correct. Now go and find a gap at the bar.',
+    single: 'You said for. Noted. Take the hazard perception test, then we’ll talk.',
+    cluster: 'You said against. Correct. Now make it official.',
+    capped: 'Your connection has had its fill of votes today, so this one didn’t count. Here’s the tally anyway.',
   };
 
-  const showResults = ({ choice, results }, justVoted) => {
+  const showResults = ({ choice, results, capped }, justVoted) => {
     const single = Number(results?.single) || 0;
     const cluster = Number(results?.cluster) || 0;
     const total = single + cluster;
@@ -408,18 +423,21 @@ if (poll && pollResults) guard('poll', () => {
     const forPc = total ? Math.round((single / total) * 100) : 0;
     const pc = { single: forPc, cluster: total ? 100 - forPc : 0 };
     const votes = { single, cluster };
-    const plural = (n) => `${n.toLocaleString('en-GB')} ${n === 1 ? 'vote' : 'votes'}`;
 
+    pollResults.querySelector('.poll-head').textContent = leadFor(single, cluster);
     pollResults.querySelectorAll('.poll-row').forEach((row) => {
       const key = row.dataset.choice;
       row.querySelector('.poll-pc').textContent = `${pc[key]}%`;
       row.querySelector('.poll-n').textContent = plural(votes[key]);
       row.querySelector('.poll-fill').style.setProperty('--v', pc[key] / 100);
-      row.querySelector('.poll-you').hidden = key !== choice;
+      row.querySelector('.poll-you').hidden = capped || key !== choice;
     });
     pollResults.querySelector('.poll-total').textContent = `${plural(total)} so far.`;
-    pollResults.querySelector('.poll-quip').textContent = QUIPS[choice] || '';
+    pollResults.querySelector('.poll-quip').textContent = capped ? QUIPS.capped : QUIPS[choice] || '';
+    pollResults.querySelectorAll('.poll-next').forEach((a) => (a.hidden = a.dataset.for !== choice));
+    again.hidden = Boolean(capped); // a vote that didn't count has nothing to change
 
+    pollSection.classList.add('voted');
     poll.hidden = true;
     pollResults.hidden = false;
     // The button they pressed has gone, so take focus to the results.
@@ -433,8 +451,17 @@ if (poll && pollResults) guard('poll', () => {
     })
     .catch(() => {});
 
+  // "Changed your mind?": back to the buttons. The next vote replaces the old one.
+  again.addEventListener('click', () => {
+    pollSection.classList.remove('voted');
+    pollResults.hidden = true;
+    poll.hidden = false;
+    note.textContent = 'Pick again. Your new vote replaces the old one.';
+    buttons[0].focus();
+  });
+
   const explain = (status, body) => {
-    if ((status === 400 || status === 429) && typeof body?.error === 'string' && body.error) return body.error;
+    if ([400, 429, 503].includes(status) && typeof body?.error === 'string' && body.error) return body.error;
     if (status === 403) return 'That was blocked. Reload the page and try again.';
     if (status >= 500) return 'That one is on us, not you. Try again in a minute.';
     return 'Something went wrong. Try again in a minute.';
@@ -456,7 +483,7 @@ if (poll && pollResults) guard('poll', () => {
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), POLL_TIMEOUT_MS);
-    let voted = false;
+    let shown = false;
     try {
       const res = await fetch('/api/poll', {
         method: 'POST',
@@ -465,11 +492,12 @@ if (poll && pollResults) guard('poll', () => {
         signal: controller.signal,
       });
       const body = await res.json().catch(() => null);
-      if (!res.ok || body?.voted !== true) {
+      if (!res.ok || !(body?.voted || body?.capped) || !body.results) {
         note.textContent = explain(res.ok ? 502 : res.status, body);
         return;
       }
-      voted = true;
+      shown = true;
+      note.textContent = NOTE;
       showResults(body, true);
     } catch (err) {
       if (err.name === 'AbortError') note.textContent = 'That took too long. Try again in a moment.';
@@ -480,7 +508,7 @@ if (poll && pollResults) guard('poll', () => {
       sending = false;
       buttons.forEach((b) => (b.disabled = false));
       poll.removeAttribute('aria-busy');
-      if (!voted) button.focus(); // disabling it dropped the focus
+      if (!shown) button.focus(); // disabling it dropped the focus
     }
   });
 });

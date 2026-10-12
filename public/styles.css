@@ -482,6 +482,17 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 
 .poll, .poll-results { width: min(760px, 100%); margin: 2em auto 0; }
 
+/* After a vote the chart is the point: the kicker goes and the question steps down to .big,
+   so the results, the total and the next step fit on a laptop screen. */
+#poll.voted .poll-kicker { display: none; }
+#poll.voted .mega {
+  font-size: clamp(2.2rem, 7vw, 6rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+#poll .poll-results { margin-top: 1em; }
+
 .poll-choices {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
@@ -507,7 +518,16 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 .poll button:focus-visible { outline: 4px solid var(--ink); outline-offset: 4px; }
 .poll button:disabled { opacity: 0.6; cursor: wait; scale: 1; }
 .poll-note { min-height: 1.5em; margin-top: 1.2em; font-weight: 700; }
+.poll-small { margin-top: 0.4em; font-size: 1rem; font-weight: 500; opacity: 0.8; text-wrap: balance; }
 
+/* The lead line ("The Cluster is winning.") */
+.poll-head {
+  margin-bottom: 0.6em;
+  font-size: clamp(1.3rem, 3vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
 .poll-head:focus { outline: none; } /* focused by script after a vote, never by the keyboard */
 
 /* The results are a horizontal bar chart. Columns: label, plot, figures. The rows share the
@@ -547,9 +567,9 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   width: max-content;
   margin-top: 0.4rem;
   padding: 0.25em 0.75em;
-  border: 2px solid currentColor;
+  border: 3px solid currentColor;
   border-radius: 999px;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   rotate: -3deg;
@@ -569,14 +589,15 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 .poll-plot::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
 .poll-plot::before {
   border-left: 2px solid rgba(22, 22, 29, 0.45);
-  border-right: 1px solid rgba(22, 22, 29, 0.15);
+  border-right: 1px solid rgba(22, 22, 29, 0.25);
 }
-.poll-plot::after { left: 50%; border-left: 1px solid rgba(22, 22, 29, 0.15); }
+/* The 50% line is the one that means something here: past it is a majority */
+.poll-plot::after { left: calc(50% - 1px); border-left: 2px solid rgba(22, 22, 29, 0.3); }
 
 .poll-fill {
-  height: clamp(18px, 2.4vw, 24px);
+  height: clamp(22px, 2.8vw, 34px);
   width: calc(var(--v, 0) * 100%);
-  border-radius: 0 4px 4px 0; /* square on the baseline, rounded at the value end */
+  border-radius: 0 6px 6px 0; /* square on the baseline, rounded at the value end */
   background: var(--ink);
 }
 .poll-row[data-choice="single"] .poll-fill { background: var(--red); }
@@ -596,7 +617,7 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
   font-variant-numeric: tabular-nums; /* a column of figures, so they line up */
 }
 .poll-pc { font-size: clamp(1.6rem, 4.4vw, 3rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.03em; }
-.poll-n { font-size: clamp(0.85rem, 1.4vw, 1rem); font-weight: 600; opacity: 0.75; }
+.poll-n { font-size: clamp(1rem, 1.4vw, 1.1rem); font-weight: 600; opacity: 0.75; }
 
 .poll-axis {
   grid-column: 2;
@@ -617,16 +638,47 @@ a.plain { color: inherit; text-decoration: underline; text-underline-offset: 5px
 @media (max-width: 560px) {
   .poll-chart { grid-template-columns: minmax(0, 1fr) max-content; }
   .poll-row { grid-template-rows: auto auto; align-items: end; }
-  .poll-label { grid-row: 1; padding-block: 1rem 0.4rem; }
-  .poll-you { display: inline-block; margin: 0 0 0 0.4em; vertical-align: middle; }
+  .poll-label {
+    grid-row: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem 0.5rem;
+    padding-block: 1rem 0.4rem;
+  }
+  .poll-you { margin: 0; }
   .poll-you[hidden] { display: none; }
   .poll-fig { grid-column: 2; grid-row: 1; padding-block: 1rem 0.4rem; }
   .poll-plot { grid-column: 1 / -1; grid-row: 2; padding-block: 0.3rem; }
   .poll-axis { grid-column: 1 / -1; }
 }
 
-.poll-total { margin-top: 1.2em; }
-.poll-quip { margin-top: 0.6em; font-weight: 700; font-size: clamp(1rem, 2vw, 1.3rem); text-wrap: balance; }
+.poll-total { margin-top: 1.4em; font-size: clamp(1.1rem, 1.8vw, 1.4rem); font-weight: 700; }
+.poll-caveat { margin-top: 0.2em; font-size: 1rem; font-weight: 500; opacity: 0.8; text-wrap: balance; }
+.poll-quip { margin-top: 0.4em; font-weight: 800; font-size: clamp(1.1rem, 2.2vw, 1.5rem); text-wrap: balance; }
+.poll-next { margin-top: 0.8em; }
+.poll-next[hidden] { display: none; }
+
+.poll-again {
+  margin-top: 1em;
+  padding: 0.3em 0.2em;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+  cursor: pointer;
+}
+.poll-again:hover { text-decoration-thickness: 4px; }
+.poll-again:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+
+/* Windows High Contrast drops backgrounds, which would leave the chart with no bars */
+@media (forced-colors: active) {
+  .poll-row[data-choice] .poll-fill { forced-color-adjust: none; background: CanvasText; }
+}
 
 /* ---------- Petition ---------- */
 

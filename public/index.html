@@ -176,7 +176,7 @@
   <!-- 7. THE POLL: the results only show once you've voted (src/worker.js, /api/poll) -->
   <section class="screen c-cream" id="poll">
     <div class="inner reveal">
-      <p class="small">pick a side</p>
+      <p class="small poll-kicker">pick a side</p>
       <h2 class="mega">Single file. <br>For or against?</h2>
       <!-- method/action make the vote work if the script fails to load: the Worker takes the
            plain form post and answers with a small results page. script.js replaces it with fetch. -->
@@ -186,28 +186,36 @@
           <button type="submit" name="choice" value="cluster"><b>Against</b> <span>spread along the bar</span></button>
         </div>
         <p class="poll-note" role="status" aria-live="polite">Vote to see what everyone else said.</p>
+        <p class="poll-small">One vote per browser. A cookie remembers it, and that’s all it knows.</p>
       </form>
       <div class="poll-results" hidden>
-        <h3 class="small poll-head" tabindex="-1">the verdict so far</h3>
+        <!-- The lead line, quip and total are written by script.js (and by src/worker.js for the
+             no-JavaScript page; keep the two in step). -->
+        <h3 class="poll-head" tabindex="-1"></h3>
         <!-- A horizontal bar chart: label, bar on a shared 0-100% scale, then the figures.
              src/worker.js draws the same markup for the no-JavaScript results page. -->
         <figure class="poll-chart">
           <ul class="poll-bars">
             <li class="poll-row" data-choice="single">
-              <span class="poll-label">For <span class="poll-you" hidden>your vote</span></span>
+              <span class="poll-label">For <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></span>
               <span class="poll-plot" aria-hidden="true"><span class="poll-fill"></span></span>
               <span class="poll-fig"><b class="poll-pc"></b> <span class="poll-n"></span></span>
             </li>
             <li class="poll-row" data-choice="cluster">
-              <span class="poll-label">Against <span class="poll-you" hidden>your vote</span></span>
+              <span class="poll-label">Against <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></span>
               <span class="poll-plot" aria-hidden="true"><span class="poll-fill"></span></span>
               <span class="poll-fig"><b class="poll-pc"></b> <span class="poll-n"></span></span>
             </li>
           </ul>
           <div class="poll-axis" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>
         </figure>
-        <p class="mid poll-total"></p>
+        <p class="poll-total"></p>
+        <p class="poll-caveat">Self-selecting and unscientific, like every pub argument.</p>
         <p class="poll-quip"></p>
+        <!-- One next step, picked by the side voted for -->
+        <a class="cta poll-next" data-for="cluster" href="#petition-section" hidden>Sign the petition</a>
+        <a class="cta poll-next" data-for="single" href="hazard.html" hidden>Take the test →</a>
+        <p><button type="button" class="poll-again" hidden>Changed your mind?</button></p>
       </div>
     </div>
   </section>
