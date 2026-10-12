@@ -13,6 +13,7 @@ Hosted on Cloudflare Workers, on the team's current Cloudflare account (set up b
 - **Tone:** Direct, dry British humour. Short, punchy lines.
 - **Gender-neutral language (always):** Never use gendered terms for pub staff or the people in the jokes. Say **barperson** (never barman, barmaid, bartender-as-"he"), **bar staff**, or **landlord** (neutral here). Refer to staff with **they/them/their**, never he/she/him/his/her. This applies to all copy: page text, meta/OG/Twitter tags, `site.webmanifest`, beer mats (`scripts/build-mats.mjs`), the petition and any new docs. Before finishing any copy change, grep `public/`, `scripts/` and `src/` for `barman|barmen|barmaid|\bhe\b|\bhis\b|\bhim\b|\bshe\b|\bher\b`.
 - **Look:** Very bold. Huge lowercase type. One idea per full-screen colour block, scrolling down a long page. Simple diagrams with animation. No photos.
+- **Brand marks (settled 12 Oct 2026, see `brand/BRIEF.md` for the rules):** the primary mark is **the Cluster roundel** (three people seen from behind, spread along a bar that overhangs a ring; one colour, no words). Its partner is **the type stamp** ("don’t queue / at the bar." in a ring). On the site the marks are ink or cream only, flat, never a tint, outline or shadow. The roundel is the favicon, the app icons, the Stripe icon and the hazard licence seal; the horizontal lockup (roundel plus name) sits top left of the homepage; the stamp leads on the mat front and flyers. The drawing lives once, in `scripts/lib/brand.mjs`, and three scripts write from it: `node brand/final/build.mjs` (the brand folder, black on white plus the reversed set), `npm run build:icons` (`public/mark.svg`, `public/lockup-horizontal.svg`, the icons) and `npm run build:mats` (`public/mats/`). Don't redraw the mark by hand: edit the module and re-run all three. Clear space is an eighth of the mark's width; minimum sizes are 16px for the mark, 40px tall for the horizontal lockup and 48px for the stamp.
 
 ## Facts and claims
 
@@ -24,7 +25,10 @@ The page no longer quotes outside stats or sources (the Hackney Church Brew Co +
 public/            Static site (served by Workers assets)
   _headers         Security headers (CSP and friends) for every response; never served itself
   index.html       All page copy and sections
-  styles.css       Colour blocks, type, scenes, timeline, beer mats, form
+  styles.css       Colour blocks, type, scenes, timeline, brand lockup, beer mats, form
+  mark.svg         The Cluster roundel in ink (written by npm run build:icons)
+  lockup-horizontal.svg  The roundel beside the name, in ink: the homepage badge (same script)
+  mats/            Beer mat print artwork, front and back (written by npm run build:mats)
   script.js        Reveal, count-ups, pub simulation, timeline rail, petition form
   hazard.html      Hazard perception hub: two buttons, customer test and barperson test
   hazard.js        Shared test player (HazardTest.init): playback, questions, scoring, sound, speech
@@ -35,7 +39,11 @@ public/            Static site (served by Workers assets)
   hazard-badge.{js,css}  Certificate on a perfect test: loaded by hazard.js only when a test ends
   badges/          Certificate masters (SVG, 1080x1080 with fillable name, date and number fields)
   audio/           Generated ElevenLabs narration and sound effects plus manifest.json (commit these)
+scripts/lib/brand.mjs             The brand marks as SVG strings: roundel, lockups, stamp, square icon, mat
+scripts/build-icons.mjs, build-mats.mjs   Write the site's marks, icons and mats from that module
 scripts/voice.json, sfx.json      Narrator voice and sound effect prompts for npm run audio:generate
+brand/BRIEF.md     The brand identity: decisions, usage rules, minimum sizes, what's left before print
+brand/final/       The mark family as SVG (build.mjs writes them), contact sheets, review renders
 src/worker.js      Worker: POST /api/sign, GET /api/count; everything else -> static assets
 schema.sql         Postgres table `signatures`
 wrangler.jsonc     Worker, assets and Hyperdrive config
@@ -46,18 +54,18 @@ README.md          Setup steps
 
 No build step. Edit the files in `public/` and deploy.
 
-**Social meta and icons:** `index.html` has Open Graph, Twitter card, icon and manifest tags. Tags marked `data-abs` get the real origin added by `src/worker.js` (HTMLRewriter on `/`), so no domain is hard-coded. The square logo, favicons, app icons and share images (`logo-square.svg`, `favicon.*`, `apple-touch-icon.png`, `icon-*.png`, `og-image*.png`) are generated from `public/logo-side.svg` by `npm run build:icons` (needs Google Chrome). Re-run it if the logo changes.
+**Social meta and icons:** `index.html` has Open Graph, Twitter card, icon and manifest tags. Tags marked `data-abs` get the real origin added by `src/worker.js` (HTMLRewriter on `/`), so no domain is hard-coded. `npm run build:icons` (`scripts/build-icons.mjs`) writes the site's marks (`mark.svg`, `lockup-horizontal.svg`) and the icons (`logo-square.svg`, `favicon.svg`, `favicon.ico`, `favicon-32.png`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`): the Cluster roundel in ink on a cream square, inside the maskable safe zone, from `scripts/lib/brand.mjs`. The PNGs need a headless Chrome (`CHROME_PATH` overrides the Mac default; any Chromium works, since the mark has no text). The share images `og-image.png` and `og-image-square.png` are only written with `npm run build:icons -- --og`, and only on a Mac with Avenir Next installed, because they carry live text. They still show the old badge: regenerate them on a Mac, then update the `og:image:alt` and `twitter:image:alt` text in `index.html`. `public/logo-side.svg` and `public/logo.svg` are that retired badge, kept only until the share images are redone. `site.webmanifest` uses cream as its background colour to match the icons.
 
-**Beer mats:** the page shows the real print artwork in `public/mats/` (a front that is the logo badge and a back with the domain round the edge and a QR code to the home page). They are generated by `npm run build:mats` (`scripts/build-mats.mjs`, uses the `qrcode` dev dependency). The address is the `SITE_URL` constant at the top of that script (currently `https://dontqueueatthebar.co.uk/`), or set the `SITE_URL` env var. The front is copied from `public/logo-side.svg`, so edit the logo, not the SVGs. Before printing, convert text to outlines and add the printer's bleed.
+**Beer mats:** the page shows the real print artwork in `public/mats/`: the front is the type stamp, black on white, and the back is the Cluster roundel in the middle of a QR code to the home page, with the domain round the edge, white on black. They are generated by `npm run build:mats` (`scripts/build-mats.mjs`, drawing from `scripts/lib/brand.mjs`, QR code from the `qrcode` dev dependency at error correction level H). The address is the `SITE_URL` constant at the top of that script (currently `https://dontqueueatthebar.co.uk/`), or set the `SITE_URL` env var. Edit the module, not the SVGs. The roundel's tile covers 16% of the code: jsQR and zxing-cpp both read it at every size from 220px up, and both stop reading it once the tile passes about 18% (level H's 30% is theory), so don't make the mark bigger than the `logo` default in `matBack` without re-testing. To re-test, render `public/mats/mat-back.svg` to PNG (headless Chromium) and decode it with jsQR or zxing-cpp, installed outside the repo. Before printing, convert text to outlines on a Mac, add the printer's bleed, and scan a printed proof of the back.
 
 ## Page structure (`public/index.html`)
 
-1. Hero: the name and "It's a pub. Not a post office." with a bobbing scroll hint, and the pulsing promo sticker in the bottom right ("Get your pub goers licence today"), which links straight to `hazard.html`.
+1. Hero: the brand lockup top left (`a.brand`, an `<img>` of `lockup-horizontal.svg` linking to `/`, 64px tall on desktop and never under 40px, with accessible text "Don’t Queue At The Bar, home"), the name and "It's a pub. Not a post office." with a bobbing scroll hint, and the pulsing promo sticker in the bottom right ("Get your pub goers licence today"), which links straight to `hazard.html`. The timeline rail is hidden on the hero, so nothing meets the lockup.
 2. The problem (`#problem`, red): The Single File animation. One queue, one barperson working, the rest idle.
 3. The solution (`#solution`, green): The Cluster animation, then the side-by-side "Same pub. Same Thursday." scoreboard.
 4. How to do The Cluster (`#howto`): 4 steps (walk to the bar, pick a gap, catch an eye, trust the barperson).
 5. Hazard Perception Test (`#test`): a teaser with a link out to `hazard.html`. The tests live on their own pages.
-6. Beer mats (`#mats`): the front (logo badge) and the back as SVG images, marked "coming soon". Nothing is for sale yet.
+6. Beer mats (`#mats`): the front (the stamp) and the back (the roundel in the QR code) as SVG images, marked "coming soon". Nothing is for sale yet.
 7. Petition (`#petition-section`): pledges for pubs, the public and Parliament (mock), plus the form.
 8. Footer: the beer fund line ("Made with 🍻 by people who just want a pint. Chip in to the beer fund. No queue."), a plain link to a Stripe Payment Link. It's a tip jar for a few people running a campaign, not a charity, so never call it a donation to charity or mention Gift Aid.
 
@@ -136,7 +144,10 @@ npm run check      # wrangler deploy --dry-run
 - **Beer fund link:** the footer links to a Stripe **test mode** Payment Link (`buy.stripe.com/test_…`, one place in `public/index.html`). Test links only take Stripe's test cards, so no real money arrives. Before promoting the site, create the live version in the Stripe Dashboard (switch off test mode, Payment Links -> New -> "Customers choose what to pay") and swap the href. It's a plain outbound link, so the CSP in `public/_headers` doesn't need changing.
 - **Beer mats:** no ordering route yet. Options are an email sign-up only, or a shop (Shopify, Stripe, Printful).
 - **Domain and contact details:** none yet. Custom domain goes under Workers & Pages -> the Worker -> Settings -> Domains & Routes. Earlier ideas: `bartheline.uk`, `thebarparty.uk`, `stoptheline.uk` (availability unchecked).
-- **Not done:** press release, logo, OG share image, favicon.
+- **Share images:** `og-image.png` and `og-image-square.png` still show the retired badge. On a Mac with Avenir Next, run `npm run build:icons -- --og`, check them, update the two image `alt` tags in `index.html`, then delete `public/logo-side.svg` and `public/logo.svg`.
+- **Stripe icon:** upload `brand/final/icon-square-512.png` to the Payment Link's branding by hand. The link itself doesn't change.
+- **Before print:** outline the text in the mat and flyer SVGs on a Mac (Avenir Next), add bleed, and scan a printed proof of the mat back. See "Before print" in `brand/BRIEF.md`.
+- **Not done:** press release.
 - **Possible extras:** an admin export of signatures, a "share" button, a pub-pledge form for venues.
 
 ## Earlier work (from the first, separate handover)
