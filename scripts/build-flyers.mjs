@@ -27,6 +27,9 @@
 // env to override. Regenerate the flyers when the domain changes.
 //
 // CHROME_PATH overrides the browser (any Chromium works). On a Mac the default is Google Chrome.
+// For design reviews only: FLYER_FONT puts a family in front of the stack (FLYER_FONT=Arial
+// checks the layout survives other metrics) and FLYER_OUT writes somewhere other than
+// public/flyers/. Neither belongs in a real build.
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
@@ -43,7 +46,8 @@ const AUTHOR = 'Don’t Queue At The Bar';
 const LANG = 'en-GB';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const dir = path.join(root, 'public', 'flyers');
+const dir = process.env.FLYER_OUT ? path.resolve(process.env.FLYER_OUT) : path.join(root, 'public', 'flyers');
+const STACK = process.env.FLYER_FONT ? `'${process.env.FLYER_FONT}',${FONT}` : FONT;
 await mkdir(dir, { recursive: true });
 
 // ---------- The browser ----------
@@ -115,9 +119,16 @@ if (!HAVE_AVENIR) {
 const qr = QRCode.create(SITE_URL, { errorCorrectionLevel: 'H' });
 const { p: qrD, size: qrN } = qrPath(qr);
 const QUIET = 4; // modules of quiet zone, the spec's minimum
-const qrSvg = () => {
+// `logo` puts the roundel on a tile in the middle of the code, as the mat back does. The tile
+// is 16% of the code, the size the mat's decode tests passed (AGENTS.md, "Beer mats").
+const qrSvg = (logo = false) => {
   const N = qrN + QUIET * 2;
-  return `<svg class="qr" viewBox="0 0 ${N} ${N}" role="img" aria-label="QR code to ${DOMAIN}"><rect width="${N}" height="${N}" fill="#fff"/><path transform="translate(${QUIET} ${QUIET})" d="${qrD}" fill="#000" shape-rendering="crispEdges"/></svg>`;
+  let tile = '';
+  if (logo) {
+    const L = qrN * 0.32, T = L * 1.25, c = N / 2;
+    tile = `<rect x="${c - T / 2}" y="${c - T / 2}" width="${T}" height="${T}" rx="${T / 10}" fill="#fff"/><g transform="translate(${c - L / 2} ${c - L / 2}) scale(${L / 400})">${markBody('#000')}</g>`;
+  }
+  return `<svg class="qr" viewBox="0 0 ${N} ${N}" role="img" aria-label="QR code to ${DOMAIN}"><defs>${FIG}</defs><rect width="${N}" height="${N}" fill="#fff"/><path transform="translate(${QUIET} ${QUIET})" d="${qrD}" fill="#000" shape-rendering="crispEdges"/>${tile}</svg>`;
 };
 const roundel = () => `<svg class="roundel" viewBox="0 0 400 400" aria-hidden="true"><defs>${FIG}</defs>${markBody('#000')}</svg>`;
 const stampSvg = () => stamp('#000').replace('<svg ', '<svg class="stamp" ');
@@ -134,7 +145,7 @@ const m = (n) => `calc(${n} * var(--mm))`;
 
 const CSS = `
 html, body { margin: 0; padding: 0; }
-body { font-family: ${FONT}; color: #000; background: #fff; }
+body { font-family: ${STACK}; color: #000; background: #fff; }
 .sheet { position: relative; overflow: hidden; break-after: page; }
 .sheet:last-child { break-after: auto; }
 .page { position: absolute; inset: ${m(10)}; display: flex; flex-direction: column; }
@@ -145,52 +156,59 @@ p, h1, h2, ol, li { margin: 0; padding: 0; }
 .tag { display: inline-block; padding: 0.45em 1.1em; border: ${m(0.9)} solid #000; border-radius: 999px; font-weight: 900; letter-spacing: 0.08em; text-transform: lowercase; rotate: -3deg; font-size: ${m(4.2)}; }
 .roundel, .stamp, .qr { display: block; flex: none; }
 .foot { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: ${m(6)}; }
+.scan { display: flex; align-items: flex-end; gap: ${m(5)}; }
 .cta { font-weight: 900; font-size: ${m(6.5)}; letter-spacing: -0.02em; line-height: 1; }
 .addr { font-weight: 500; font-size: ${m(4.1)}; white-space: nowrap; margin-top: ${m(1.5)}; }
 `;
 
 // ---------- Face A: the poster ----------
+// Read from across the room: the stamp leads, "spread out." is the instruction, the house line
+// is the pub's permission, the body reassures, the strap is the joke. QR and caption together.
 const faceA = () => `<div class="page face-a">
   ${stampSvg()}
-  <p class="line mid">It’s a pub. Not a post office.</p>
+  <h1 class="spread mega">spread out.</h1>
+  <p class="house mega">this bar does the cluster.</p>
+  <p class="body mid">Along the bar, not behind each other. The bar staff know who’s next. They always did.</p>
+  <p class="strap">It’s a pub. Not a post office.</p>
   <div class="foot">
-    <div class="foot-l">${roundel()}<div><p class="cta">Sign the petition.</p><p class="addr">${DOMAIN}</p></div></div>
-    ${qrSvg()}
+    <div class="scan">${qrSvg(true)}<div><p class="cta">Sign the petition.</p><p class="addr">${DOMAIN}</p></div></div>
   </div>
 </div>`;
 const CSS_A = `
-.face-a .stamp { width: ${m(150)}; margin: ${m(14)} auto 0; }
-.face-a .line { text-align: center; font-size: ${m(11)}; margin-top: ${m(14)}; }
+.face-a .stamp { width: ${m(84)}; }
+.face-a .spread { font-size: ${m(31)}; margin-top: ${m(12)}; }
+.face-a .house { font-size: ${m(15)}; margin-top: ${m(7)}; }
+.face-a .body { font-size: ${m(7.6)}; margin-top: ${m(7)}; max-width: ${m(150)}; }
+.face-a .strap { font-weight: 500; font-size: ${m(6)}; margin-top: ${m(6)}; }
 .face-a .qr { width: ${m(40)}; }
-.face-a .roundel { width: ${m(20)}; }
-.face-a .foot-l { display: flex; align-items: center; gap: ${m(5)}; }
 `;
 
 // ---------- Face B: the how-to ----------
+// Read in the hand: the four steps as a ruled list, then the worked example, then the test.
 const faceB = () => `<div class="page face-b">
-  <p class="kicker small">how to do the cluster</p>
+  <p class="kicker small">this bar does the cluster. here’s how.</p>
   <h1 class="h mega">Four easy steps.</h1>
   <ol class="steps">${STEPS.map(([t, d], i) => `<li class="step"><span class="n">${i + 1}</span><div><p class="t">${t}</p><p class="d mid">${d}</p></div></li>`).join('')}</ol>
-  <div class="maths"><div><p class="mh mega">25 minutes. Or six.</p><p class="ms mid">Twenty orders, 75&nbsp;seconds each. One spot on the bar, or four staff along it.</p></div><p class="tag">worked example</p></div>
+  <div class="maths"><div><p class="mh mega">25 minutes. Or six.</p><p class="ms mid">Twenty orders, 75&nbsp;seconds each. One spot on the bar, or four staff along it.</p><p class="mc">Arithmetic, not a stopwatch. Real pubs are messier.</p></div><p class="tag">worked example</p></div>
   <div class="foot">
-    <div class="foot-l">${qrSvg()}<div><p class="cta">Sign the petition.</p><p class="addr">${DOMAIN}</p></div></div>
+    <div class="scan">${qrSvg(true)}<div><p class="cta">Think you’re ready?<br>Take the test.</p><p class="addr">${DOMAIN}</p></div></div>
     ${stampSvg()}
   </div>
 </div>`;
 const CSS_B = `
 .face-b .kicker { font-size: ${m(5)}; }
 .face-b .h { font-size: ${m(22)}; margin-top: ${m(2)}; }
-.face-b .steps { list-style: none; margin-top: ${m(8)}; display: grid; gap: ${m(4)}; }
-.face-b .step { display: grid; grid-template-columns: ${m(22)} 1fr; align-items: baseline; }
-.face-b .n { font-weight: 900; font-size: ${m(16)}; line-height: 1; letter-spacing: -0.04em; }
+.face-b .steps { list-style: none; margin-top: ${m(7)}; }
+.face-b .step { display: grid; grid-template-columns: ${m(18)} 1fr; align-items: baseline; padding: ${m(3.4)} 0; border-top: ${m(1)} solid #000; }
+.face-b .n { font-weight: 900; font-size: ${m(12)}; line-height: 1; letter-spacing: -0.04em; }
 .face-b .t { font-weight: 900; font-size: ${m(11)}; letter-spacing: -0.04em; line-height: 1; text-transform: lowercase; }
-.face-b .d { font-size: ${m(5.4)}; margin-top: ${m(1.5)}; }
-.face-b .maths { margin-top: ${m(8)}; padding-top: ${m(6)}; border-top: ${m(2)} solid #000; display: grid; grid-template-columns: 1fr auto; gap: ${m(8)}; align-items: start; }
+.face-b .d { font-size: ${m(5.2)}; margin-top: ${m(1.5)}; }
+.face-b .maths { margin-top: ${m(7)}; padding-top: ${m(6)}; border-top: ${m(2.4)} solid #000; display: grid; grid-template-columns: 1fr auto; gap: ${m(8)}; align-items: start; }
 .face-b .mh { font-size: ${m(15)}; }
-.face-b .ms { font-size: ${m(5.4)}; margin-top: ${m(2)}; max-width: ${m(110)}; }
+.face-b .ms { font-size: ${m(5.2)}; margin-top: ${m(2)}; max-width: ${m(120)}; }
+.face-b .mc { font-weight: 500; font-size: ${m(4.4)}; margin-top: ${m(1.5)}; }
 .face-b .qr { width: ${m(34)}; }
 .face-b .stamp { width: ${m(26)}; }
-.face-b .foot-l { display: flex; align-items: flex-end; gap: ${m(6)}; }
 `;
 
 // ---------- Sheets and documents ----------
@@ -280,7 +298,7 @@ try {
   await preview('preview-a', faceA);
   await preview('preview-b', faceB);
 
-  console.log(`Flyers written to public/flyers/ (QR -> ${SITE_URL}, ${qrN}x${qrN} modules, level H)`);
+  console.log(`Flyers written to ${path.relative(root, dir) || '.'}/ (QR -> ${SITE_URL}, ${qrN}x${qrN} modules, level H)`);
   for (const r of results) console.log(`  ${r.file.padEnd(24)} ${r.pages} page${r.pages > 1 ? 's' : ''}  ${(r.bytes / 1024).toFixed(0)} KB`);
   for (const f of ['preview-a.png', 'preview-b.png']) console.log(`  ${f.padEnd(24)} ${((await stat(path.join(dir, f))).size / 1024).toFixed(0)} KB`);
   console.log(HAVE_AVENIR ? 'Font: Avenir Next.' : `Font: NOT Avenir Next (see the warning above). Rebuild on a Mac before promoting.`);
