@@ -209,7 +209,9 @@ function award(panel, badge, svg) {
   const row = panel.querySelector('.hpt-actions');
   if (!row || panel.querySelector('.hpt-award')) return;
 
-  const shareText = `${badge.share} ${location.origin}${location.pathname}`;
+  // The licence points at the site's home, not the test: whoever it's shared with can take the
+  // test from there, and the home page is where the petition and the beer mats are.
+  const shareText = `${badge.share} ${location.origin}/`;
   const date = today();
   const number = licenceNumber();
   const site = siteHost();
