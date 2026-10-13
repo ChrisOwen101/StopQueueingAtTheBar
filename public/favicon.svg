@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Don’t Queue At The Bar">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Queue Sideways">
   <defs><g id="fig"><circle cx="0" cy="0" r="25"/><path d="M-34,78 V64 a34,34 0 0 1 68,0 V78 Z"/></g></defs>
   <rect width="512" height="512" fill="#fff4dc"/>
   <g transform="translate(56,56)">
   <circle cx="200" cy="200" r="170" fill="none" stroke="#16161d" stroke-width="30"/>
-  <g fill="#16161d"><use href="#fig" x="108" y="136"/><use href="#fig" x="200" y="136"/><use href="#fig" x="292" y="136"/></g>
+  <g fill="#16161d"><circle cx="134.0" cy="86.0" r="21.0"/><circle cx="134.0" cy="138.0" r="21.0"/><circle cx="134.0" cy="190.0" r="21.0"/><circle cx="186.0" cy="190.0" r="21.0"/><circle cx="238.0" cy="190.0" r="21.0"/><circle cx="290.0" cy="190.0" r="21.0"/></g>
   <rect x="0" y="214" width="400" height="64" fill="#16161d"/></g>
 </svg>

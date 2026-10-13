@@ -34,10 +34,10 @@ UK pubs, bars and breweries. The wrong behaviour is **The Single File**; the rig
 - Undecided: custom domain (current beer mat address is `https://dontqueueatthebar.co.uk/`), live URL, merch/shop route.
 
 ## Brand Commitments
-- Name: "Don't Queue At The Bar" (earlier "Stop Queueing at the Bar", "Bar the Line / The Bar Party").
+- Name: "Queue Sideways", tagline "They know who’s next. They always did." (13 Oct 2026; earlier "Don't Queue At The Bar", "Stop Queueing at the Bar", "Bar the Line / The Bar Party"). The campaign is against the single file, never against queueing: the Cluster is a queue the bar staff keep in their heads.
 - Voice: direct, dry British humour; short, punchy lines; one idea per section.
 - Terminology: The Single File, The Cluster, the Bar Rule, Additional Bar Rulings (The Round, The Hoverer, The Phantom Queue, The Landlord).
-- Look commitments recorded from the existing site only: very bold, huge lowercase type, one idea per full-screen colour block, simple animated diagrams, no photos. Assets: the Cluster roundel (`public/mark.svg`), the horizontal lockup, and the generated icon and beer mat files; the share images still show the retired badge in `public/logo-side.svg`.
+- Look commitments recorded from the existing site only: very bold, huge lowercase type, one idea per full-screen colour block, simple animated diagrams, no photos. Assets: the Corner roundel (`public/mark.svg`), the horizontal lockup, and the generated icon and beer mat files; the share images still show the retired badge in `public/logo-side.svg`.
 
 ## Evidence on Hand
 Source: East London Times, 29 Aug 2026 (reporting Broadsheet London, MyLondon, YouGov).

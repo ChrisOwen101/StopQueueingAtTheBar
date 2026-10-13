@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 400" role="img" aria-label="the bar is the queue.">
+  <g>
+  <circle cx="200" cy="200" r="185" fill="#000"/>
+  <rect x="0" y="214" width="400" height="56" fill="#fff"/>
+  <g fill="#fff"><circle cx="104" cy="166" r="30"/><circle cx="200" cy="166" r="30"/><circle cx="296" cy="166" r="30"/></g>
+  <path d="M94,159 A10,10 0 1 1 112,167 L93,182 H115" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M191,159 L201,150 V182" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path d="M286,155 A10,9 0 1 1 297,167 A10,9 0 1 1 286,178" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <g font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="900" font-size="160" fill="#000" letter-spacing="-6.4" text-anchor="start">
+    <text x="452" y="184">the bar is</text>
+    <text x="452" y="331">the queue.</text>
+  </g>
+</svg>

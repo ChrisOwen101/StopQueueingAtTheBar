@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 400" role="img" aria-label="queue along the bar.">
+  <g>
+  <circle cx="200" cy="200" r="170" fill="none" stroke="#000" stroke-width="30"/>
+  <path d="M150,62 V124 A44,44 0 0 0 194,168 H270" fill="none" stroke="#000" stroke-width="44"/>
+  <polygon points="262,114 262,214 340,166" fill="#000"/>
+  <rect x="0" y="214" width="400" height="64" fill="#000"/></g>
+  <g font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="900" font-size="154" fill="#000" letter-spacing="-6.16" text-anchor="start">
+    <text x="452" y="185">queue along</text>
+    <text x="452" y="326">the bar.</text>
+  </g>
+</svg>

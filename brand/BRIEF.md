@@ -1,27 +1,37 @@
 # Brand identity brief
 
-The campaign's identity is settled (12 Oct 2026). This file records the decisions and the rules, and it is the brief for rolling the identity out across the site. The design exploration behind it is in the "Don't Queue At The Bar: brand identity" Claude Doc (https://claude.ai/code/artifact/6b9a9d8d-1bdd-4761-ad0f-6e087745ee69) and in the contact sheets in `brand/round-1/`, `brand/round-2/` and `brand/final/`.
+The campaign's identity was settled on 12 Oct 2026 and revised on 13 Oct 2026 (Round 4, below) after feedback that the first version read as "don't queue at all". This file records the decisions and the rules, and it is the brief for rolling the identity out across the site. The design exploration behind it is in the "Don't Queue At The Bar: brand identity" Claude Doc (https://claude.ai/code/artifact/6b9a9d8d-1bdd-4761-ad0f-6e087745ee69) and in the contact sheets in `brand/round-1/`, `brand/round-2/`, `brand/final/` and `brand/round-4/`.
+
+## Round 4 (13 Oct 2026): "stop the single file, not queueing"
+
+The feedback: the Cluster roundel (three backs along a bar) and the name "Don't Queue At The Bar" read as "don't queue, barge in". The campaign is against the single file. The Cluster is still a queue: people spread along the bar and the bar staff keep it in their heads. Three research reports (`brand/round-4/research-*.md`), fourteen drawn concepts (`brand/round-4/round-4.png`, built by `sheet.mjs` from `concepts.mjs`), two critiques (`critique-*.md`) and a final vote settled on:
+
+- **The mark: "The Corner"** (`brand/round-4/13-the-corner-no-arrow.svg`, now `brand/final/mark.svg`). Six heads in a ring: three come down the room in single file, then the line turns and four lie along the bar. The bar still overhangs the ring. No arrow (five heads and a triangle read as a play button), no slash (a slash means "banned"), no figures from behind (three backs in a row is the stock icon for a queue). At 16px the heads fuse into one L against the bar.
+- **The name: "Queue Sideways".** It keeps the word "queue", says the change of shape in one word, fits the 40px lockup as "queue / sideways.", and a barperson can say it across the bar. "The bar is the queue" is the Cluster chapter's line, not the name.
+- **The tagline: "They know who’s next. They always did."** (short form "they know who’s next." on the stamp and the mat ring). "It’s a pub. Not a post office." moves to the problem chapter.
+- **The runners-up, kept for review:** 14 The Turn (a bent arrow; cleanest at 16px, but a return key until the name explains it) and 03/09 Shirt Numbers (the current roundel with 2, 1, 3 on the backs; the best mark if the name must stay, but the current mark at tab size). See `brand/round-4/finalists.png` and the critiques for the scores.
+- **The domain:** `queuesideways.co.uk` and `queuesideways.uk` are the candidates. Availability could not be checked from the sandbox (Nominet's RDAP is blocked there); check with `curl -sS https://rdap.nominet.uk/uk/domain/queuesideways.co.uk` (404 means free), register both, then change `SITE_URL` in `scripts/build-mats.mjs` and rebuild the mats and the brand folder. Until then the QR code and the mat ring carry `dontqueueatthebar.co.uk`, which should redirect to the new domain once it exists.
 
 ## The identity
 
-- **Primary mark: the Cluster roundel** (`brand/final/mark.svg`, reversed in `mark-reversed.svg`). It shows three people seen from behind, spread along a bar that runs through a ring. It is one colour, with no words inside it. It shows the right behaviour rather than forbidding the wrong one.
-- **Partner mark: the type stamp** (`brand/final/stamp.svg`, from Round 1's concept 05a). It is "don’t queue / at the bar." in a matching ring.
+- **Primary mark: the Corner roundel** (`brand/final/mark.svg`, reversed in `mark-reversed.svg`). A queue of six heads that comes down to a bar and turns to lie along it, inside a ring the bar overhangs. It is one colour, with no words inside it. It shows the queue changing shape, not a ban.
+- **Partner mark: the type stamp** (`brand/final/stamp.svg`). It is "queue / sideways." with "they know who’s next." under it, in a matching ring.
 - **Lockups:**
   - `lockup-horizontal.svg` (homepage top left)
   - `lockup-stacked.svg`
   - `icon-square.svg` (Stripe, favicon, app icon)
   - `badge-round.svg` (the seal base)
-  - `seal-customer.svg` and `seal-barperson.svg` (the hazard licences)
+  - `seal-customer.svg` and `seal-barperson.svg` (the hazard licences; the mark's heads and bar in the middle, "QUEUE SIDEWAYS" round the top)
   - `flyer-a5.svg`
   - a `-reversed` variant of each where one exists
-- **Source:** `brand/final/build.mjs` writes every final SVG and renders `final-marks.png` and `final-applications.png`.
+- **Source:** the drawing is `scripts/lib/brand.mjs`, shared with the site's build scripts. `brand/final/build.mjs` writes every final SVG from it. `final-marks.png` and `final-applications.png` are screenshots of the sheet HTML files, taken on a Mac; they still show the Round 3 mark until they are retaken.
 
 ## Decisions
 
 - **Black and white, one colour.** On the site the mark sits in ink (#16161d) or cream (#fff4dc) only.
 - **Beer mat (double-sided):**
   - **Front:** the stamp (`brand/final/mat-front.svg`).
-  - **Back:** the roundel in the middle of a level-H QR code to the home page, with the domain round the edge (`brand/final/mat-back.svg`).
+  - **Back:** the roundel in the middle of a level-H QR code to the home page, with the domain and "they know who’s next" round the edge (`brand/final/mat-back.svg`). The roundel's tile is 16% of the code, the most two decoders (jsQR, zxing-cpp) will still read.
   - **Rejected:** the alternative front, `badge-round.svg` with the name on both sides.
 - **Who uses which mark:**
   - The roundel is the favicon, the app icon, the Stripe icon and the licence seal.
@@ -42,8 +52,8 @@ The campaign's identity is settled (12 Oct 2026). This file records the decision
    | The badge and the seals | 80px or 25 mm (their ring text fails below that) |
 4. **Don't redraw it.**
    - The bar always overhangs the ring.
-   - There are always three figures.
-   - The figures never get faces, hair, hands or a pint.
+   - There are always six heads: three down, four along, the corner shared. No arrow, no slash, no tick.
+   - The heads never get faces, hair, bodies or a pint.
    - If a picture of a person is needed, use the hazard kit's cast, not the mark.
 5. **Words stay outside the ring.** The stamp is the one exception, and it has no figures. The site's colour blocks stay whole (the Whole-Screen Rule in `DESIGN.md`).
 
@@ -51,7 +61,7 @@ The campaign's identity is settled (12 Oct 2026). This file records the decision
 
 - **Outlines:** text in the SVGs is still live (Avenir Next). Convert it to outlines on a Mac or in Illustrator before sending anything to a printer, then add the printer's bleed. `mark.svg` and `icon-square.svg` have no text, so they need nothing.
 - **Font licence:** the macOS licence for Avenir Next covers artwork made on the Mac, but not embedding the font.
-- **Mat back:** the roundel covers about 20% of the QR code. Scan a printed proof of the back before a print run.
+- **Mat back:** the roundel covers 16% of the QR code. Scan a printed proof of the back before a print run.
 - **Flyer:** print one A5 flyer on an office photocopier to check the neck gaps and the QR code survive.
 
 ## Rollout task (for an agent)

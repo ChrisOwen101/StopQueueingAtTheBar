@@ -1,7 +1,7 @@
 {
-  "name": "Don't Queue At The Bar",
-  "short_name": "Don't Queue",
-  "description": "A bar is not a post office. Spread out. Catch the eye. Trust the barperson.",
+  "name": "Queue Sideways",
+  "short_name": "Sideways",
+  "description": "Still a queue. Just not a line. Spread along the bar. Catch an eye. Trust the barperson: they know who’s next.",
   "start_url": "/",
   "display": "standalone",
   "lang": "en-GB",

@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 400" role="img" aria-label="Don’t queue at the bar.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1420 400" role="img" aria-label="Queue sideways.">
   <defs><g id="fig"><circle cx="0" cy="0" r="25"/><path d="M-34,78 V64 a34,34 0 0 1 68,0 V78 Z"/></g></defs>
   <g>
   <circle cx="200" cy="200" r="170" fill="none" stroke="#000" stroke-width="30"/>
-  <g fill="#000"><use href="#fig" x="108" y="136"/><use href="#fig" x="200" y="136"/><use href="#fig" x="292" y="136"/></g>
+  <g fill="#000"><circle cx="134.0" cy="86.0" r="21.0"/><circle cx="134.0" cy="138.0" r="21.0"/><circle cx="134.0" cy="190.0" r="21.0"/><circle cx="186.0" cy="190.0" r="21.0"/><circle cx="238.0" cy="190.0" r="21.0"/><circle cx="290.0" cy="190.0" r="21.0"/></g>
   <rect x="0" y="214" width="400" height="64" fill="#000"/></g>
   <g font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="900" font-size="160" fill="#000" letter-spacing="-6.4" text-anchor="start">
-    <text x="452" y="188">don’t queue</text>
-    <text x="452" y="336">at the bar.</text>
+    <text x="452" y="188">queue</text>
+    <text x="452" y="336">sideways.</text>
   </g>
 </svg>

@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Don’t Queue At The Bar: three people spread along a bar inside a ring">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Queue Sideways: a queue of people turning to run along a bar, inside a ring">
   <defs><g id="fig"><circle cx="0" cy="0" r="25"/><path d="M-34,78 V64 a34,34 0 0 1 68,0 V78 Z"/></g></defs>
   <rect width="400" height="400" fill="#000"/>
   <circle cx="200" cy="200" r="170" fill="none" stroke="#fff" stroke-width="30"/>
-  <g fill="#fff"><use href="#fig" x="108" y="136"/><use href="#fig" x="200" y="136"/><use href="#fig" x="292" y="136"/></g>
+  <g fill="#fff"><circle cx="134.0" cy="86.0" r="21.0"/><circle cx="134.0" cy="138.0" r="21.0"/><circle cx="134.0" cy="190.0" r="21.0"/><circle cx="186.0" cy="190.0" r="21.0"/><circle cx="238.0" cy="190.0" r="21.0"/><circle cx="290.0" cy="190.0" r="21.0"/></g>
   <rect x="0" y="214" width="400" height="64" fill="#fff"/>
 </svg>

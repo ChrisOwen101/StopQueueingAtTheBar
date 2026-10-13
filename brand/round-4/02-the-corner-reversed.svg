@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="The Corner">
+  <rect width="400" height="400" fill="#000"/>
+  <circle cx="200" cy="200" r="170" fill="none" stroke="#fff" stroke-width="30"/>
+  <g fill="#fff">
+    <circle cx="128" cy="84" r="24"/><circle cx="128" cy="136" r="24"/>
+    <circle cx="128" cy="184" r="24"/><circle cx="184" cy="184" r="24"/><circle cx="240" cy="184" r="24"/>
+    <polygon points="276,150 276,214 338,182" />
+  </g>
+  <rect x="0" y="214" width="400" height="64" fill="#fff"/>
+</svg>

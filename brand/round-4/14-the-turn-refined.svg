@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="The Turn, refined">
+  <circle cx="200" cy="200" r="170" fill="none" stroke="#000" stroke-width="30"/>
+  <path d="M138,50 V116 A44,44 0 0 0 182,160 H262" fill="none" stroke="#000" stroke-width="44"/>
+  <polygon points="254,116 254,204 338,160" fill="#000"/>
+  <rect x="0" y="214" width="400" height="64" fill="#000"/>
+</svg>

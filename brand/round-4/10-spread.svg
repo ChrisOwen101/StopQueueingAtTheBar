@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Spread">
+  <circle cx="200" cy="200" r="170" fill="none" stroke="#000" stroke-width="30"/>
+  <path d="M200,56 V158 M96,158 H304" fill="none" stroke="#000" stroke-width="40"/>
+  <polygon points="40,158 104,110 104,206" fill="#000"/><polygon points="360,158 296,110 296,206" fill="#000"/>
+  <rect x="0" y="214" width="400" height="64" fill="#000"/>
+</svg>

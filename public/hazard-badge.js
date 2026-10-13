@@ -19,14 +19,14 @@ const BADGES = {
     master: 'badges/customer-square.svg',
     file: 'dont-queue-full-licence.png',
     share: 'Full licence. 5/5 on the bar hazard perception test. I may approach any bar in the land.',
-    alt: "Certificate: full licence. You may approach any bar in the land. Holder: {name}. Issued {date}. Licence no. {number}. Stamped 5 out of 5, Don't Queue At The Bar hazard perception. Not valid as ID.",
+    alt: "Certificate: full licence. You may approach any bar in the land. Holder: {name}. Issued {date}. Licence no. {number}. Stamped 5 out of 5, Queue Sideways hazard perception. Not valid as ID.",
   },
   'hazard-barperson': {
     name: 'landlord material',
     master: 'badges/barperson-square.svg',
     file: 'dont-queue-landlord-material.png',
-    share: 'Landlord material. 5/5 on the barperson hazard perception test. Nobody queues on my watch.',
-    alt: "Certificate: landlord material. You serve them in order. Nobody queues. Holder: {name}. Issued {date}. Licence no. {number}. Stamped 5 out of 5, Don't Queue At The Bar hazard perception. Not valid as ID.",
+    share: 'Landlord material. 5/5 on the barperson hazard perception test. Everyone queues sideways on my watch.',
+    alt: "Certificate: landlord material. You serve them in order. The bar is the queue. Holder: {name}. Issued {date}. Licence no. {number}. Stamped 5 out of 5, Queue Sideways hazard perception. Not valid as ID.",
   },
 };
 
@@ -325,7 +325,7 @@ function award(panel, badge, svg) {
     }
     const file = new File([current.png], badge.file, { type: 'image/png' });
     try {
-      await navigator.share({ files: [file], title: "Don't Queue At The Bar", text: shareText });
+      await navigator.share({ files: [file], title: 'Queue Sideways', text: shareText });
       msg.textContent = '';
     } catch (err) {
       if (err.name !== 'AbortError') say("Couldn't open the share sheet. Try Save the image.");
@@ -353,7 +353,7 @@ function award(panel, badge, svg) {
   });
 
   copyBtn.addEventListener('click', async () => {
-    say((await copyText(shareText)) ? 'Link copied. Send it to someone who queues.' : `Copy this: ${shareText}`);
+    say((await copyText(shareText)) ? 'Link copied. Send it to someone who queues in a line.' : `Copy this: ${shareText}`);
   });
 
   refresh();
