@@ -12,7 +12,7 @@ The campaign's identity is settled (12 Oct 2026). This file records the decision
   - `icon-square.svg` (Stripe, favicon, app icon)
   - `badge-round.svg` (the seal base)
   - `seal-customer.svg` and `seal-barperson.svg` (the hazard licences)
-  - `flyer-a5.svg`
+  - `flyer-a5.svg` (the first sketch of a flyer; superseded by the print-at-home flyers below, kept only because `sheet-applications.html` shows it)
   - a `-reversed` variant of each where one exists
 - **Source:** `brand/final/build.mjs` writes every final SVG and renders `final-marks.png` and `final-applications.png`.
 
@@ -52,7 +52,34 @@ The campaign's identity is settled (12 Oct 2026). This file records the decision
 - **Outlines:** text in the SVGs is still live (Avenir Next). Convert it to outlines on a Mac or in Illustrator before sending anything to a printer, then add the printer's bleed. `mark.svg` and `icon-square.svg` have no text, so they need nothing.
 - **Font licence:** the macOS licence for Avenir Next covers artwork made on the Mac, but not embedding the font.
 - **Mat back:** the roundel covers about 20% of the QR code. Scan a printed proof of the back before a print run.
-- **Flyer:** print one A5 flyer on an office photocopier to check the neck gaps and the QR code survive.
+- **Flyers:** nothing to outline or bleed: they are for office printers and Chrome embeds the font. Rebuild them on a Mac (below), then print one A4 and one A5 of each face on a mono laser, photocopy them, and scan the code from the copy.
+
+## Flyers (settled 13 Oct 2026)
+
+Print-at-home posters a pub downloads from the site, prints on an office printer and puts up or leaves on the bar. Two faces: **Face A, the poster**, read from across the room, and **Face B, the how-to**, read in the hand. They are built by `scripts/build-flyers.mjs` (`npm run build:flyers`) into `public/flyers/` as `flyer-a4.pdf`, `flyer-a4-double.pdf` (A then B), `flyer-a5.pdf`, `flyer-a5-double.pdf` and `flyer-a5-two-up.pdf` (two A5 posters on one A4 landscape sheet with a cut mark), plus `preview-a.png` and `preview-b.png` for the web page. The marks come from `scripts/lib/brand.mjs`; nothing is redrawn. The design went through three rounds with a graphic designer and a marketing specialist; their notes and every round's renders are in `brand/final/review/flyers/` (`round-1/` has the three concepts, `decision.md` the merge, `round-2/` and `round-3/` the refinements, `final/` the print check at 150 dpi and the home page at 1280 and 390 wide).
+
+### The decisions
+
+- **Three concepts in Round 1:** "Stamp first" (the stamp huge and centred, one line under it, the campaign's voice), "House rule" (the pub's own notice, "this bar does the cluster.", the stamp as a letterhead) and "The bar" (a thick bar across the page with "spread out." along it). The designer picked the first (the only one where the stamp leads, as this brief says; lightest on ink; its faults were sizes, not the idea) and the marketing specialist picked a merge of the second and third (a landlord prints a house sign, not a campaign poster; a drinker needs permission, an instruction and reassurance, in that order). The merge is both: the stamp leads, then the instruction, then the house line.
+- **Face A reads, from the door:** the stamp (120 mm on A4, centred, clear space kept), then **"spread out."** (the instruction, 30 mm type), then the house line **"This bar does The Cluster. / The bar staff know who’s next. / They always did."** (the pub's permission, the reassurance, and the one dry note; one sentence per line). At the foot: the roundel, "Sign the petition.", the address, and a plain QR code. "It’s a pub. Not a post office." was cut from the poster: it was always the fourth thing read, and nobody reads the fourth thing on a poster. The name on the stamp carries the prohibition.
+- **The pub-facing line earns its place.** It turns the campaign poster into a house sign in the register pubs already use ("this bar is cashless"), gives the drinker the permission they need to leave the line, is positive (what the house does, not what the customer is doing wrong), and is the first pub pledge: a pub that prints it has joined. A pub that won't say it won't enforce it either, so there is no version without it.
+- **Face B stays in the campaign's voice.** "The rules of this bar" was rejected because it put the jokes and the sum in the pub's mouth. The house line becomes the kicker ("This bar does The Cluster. Here’s how."), then "four easy steps." and the four steps verbatim from the home page (step 4 keeps the site's "barperson"; the poster says "bar staff", the pub's plural), one 2 mm rule with the uppercase "worked example" tag on it, "25 minutes. Or six." with the sum and its caveat on its own line ("Arithmetic, not a stopwatch. Real pubs are messier."), then the QR, "Think you’re ready? Take the test." and the address, and the stamp signing bottom right at 30 mm. Each face earns one scan: the petition on the poster, the test on the how-to. Face B carries no second ask.
+- **One roundel per sheet, and a plain QR code.** The mat's roundel-in-the-code was tried and dropped: a mono laser plus a photocopy eats both the roundel and the error correction it costs. The code stays level H, 36 mm, with a four-module quiet zone, and goes to the home page like the mat back. The address under it is one line, 600 weight, the fallback rather than the route.
+- **Off the flyers:** the YouGov split (a poster with "40% prefer the queue" on it argues against itself), the bar motif from Concept 3 (a redraw of the mark's bar without its ring), any figure that could be read as the pub's own waiting time on the poster, anything for sale, charity wording.
+
+### The rules
+
+- **Black on white only**, one ink, no tints: even the two-up's cut mark is black (0.2 mm, 2 mm dashes, 3 mm gaps), lighter by pattern, not grey. No solid fields bigger than the 2 mm rule; ink coverage is about 12% a face.
+- **Sizes:** exact paper (A4 210 × 297 mm, A5 148 × 210 mm), no bleed, a safe margin of 10 mm at A4 and 7 mm at A5 (the A5 is the A4 layout at 148/210; every length is a multiple of the script's `--mm`). The stamp is 120 mm on the poster and 30 mm on the how-to (21 mm at A5, above the 18 mm minimum), the roundel 20 mm, the QR 36 mm. "spread out." at 30 mm is the ceiling: any bigger and it beats the stamp.
+- **Type:** the site's stack (Avenir Next first), 900 lowercase headlines with tight tracking, 600 for everything else, typographic apostrophes. Nothing read on its own under 2.5 mm x-height at A5 in Avenir Next (the address, the kicker, the tag, the scan lines are 7.6 mm or more at A4); running text is 7 mm at A4, about 2.3 mm x-height at A5, the most the how-to's copy allows.
+- **Copy** is the site's: if the steps or the maths change on the home page, change the script and rebuild. Gender-neutral throughout (barperson, bar staff, they/them).
+- **The address** is `SITE_URL` in `scripts/lib/site.mjs`, shared with the mats (`https://dontqueueatthebar.co.uk/`). The flyers and the mats carry the same address; point the domain at the site before a pub prints one, and rebuild both if it ever changes.
+- **The layout doesn't depend on the font's metrics.** Round 2 was rendered with Arial in place of Avenir Next (`FLYER_FONT=Arial`, a review-only switch) and every line broke in the same place; the two lines that could move with a wider font (the house line, "four easy steps.") have a hard break and room to grow.
+
+### What's left for a Mac
+
+- `public/flyers/` was built on Linux, where the stack falls back to Inter. Run `npm run build:flyers` on a Mac with Avenir Next (the script warns when it can't find it) and commit the result before the site is promoted. On the first Mac render, check "four easy steps." still fits one line at 22 mm, the house line's second line stays under 180 mm (drop it to 11 mm if not), and the worked-example paragraph stays at three lines.
+- Then the real test: one A4 and one A5 of each face on a mono laser, through a photocopier, and a phone scan of the code from the copy.
 
 ## Rollout task (for an agent)
 

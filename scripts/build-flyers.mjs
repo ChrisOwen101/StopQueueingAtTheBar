@@ -10,8 +10,11 @@
 //   public/flyers/preview-b.png         Face B for the web page
 //
 // Each face is an HTML page at the exact paper size (A4 210 x 297 mm, A5 148 x 210 mm), no
-// bleed, everything inside a 10 mm safe margin because home printers can't print to the edge.
-// The A5 is the A4 layout scaled by 148/210: every length in the CSS is a multiple of --mm.
+// bleed, everything inside a safe margin because home printers can't print to the edge: 10 mm
+// at A4, 7 mm at A5, because the A5 is the A4 layout scaled by 148/210 (every length in the CSS
+// is a multiple of --mm). Nothing read on its own is under 2.5 mm x-height at A5 in Avenir Next
+// (the address, the kicker, the tag, the scan lines); running text is 7 mm type at A4 (2.3 mm
+// x-height at A5), the most the how-to's copy allows.
 // Headless Chrome prints each page to PDF (vector, with a subset of the fonts it used), then
 // pdf-lib joins the double-sided files and sets the title, author and language. The marks come
 // from scripts/lib/brand.mjs; the rules for using them, and the design decisions behind these
@@ -152,16 +155,16 @@ p, h1, h2, ol, li { margin: 0; padding: 0; }
 .mega { font-weight: 900; letter-spacing: -0.04em; line-height: 0.92; text-transform: lowercase; }
 .mid { font-weight: 600; line-height: 1.25; }
 .small { font-weight: 500; letter-spacing: 0.08em; text-transform: lowercase; }
-.tag { display: inline-block; padding: 0.4em 1em; border: ${m(0.8)} solid #000; border-radius: 999px; font-weight: 900; letter-spacing: 0.08em; text-transform: lowercase; rotate: -3deg; font-size: ${m(6.2)}; white-space: nowrap; }
+.tag { display: inline-block; padding: 0.45em 1.1em; border: ${m(1)} solid #000; border-radius: 999px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; rotate: -3deg; font-size: ${m(6.4)}; line-height: 1; white-space: nowrap; }
 .roundel, .stamp, .qr { display: block; flex: none; }
 .foot { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: ${m(6)}; }
 .scan { display: flex; align-items: flex-end; gap: ${m(5)}; }
 .cta { font-weight: 900; font-size: ${m(8)}; letter-spacing: -0.02em; line-height: 1.05; }
-.addr { font-weight: 600; font-size: ${m(6.4)}; line-height: 1.2; white-space: nowrap; margin-top: ${m(2)}; }
+.addr { font-weight: 600; font-size: ${m(7.6)}; line-height: 1.2; white-space: nowrap; margin-top: ${m(2)}; }
 `;
 
-// The address written out: the QR is the route, this is the fallback, so it breaks after the
-// first dot and never under 3.5 mm x-height on A4 (2.5 mm at A5).
+// The address written out: the QR is the route, this is the fallback. One line at 7.6 mm (A4)
+// so its x-height clears 2.5 mm at A5 in Avenir Next; a long address breaks after its first dot.
 const address = () => {
   const i = DOMAIN.indexOf('.');
   return i > 0 && DOMAIN.length > 28 ? `${DOMAIN.slice(0, i + 1)}<br>${DOMAIN.slice(i + 1)}` : DOMAIN;
@@ -196,7 +199,7 @@ const CSS_A = `
 // Read in the hand: the four steps, then the worked example with its caveat, then the test.
 // The stamp signs it bottom right (30 mm here, 21 mm at A5, above the 18 mm minimum).
 const faceB = () => `<div class="page face-b">
-  <p class="kicker small">this bar does the cluster. here’s how.</p>
+  <p class="kicker mid">This bar does The&nbsp;Cluster. Here’s how.</p>
   <h1 class="h mega">Four easy steps.</h1>
   <ol class="steps">${STEPS.map(([t, d], i) => `<li class="step"><span class="n">${i + 1}</span><div><p class="t">${t}</p><p class="d mid">${d}</p></div></li>`).join('')}</ol>
   <div class="maths">
@@ -211,18 +214,18 @@ const faceB = () => `<div class="page face-b">
   </div>
 </div>`;
 const CSS_B = `
-.face-b .kicker { font-size: ${m(6)}; }
-.face-b .h { font-size: ${m(24)}; margin-top: ${m(2)}; }
+.face-b .kicker { font-size: ${m(7.6)}; }
+.face-b .h { font-size: ${m(22)}; margin-top: ${m(1)}; }
 .face-b .steps { list-style: none; flex: 1; display: grid; align-content: space-evenly; gap: ${m(3)}; margin: ${m(3)} 0; }
 .face-b .step { display: grid; grid-template-columns: ${m(22)} 1fr; align-items: baseline; }
-.face-b .n { font-weight: 900; font-size: ${m(13)}; line-height: 1; letter-spacing: -0.04em; }
-.face-b .t { font-weight: 900; font-size: ${m(10.5)}; letter-spacing: -0.04em; line-height: 1; text-transform: lowercase; }
-.face-b .d { font-size: ${m(6.2)}; line-height: 1.25; margin-top: ${m(1.5)}; max-width: ${m(150)}; }
-.face-b .maths { position: relative; padding-top: ${m(6)}; border-top: ${m(2)} solid #000; margin-bottom: ${m(8)}; }
-.face-b .maths .tag { position: absolute; right: 0; top: ${m(-5.5)}; background: #fff; }
+.face-b .n { font-weight: 900; font-size: ${m(12)}; line-height: 1; letter-spacing: -0.04em; }
+.face-b .t { font-weight: 900; font-size: ${m(10)}; letter-spacing: -0.04em; line-height: 1; text-transform: lowercase; }
+.face-b .d { font-size: ${m(7)}; line-height: 1.25; margin-top: ${m(1.5)}; }
+.face-b .maths { position: relative; padding-top: ${m(10)}; border-top: ${m(2)} solid #000; margin-bottom: ${m(5)}; }
+.face-b .maths .tag { position: absolute; right: 0; top: ${m(-8)}; background: #fff; }
 .face-b .mh { font-size: ${m(13)}; white-space: nowrap; }
-.face-b .ms { font-size: ${m(6.2)}; line-height: 1.25; margin-top: ${m(3)}; max-width: ${m(165)}; }
-.face-b .mc { font-size: ${m(6.2)}; line-height: 1.25; margin-top: ${m(2)}; }
+.face-b .ms { font-size: ${m(7)}; line-height: 1.25; margin-top: ${m(3)}; }
+.face-b .mc { font-size: ${m(7)}; line-height: 1.25; margin-top: ${m(2)}; }
 .face-b .qr { width: ${m(36)}; }
 .face-b .stamp { width: ${m(30)}; }
 .face-b .who { display: flex; align-items: flex-end; gap: ${m(5)}; }
@@ -234,7 +237,8 @@ const sheet = (size, face) => {
   const [w, h] = SIZES[size];
   return `<div class="sheet" style="width:${w}mm;height:${h}mm;--mm:${(w / 210).toFixed(5)}mm">${face()}</div>`;
 };
-// Two A5 Face As side by side on an A4 landscape sheet, a faint dashed cut mark between them.
+// Two A5 Face As side by side on an A4 landscape sheet, a faint cut mark between them: black
+// (one ink, no tint), 0.2 mm, 2 mm dashes with 3 mm gaps, kept 10 mm off the top and bottom.
 const twoUp = () => {
   const half = `<div class="half" style="width:148.5mm;height:210mm;--mm:${(148 / 210).toFixed(5)}mm">${faceA()}</div>`;
   return `<div class="sheet two-up" style="width:297mm;height:210mm">${half}${half}<div class="cut" aria-hidden="true"></div></div>`;
@@ -242,7 +246,7 @@ const twoUp = () => {
 const CSS_TWO_UP = `
 .two-up { display: flex; }
 .two-up .half { position: relative; }
-.two-up .cut { position: absolute; left: 148.5mm; top: 10mm; bottom: 10mm; border-left: 0.25mm dashed #999; }
+.two-up .cut { position: absolute; left: 148.4mm; top: 10mm; bottom: 10mm; width: 0.2mm; background: repeating-linear-gradient(to bottom, #000 0 2mm, transparent 2mm 5mm); }
 `;
 
 const doc = (title, [w, h], body) =>
@@ -283,18 +287,21 @@ async function publish(file, title, parts) {
   return { file, pages: out.getPageCount(), bytes: bytes.length };
 }
 
-// A preview PNG of one face: the A4 page screenshotted at 1.5x, so about 1190px wide.
+// A preview PNG of one face: the A4 page screenshotted at 1.5x (1191 x 1684 px). Chrome's
+// window-size includes space it keeps for its own frame, so the window is taller than the page
+// and the shot is cropped to the page with sharp (installed with wrangler), which also puts the
+// black-on-white page on a palette for a fraction of the size.
+const SCALE = 1.5;
 async function preview(name, face) {
   const html = path.join(tmp, `${name}.html`);
+  const shot = path.join(tmp, `${name}.png`);
   const png = path.join(dir, `${name}.png`);
+  const [w, h] = SIZES.a4.map((mm) => Math.round((mm / 25.4) * 96 * SCALE));
   await writeFile(html, doc(name, SIZES.a4, `<div class="sheet" style="width:210mm;height:297mm;--mm:1mm">${face()}</div>`));
-  chrome(['--force-device-scale-factor=1.5', '--window-size=794,1123', `--screenshot=${png}`, `file://${html}`]);
-  try {
-    // Chrome's screenshot is a 32-bit PNG; a palette makes a black-on-white page a fraction of the size.
-    const sharp = (await import('sharp')).default;
-    const buf = await sharp(png).png({ palette: true, colours: 32, compressionLevel: 9 }).toBuffer();
-    await writeFile(png, buf);
-  } catch {}
+  chrome([`--force-device-scale-factor=${SCALE}`, `--window-size=${Math.ceil(w / SCALE) + 1},${Math.ceil(h / SCALE) + 200}`, `--screenshot=${shot}`, `file://${html}`]);
+  const sharp = (await import('sharp')).default;
+  const buf = await sharp(shot).extract({ left: 0, top: 0, width: w, height: h }).png({ palette: true, colours: 32, compressionLevel: 9 }).toBuffer();
+  await writeFile(png, buf);
   return png;
 }
 
