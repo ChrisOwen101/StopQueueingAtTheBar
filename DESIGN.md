@@ -180,7 +180,7 @@ Every section is a `.screen`: at least one full viewport tall, a centred grid wi
 
 Scrolling is free: no scroll snap and no script moves the page on its own. Only anchor links the visitor clicks scroll smoothly (`scroll-behavior: smooth`, off with reduced motion). Side-by-side comparisons use an auto-fit grid (`minmax(min(100%, 420px), 1fr)`, 1.5rem gap) and stack on narrow screens. The alignment chart is a fixed 3x3 grid with an 8px gap.
 
-A fixed **timeline rail** sits on the left edge and tracks the nine chapters (`#problem`, `#solution`, `#maths`, `#history`, `#howto`, `#test`, `#poll`, `#petition-section`, `#mats`). Below 900px, screens gain 52px side padding (the `--sx` custom property on `.screen`) to make room for it, and chapter labels appear only on tap or hover.
+A fixed **timeline rail** sits on the left edge and tracks the nine chapters (`#problem`, `#solution`, `#maths`, `#howto`, `#test`, `#history`, `#poll`, `#petition-section`, `#mats`). Below 900px, screens gain 52px side padding (the `--sx` custom property on `.screen`) to make room for it, and chapter labels appear only on tap or hover.
 
 Mobile type steps down at 600px (`.mega` to 10.5vw). Content must read at a glance on a phone in a pub.
 

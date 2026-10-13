@@ -54,9 +54,9 @@
       <li><a href="#problem"><span class="mark"></span><span class="lbl"><small>The</small> Problem</span></a></li>
       <li><a href="#solution"><span class="mark"></span><span class="lbl"><small>The</small> Cluster</span></a></li>
       <li><a href="#maths"><span class="mark"></span><span class="lbl"><small>The</small> Maths</span></a></li>
-      <li><a href="#history"><span class="mark"></span><span class="lbl"><small>Since 2020</small> How We Got Here</span></a></li>
       <li><a href="#howto"><span class="mark"></span><span class="lbl"><small>How to</small> Do The Cluster</span></a></li>
       <li><a href="#test"><span class="mark"></span><span class="lbl"><small>Then</small> Take the Test</span></a></li>
+      <li><a href="#history"><span class="mark"></span><span class="lbl"><small>Since 2020</small> How We Got Here</span></a></li>
       <li><a href="#poll"><span class="mark"></span><span class="lbl"><small>Pick a</small> Side</span></a></li>
       <li><a href="#petition-section"><span class="mark"></span><span class="lbl"><small>Now</small> Sign the Petition</span></a></li>
       <li><a href="#mats"><span class="mark"></span><span class="lbl"><small>For pubs</small> Beer Mats</span></a></li>
@@ -140,7 +140,99 @@
     </div>
   </section>
 
-  <!-- 5. HOW WE GOT HERE: a horizontal timeline. Swipe on phones; buttons and arrow keys on desktop.
+  <!-- 5. HOW TO: one sticky stage, four steps acted out by the dots as you scroll.
+       The markup ships the finished frame (all four steps done, all copy shown) so the page
+       reads without JS; script.js resets it and drives the steps from scroll position. -->
+  <section class="howto" id="howto">
+    <!-- Where each step's slice of the scroll starts: the step pills are plain links to these,
+         so the browser does the scrolling (styles.css places them; they do nothing without JS). -->
+    <span class="howto-at" id="howto-1" style="--at:1"></span>
+    <span class="howto-at" id="howto-2" style="--at:2"></span>
+    <span class="howto-at" id="howto-3" style="--at:3"></span>
+    <span class="howto-at" id="howto-4" style="--at:4"></span>
+    <div class="screen howto-stick c-green s1 s2 s3 s4 served">
+      <div class="inner howto-grid reveal">
+        <div class="howto-text">
+          <h2 class="small howto-kicker">how to do the cluster</h2>
+          <div class="howto-copy">
+            <div class="howto-head">
+              <p class="rule-title">Four easy <br>steps.</p>
+              <p class="mid"><span class="js-only">Keep scrolling. </span>You’re the pink one.</p>
+            </div>
+            <ol class="steps">
+              <li class="step">
+                <p class="howto-step">step 1 of 4</p>
+                <h3 class="rule-title">Walk to <br>the bar.</h3>
+                <p class="mid">Not behind someone. To the bar. It’s the long wooden thing.</p>
+              </li>
+              <li class="step">
+                <p class="howto-step">step 2 of 4</p>
+                <h3 class="rule-title">Pick <br>a gap.</h3>
+                <p class="mid">Any gap. Leave some elbow room. This is not a cuddle.</p>
+              </li>
+              <li class="step">
+                <p class="howto-step">step 3 of 4</p>
+                <h3 class="rule-title">Catch <br>an eye.</h3>
+                <p class="mid">A nod. A raised eyebrow. A tenner held with quiet confidence. No waving. No clicking.</p>
+              </li>
+              <li class="step">
+                <p class="howto-step">step 4 of 4</p>
+                <h3 class="rule-title">Trust the <br>barperson.</h3>
+                <p class="mid">They know who’s next. They always know. It’s their entire job.</p>
+              </li>
+            </ol>
+          </div>
+          <nav class="step-nav" aria-label="Steps">
+            <ol>
+              <li class="step-fill" aria-hidden="true"></li>
+              <li><a href="#howto-1"><span class="sr-only">Step </span>1</a></li>
+              <li><a href="#howto-2"><span class="sr-only">Step </span>2</a></li>
+              <li><a href="#howto-3"><span class="sr-only">Step </span>3</a></li>
+              <li><a href="#howto-4"><span class="sr-only">Step </span>4</a></li>
+            </ol>
+          </nav>
+        </div>
+
+        <!-- The pub from above, same language as the sims: bar at the top, staff behind it,
+             customers along it. Positions are % of the stage; each step moves things in styles.css. -->
+        <div class="howto-pub" role="img" aria-label="Pub diagram: you walk up to the bar, step into a gap, catch the nearest barperson’s eye, and a pint slides across to you.">
+          <div class="scene-bar"></div>
+          <span class="cap cap-bar" aria-hidden="true">the long wooden thing</span>
+          <span class="cap cap-end" aria-hidden="true">That’s it. That’s the whole method.</span>
+          <div class="dot staff idle" style="left:18%;top:8%"></div>
+          <div class="dot staff idle" style="left:39%;top:8%"></div>
+          <div class="dot staff idle keeper"></div>
+          <div class="dot staff idle" style="left:82%;top:8%"></div>
+          <div class="dot cust c1" style="left:10%;top:28%"></div>
+          <div class="dot cust c2 has-drink" style="left:21.4%;top:28%"></div>
+          <div class="dot cust c4" style="left:32.9%;top:28%"></div>
+          <div class="dot cust c1" style="left:44.3%;top:28%"></div>
+          <div class="dot cust c2" style="left:44.3%;top:38%"></div>
+          <div class="dot cust c4" style="left:55.7%;top:28%"></div>
+          <div class="dot cust c1 has-drink" style="left:78.6%;top:28%"></div>
+          <div class="dot cust c2" style="left:90%;top:28%"></div>
+          <span class="gap" aria-hidden="true"></span>
+          <svg class="sight" viewBox="0 0 160 110" aria-hidden="true"><line x1="107.4" y1="30.8" x2="97.6" y2="8.8" pathLength="1"/></svg>
+          <div class="pint"></div>
+          <div class="dot cust has-drink you" data-label="you"></div>
+          <span class="note" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. HAZARD PERCEPTION TEST (lives on hazard.html) -->
+  <section class="screen c-blue" id="test">
+    <div class="inner reveal">
+      <p class="small">think you’re ready?</p>
+      <h2 class="mega">The Hazard <br>Perception <br>Test</h2>
+      <p class="mid">Two tests. Which side <br>of the bar are you on?</p>
+      <a class="cta" href="hazard.html">Take the test →</a>
+    </div>
+  </section>
+
+
+  <!-- 7. HOW WE GOT HERE: a horizontal timeline. Swipe on phones; buttons and arrow keys on desktop.
        The strip starts at the content gutter and bleeds to the right only, clear of the rail. -->
   <section class="screen c-pink history" id="history">
     <div class="inner reveal">
@@ -281,98 +373,6 @@
       <p class="src">The rules here are England’s. Scotland, Wales and Northern Ireland set their own; Wales was the last to drop table service, on <a href="https://www.gov.wales/wales-completes-move-alert-level-0" rel="noopener">28 January 2022</a>.</p>
     </div>
   </section>
-
-  <!-- 6. HOW TO: one sticky stage, four steps acted out by the dots as you scroll.
-       The markup ships the finished frame (all four steps done, all copy shown) so the page
-       reads without JS; script.js resets it and drives the steps from scroll position. -->
-  <section class="howto" id="howto">
-    <!-- Where each step's slice of the scroll starts: the step pills are plain links to these,
-         so the browser does the scrolling (styles.css places them; they do nothing without JS). -->
-    <span class="howto-at" id="howto-1" style="--at:1"></span>
-    <span class="howto-at" id="howto-2" style="--at:2"></span>
-    <span class="howto-at" id="howto-3" style="--at:3"></span>
-    <span class="howto-at" id="howto-4" style="--at:4"></span>
-    <div class="screen howto-stick c-green s1 s2 s3 s4 served">
-      <div class="inner howto-grid reveal">
-        <div class="howto-text">
-          <h2 class="small howto-kicker">how to do the cluster</h2>
-          <div class="howto-copy">
-            <div class="howto-head">
-              <p class="rule-title">Four easy <br>steps.</p>
-              <p class="mid"><span class="js-only">Keep scrolling. </span>You’re the pink one.</p>
-            </div>
-            <ol class="steps">
-              <li class="step">
-                <p class="howto-step">step 1 of 4</p>
-                <h3 class="rule-title">Walk to <br>the bar.</h3>
-                <p class="mid">Not behind someone. To the bar. It’s the long wooden thing.</p>
-              </li>
-              <li class="step">
-                <p class="howto-step">step 2 of 4</p>
-                <h3 class="rule-title">Pick <br>a gap.</h3>
-                <p class="mid">Any gap. Leave some elbow room. This is not a cuddle.</p>
-              </li>
-              <li class="step">
-                <p class="howto-step">step 3 of 4</p>
-                <h3 class="rule-title">Catch <br>an eye.</h3>
-                <p class="mid">A nod. A raised eyebrow. A tenner held with quiet confidence. No waving. No clicking.</p>
-              </li>
-              <li class="step">
-                <p class="howto-step">step 4 of 4</p>
-                <h3 class="rule-title">Trust the <br>barperson.</h3>
-                <p class="mid">They know who’s next. They always know. It’s their entire job.</p>
-              </li>
-            </ol>
-          </div>
-          <nav class="step-nav" aria-label="Steps">
-            <ol>
-              <li class="step-fill" aria-hidden="true"></li>
-              <li><a href="#howto-1"><span class="sr-only">Step </span>1</a></li>
-              <li><a href="#howto-2"><span class="sr-only">Step </span>2</a></li>
-              <li><a href="#howto-3"><span class="sr-only">Step </span>3</a></li>
-              <li><a href="#howto-4"><span class="sr-only">Step </span>4</a></li>
-            </ol>
-          </nav>
-        </div>
-
-        <!-- The pub from above, same language as the sims: bar at the top, staff behind it,
-             customers along it. Positions are % of the stage; each step moves things in styles.css. -->
-        <div class="howto-pub" role="img" aria-label="Pub diagram: you walk up to the bar, step into a gap, catch the nearest barperson’s eye, and a pint slides across to you.">
-          <div class="scene-bar"></div>
-          <span class="cap cap-bar" aria-hidden="true">the long wooden thing</span>
-          <span class="cap cap-end" aria-hidden="true">That’s it. That’s the whole method.</span>
-          <div class="dot staff idle" style="left:18%;top:8%"></div>
-          <div class="dot staff idle" style="left:39%;top:8%"></div>
-          <div class="dot staff idle keeper"></div>
-          <div class="dot staff idle" style="left:82%;top:8%"></div>
-          <div class="dot cust c1" style="left:10%;top:28%"></div>
-          <div class="dot cust c2 has-drink" style="left:21.4%;top:28%"></div>
-          <div class="dot cust c4" style="left:32.9%;top:28%"></div>
-          <div class="dot cust c1" style="left:44.3%;top:28%"></div>
-          <div class="dot cust c2" style="left:44.3%;top:38%"></div>
-          <div class="dot cust c4" style="left:55.7%;top:28%"></div>
-          <div class="dot cust c1 has-drink" style="left:78.6%;top:28%"></div>
-          <div class="dot cust c2" style="left:90%;top:28%"></div>
-          <span class="gap" aria-hidden="true"></span>
-          <svg class="sight" viewBox="0 0 160 110" aria-hidden="true"><line x1="107.4" y1="30.8" x2="97.6" y2="8.8" pathLength="1"/></svg>
-          <div class="pint"></div>
-          <div class="dot cust has-drink you" data-label="you"></div>
-          <span class="note" aria-hidden="true"></span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7. HAZARD PERCEPTION TEST (lives on hazard.html) -->
-  <section class="screen c-blue" id="test">
-    <div class="inner reveal">
-      <p class="small">think you’re ready?</p>
-      <h2 class="mega">The Hazard <br>Perception <br>Test</h2>
-      <p class="mid">Two tests. Which side <br>of the bar are you on?</p>
-      <a class="cta" href="hazard.html">Take the test →</a>
-    </div>
-  </section>
-
 
   <!-- 8. THE POLL: the results only show once you've voted (src/worker.js, /api/poll) -->
   <section class="screen c-cream" id="poll">
