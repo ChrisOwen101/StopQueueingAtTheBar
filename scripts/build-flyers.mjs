@@ -22,9 +22,10 @@
 // built on a Mac with Avenir Next. Anywhere else the script still works, in the fallback font,
 // and warns loudly. Rebuild on a Mac and commit public/flyers/ before the site is promoted.
 //
-// The QR code is level H, like the beer mats. The address defaults to the live workers.dev
-// URL below (the mats say dontqueueatthebar.co.uk, which isn't live yet); set SITE_URL in the
-// env to override. Regenerate the flyers when the domain changes.
+// The QR code is level H, like the beer mats, and points at the same address as the mats:
+// SITE_URL in scripts/lib/site.mjs (dontqueueatthebar.co.uk; set SITE_URL in the env to
+// override). The domain must be pointed at the Worker before a flyer is printed, and the
+// flyers must be rebuilt if the address ever changes.
 //
 // CHROME_PATH overrides the browser (any Chromium works). On a Mac the default is Google Chrome.
 // For design reviews only: FLYER_FONT puts a family in front of the stack (FLYER_FONT=Arial
@@ -39,9 +40,7 @@ import path from 'node:path';
 import QRCode from 'qrcode';
 import { PDFDocument } from 'pdf-lib';
 import { FIG, FONT, markBody, stamp, qrPath } from './lib/brand.mjs';
-
-const SITE_URL = process.env.SITE_URL || 'https://dont-queue-at-the-bar.aged-mouse-6395.workers.dev/';
-const DOMAIN = new URL(SITE_URL).hostname.replace(/^www\./, '');
+import { SITE_URL, DOMAIN } from './lib/site.mjs';
 const AUTHOR = 'Don’t Queue At The Bar';
 const LANG = 'en-GB';
 

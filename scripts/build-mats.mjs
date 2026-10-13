@@ -11,8 +11,8 @@
 // The site shows these same files, so what you see on the page is what gets printed.
 //
 // The QR code uses error correction level H (30% of it can be lost) because the roundel
-// covers about a fifth of it. Change the address in one place: SITE_URL below (or set
-// SITE_URL in the env).
+// covers about a fifth of it. The address is SITE_URL in scripts/lib/site.mjs, shared with the
+// flyers (or set SITE_URL in the env).
 //
 // PRINT NOTE: the text is live (Avenir Next). Before sending to a printer, convert it to
 // outlines on a Mac, add the printer's bleed round the circle, and scan a printed proof of
@@ -22,9 +22,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import QRCode from 'qrcode';
 import { matFront, matBack } from './lib/brand.mjs';
-
-const SITE_URL = process.env.SITE_URL || 'https://dontqueueatthebar.co.uk/';
-const DOMAIN = new URL(SITE_URL).hostname.replace(/^www\./, '');
+import { SITE_URL, DOMAIN } from './lib/site.mjs';
 
 const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'public', 'mats');
 await mkdir(dir, { recursive: true });

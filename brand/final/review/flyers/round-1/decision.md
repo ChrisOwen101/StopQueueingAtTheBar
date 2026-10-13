@@ -23,4 +23,4 @@ Read with `designer.md` and `marketing.md` in this folder. The two reviews agree
 - Nothing under 3.5 mm x-height on A4 (2.5 mm at A5): bodies and the address go up to about 6.2 to 6.5 mm type.
 - The address is the fallback, not the route: 600 weight, two lines, broken after the first dot.
 - The YouGov figures stay off both faces.
-- The flyers must point where the mats point once the domain is bought; until then they carry the live workers.dev address and get regenerated when it changes.
+- The flyers point where the mats point: `https://dontqueueatthebar.co.uk/` (`SITE_URL` in `scripts/lib/site.mjs`, shared by both scripts). Round 2 was first rendered with the live workers.dev address and re-rendered with the real domain when the user asked for it; the domain must be pointed at the site before a flyer is printed.
