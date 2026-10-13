@@ -36,6 +36,15 @@
 .hz-back:hover { background: var(--cream); border-color: var(--cream); color: var(--ink); }
 .hz-back:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; border-radius: 999px; }
 
+/* The brand lockup, linking home: the roundel beside the name, in cream (the pages are ink or
+   blue, so ink would vanish). 40px tall, the lockup's minimum, inside the 60px header, so its
+   clear space (an eighth of the mark's width, 5px) stays clear. brand/BRIEF.md has the rules.
+   On the tests the "All tests" pill sits beside it and the test's name goes right. */
+.hz-brand { display: block; flex: none; }
+.hz-brand img { display: block; height: 40px; width: auto; }
+.hz-brand:focus-visible { outline: 3px solid var(--amber); outline-offset: 6px; border-radius: 4px; }
+.hz-brand + .hz-back { margin-right: auto; }
+
 .hz-page.c-blue { background: var(--blue); }
 
 /* Labels (the header's test name, the clip count) use the Label scale. */
@@ -50,8 +59,9 @@
 
 .hz-title { text-align: right; }
 
-/* On a phone the header would wrap; the line above the clip (.hpt-head) names the test. */
-@media (max-width: 600px) {
+/* Where the lockup, the pill and the name won't fit on one line, the name goes; the line
+   above the clip (.hpt-head) names the test. */
+@media (max-width: 760px) {
   .hz-title { display: none; }
 }
 
@@ -437,6 +447,9 @@
 /* Landscape phones: every pixel of height counts. */
 @media (orientation: landscape) and (max-height: 520px) {
   :root { --hz-top: 44px; }
+  /* The header is too short for the lockup's 40px minimum, so show just its roundel (the
+     left 400 units of the 1420-wide lockup), which can go down to 16px. */
+  .hz-brand img { width: 32px; height: 32px; object-fit: cover; object-position: left center; }
   .hpt { --chrome: 96px; }
   .hpt-head { display: none; }
   .hpt-media { gap: 6px; }

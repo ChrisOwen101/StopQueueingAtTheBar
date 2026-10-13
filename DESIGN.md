@@ -108,7 +108,18 @@ Density is low and the volume is high. There is one idea per full-screen block, 
 - Chunky, cheerful forms: pills, thick outlines, generous radii, tilted stamps.
 - Pub-night palette used as a rotation of whole screens, not as accents.
 - Animated dot diagrams on a near-black stage are the only illustration on the home page; the hazard tests use the flat cut-out cartoon described under "Hazard test illustration".
+- One brand mark, the Cluster roundel, in ink or cream only (see "Brand marks").
 - Page works without JS and respects `prefers-reduced-motion`.
+
+## Brand marks
+
+The rules, the decisions and the minimum sizes are in `brand/BRIEF.md`; this is the summary.
+
+- **The Cluster roundel** is the primary mark: three people seen from behind, spread along a bar that overhangs a ring. One colour, no words, no faces, hands or pints, always three figures, the bar always overhanging. It is the favicon, the app icons, the Stripe icon and the seal on the hazard licences (in cream inside the ink rosette on both certificate masters in `public/badges/`).
+- **The type stamp** ("don’t queue / at the bar." in a ring) is the partner mark. It leads on the beer mat front and on flyers. It is the one place words sit inside a ring.
+- **The horizontal lockup** (roundel beside the name) sits top left of the homepage hero (`.brand`): 64px tall on desktop, never under 40px, ink on cream, with an eighth of the mark's width clear on every side. The vertical rail is hidden on the hero, so they never meet. The same lockup in cream heads every hazard page (`.hz-brand`, left of the header, 40px, linking home); on short landscape phones, where the header is 44px, it is cropped to the roundel at 32px.
+- **Colour:** on the site the marks are Last Orders Ink or Pub Cream, never a tint, an outline-only version or a shadow (The Flat-By-Default Rule applies). Print artwork is black on white, or white on black.
+- **Where it lives:** `scripts/lib/brand.mjs` draws every mark; `npm run build:icons`, `npm run build:mats` and `node brand/final/build.mjs` write the files. Edit the module, never a generated SVG. Words stay outside the ring, and colour blocks stay whole (The Whole-Screen Rule).
 
 ## Colors
 
@@ -246,7 +257,7 @@ A horizontal timeline inside the pink `#history` screen, built to look nothing l
 A cream screen. Before a vote: two equal ink pill buttons ("For" first, "Against" second, under the question "Stop the single file?", each with a small line under it) and no amber, so the question stays fair; a 4px ink focus ring. After a vote the kicker goes and the question steps down to Big, so the results fit a laptop screen. The results are a horizontal bar chart: a 900-weight label column, a plot on a shared 0-100% scale (a 2px 45%-ink baseline, a 2px 30%-ink line at 50% because a majority is the point, a 1px line at 100%, all solid), bars 22-34px tall, square on the baseline with a 6px rounded value end, growing from 0 once, and a right-aligned tabular column of figures (the percentage at up to 3rem/900, the vote count at 1rem+ in 75% ink). Fills keep the colour meanings (green for For, the Cluster; red for Against, the Single File); every label and figure stays ink, and each bar sits in its own labelled row, so nobody needs to tell red from green to read it. Under 560px the label and figures share a line with the bar full width underneath. The voter's side gets a "your vote" stamp (3px outlined pill, uppercase, tilted -3deg). Above the chart, a lead line (800 weight); below it, one quiet 1rem line with the total and caveat, a 700-weight quip, one ink CTA (ink is the CTA on light blocks; amber on cream would fail 3:1) and a "Changed your mind?" text button. On the change screen the question stays small and the side on record wears the stamp on its button. In forced colours the fills switch to `CanvasText`.
 
 ### Beer mats
-Real print artwork loaded from `/mats/*.svg` (generated from the logo by `scripts/build-mats.mjs`), shown at `clamp(220px, 30vw, 380px)`, tilted and wobbling, with a flat offset drop shadow.
+Real print artwork loaded from `/mats/*.svg` (written by `scripts/build-mats.mjs` from the brand module), shown at `clamp(220px, 30vw, 380px)`, tilted and wobbling, with a flat offset drop shadow. The front is the type stamp, black on white. The back is the Cluster roundel in the middle of a level-H QR code to the home page, the domain round the edge, white on black; the roundel's tile stays at 16% of the code so it still scans.
 
 ## Hazard test illustration
 
@@ -278,7 +289,8 @@ The one approved exception to the dot-diagram rule, and only on the hazard test 
 - **Do** mark jokes as jokes and keep real, cited figures visually distinct.
 
 ### Don't:
-- **Don't** use photos or stock imagery; the only illustration is the animated dot diagram (and its static `.mini` stages on the history strip), the beer mat art and the hazard test cartoons (see "Hazard test illustration").
+- **Don't** use photos or stock imagery; the only illustration is the animated dot diagram (and its static `.mini` stages on the history strip), the brand marks, the beer mat art and the hazard test cartoons (see "Hazard test illustration").
+- **Don't** redraw, tint, outline or shadow the brand mark, or put words inside its ring (see "Brand marks" and `brand/BRIEF.md`).
 - **Don't** use gradients, soft shadows, glass cards or hairline borders.
 - **Don't** add small accent colours to a neutral page; colour belongs to whole screens.
 - **Don't** introduce web fonts or a second typeface.
