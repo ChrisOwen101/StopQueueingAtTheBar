@@ -1,4 +1,4 @@
-// Don't Queue At The Bar
+// Queue Sideways
 
 document.documentElement.classList.add('js');
 
@@ -382,13 +382,13 @@ if (form) {
   // "Tell a mate": native share sheet where there is one, otherwise copy the link.
   shareBtn?.addEventListener('click', async () => {
     const url = `${location.origin}/`;
-    const text = 'A bar is not a post office. Spread out. Catch the eye. Trust the barperson.';
+    const text = 'Still a queue. Just not a line. Spread along the bar, catch an eye, trust the barperson.';
     try {
       if (navigator.share) {
-        await navigator.share({ title: "Don't Queue At The Bar", text, url });
+        await navigator.share({ title: 'Queue Sideways', text, url });
       } else {
         await navigator.clipboard.writeText(url);
-        shareNote.textContent = 'Link copied. Send it to someone who queues.';
+        shareNote.textContent = 'Link copied. Send it to someone who queues in a line.';
       }
     } catch (err) {
       if (err.name !== 'AbortError') shareNote.textContent = `Copy this: ${url}`;

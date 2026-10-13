@@ -57,7 +57,7 @@ const htmlPage = (status, tone, title, text) =>
   new Response(
     `<!doctype html><html lang="en-GB"><head><meta charset="utf-8">` +
       `<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">` +
-      `<title>${title} - Don't Queue At The Bar</title><link rel="stylesheet" href="/styles.css"></head>` +
+      `<title>${title} - Queue Sideways</title><link rel="stylesheet" href="/styles.css"></head>` +
       `<body><main><section class="screen ${tone}"><div class="inner"><h1 class="big">${title}</h1>` +
       `<p class="mid">${text}</p><a class="cta" href="/#petition-section">Back to the site</a>` +
       `</div></section></main></body></html>`,
