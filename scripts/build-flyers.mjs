@@ -28,8 +28,9 @@
 // The QR codes are level H, like the beer mats. The poster's goes to the home page, the same
 // address as the mats (SITE_URL in scripts/lib/site.mjs, dontqueueatthebar.co.uk; set SITE_URL
 // in the env to override); the how-to's goes straight to the hazard perception test, /hazard,
-// which is what its "Take the test" line promises. The domain must be pointed at the Worker
-// before a flyer is printed, and the flyers must be rebuilt if the address ever changes.
+// which is what its "Take the test" line promises. The written address under both is the bare
+// domain. The domain must be pointed at the Worker before a flyer is printed, and the flyers
+// must be rebuilt if the address ever changes.
 //
 // CHROME_PATH overrides the browser (any Chromium works). On a Mac the default is Google Chrome.
 // For design reviews only: FLYER_FONT puts a family in front of the stack (FLYER_FONT=Arial
@@ -119,11 +120,12 @@ if (!HAVE_AVENIR) {
 }
 
 // ---------- The artwork ----------
-// The two destinations: the poster sends people to the home page (the petition), the how-to
-// straight to the test. Each gets its own code and its own written address.
+// The two destinations: the poster's code sends people to the home page (the petition), the
+// how-to's straight to the test. The written address is the bare domain on both faces: it is
+// the fallback, and the home page links to the test anyway, so it stays one short line.
 const TEST_URL = new URL('hazard', SITE_URL).href;
 const HOME = { url: SITE_URL, text: DOMAIN, qr: QRCode.create(SITE_URL, { errorCorrectionLevel: 'H' }) };
-const TEST = { url: TEST_URL, text: `${DOMAIN}/hazard`, qr: QRCode.create(TEST_URL, { errorCorrectionLevel: 'H' }) };
+const TEST = { url: TEST_URL, text: DOMAIN, qr: QRCode.create(TEST_URL, { errorCorrectionLevel: 'H' }) };
 const QUIET = 4; // modules of quiet zone, the spec's minimum
 // A plain code (the mat back's roundel tile was tried and dropped: a mono laser plus a
 // photocopy eats both the roundel and the error correction it costs).
@@ -164,9 +166,8 @@ p, h1, h2, ol, li { margin: 0; padding: 0; }
 `;
 
 // The address written out: the QR is the route, this is the fallback. 7.6 mm type at A4 so its
-// x-height clears 2.5 mm at A5 in Avenir Next. A domain alone is one line; an address with a
-// path breaks after the slash (dontqueueatthebar.co.uk/ then hazard), since the whole thing
-// won't fit beside the how-to's code and stamp; a very long bare domain breaks after its first dot.
+// x-height clears 2.5 mm at A5 in Avenir Next. One line; an address with a path would break
+// after the slash, and a very long bare domain after its first dot.
 const address = ({ text }) => {
   const slash = text.indexOf('/');
   if (slash > 0) return `${text.slice(0, slash + 1)}<br>${text.slice(slash + 1)}`;
