@@ -201,6 +201,12 @@ Chunky and round. Pills (999px) for buttons, tags and the timeline rail; 14px fo
 - **Hover:** scale to 1.03 over 150ms. **Disabled:** 60% opacity and `cursor: wait`.
 - **Focus:** 3px amber outline with 2px offset (inputs); all interactive elements must keep a visible focus ring.
 
+### How-to stage (`#howto`)
+- **Shape:** one sticky full-viewport screen inside a 4.5-viewport section. Copy left (or top on portrait phones), the dot-diagram pub right (or below), the same dark 24px stage as the sims.
+- **States:** intro (cream), steps 1 to 3 (blue), step 4 (green: The Cluster, done). Never amber as a block here, because amber is the ring, the sightline and the pint inside the diagram.
+- **Pills:** four outlined pills (3px `currentColor`, pill radius) joined by a 4px track at 30%; done pills fill with the text colour, the current one fills and scales to 1.18, the track fills as far as the scroll has got.
+- **Motion:** scroll-linked (walk, sightline, pint), with 0.2 to 1s transitions between states so it reverses cleanly. Copy crossfades (0.4s, 28px rise). Only the gap ring pulses on its own.
+
 ### Tags (stamps)
 - **Style:** transparent, 3px `currentColor` border, pill, uppercase 900 label, `0.45em 1.1em` padding, rotated -3deg.
 
