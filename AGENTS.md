@@ -70,17 +70,17 @@ No build step. Edit the files in `public/` and deploy.
 
 1. Hero: the brand lockup top left (`a.brand`, an `<img>` of `lockup-horizontal.svg` linking to `/`, 64px tall on desktop and never under 40px, with accessible text "Don’t Queue At The Bar, home"), the name and "It's a pub. Not a post office." with a bobbing scroll hint, and the pulsing promo sticker in the bottom right ("Get your pub goers licence today"), which links straight to `hazard.html`. The timeline rail is hidden on the hero, so nothing meets the lockup.
 2. The problem (`#problem`, red): The Single File animation. One queue, one barperson working, the rest idle.
-3. The solution (`#solution`, green): The Cluster animation, then the side-by-side "Same pub. Same Thursday." scoreboard.
+3. The solution (`#solution`, green): The Cluster animation, then a quiet early link to the petition ("Sold? Sign the petition."), so the ask isn't only at the bottom of a fifteen-viewport page. Then the side-by-side "Same pub. Same Thursday." scoreboard (blue, no id, not on the rail).
 4. The maths (`#maths`, ink): "25 minutes. Or six." Two bars (twenty orders through one spot on the bar vs four staff along it), the Friday capacity line (one spot can do 48 an hour), a "worked example" stamp and a source line that says it's simple arithmetic.
 5. How we got here (`#history`, pink): "Blame 2020. Mostly." A horizontal strip of eight floor-sticker stops, from Kate Fox's invisible queue (1996) through the 2020–21 rules to YouGov's 40/39 split (Sep 2025), ending on a live "days since you were allowed back at the bar" counter. Under it, a line noting the rules are England's and that Wales was last. "Eight stops" is written in the copy, so change it if the number of stops changes (the "1 of 8" total comes from the DOM).
 6. How to do The Cluster (`#howto`): one sticky stage, 4.5 viewports tall, where a pink "you" dot acts out the 4 steps (walk to the bar, pick a gap, catch an eye, trust the barperson) as the visitor scrolls. One chapter, not a screen per step.
 7. Hazard Perception Test (`#test`): a teaser with a link out to `hazard.html`. The tests live on their own pages.
-8. Beer mats (`#mats`): the front (the stamp) and the back (the roundel in the QR code) as SVG images, marked "coming soon". Nothing is for sale yet.
-9. Poll (`#poll`, cream): "Stop the single file?" Two buttons, For (stop it) first, then Against; the results (a horizontal bar chart with each side's percentage and votes, a lead line, the total and one next step) only show once you've voted. See Poll below.
-10. Petition (`#petition-section`): pledges for pubs, the public and Parliament (mock), plus the form.
+8. Poll (`#poll`, cream): "Stop the single file?" Two buttons, For (stop it) first, then Against; the results (a horizontal bar chart with each side's percentage and votes, a lead line, the total and one next step) only show once you've voted. See Poll below.
+9. Petition (`#petition-section`): pledges for pubs, the public and Parliament (mock), plus the form.
+10. Beer mats (`#mats`, amber): the front (the stamp) and the back (the roundel in the QR code) as SVG images, marked "coming soon". Nothing is for sale yet. It talks to pubs, not drinkers, so it sits after the poll and the petition rather than between the test and the asks.
 11. Footer: the sources line for the maths and history screens, then the beer fund line ("Made with 🍻 by people who just want a pint. Chip in to the beer fund. No queue."), a plain link to a Stripe Payment Link. It's a tip jar for a few people running a campaign, not a charity, so never call it a donation to charity or mention Gift Aid.
 
-A **fixed timeline rail** sits on the left and tracks 9 chapters. Anchors it uses: `#problem`, `#solution`, `#maths`, `#history`, `#howto`, `#test`, `#mats`, `#poll`, `#petition-section`. If you add, rename or remove a chapter, update both the `<nav class="timeline">` list and the matching section `id`s.
+A **fixed timeline rail** sits on the left and tracks 9 chapters. Anchors it uses, in page order: `#problem`, `#solution`, `#maths`, `#history`, `#howto`, `#test`, `#poll`, `#petition-section`, `#mats`. If you add, rename or remove a chapter, update both the `<nav class="timeline">` list and the matching section `id`s.
 
 ## How the interactive bits work (`public/script.js`)
 

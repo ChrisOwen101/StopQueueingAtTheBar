@@ -57,9 +57,9 @@
       <li><a href="#history"><span class="mark"></span><span class="lbl"><small>Since 2020</small> How We Got Here</span></a></li>
       <li><a href="#howto"><span class="mark"></span><span class="lbl"><small>How to</small> Do The Cluster</span></a></li>
       <li><a href="#test"><span class="mark"></span><span class="lbl"><small>Then</small> Take the Test</span></a></li>
-      <li><a href="#mats"><span class="mark"></span><span class="lbl"><small>For pubs</small> Beer Mats</span></a></li>
       <li><a href="#poll"><span class="mark"></span><span class="lbl"><small>Pick a</small> Side</span></a></li>
       <li><a href="#petition-section"><span class="mark"></span><span class="lbl"><small>Now</small> Sign the Petition</span></a></li>
+      <li><a href="#mats"><span class="mark"></span><span class="lbl"><small>For pubs</small> Beer Mats</span></a></li>
     </ol>
   </nav>
 
@@ -101,6 +101,7 @@
            aria-label="Animated pub bar: customers spread along the bar and all four staff serve at once"></div>
       <p class="mid">Spread out along the bar. <br>Everyone gets a patch of bar, and everyone gets served quicker.</p>
       <p class="tag"><span aria-hidden="true">✓</span> the correct answer</p>
+      <p class="mid">Sold? <a class="plain" href="#petition-section">Sign the petition.</a></p>
     </div>
   </section>
 
@@ -373,21 +374,7 @@
   </section>
 
 
-  <!-- 8. BEER MATS -->
-  <section class="screen c-amber" id="mats">
-    <div class="inner reveal">
-      <p class="small">for pubs</p>
-      <h2 class="mega">Beer mats.</h2>
-      <p class="mid">A polite reminder, under a pint.</p>
-      <div class="mats">
-        <img class="mat m1" src="/mats/mat-front.svg" width="400" height="400" loading="lazy" alt="The front of the beer mat: the words ‘don’t queue at the bar’ inside a thick ring, black on white.">
-        <img class="mat m2" src="/mats/mat-back.svg" width="400" height="400" loading="lazy" alt="The back of the beer mat: a large QR code to the website with the Don’t Queue At The Bar roundel in the middle, and the web address printed round the edge, white on black.">
-      </div>
-      <p class="mid">Coming soon. <a class="plain" href="#petition-section">Sign the petition</a> and we’ll tell you first.</p>
-    </div>
-  </section>
-
-  <!-- 9. THE POLL: the results only show once you've voted (src/worker.js, /api/poll) -->
+  <!-- 8. THE POLL: the results only show once you've voted (src/worker.js, /api/poll) -->
   <section class="screen c-cream" id="poll">
     <div class="inner reveal">
       <p class="small poll-kicker">pick a side</p>
@@ -436,7 +423,7 @@
     </div>
   </section>
 
-  <!-- 10. PETITION -->
+  <!-- 9. PETITION -->
   <section class="screen c-ink footer" id="petition-section">
     <div class="inner reveal">
       <h2 class="big">Sign the <br>Petition</h2>
@@ -470,6 +457,20 @@
           <p class="share-note" role="status" aria-live="polite"></p>
         </div>
       </form>
+    </div>
+  </section>
+
+  <!-- 10. BEER MATS: for pubs, so it sits after the asks to the drinker -->
+  <section class="screen c-amber" id="mats">
+    <div class="inner reveal">
+      <p class="small">for pubs</p>
+      <h2 class="mega">Beer mats.</h2>
+      <p class="mid">A polite reminder, under a pint.</p>
+      <div class="mats">
+        <img class="mat m1" src="/mats/mat-front.svg" width="400" height="400" loading="lazy" alt="The front of the beer mat: the words ‘don’t queue at the bar’ inside a thick ring, black on white.">
+        <img class="mat m2" src="/mats/mat-back.svg" width="400" height="400" loading="lazy" alt="The back of the beer mat: a large QR code to the website with the Don’t Queue At The Bar roundel in the middle, and the web address printed round the edge, white on black.">
+      </div>
+      <p class="mid">Coming soon. <a class="plain" href="#petition-section">Sign the petition</a> and we’ll tell you first.</p>
     </div>
   </section>
   </main>
