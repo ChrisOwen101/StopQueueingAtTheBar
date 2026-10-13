@@ -1,5 +1,5 @@
 ---
-name: Don't Queue At The Bar
+name: Queue Sideways
 description: A loud, flat-colour campaign poster that scrolls: one huge lowercase idea per screen, with tiny animated pub diagrams.
 colors:
   pub-cream: "#fff4dc"
@@ -92,7 +92,7 @@ components:
     rounded: "{rounded.xl}"
 ---
 
-# Design System: Don't Queue At The Bar
+# Design System: Queue Sideways
 
 ## Overview
 
@@ -108,15 +108,15 @@ Density is low and the volume is high. There is one idea per full-screen block, 
 - Chunky, cheerful forms: pills, thick outlines, generous radii, tilted stamps.
 - Pub-night palette used as a rotation of whole screens, not as accents.
 - Animated dot diagrams on a near-black stage are the only illustration on the home page; the hazard tests use the flat cut-out cartoon described under "Hazard test illustration".
-- One brand mark, the Cluster roundel, in ink or cream only (see "Brand marks").
+- One brand mark, the Corner roundel, in ink or cream only (see "Brand marks").
 - Page works without JS and respects `prefers-reduced-motion`.
 
 ## Brand marks
 
 The rules, the decisions and the minimum sizes are in `brand/BRIEF.md`; this is the summary.
 
-- **The Cluster roundel** is the primary mark: three people seen from behind, spread along a bar that overhangs a ring. One colour, no words, no faces, hands or pints, always three figures, the bar always overhanging. It is the favicon, the app icons, the Stripe icon and the seal on the hazard licences.
-- **The type stamp** ("don’t queue / at the bar." in a ring) is the partner mark. It leads on the beer mat front and on flyers. It is the one place words sit inside a ring.
+- **The Corner roundel** is the primary mark: six heads, a single file that comes down to the bar and turns to lie along it, inside a ring the bar overhangs. One colour, no words, no arrow, no slash, no faces or bodies, always six heads. It says "still a queue, just sideways" without a caption, which is the whole brief (Round 4 in `brand/BRIEF.md`). It is the favicon, the app icons, the Stripe icon and the centre of the hazard licence seals.
+- **The type stamp** ("queue / sideways." with "they know who’s next." in a ring) is the partner mark. It leads on the beer mat front and on flyers. It is the one place words sit inside a ring.
 - **The horizontal lockup** (roundel beside the name) sits top left of the homepage hero (`.brand`): 64px tall on desktop, never under 40px, ink on cream, with an eighth of the mark's width clear on every side. The vertical rail is hidden on the hero, so they never meet.
 - **Colour:** on the site the marks are Last Orders Ink or Pub Cream, never a tint, an outline-only version or a shadow (The Flat-By-Default Rule applies). Print artwork is black on white, or white on black.
 - **Where it lives:** `scripts/lib/brand.mjs` draws every mark; `npm run build:icons`, `npm run build:mats` and `node brand/final/build.mjs` write the files. Edit the module, never a generated SVG. Words stay outside the ring, and colour blocks stay whole (The Whole-Screen Rule).
@@ -237,7 +237,7 @@ A 3x3 grid of ink cells with cream text and amber uppercase headings; the centre
 A tall 16px-radius track in 12% ink with an ink fill, or red for the alternative. The fill grows from 0 when its screen is revealed.
 
 ### Beer mats
-Real print artwork loaded from `/mats/*.svg` (written by `scripts/build-mats.mjs` from the brand module), shown at `clamp(220px, 30vw, 380px)`, tilted and wobbling, with a flat offset drop shadow. The front is the type stamp, black on white. The back is the Cluster roundel in the middle of a level-H QR code to the home page, the domain round the edge, white on black; the roundel's tile stays at 16% of the code so it still scans.
+Real print artwork loaded from `/mats/*.svg` (written by `scripts/build-mats.mjs` from the brand module), shown at `clamp(220px, 30vw, 380px)`, tilted and wobbling, with a flat offset drop shadow. The front is the type stamp, black on white. The back is the Corner roundel in the middle of a level-H QR code to the home page, the domain and "they know who’s next" round the edge, white on black; the roundel's tile stays at 16% of the code so it still scans.
 
 ## Hazard test illustration
 

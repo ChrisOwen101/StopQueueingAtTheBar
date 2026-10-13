@@ -1,4 +1,4 @@
-# Don't Queue At The Bar
+# Queue Sideways (formerly Don't Queue At The Bar)
 
 Static site (`public/`) plus a Cloudflare Worker (`src/worker.js`) that stores petition signatures in Postgres through Hyperdrive.
 
