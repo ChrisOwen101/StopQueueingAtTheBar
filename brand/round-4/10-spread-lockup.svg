@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 400" role="img" aria-label="spread along the bar.">
+  <g>
+  <circle cx="200" cy="200" r="170" fill="none" stroke="#000" stroke-width="30"/>
+  <path d="M200,56 V158 M96,158 H304" fill="none" stroke="#000" stroke-width="40"/>
+  <polygon points="40,158 104,110 104,206" fill="#000"/><polygon points="360,158 296,110 296,206" fill="#000"/>
+  <rect x="0" y="214" width="400" height="64" fill="#000"/></g>
+  <g font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="900" font-size="141" fill="#000" letter-spacing="-5.64" text-anchor="start">
+    <text x="452" y="186">spread along</text>
+    <text x="452" y="316">the bar.</text>
+  </g>
+</svg>

@@ -70,7 +70,7 @@ small{font-size:10px;color:#555;display:block;margin-top:6px}
 </div>`);
 
 if (process.env.CHROME_PATH) {
-  execFileSync(process.env.CHROME_PATH, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1', `--window-size=1800,${process.env.SHEET_H || 2400}`, `--screenshot=${path.join(dir, 'round-4.png')}`, `file://${path.join(dir, 'sheet.html')}`], { stdio: 'ignore' });
-  console.log('round-4.png rendered');
+  execFileSync(process.env.CHROME_PATH, ['--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1', `--window-size=1800,${process.env.SHEET_H || 2400}`, `--screenshot=${process.env.SHEET_PNG || path.join(dir, 'round-4.png')}`, `file://${path.join(dir, 'sheet.html')}`], { stdio: 'ignore' });
+  console.log('sheet rendered');
 }
 console.log(`wrote ${CONCEPTS.length} concepts to ${dir}`);

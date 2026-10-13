@@ -41,9 +41,9 @@ CONCEPTS.push(
     body: (c) => `
   ${ring(c)}
   <g fill="${c}">
-    <circle cx="118" cy="76" r="22"/><circle cx="118" cy="128" r="22"/>
-    <circle cx="118" cy="180" r="22"/><circle cx="172" cy="180" r="22"/><circle cx="226" cy="180" r="22"/>
-    <polygon points="262,146 262,214 326,180" />
+    <circle cx="128" cy="84" r="24"/><circle cx="128" cy="136" r="24"/>
+    <circle cx="128" cy="184" r="24"/><circle cx="184" cy="184" r="24"/><circle cx="240" cy="184" r="24"/>
+    <polygon points="276,150 276,214 338,182" />
   </g>
   ${bar(c)}`,
     note: 'Heads only, plan view of the turn. The arrow says "and so on along the bar".',
@@ -105,5 +105,46 @@ CONCEPTS.push(
   <g fill="${c}">${fig(292, 136)}</g>
   ${bar(c)}`,
     note: 'One figure keeps the “people” equity; the arrow is the message.',
+  },
+  {
+    n: 8, id: '08-the-disc', title: 'The Disc (figure-ground)', words: ['the bar is', 'the queue.'], tab: 'The Bar Is The Queue',
+    idea: 'A filled disc, the bar cut through it in paper, three paper heads along it with their order inside. Big, it reads order; small, a bar with three dots.',
+    body: (c) => `
+  <circle cx="200" cy="200" r="185" fill="${c}"/>
+  <rect x="0" y="214" width="400" height="56" fill="${paper(c)}"/>
+  <g fill="${paper(c)}"><circle cx="104" cy="166" r="30"/><circle cx="200" cy="166" r="30"/><circle cx="296" cy="166" r="30"/></g>
+  ${numeral(c, 104, 182, 2, 9)}${numeral(c, 200, 182, 1, 9)}${numeral(c, 296, 182, 3, 9)}`,
+    note: 'Mandatory-sign feel (do this), no slash. The numerals go at small sizes and nothing is lost.',
+  },
+  {
+    n: 9, id: '09-shirt-numbers-spread', title: 'Shirt Numbers, spread', words: ['they know', 'who’s next.'], tab: 'Don’t Queue At The Bar',
+    idea: 'Shirt Numbers with the figures spread unevenly, so it reads as people at a bar rather than a row.',
+    body: (c) => `
+  ${ring(c)}
+  <g fill="${c}">${fig(96, 136)}${fig(176, 136)}${fig(300, 136)}</g>
+  ${numeral(paper(c), 96, 208, 2)}${numeral(paper(c), 176, 208, 1)}${numeral(paper(c), 300, 208, 3)}
+  ${bar(c)}`,
+    note: 'The gap says "spread out". 3 arrived last and stood where there was room.',
+  },
+  {
+    n: 10, id: '10-spread', title: 'Spread', words: ['spread along', 'the bar.'], tab: 'Spread Along The Bar',
+    idea: 'One arrow comes down to the bar and forks both ways along it. The single file arrives and spreads out.',
+    body: (c) => `
+  ${ring(c)}
+  <path d="M200,56 V158 M96,158 H304" fill="none" stroke="${c}" stroke-width="40"/>
+  <polygon points="40,158 104,110 104,206" fill="${c}"/><polygon points="360,158 296,110 296,206" fill="${c}"/>
+  ${bar(c)}`,
+    note: 'Not a return key: a T with two heads. Holds at 16px.',
+  },
+  {
+    n: 11, id: '11-spread-with-people', title: 'Spread, with people', words: ['spread along', 'the bar.'], tab: 'Spread Along The Bar',
+    idea: 'The forked arrow over the heads of two people already at the bar, one each side. Join them, don’t line up behind them.',
+    body: (c) => `
+  ${ring(c)}
+  <path d="M200,56 V128 M122,128 H278" fill="none" stroke="${c}" stroke-width="32"/>
+  <polygon points="74,128 128,90 128,166" fill="${c}"/><polygon points="326,128 272,90 272,166" fill="${c}"/>
+  <g fill="${c}">${fig(96, 150, 0.82)}${fig(304, 150, 0.82)}</g>
+  ${bar(c)}`,
+    note: 'Arrow plus the two bodies. Busier than 10.',
   },
 );
