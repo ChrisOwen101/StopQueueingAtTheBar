@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="A pint whose head is a row of heads">
+  <circle cx="200" cy="200" r="180" fill="none" stroke="#000" stroke-width="20"/>
+  <!-- nonic pint glass -->
+  <path d="M118,106 H282 L276,160 Q288,170 284,186 L262,342 Q262,352 252,352 H148 Q138,352 138,342 L116,186 Q112,170 124,160 Z" fill="#000"/>
+  <!-- foam: a row of heads above the rim -->
+  <g fill="#fff">
+    <rect x="128" y="112" width="144" height="40"/>
+    <circle cx="140" cy="106" r="16"/><circle cx="170" cy="100" r="18"/><circle cx="200" cy="104" r="17"/><circle cx="230" cy="99" r="18"/><circle cx="260" cy="106" r="16"/>
+  </g>
+</svg>

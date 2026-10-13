@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="The Cluster roundel: three people spread along the bar">
+  <defs><g id="p"><circle cx="0" cy="0" r="25"/><path d="M-34,78 V56 a34,34 0 0 1 68,0 V78 Z"/></g></defs>
+  <circle cx="200" cy="200" r="174" fill="none" stroke="#000" stroke-width="30"/>
+  <g fill="#000"><use href="#p" x="108" y="142"/><use href="#p" x="200" y="142"/><use href="#p" x="292" y="142"/></g>
+  <rect x="8" y="216" width="384" height="64" fill="#000"/>
+</svg>

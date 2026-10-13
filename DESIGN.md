@@ -152,11 +152,11 @@ Sim customer dots also use four light tints (#7f95ff, #4ad295, #ff6b76, #ffd36a)
 - **Stat** (900, `clamp(6rem, 30vw, 26rem)`, 0.85, -0.06em, tabular numerals): The giant counted-up number. Not on the page at present (the maths screen's "25 minutes. Or six." is a Mega); the class was removed with the old +25% screen.
 - **Big** (800, `clamp(2.2rem, 7vw, 6rem)`, 1, -0.03em): Secondary statements and rule titles.
 - **Mid** (600, `clamp(1.3rem, 3.2vw, 2.6rem)`, 1.2): The supporting line under a headline.
-- **Small** (500, `clamp(1rem, 2vw, 1.6rem)`, 0.04em, lowercase, 80% opacity): Captions and asides.
+- **Small** (500, `clamp(1rem, 2vw, 1.6rem)`, 0.04em, lowercase, 80% opacity): Captions and asides. Full opacity on red and blue blocks, where 80% cream falls under 4.5:1.
 - **Label** (900, `clamp(0.9rem, 1.8vw, 1.3rem)`, 0.08em, uppercase): Tags, chart headings, sim scores.
 - **Rule title** (900, `clamp(2.2rem, 9vw, 8rem)`, 1, -0.04em, lowercase): the chapter and step headings (`.rule-title`), one step below Mega.
 
-Running text: `.mid` and `.small` use `text-wrap: balance`, other paragraphs `pretty`. On dark blocks `.mid` gets line-height 1.38 and +0.006em tracking. Nothing the visitor reads is below 1rem except the sim legends, rail labels and the hero sticker's small line (0.75rem floor). Apostrophes in visible copy are typographic (’). Mobile display sizes keep a rem floor so browser text size still applies.
+Running text: `.mid` and `.small` use `text-wrap: balance`, other paragraphs `pretty`. On dark blocks `.mid` gets line-height 1.38 and +0.006em tracking. Nothing the visitor reads is below 1rem except the sim legends, rail labels and the hero sticker's small line (0.75rem floor). Apostrophes in visible copy are typographic (’). Mobile display sizes keep a rem floor so browser text size still applies. On the hazard pages, labels (the header's test name and the clip count) use the Label scale, and the header label is hidden at 600px and below, where the line above the clip names the test.
 
 ### Named Rules
 **The Lowercase Shout Rule.** Headlines are lowercase and enormous. Uppercase is only for labels and the occasional `.mega.upper` quote.
@@ -167,9 +167,9 @@ Running text: `.mid` and `.small` use `text-wrap: balance`, other paragraphs `pr
 
 Every section is a `.screen`: at least one full viewport tall, a centred grid with generous padding (`12vh` top and bottom, `6vw` sides), content centred and capped at 1200px in `.inner`. Text is centred throughout, except forms, bars and sim captions, which are left-aligned inside their own containers. Vertical rhythm comes from the screens, not from spacing inside them: whitespace is one idea of padding, not many small gaps.
 
-`scroll-snap-type: y proximity` lets screens settle without trapping the visitor. Side-by-side comparisons use an auto-fit grid (`minmax(min(100%, 420px), 1fr)`, 1.5rem gap) and stack on narrow screens. The alignment chart is a fixed 3x3 grid with an 8px gap.
+Scrolling is free: no scroll snap and no script moves the page on its own. Only anchor links the visitor clicks scroll smoothly (`scroll-behavior: smooth`, off with reduced motion). Side-by-side comparisons use an auto-fit grid (`minmax(min(100%, 420px), 1fr)`, 1.5rem gap) and stack on narrow screens. The alignment chart is a fixed 3x3 grid with an 8px gap.
 
-A fixed **timeline rail** sits on the left edge and tracks the eight chapters (`#problem`, `#solution`, `#maths`, `#history`, `#howto`, `#test`, `#mats`, `#petition-section`). Below 900px, screens gain 52px side padding (the `--sx` custom property on `.screen`) to make room for it, and chapter labels appear only on tap or hover.
+A fixed **timeline rail** sits on the left edge and tracks the nine chapters (`#problem`, `#solution`, `#maths`, `#history`, `#howto`, `#test`, `#mats`, `#poll`, `#petition-section`). Below 900px, screens gain 52px side padding (the `--sx` custom property on `.screen`) to make room for it, and chapter labels appear only on tap or hover.
 
 Mobile type steps down at 600px (`.mega` to 10.5vw). Content must read at a glance on a phone in a pub.
 
@@ -201,6 +201,12 @@ Chunky and round. Pills (999px) for buttons, tags and the timeline rail; 14px fo
 - **Hover:** scale to 1.03 over 150ms. **Disabled:** 60% opacity and `cursor: wait`.
 - **Focus:** 3px amber outline with 2px offset (inputs); all interactive elements must keep a visible focus ring.
 
+### How-to stage (`#howto`)
+- **Shape:** one sticky full-viewport screen inside a 4.5-viewport section. Copy left (or top on portrait phones), the dot-diagram pub right (or below), the same dark 24px stage as the sims.
+- **States:** intro (cream), steps 1 to 3 (blue), step 4 (green: The Cluster, done). Never amber as a block here, because amber is the ring, the sightline and the pint inside the diagram.
+- **Pills:** four outlined pills (3px `currentColor`, pill radius) joined by a 4px track at 30%; done pills fill with the text colour, the current one fills and scales to 1.18, the track fills as far as the scroll has got.
+- **Motion:** scroll-linked (walk, sightline, pint), with 0.2 to 1s transitions between states so it reverses cleanly. Copy crossfades (0.4s, 28px rise). Only the gap ring pulses on its own.
+
 ### Tags (stamps)
 - **Style:** transparent, 3px `currentColor` border, pill, uppercase 900 label, `0.45em 1.1em` padding, rotated -3deg.
 
@@ -212,7 +218,7 @@ Chunky and round. Pills (999px) for buttons, tags and the timeline rail; 14px fo
 - **Messages:** centred 700 weight; amber for success, red for error.
 
 ### Navigation (timeline rail)
-- **Style:** a fixed vertical ink pill (90% opacity, 2px cream border at 30%), eight 14px dots joined by a grey track with an amber progress fill.
+- **Style:** a fixed vertical ink pill (90% opacity, 2px cream border at 30%), nine 14px dots joined by a grey track with an amber progress fill.
 - **States:** done dots fill amber; the active dot scales 1.5x, gets a cream border and an amber halo. Labels (ink pill with an amber uppercase kicker) appear on the active, hovered or focused dot.
 - **Behaviour:** hidden on the hero, fades in after it. On narrow screens only dots show until tap or hover. On `#maths` and `#history` the active label is hidden at every width unless the rail is hovered or focused, because the bars and the history strip run from the content gutter and the label would sit on them.
 
@@ -235,6 +241,9 @@ A horizontal timeline inside the pink `#history` screen, built to look nothing l
 - **Cards:** cream, 24px radius, ink text: a tiny Scene Night stage (`.mini`, inline SVG in the sims' vocabulary: wood bar, cream staff, dim idle staff, pink and tinted customers), a lowercase 900 heading, one dry line and a source line pinned to the bottom. All cards are the same height. The last card ("today") is inverted (ink, cream text) and carries the screen's one amber: the live days-since number.
 - **Scroll:** native horizontal scroll with mandatory centre snap. The strip starts at the content gutter and bleeds to the right edge only, so the rail never covers it; on a phone the current card fills the content column and the next one peeks in from the right gutter.
 - **Controls:** 56px outlined ink circle buttons with SVG chevrons either side of an uppercase "n of 8" count; at the ends a button fades to 30% and is `aria-disabled`. The controls appear only with JS. Under the strip, a `.src` line says the rules shown are England's.
+
+### Poll
+A cream screen. Before a vote: two equal ink pill buttons ("For", "Against", each with a small line under it) and no amber, so the question stays fair; a 4px ink focus ring. After a vote the kicker goes and the question steps down to Big, so the results fit a laptop screen. The results are a horizontal bar chart: a 900-weight label column, a plot on a shared 0-100% scale (a 2px 45%-ink baseline, a 2px 30%-ink line at 50% because a majority is the point, a 1px line at 100%, all solid), bars 22-34px tall, square on the baseline with a 6px rounded value end, growing from 0 once, and a right-aligned tabular column of figures (the percentage at up to 3rem/900, the vote count at 1rem+ in 75% ink). Fills keep the colour meanings (red for, green against); every label and figure stays ink, and each bar sits in its own labelled row, so nobody needs to tell red from green to read it. Under 560px the label and figures share a line with the bar full width underneath. The voter's side gets a "your vote" stamp (3px outlined pill, uppercase, tilted -3deg). Above the chart, a lead line (800 weight); below it, one quiet 1rem line with the total and caveat, a 700-weight quip, one ink CTA (ink is the CTA on light blocks; amber on cream would fail 3:1) and a "Changed your mind?" text button. On the change screen the question stays small and the side on record wears the stamp on its button. In forced colours the fills switch to `CanvasText`.
 
 ### Beer mats
 Real print artwork loaded from `/mats/*.svg` (generated from the logo by `scripts/build-mats.mjs`), shown at `clamp(220px, 30vw, 380px)`, tilted and wobbling, with a flat offset drop shadow.

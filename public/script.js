@@ -4,7 +4,6 @@ document.documentElement.classList.add('js');
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasIO = 'IntersectionObserver' in window;
-let animPaused = false; // set by the pause control below
 
 // Each part of the page runs on its own, so one that breaks (an old browser, a missing
 // element) never takes the petition form down with it.
@@ -392,7 +391,7 @@ function buildScene(el) {
   let timer = null;
   return {
     start() {
-      if (!timer && !reduceMotion && !animPaused) timer = setInterval(step, TICK_MS);
+      if (!timer && !reduceMotion) timer = setInterval(step, TICK_MS);
     },
     stop() {
       clearInterval(timer);
@@ -407,7 +406,7 @@ const scenes = [...document.querySelectorAll('.scene')]
 
 // A hidden tab has no use for four simulations.
 document.addEventListener('visibilitychange', () => {
-  scenes.forEach((s) => (document.hidden ? s.sim.stop() : s.visible && !animPaused && s.sim.start()));
+  scenes.forEach((s) => (document.hidden ? s.sim.stop() : s.visible && s.sim.start()));
 });
 
 if (hasIO) {
@@ -428,33 +427,70 @@ if (hasIO) {
   scenes.forEach((s) => s.sim.start());
 }
 
-/* ---------- Pause control (WCAG 2.2.2) ----------
-   The sims and the beer mats move on their own for more than five seconds, so
-   offer a way to stop them. Not needed when the visitor already asked for reduced motion. */
+/* ---------- How to do The Cluster: one sticky stage, four steps, driven by scroll ----------
+   #howto is 4.5 viewports tall and its stage sticks to the top of the window. The scroll
+   position through the section is cut into five equal slices (the intro, then steps 1 to 4).
+   The stage gets the cumulative classes s1..s4, the block colour, and --k (0 to 1, how far
+   through the current slice) so the dots can act each step out as the visitor scrolls. The
+   markup ships the finished frame for visitors without JS; this resets it. */
 
-if (!reduceMotion) {
-  const toggle = document.createElement('button');
-  toggle.type = 'button';
-  toggle.className = 'motion-toggle';
-  toggle.setAttribute('aria-pressed', 'false');
-  toggle.setAttribute('aria-label', 'Pause animations');
-  toggle.innerHTML =
-    '<svg class="pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg>' +
-    '<svg class="play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11a1 1 0 0 0 1.5.86l9-5.5a1 1 0 0 0 0-1.72l-9-5.5A1 1 0 0 0 4 2.5z"/></svg>' +
-    '<span class="txt">pause animations</span>';
-  const txt = toggle.querySelector('.txt');
+const howto = document.getElementById('howto');
 
-  toggle.addEventListener('click', () => {
-    animPaused = !animPaused;
-    document.documentElement.classList.toggle('paused', animPaused);
-    toggle.setAttribute('aria-pressed', String(animPaused));
-    toggle.setAttribute('aria-label', animPaused ? 'Play animations' : 'Pause animations');
-    txt.textContent = animPaused ? 'play animations' : 'pause animations';
-    scenes.forEach((s) => (animPaused ? s.sim.stop() : s.visible && s.sim.start()));
-  });
+if (howto) guard('howto', () => {
+  const stick = howto.querySelector('.howto-stick');
+  const head = howto.querySelector('.howto-head');
+  const steps = [...howto.querySelectorAll('.steps > .step')];
+  const pills = [...howto.querySelectorAll('.step-nav li:not(.step-fill)')];
+  const N = steps.length;
+  if (!stick || !head || !N) return;
+  const SLICES = N + 1;
+  const BLOCK = (n) => (n === 0 ? 'c-cream' : n === N ? 'c-green' : 'c-blue');
+  const SERVED_AT = 0.8; // how far through the last step the pint reaches you
+  let current = -1;
 
-  document.body.appendChild(toggle);
-}
+  const travel = () => howto.offsetHeight - stick.offsetHeight;
+
+  const setState = (n, k) => {
+    stick.style.setProperty('--k', k.toFixed(3));
+    stick.style.setProperty('--sp', (n === 0 ? 0 : Math.min(1, (n - 1 + k) / (N - 1))).toFixed(3));
+    stick.classList.toggle('served', n === N && k >= SERVED_AT);
+    if (n === current) return;
+    current = n;
+    for (let i = 1; i <= N; i++) stick.classList.toggle(`s${i}`, n >= i);
+    ['c-cream', 'c-blue', 'c-green'].forEach((c) => stick.classList.toggle(c, c === BLOCK(n)));
+    head.classList.toggle('active', n === 0);
+    steps.forEach((li, i) => li.classList.toggle('active', i + 1 === n));
+    pills.forEach((li, i) => {
+      li.classList.toggle('done', i + 1 < n);
+      const a = li.querySelector('a');
+      if (i + 1 === n) a.setAttribute('aria-current', 'step');
+      else a.removeAttribute('aria-current');
+    });
+  };
+
+  const update = () => {
+    const t = travel();
+    const p = t > 0 ? -howto.getBoundingClientRect().top / t : 1;
+    const x = Math.min(SLICES - 1e-6, Math.max(0, p * SLICES));
+    const n = Math.floor(x);
+    setState(n, p >= 1 ? 1 : x - n);
+  };
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      update();
+    });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  // Paper can't scroll: print the finished frame, then go back to where the reader was.
+  window.addEventListener('beforeprint', () => setState(N, 1));
+  window.addEventListener('afterprint', update);
+  update();
+});
 
 /* ---------- Timeline rail: where am I in the story? ---------- */
 
@@ -515,6 +551,160 @@ if (timeline) guard('timeline', () => {
   }, { passive: true });
   window.addEventListener('resize', updateTimeline);
   updateTimeline();
+});
+
+/* ---------- Poll: the single file, for or against (/api/poll) ----------
+   Nobody sees the numbers until they've voted. The Worker sends them back with a vote, or to a
+   browser that has voted before (it holds the voter cookie), so returning voters go straight
+   to the results. Voting again from there changes the vote; it never adds one. */
+
+const pollSection = document.getElementById('poll');
+const poll = document.getElementById('poll-form');
+const pollResults = document.querySelector('.poll-results');
+
+if (pollSection && poll && pollResults) guard('poll', () => {
+  const note = poll.querySelector('.poll-note');
+  const NOTE = note.textContent;
+  const buttons = [...poll.querySelectorAll('button[name="choice"]')];
+  const again = pollResults.querySelector('.poll-again');
+  const keep = poll.querySelector('.poll-keep');
+  const POLL_TIMEOUT_MS = 15000;
+  let last = null; // the results with this browser's vote on record, for "Keep my vote"
+  let changing = false; // on the "Changed your mind?" screen
+
+  const plural = (n) => `${n.toLocaleString('en-GB')} ${n === 1 ? 'vote' : 'votes'}`;
+
+  // src/worker.js has the same lines for the no-JavaScript page; keep the two in step.
+  // The lead line goes by the counts, not the rounded percentages (501 to 499 shows 50/50).
+  const leadFor = (single, cluster) => {
+    if (single + cluster < 50) return 'Early days. The jury’s still at the bar.';
+    if (cluster > single) return 'The Cluster is winning.';
+    if (single > cluster) return 'The Single File is ahead. We have work to do.';
+    return 'Dead heat. Over to the barperson.';
+  };
+  const QUIPS = {
+    single: 'You said for. Noted. Take the hazard perception test, then we’ll talk.',
+    cluster: 'You said against. Correct. Now make it official.',
+    capped: 'Your connection has had its fill of votes today, so this one didn’t count. Here’s the tally anyway.',
+    missing: 'We couldn’t find your first vote, so nothing changed.',
+  };
+
+  // `data` is an answer from /api/poll. A vote over the daily cap (capped) or a change with no
+  // vote on record (missing) wasn't counted: it shows the tally with no stamp.
+  const showResults = (data, justVoted) => {
+    const { choice, results } = data;
+    const counted = !data.capped && !data.missing;
+    if (counted) last = data;
+    const single = Number(results?.single) || 0;
+    const cluster = Number(results?.cluster) || 0;
+    const total = single + cluster;
+    // Whole percentages that always add up to 100.
+    const forPc = total ? Math.round((single / total) * 100) : 0;
+    const pc = { single: forPc, cluster: total ? 100 - forPc : 0 };
+    const votes = { single, cluster };
+
+    pollResults.querySelector('.poll-head').textContent = leadFor(single, cluster);
+    pollResults.querySelectorAll('.poll-row').forEach((row) => {
+      const key = row.dataset.choice;
+      row.querySelector('.poll-pc').textContent = `${pc[key]}%`;
+      row.querySelector('.poll-n').textContent = plural(votes[key]);
+      row.querySelector('.poll-fill').style.setProperty('--v', pc[key] / 100);
+      row.querySelector('.poll-you').hidden = !counted || key !== choice;
+    });
+    pollResults.querySelector('.poll-total').textContent =
+      `${plural(total)} so far. Self\u2011selecting and unscientific, like every pub argument.`;
+    pollResults.querySelector('.poll-quip').textContent =
+      (data.capped && QUIPS.capped) || (data.missing && QUIPS.missing) || QUIPS[choice] || '';
+    pollResults.querySelectorAll('.poll-next').forEach((a) => (a.hidden = a.dataset.for !== choice));
+    again.hidden = !counted; // a vote that didn't count has nothing to change
+
+    // Back from the change screen, if that's where they were.
+    changing = false;
+    keep.hidden = true;
+    buttons.forEach((b) => (b.querySelector('.poll-you').hidden = true));
+    note.textContent = NOTE;
+
+    pollSection.classList.add('voted');
+    poll.hidden = true;
+    pollResults.hidden = false;
+    // The button they pressed has gone, so take focus to the results.
+    if (justVoted) pollResults.querySelector('.poll-head').focus();
+  };
+
+  fetch('/api/poll')
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => {
+      if (d?.voted) showResults(d, false);
+    })
+    .catch(() => {});
+
+  // "Changed your mind?": back to the buttons, with the side on record stamped. The question
+  // stays small (#poll keeps .voted), so it doesn't look like a first visit. The next vote
+  // replaces the old one; "Keep my vote" goes back to the results.
+  again.addEventListener('click', () => {
+    if (!last) return;
+    changing = true;
+    pollResults.hidden = true;
+    poll.hidden = false;
+    buttons.forEach((b) => (b.querySelector('.poll-you').hidden = b.value !== last.choice));
+    keep.hidden = false;
+    note.textContent = `You\u2019re down as ${last.choice === 'cluster' ? 'against' : 'for'}. Pick again to switch.`;
+    // Focus the note, not a vote button, so a held Enter can't vote by accident.
+    note.focus();
+  });
+
+  keep.addEventListener('click', () => last && showResults(last, true));
+
+  const explain = (status, body) => {
+    if ([400, 429, 503].includes(status) && typeof body?.error === 'string' && body.error) return body.error;
+    if (status === 403) return 'That was blocked. Reload the page and try again.';
+    if (status >= 500) return 'That one is on us, not you. Try again in a minute.';
+    return 'Something went wrong. Try again in a minute.';
+  };
+
+  let sending = false;
+
+  poll.addEventListener('submit', async (event) => {
+    const button = event.submitter;
+    // A browser without event.submitter sends the plain form post and gets the results page.
+    if (!button?.value) return;
+    event.preventDefault();
+    if (sending) return;
+
+    sending = true;
+    buttons.forEach((b) => (b.disabled = true));
+    poll.setAttribute('aria-busy', 'true');
+    note.textContent = 'Counting…';
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), POLL_TIMEOUT_MS);
+    let shown = false;
+    try {
+      const res = await fetch('/api/poll', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(changing ? { choice: button.value, change: true } : { choice: button.value }),
+        signal: controller.signal,
+      });
+      const body = await res.json().catch(() => null);
+      if (!res.ok || !(body?.voted || body?.capped || body?.missing) || !body.results) {
+        note.textContent = explain(res.ok ? 502 : res.status, body);
+        return;
+      }
+      shown = true;
+      showResults(body, true);
+    } catch (err) {
+      if (err.name === 'AbortError') note.textContent = 'That took too long. Try again in a moment.';
+      else if (navigator.onLine === false) note.textContent = 'You look to be offline. Try again when you’re back.';
+      else note.textContent = 'Couldn’t reach the server. Check your connection and try again.';
+    } finally {
+      clearTimeout(timer);
+      sending = false;
+      buttons.forEach((b) => (b.disabled = false));
+      poll.removeAttribute('aria-busy');
+      if (!shown) button.focus(); // disabling it dropped the focus
+    }
+  });
 });
 
 /* ---------- Petition -> Cloudflare Worker (/api/sign), stored in Postgres ---------- */
