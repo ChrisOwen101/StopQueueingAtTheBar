@@ -1,25 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 2100" width="148mm" height="210mm" role="img" aria-label="A5 flyer: don’t queue at the bar">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 2100" width="148mm" height="210mm" role="img" aria-label="A5 flyer: queue sideways">
   <defs><g id="fig"><circle cx="0" cy="0" r="25"/><path d="M-34,78 V64 a34,34 0 0 1 68,0 V78 Z"/></g></defs>
   <rect width="1480" height="2100" fill="#fff"/>
   <g transform="translate(120,110) scale(0.9)">
   <circle cx="200" cy="200" r="170" fill="none" stroke="#000" stroke-width="30"/>
-  <g fill="#000"><use href="#fig" x="108" y="136"/><use href="#fig" x="200" y="136"/><use href="#fig" x="292" y="136"/></g>
+  <g fill="#000"><circle cx="134.0" cy="86.0" r="21.0"/><circle cx="134.0" cy="138.0" r="21.0"/><circle cx="134.0" cy="190.0" r="21.0"/><circle cx="186.0" cy="190.0" r="21.0"/><circle cx="238.0" cy="190.0" r="21.0"/><circle cx="290.0" cy="190.0" r="21.0"/></g>
   <rect x="0" y="214" width="400" height="64" fill="#000"/></g>
   <g transform="translate(1000,120) rotate(-6) scale(0.85)">
 
   <circle cx="200" cy="200" r="184" fill="none" stroke="#000" stroke-width="24"/>
   <g font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="900" fill="#000" text-anchor="middle" letter-spacing="-3">
-    <text x="200" y="158" font-size="86">don’t</text>
-    <text x="200" y="236" font-size="86">queue</text>
-    <text x="200" y="292" font-size="46" letter-spacing="-1">at the bar.</text>
+    <text x="200" y="176" font-size="88">queue</text>
+    <text x="200" y="236" font-size="56" letter-spacing="-2">sideways.</text>
+    <text x="200" y="280" font-size="22" font-weight="700" letter-spacing="0">they know who’s next.</text>
   </g>
 </g>
   <g font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="900" fill="#000" letter-spacing="-9">
-    <text x="120" y="770" font-size="230">don’t</text>
-    <text x="120" y="975" font-size="230">queue</text>
-    <text x="120" y="1180" font-size="230">at the bar.</text>
+    <text x="120" y="770" font-size="230">queue</text>
+    <text x="120" y="975" font-size="230">sideways.</text>
+    <text x="120" y="1180" font-size="90" letter-spacing="-3">still a queue. just not a line.</text>
   </g>
-  <text x="120" y="1310" font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="600" font-size="60" fill="#000">It’s a pub. Not a post office.</text>
+  <text x="120" y="1310" font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="600" font-size="60" fill="#000">They know who’s next. They always did.</text>
   <rect x="120" y="1370" width="1240" height="10" fill="#000"/>
   <g font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="900" font-size="54" fill="#000">
     <text x="120" y="1470">1. walk to the bar</text>
@@ -33,7 +33,7 @@
     <rect x="118" y="118" width="64" height="64" rx="8" fill="#fff"/>
     <g transform="translate(126 126) scale(0.12)">
   <circle cx="200" cy="200" r="170" fill="none" stroke="#000" stroke-width="30"/>
-  <g fill="#000"><use href="#fig" x="108" y="136"/><use href="#fig" x="200" y="136"/><use href="#fig" x="292" y="136"/></g>
+  <g fill="#000"><circle cx="134.0" cy="86.0" r="21.0"/><circle cx="134.0" cy="138.0" r="21.0"/><circle cx="134.0" cy="190.0" r="21.0"/><circle cx="186.0" cy="190.0" r="21.0"/><circle cx="238.0" cy="190.0" r="21.0"/><circle cx="290.0" cy="190.0" r="21.0"/></g>
   <rect x="0" y="214" width="400" height="64" fill="#000"/></g>
   </g>
   <text x="1150" y="1800" font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="900" font-size="38" fill="#000" text-anchor="middle">sign the petition</text>
