@@ -115,9 +115,9 @@ Density is low and the volume is high. There is one idea per full-screen block, 
 
 The rules, the decisions and the minimum sizes are in `brand/BRIEF.md`; this is the summary.
 
-- **The Cluster roundel** is the primary mark: three people seen from behind, spread along a bar that overhangs a ring. One colour, no words, no faces, hands or pints, always three figures, the bar always overhanging. It is the favicon, the app icons, the Stripe icon and the seal on the hazard licences.
+- **The Cluster roundel** is the primary mark: three people seen from behind, spread along a bar that overhangs a ring. One colour, no words, no faces, hands or pints, always three figures, the bar always overhanging. It is the favicon, the app icons, the Stripe icon and the seal on the hazard licences (in cream inside the ink rosette on both certificate masters in `public/badges/`).
 - **The type stamp** ("don’t queue / at the bar." in a ring) is the partner mark. It leads on the beer mat front and on flyers. It is the one place words sit inside a ring.
-- **The horizontal lockup** (roundel beside the name) sits top left of the homepage hero (`.brand`): 64px tall on desktop, never under 40px, ink on cream, with an eighth of the mark's width clear on every side. The vertical rail is hidden on the hero, so they never meet.
+- **The horizontal lockup** (roundel beside the name) sits top left of the homepage hero (`.brand`): 64px tall on desktop, never under 40px, ink on cream, with an eighth of the mark's width clear on every side. The vertical rail is hidden on the hero, so they never meet. The same lockup in cream heads every hazard page (`.hz-brand`, left of the header, 40px, linking home); on short landscape phones, where the header is 44px, it is cropped to the roundel at 32px.
 - **Colour:** on the site the marks are Last Orders Ink or Pub Cream, never a tint, an outline-only version or a shadow (The Flat-By-Default Rule applies). Print artwork is black on white, or white on black.
 - **Where it lives:** `scripts/lib/brand.mjs` draws every mark; `npm run build:icons`, `npm run build:mats` and `node brand/final/build.mjs` write the files. Edit the module, never a generated SVG. Words stay outside the ring, and colour blocks stay whole (The Whole-Screen Rule).
 

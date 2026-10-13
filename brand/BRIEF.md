@@ -25,7 +25,7 @@ The campaign's identity is settled (12 Oct 2026). This file records the decision
   - **Rejected:** the alternative front, `badge-round.svg` with the name on both sides.
 - **Who uses which mark:**
   - The roundel is the favicon, the app icon, the Stripe icon and the licence seal.
-  - The horizontal lockup goes top left on the homepage.
+  - The horizontal lockup goes top left on the homepage, and in cream at the left of every hazard page's header.
   - The stamp leads on the mat front and on flyers.
 
 ## Usage rules

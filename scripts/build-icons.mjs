@@ -8,6 +8,7 @@
 // Written first, with no browser needed (all in public/):
 //   mark.svg                      the roundel in ink, the source of everything below
 //   lockup-horizontal.svg         the roundel beside "don’t queue / at the bar." (the homepage, top left)
+//   lockup-horizontal-reversed.svg the same in cream, for the dark hazard pages' header
 //   logo-square.svg / favicon.svg the roundel on a cream 512 square, inside the maskable safe zone
 // Rendered with headless Chrome, then resized with sharp (installed via wrangler). Set
 // CHROME_PATH to use another Chromium:
@@ -40,6 +41,7 @@ const OG = process.argv.includes('--og');
 // The marks the pages use.
 await write('mark.svg', mark(INK));
 await write('lockup-horizontal.svg', horizontal(INK));
+await write('lockup-horizontal-reversed.svg', horizontal(CREAM));
 
 // The square icon: the mark's 400 box sits 56 in from every side of the 512 square, so its
 // ring stays inside the 80% safe zone (r 204.8) that maskable icons and round avatars crop to.
