@@ -19,3 +19,11 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# The flyers are downloads, not pages: attachment so a click saves the PDF even where the
+# download attribute is ignored, and a long cache because they only change with a rebuild
+# (public/flyers/ is rewritten by npm run build:flyers; a week of staleness is fine). This block
+# only reaches files served from public/flyers/; src/worker.js reads the /* block alone.
+/flyers/*
+  Content-Disposition: attachment
+  Cache-Control: public, max-age=604800

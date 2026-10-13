@@ -1032,6 +1032,66 @@ html:not(.js) .howto-head { margin-bottom: 2rem; }
   to   { transform: rotate(4deg) scale(1.04); }
 }
 
+/* ---------- Flyers (under the mats): the two faces, then the PDF downloads ----------
+   The previews are PNGs of the real print pages (/flyers/preview-*.png, written by
+   scripts/build-flyers.mjs). Tilted like the mats but still: nothing here loops. */
+
+.flyers { margin-top: 8vh; }
+
+.flyer-pair {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  margin: 4vh 0 3vh;
+}
+
+.flyer {
+  --r: 0deg;
+  width: clamp(120px, min(24vw, 36vh), 300px);
+  height: auto;
+  aspect-ratio: 210 / 297;
+  flex: none;
+  display: block;
+  background: #fff;
+  rotate: var(--r);
+  filter: drop-shadow(0 10px 0 rgba(22, 22, 29, 0.25));
+}
+
+.flyer.f1 { --r: -2deg; }
+.flyer.f2 { --r: 2deg; }
+
+.flyer-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.flyer-links a {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.7em 1.4em;
+  border: 3px solid currentColor;
+  border-radius: 999px;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  line-height: 1.1;
+}
+
+.flyer-links small { font-weight: 600; font-size: 0.72em; letter-spacing: 0.04em; margin-top: 0.2em; opacity: 0.8; }
+
+.flyer-links a:hover, .flyer-links a:focus-visible { background: var(--ink); color: var(--amber); outline: none; }
+
+.flyers .fine { margin-top: 1.6em; font-size: 1rem; font-weight: 500; opacity: 0.75; text-wrap: pretty; }
+
 /* ---------- Poll ----------
    Two equal ink buttons, so the question stays fair. The results keep the page's colour
    meanings: red is The Single File (for), green is The Cluster (against). */
