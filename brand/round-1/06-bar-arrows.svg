@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Spread along the bar: three people above a bar with arrows pointing out both ways">
+  <defs><g id="p"><circle cx="0" cy="0" r="21"/><path d="M-28,66 V50 a28,28 0 0 1 56,0 V66 Z"/></g></defs>
+  <circle cx="200" cy="200" r="186" fill="none" stroke="#000" stroke-width="8"/>
+  <use href="#p" x="116" y="150"/><use href="#p" x="200" y="150"/><use href="#p" x="284" y="150"/>
+  <rect x="70" y="216" width="260" height="34" fill="#000"/>
+  <path d="M74,174 L22,233 L74,292 Z M326,174 L378,233 L326,292 Z" fill="#000"/>
+</svg>

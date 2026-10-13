@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="A pint whose foam holds three people">
+  <circle cx="200" cy="200" r="180" fill="none" stroke="#000" stroke-width="20"/>
+  <path d="M112,120 H288 L282,170 Q294,182 290,198 L268,348 Q268,358 258,358 H142 Q132,358 132,348 L110,198 Q106,182 118,170 Z" fill="#000"/>
+  <rect x="124" y="132" width="152" height="46" fill="#fff"/>
+  <g fill="#000">
+    <g id="h"><circle cx="150" cy="118" r="17"/><path d="M128,178 V160 a22,22 0 0 1 44,0 V178 Z"/></g>
+    <use href="#h" x="50" y="-10"/><use href="#h" x="100"/>
+  </g>
+</svg>

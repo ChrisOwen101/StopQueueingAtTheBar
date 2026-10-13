@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Stamp: three people at the bar above the words don't queue">
+  <defs><g id="p"><circle cx="0" cy="0" r="20"/><path d="M-27,66 V48 a27,27 0 0 1 54,0 V66 Z"/></g></defs>
+  <circle cx="200" cy="200" r="184" fill="none" stroke="#000" stroke-width="24"/>
+  <g fill="#000"><use href="#p" x="118" y="98"/><use href="#p" x="200" y="98"/><use href="#p" x="282" y="98"/></g>
+  <rect x="48" y="164" width="304" height="28" fill="#000"/>
+  <g font-family="'Avenir Next','Helvetica Neue',Arial,sans-serif" font-weight="900" fill="#000" text-anchor="middle" letter-spacing="-3">
+    <text x="200" y="262" font-size="66">don't</text>
+    <text x="200" y="322" font-size="66">queue.</text>
+  </g>
+</svg>

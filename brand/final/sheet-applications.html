@@ -1,0 +1,42 @@
+<!doctype html><meta charset="utf-8"><title>Applications</title>
+<style>
+body{margin:0;background:#fff;font-family:'Avenir Next',sans-serif;padding:24px 28px;color:#000;width:1744px}
+h1{font-size:20px;margin:0 0 12px;font-weight:900}
+h2{font-size:13px;margin:0 0 6px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.cell{border:1px solid #ddd;padding:10px 12px}
+.hero{position:relative;width:560px;height:315px;overflow:hidden;background:#fff4dc}
+.hero img.shot{width:560px;height:315px;display:block}
+.hero img.lk{position:absolute;left:14px;top:12px;height:28px}
+.stripe{display:flex;width:560px;height:315px;border:1px solid #e3e8ee;border-radius:8px;overflow:hidden;font-size:11px}
+.stripe .l{flex:1;background:#16161d;color:#fff4dc;padding:18px}
+.stripe .l img{width:40px;height:40px;border-radius:8px;display:block;margin-bottom:12px}
+.stripe .l .t{opacity:.7}.stripe .l .a{font-size:26px;font-weight:600;margin:4px 0 10px}
+.stripe .r{flex:1;background:#fff;padding:18px;color:#333}
+.stripe .r .f{height:28px;border:1px solid #d9dee4;border-radius:5px;margin:6px 0 12px}
+.stripe .r .b{height:34px;border-radius:5px;background:#16161d;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;margin-top:14px}
+.cert{position:relative;width:315px;height:315px}
+.cert img.c{width:315px;height:315px;display:block}
+.cert img.s{position:absolute;right:16px;bottom:16px;width:108px}
+.mats{display:flex;gap:16px;align-items:center}
+.mats img{width:260px;filter:drop-shadow(0 8px 0 rgba(0,0,0,.18))}
+.flyer{display:flex;gap:16px;align-items:flex-start}
+.flyer img{width:222px;height:315px;border:1px solid #ddd}
+.flyer .p{width:222px;height:315px;background:#eee;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.flyer .p img{width:200px;height:284px;border:1px solid #ccc;box-shadow:0 6px 10px rgba(0,0,0,.2);transform:rotate(-2deg)}
+small{font-size:10px;color:#555;display:block;margin-top:4px}
+</style>
+<h1>Don't Queue At The Bar · Round 3 · applications</h1>
+<div class="grid">
+<div class="cell"><h2>Homepage, top left at 64px (lockup at 28px tall here, 1280 wide hero shown at 44%)</h2>
+<div class="hero"><img class="shot" src="mocks/hero.png"><img class="lk" src="lockup-horizontal.svg"></div><small>Ink on the cream hero. On a coloured block use the reversed set.</small></div>
+<div class="cell"><h2>Stripe Payment Link page (square icon and name)</h2>
+<div class="stripe"><div class="l"><img src="icon-square.svg"><div class="t">Don't Queue At The Bar</div><div class="t">Beer fund</div><div class="a">£5.00</div><div class="t">Chip in to the beer fund. No queue.</div></div><div class="r"><div style="font-weight:600;margin-bottom:8px">Pay with card</div>Email<div class="f"></div>Card information<div class="f"></div>Name on card<div class="f"></div><div class="b">Pay</div></div></div>
+<small>Stripe shows the icon at 32 to 40px with rounded corners, so the square has 56/512 of padding on every side.</small></div>
+<div class="cell"><h2>Hazard licence certificate, with the seal</h2>
+<div class="cert"><img class="c" src="../../public/badges/customer-square.svg"><img class="s" src="seal-customer.svg"></div><small>Mocked over the current master. The seal replaces the "5/5" medallion; the score moves into the text.</small></div>
+<div class="cell" style="grid-column:span 2"><h2>Beer mat, 107 mm, front and back · mat-front.svg · mat-back.svg</h2>
+<div class="mats"><img src="mat-front.svg"><img src="mat-back.svg"><img src="badge-round.svg" style="width:200px"></div><small>Front: the stamp (05a), black on white board. Back: the roundel in the middle of the QR code, domain round the edge, white on black. Right: the word-ring badge, the alternative front if the pub wants the name on both sides.</small></div>
+<div class="cell"><h2>A5 flyer, black on white · flyer-a5.svg</h2>
+<div class="flyer"><img src="flyer-a5.svg"><div class="p"><img src="flyer-a5.svg"></div></div></div>
+</div>

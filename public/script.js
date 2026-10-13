@@ -4,7 +4,6 @@ document.documentElement.classList.add('js');
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasIO = 'IntersectionObserver' in window;
-let animPaused = false; // set by the pause control below
 
 // Each part of the page runs on its own, so one that breaks (an old browser, a missing
 // element) never takes the petition form down with it.
@@ -258,7 +257,7 @@ function buildScene(el) {
   let timer = null;
   return {
     start() {
-      if (!timer && !reduceMotion && !animPaused) timer = setInterval(step, TICK_MS);
+      if (!timer && !reduceMotion) timer = setInterval(step, TICK_MS);
     },
     stop() {
       clearInterval(timer);
@@ -273,7 +272,7 @@ const scenes = [...document.querySelectorAll('.scene')]
 
 // A hidden tab has no use for four simulations.
 document.addEventListener('visibilitychange', () => {
-  scenes.forEach((s) => (document.hidden ? s.sim.stop() : s.visible && !animPaused && s.sim.start()));
+  scenes.forEach((s) => (document.hidden ? s.sim.stop() : s.visible && s.sim.start()));
 });
 
 if (hasIO) {
@@ -294,33 +293,70 @@ if (hasIO) {
   scenes.forEach((s) => s.sim.start());
 }
 
-/* ---------- Pause control (WCAG 2.2.2) ----------
-   The sims and the beer mats move on their own for more than five seconds, so
-   offer a way to stop them. Not needed when the visitor already asked for reduced motion. */
+/* ---------- How to do The Cluster: one sticky stage, four steps, driven by scroll ----------
+   #howto is 4.5 viewports tall and its stage sticks to the top of the window. The scroll
+   position through the section is cut into five equal slices (the intro, then steps 1 to 4).
+   The stage gets the cumulative classes s1..s4, the block colour, and --k (0 to 1, how far
+   through the current slice) so the dots can act each step out as the visitor scrolls. The
+   markup ships the finished frame for visitors without JS; this resets it. */
 
-if (!reduceMotion) {
-  const toggle = document.createElement('button');
-  toggle.type = 'button';
-  toggle.className = 'motion-toggle';
-  toggle.setAttribute('aria-pressed', 'false');
-  toggle.setAttribute('aria-label', 'Pause animations');
-  toggle.innerHTML =
-    '<svg class="pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg>' +
-    '<svg class="play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11a1 1 0 0 0 1.5.86l9-5.5a1 1 0 0 0 0-1.72l-9-5.5A1 1 0 0 0 4 2.5z"/></svg>' +
-    '<span class="txt">pause animations</span>';
-  const txt = toggle.querySelector('.txt');
+const howto = document.getElementById('howto');
 
-  toggle.addEventListener('click', () => {
-    animPaused = !animPaused;
-    document.documentElement.classList.toggle('paused', animPaused);
-    toggle.setAttribute('aria-pressed', String(animPaused));
-    toggle.setAttribute('aria-label', animPaused ? 'Play animations' : 'Pause animations');
-    txt.textContent = animPaused ? 'play animations' : 'pause animations';
-    scenes.forEach((s) => (animPaused ? s.sim.stop() : s.visible && s.sim.start()));
-  });
+if (howto) guard('howto', () => {
+  const stick = howto.querySelector('.howto-stick');
+  const head = howto.querySelector('.howto-head');
+  const steps = [...howto.querySelectorAll('.steps > .step')];
+  const pills = [...howto.querySelectorAll('.step-nav li:not(.step-fill)')];
+  const N = steps.length;
+  if (!stick || !head || !N) return;
+  const SLICES = N + 1;
+  const BLOCK = (n) => (n === 0 ? 'c-cream' : n === N ? 'c-green' : 'c-blue');
+  const SERVED_AT = 0.8; // how far through the last step the pint reaches you
+  let current = -1;
 
-  document.body.appendChild(toggle);
-}
+  const travel = () => howto.offsetHeight - stick.offsetHeight;
+
+  const setState = (n, k) => {
+    stick.style.setProperty('--k', k.toFixed(3));
+    stick.style.setProperty('--sp', (n === 0 ? 0 : Math.min(1, (n - 1 + k) / (N - 1))).toFixed(3));
+    stick.classList.toggle('served', n === N && k >= SERVED_AT);
+    if (n === current) return;
+    current = n;
+    for (let i = 1; i <= N; i++) stick.classList.toggle(`s${i}`, n >= i);
+    ['c-cream', 'c-blue', 'c-green'].forEach((c) => stick.classList.toggle(c, c === BLOCK(n)));
+    head.classList.toggle('active', n === 0);
+    steps.forEach((li, i) => li.classList.toggle('active', i + 1 === n));
+    pills.forEach((li, i) => {
+      li.classList.toggle('done', i + 1 < n);
+      const a = li.querySelector('a');
+      if (i + 1 === n) a.setAttribute('aria-current', 'step');
+      else a.removeAttribute('aria-current');
+    });
+  };
+
+  const update = () => {
+    const t = travel();
+    const p = t > 0 ? -howto.getBoundingClientRect().top / t : 1;
+    const x = Math.min(SLICES - 1e-6, Math.max(0, p * SLICES));
+    const n = Math.floor(x);
+    setState(n, p >= 1 ? 1 : x - n);
+  };
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      update();
+    });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  // Paper can't scroll: print the finished frame, then go back to where the reader was.
+  window.addEventListener('beforeprint', () => setState(N, 1));
+  window.addEventListener('afterprint', update);
+  update();
+});
 
 /* ---------- Timeline rail: where am I in the story? ---------- */
 
