@@ -45,6 +45,140 @@ if (hasIO) {
 // Printing or saving as PDF never scrolls, so show everything.
 window.addEventListener('beforeprint', revealAll);
 
+/* ---------- Days since: the "today" stop on the history strip ----------
+   [data-since="YYYY-MM-DD"] gets the real figure written into the DOM at load, so screen
+   readers, print and copy always get "1,911 days", never a count in progress. The count-up
+   is visual only: an aria-hidden twin shows the running number while the real text is hidden
+   visually, then the twin clears. Without JS the written fallback ("over five years") stays. */
+
+guard('days since', () => {
+  const DAY = 86400000;
+  const fmt = (n) => `${n.toLocaleString('en-GB')} days`;
+
+  document.querySelectorAll('[data-since]').forEach((el) => {
+    const [y, m, d] = el.dataset.since.split('-').map(Number);
+    const now = new Date();
+    const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()); // ticks over at local midnight
+    const days = Math.floor((today - Date.UTC(y, m - 1, d)) / DAY);
+    if (!Number.isFinite(days) || days < 1) return; // keep the written fallback
+
+    const txt = el.querySelector('.count-txt') || el;
+    const twin = el.querySelector('.count-vis');
+    txt.textContent = fmt(days);
+    if (!twin || reduceMotion || !hasIO) return;
+
+    const settle = () => {
+      el.classList.remove('is-counting');
+      twin.removeAttribute('data-shown');
+    };
+    const run = () => {
+      const start = performance.now();
+      el.classList.add('is-counting');
+      const frame = (t) => {
+        if (!el.classList.contains('is-counting')) return; // printing cut it short
+        const p = Math.min((t - start) / 1400, 1);
+        twin.dataset.shown = fmt(Math.round(days * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(frame);
+        else settle();
+      };
+      requestAnimationFrame(frame);
+    };
+    const io = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      io.disconnect();
+      run();
+    }, { threshold: 0.6 });
+    io.observe(el);
+    window.addEventListener('beforeprint', settle);
+  });
+});
+
+/* ---------- History strip: buttons, arrow keys and the "3 of 8" counter ----------
+   The strip is a native horizontal scroller with snap points, so swiping and the scrollbar
+   already work. This adds step buttons, keyboard stepping and the counter. */
+
+guard('history strip', () => {
+  const wrap = document.querySelector('.strip-wrap');
+  const foot = document.querySelector('.strip-foot');
+  if (!wrap || !foot) return;
+  const strip = wrap.querySelector('.strip');
+  const stops = [...wrap.querySelectorAll('.stop')];
+  const buttons = [...foot.querySelectorAll('.strip-btn')];
+  const countN = foot.querySelector('.strip-count .n');
+  const countT = foot.querySelector('.strip-count .t');
+  if (!strip || stops.length < 2) return;
+  if (countT) countT.textContent = String(stops.length); // the total comes from the DOM, not the copy
+
+  // The snap line is the middle of the snapport: the strip minus its right scroll padding
+  // (the gutter the next card peeks into). Positions come from rects, so they hold
+  // whatever the offsetParent is.
+  const gutter = () => parseFloat(getComputedStyle(strip).scrollPaddingRight) || 0;
+  const snapLine = () => (strip.clientWidth - gutter()) / 2;
+  const centreOf = (s) => {
+    const r = s.getBoundingClientRect();
+    return r.left - strip.getBoundingClientRect().left + strip.scrollLeft + r.width / 2;
+  };
+  const currentIndex = () => {
+    const line = strip.scrollLeft + snapLine();
+    let best = 0;
+    let dist = Infinity;
+    stops.forEach((s, i) => {
+      const d = Math.abs(centreOf(s) - line);
+      if (d < dist) { dist = d; best = i; }
+    });
+    return best;
+  };
+
+  let idx = -1;
+  let pending = null; // where a button press is heading, so quick presses add up
+  const update = () => {
+    const i = currentIndex();
+    if (pending === i) pending = null;
+    if (i === idx) return;
+    idx = i;
+    stops.forEach((s, n) => s.classList.toggle('current', n === i));
+    if (countN) countN.textContent = String(i + 1);
+    buttons.forEach((b) => {
+      const dir = Number(b.dataset.dir);
+      const off = (dir < 0 && i === 0) || (dir > 0 && i === stops.length - 1);
+      b.setAttribute('aria-disabled', String(off));
+    });
+  };
+
+  const goTo = (i) => {
+    const n = Math.max(0, Math.min(stops.length - 1, i));
+    pending = n;
+    strip.scrollTo({ left: centreOf(stops[n]) - snapLine(), behavior: reduceMotion ? 'auto' : 'smooth' });
+  };
+  const step = (dir) => goTo((pending ?? currentIndex()) + dir);
+
+  buttons.forEach((b) => b.addEventListener('click', () => {
+    if (b.getAttribute('aria-disabled') === 'true') return;
+    step(Number(b.dataset.dir));
+  }));
+
+  strip.addEventListener('keydown', (e) => {
+    if (e.target !== strip) return; // links inside the cards keep their own keys
+    const keys = { ArrowRight: 1, ArrowLeft: -1 };
+    if (e.key in keys) { e.preventDefault(); step(keys[e.key]); }
+    else if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    else if (e.key === 'End') { e.preventDefault(); goTo(stops.length - 1); }
+  });
+
+  // A swipe or a wheel takes over from any button press still in flight.
+  ['pointerdown', 'wheel', 'touchstart'].forEach((type) =>
+    strip.addEventListener(type, () => { pending = null; }, { passive: true }));
+
+  let ticking = false;
+  strip.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { ticking = false; update(); });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+});
+
 /* ---------- Pub scenes ----------
    A tiny simulation of a bar. Same arrivals, same four staff, same service time.
    - single:  one queue, only one member of staff can reach the front
