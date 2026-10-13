@@ -175,7 +175,7 @@ const faceA = () => `<div class="page face-a">
   <div class="top">
     ${stampSvg()}
     <h1 class="spread mega">spread out.</h1>
-    <p class="house mid">This bar does The&nbsp;Cluster. The bar staff know who’s&nbsp;next.</p>
+    <p class="house mid">This bar does The&nbsp;Cluster.<br>The bar staff know who’s&nbsp;next.<br>They always did.</p>
   </div>
   <div class="foot">
     <div class="who">${roundel()}<div><p class="cta">Sign the petition.</p><p class="addr">${address()}</p></div></div>
@@ -186,7 +186,7 @@ const CSS_A = `
 .face-a .top { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-bottom: ${m(6)}; }
 .face-a .stamp { width: ${m(120)}; }
 .face-a .spread { font-size: ${m(30)}; margin-top: ${m(17)}; }
-.face-a .house { font-size: ${m(11.5)}; margin-top: ${m(7)}; max-width: ${m(170)}; text-wrap: balance; }
+.face-a .house { font-size: ${m(11)}; margin-top: ${m(7)}; white-space: nowrap; }
 .face-a .qr { width: ${m(36)}; }
 .face-a .roundel { width: ${m(20)}; }
 .face-a .who { display: flex; align-items: center; gap: ${m(5)}; }
@@ -202,7 +202,8 @@ const faceB = () => `<div class="page face-b">
   <div class="maths">
     <p class="tag">worked example</p>
     <p class="mh mega">25 minutes. Or six.</p>
-    <p class="ms mid">Twenty orders, 75&nbsp;seconds each. One spot on the bar, or four staff along it. Arithmetic, not a stopwatch. Real pubs are messier.</p>
+    <p class="ms mid">Twenty orders, 75&nbsp;seconds each. One spot on the bar, or four staff along it.</p>
+    <p class="mc mid">Arithmetic, not a stopwatch. Real pubs are messier.</p>
   </div>
   <div class="foot">
     <div class="who">${qrSvg()}<div><p class="cta">Think you’re ready?<br>Take the test.</p><p class="addr">${address()}</p></div></div>
@@ -221,6 +222,7 @@ const CSS_B = `
 .face-b .maths .tag { position: absolute; right: 0; top: ${m(-5.5)}; background: #fff; }
 .face-b .mh { font-size: ${m(13)}; white-space: nowrap; }
 .face-b .ms { font-size: ${m(6.2)}; line-height: 1.25; margin-top: ${m(3)}; max-width: ${m(165)}; }
+.face-b .mc { font-size: ${m(6.2)}; line-height: 1.25; margin-top: ${m(2)}; }
 .face-b .qr { width: ${m(36)}; }
 .face-b .stamp { width: ${m(30)}; }
 .face-b .who { display: flex; align-items: flex-end; gap: ${m(5)}; }
