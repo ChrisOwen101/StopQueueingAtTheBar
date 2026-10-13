@@ -38,7 +38,7 @@ UK pubs, bars and breweries. The wrong behaviour is **The Single File**; the rig
 - Name: "Don't Queue At The Bar" (earlier "Stop Queueing at the Bar", "Bar the Line / The Bar Party").
 - Voice: direct, dry British humour; short, punchy lines; one idea per section.
 - Terminology: The Single File, The Cluster, the Bar Rule, Additional Bar Rulings (The Round, The Hoverer, The Phantom Queue, The Landlord).
-- Look commitments recorded from the existing site only: very bold, huge lowercase type, one idea per full-screen colour block, simple animated diagrams, no photos. Assets: the Cluster roundel (`public/mark.svg`), the horizontal lockup, and the generated icon and beer mat files; the share images still show the retired badge in `public/logo-side.svg`.
+- Look commitments recorded from the existing site only: very bold, huge lowercase type, one idea per full-screen colour block, simple animated diagrams, no photos. Assets: the Cluster roundel (`public/mark.svg`), the horizontal lockup, and the generated icon and beer mat files, and the share images.
 
 ## Evidence on Hand
 The register is `RESEARCH.md`: every figure, date and quote on the site, with source, type, confidence and a before-promoting checklist (all rows are still unverified: the research read search extracts only).
