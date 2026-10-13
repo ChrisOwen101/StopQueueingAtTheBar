@@ -30,5 +30,15 @@
     }
   ],
 
+  // Turns away bursts of poll votes from one network before they reach the database
+  // (src/worker.js, /api/poll). The daily cap per network is POLL_VOTES_PER_NETWORK_PER_DAY there.
+  // namespace_id is any number not used by another rate limiter on the account.
+  "ratelimits": [
+    { "name": "POLL_LIMITER", "namespace_id": "1001", "simple": { "limit": 10, "period": 60 } }
+  ],
+
+  // Daily at 00:05 UTC: deletes the poll's past-day network counts (scheduled() in src/worker.js).
+  "triggers": { "crons": ["5 0 * * *"] },
+
   "observability": { "enabled": true }
 }

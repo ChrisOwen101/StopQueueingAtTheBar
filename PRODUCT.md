@@ -18,19 +18,20 @@ Static HTML/CSS/JS in `public/`, no build step, served by Cloudflare Workers ass
 A comedy campaign against single-file queueing at the bar. Since COVID (2020 distancing stickers), people line up in one file instead of spreading along the bar, which wastes room, blocks seating and leaves most of the bar and staff idle. The goal is to get people to stop, in a funny way. It is as much comedy as campaign, so not everything is serious. Success is petition signatures plus pubs adopting The Cluster (beer mats now planned, pub pledges later).
 
 ## Positioning
-Mock-scientific, dry British humour (format borrowed from cuberule.com): "the Bar Rule", rulings, an alignment chart and animated pub simulations, anchored by one real data point. Neighbouring campaigns (e.g. @QueuesPub, running since 2023) do not use this format.
+Mock-scientific, dry British humour (format borrowed from cuberule.com): "the Bar Rule", rulings, an alignment chart and animated pub simulations, anchored by a short, sourced history of how the queue started and one labelled worked example. Neighbouring campaigns (e.g. @QueuesPub, running since at least 2023) do not use this format.
 
 ## Operating Context
-UK pubs, bars and breweries. The wrong behaviour is **The Single File**; the right one is **The Cluster**. Pre-COVID, people spread along the bar and the barperson or landlord knew who was next. The page is a long single scroll of full-screen colour blocks, with a fixed timeline rail tracking 8 chapters (`#covid`, `#after`, `#hackney`, `#rule`, `#howto`, `#rulings`, `#mats`, `#petition-section`). The brand marks, icons and beer mat artwork are generated from `scripts/lib/brand.mjs` (`npm run build:icons`, `npm run build:mats`); the identity and its rules are in `brand/BRIEF.md`.
+UK pubs, bars and breweries. The wrong behaviour is **The Single File**; the right one is **The Cluster**. Pre-COVID, people spread along the bar and the barperson or landlord knew who was next. The page is a long single scroll of full-screen colour blocks, with a fixed timeline rail tracking 9 chapters (`#problem`, `#solution`, `#maths`, `#history`, `#howto`, `#test`, `#mats`, `#poll`, `#petition-section`). The brand marks, icons and beer mat artwork are generated from `scripts/lib/brand.mjs` (`npm run build:icons`, `npm run build:mats`); the identity and its rules are in `brand/BRIEF.md`.
 
 ## Capabilities and Constraints
 - Petition form (`POST /api/sign`) and running count (`GET /api/count`, cached 60s); duplicate emails silently ignored.
-- Animated single-file vs cluster pub simulations; count-ups; scroll-reveal; timeline rail. `prefers-reduced-motion` respected and the page works without JS.
+- Poll, "Stop the single file?" (For or Against) (`/api/poll`): results only show once you've voted; one vote per browser, a daily cap per network and a burst rate limit.
+- Animated single-file vs cluster pub simulations; stat bars; a horizontal history strip (swipe, buttons, arrow keys) ending on a live days-since counter; a scroll-driven how-to stage; scroll-reveal; timeline rail. `prefers-reduced-motion` respected and the page works without JS.
 - Beer mats are "coming soon"; nothing is for sale and there is no ordering route yet.
 - **Gender-neutral language, always:** barperson, bar staff, landlord; they/them/their for staff. Never barman, barmaid, he/she/him/his/her.
 - No photos. Hard-coded domains are avoided (the Worker injects the origin into `data-abs` tags).
 - Legal and trust: UK GDPR and PECR (consent for campaign email, opt-out). Privacy notice and signature deletion route are not yet built. Spam protection (Turnstile or WAF rate limit) is not yet in place.
-- Not affiliated with Hackney Church Brew Co, and the footer says so.
+- Hackney Church Brew Co is deliberately not cited (its figures are the brewery's own claims; see `RESEARCH.md`).
 - Undecided: custom domain (current beer mat address is `https://dontqueueatthebar.co.uk/`), live URL, merch/shop route.
 
 ## Brand Commitments
@@ -40,11 +41,12 @@ UK pubs, bars and breweries. The wrong behaviour is **The Single File**; the rig
 - Look commitments recorded from the existing site only: very bold, huge lowercase type, one idea per full-screen colour block, simple animated diagrams, no photos. Assets: the Cluster roundel (`public/mark.svg`), the horizontal lockup, and the generated icon and beer mat files; the share images still show the retired badge in `public/logo-side.svg`.
 
 ## Evidence on Hand
-Source: East London Times, 29 Aug 2026 (reporting Broadsheet London, MyLondon, YouGov).
-- Hackney Church Brew Co, 14 Aug 2026 post "A BAR IS NOT A POST OFFICE"; bar about 20 ft with 4 staff.
-- Like-for-like sales up **25%** the following Thursday (£3.50 pints), steady footfall, higher spend per head. This is the brewery's own claim.
-- YouGov: **40%** prefer single-file, **39%** prefer along the bar; London only 37% single-file; Midlands, North and Wales 42%; ages 25 to 49 favour along the bar most.
-- Everything else (sim scores, alignment chart, rulings) is jokes and must stay marked as such.
+The register is `RESEARCH.md`: every figure, date and quote on the site, with source, type, confidence and a before-promoting checklist (all rows are still unverified: the research read search extracts only).
+- On the page: Kate Fox's invisible queue (*Passport to the Pub*, 1996); the England rules from the PM's 20 Mar 2020 statement, the 2020 pub guidance, SI 2020/1029 (table service, 24 Sep 2020) and SI 2021/848 (rules gone 19 Jul 2021); Wales last to drop table service (28 Jan 2022); Time Out noticing the queue (Jul 2023); YouGov, 18 Sep 2025, 5,914 GB adults: **40%** single file, **39%** along the bar, 21% don't know.
+- Derived and labelled as such: 486 days, 298 days, the live days-since count, and the worked example (20 orders × 75 s: 25 min through one spot, 6¼ across four staff; one spot can do 48 an hour).
+- Reserves with sources (not on the page yet): pubLAB's 2 min 23 s per customer, YouGov 2017's 91% who would say someone else was next, the floor space a single file takes, BBPA closures.
+- Avoided: Hackney's +25% / "three times as long", the regional YouGov split, the East London Times article (could not be found), "COVID invented the queue".
+- Everything else (sim scores, jokes) is illustrative and must stay marked as such.
 - Absent: testimonials, bar staff quotes, pub pledges, press coverage of this campaign, sales figures. Do not fabricate any.
 - Signature export lives in `exports/` (personal data; never surface it in the UI).
 

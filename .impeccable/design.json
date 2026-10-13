@@ -83,6 +83,22 @@
       "description": "Sim stage with a big amber pints-served score.",
       "html": "<div class=\"ds-scene\"><div class=\"ds-bar\"></div><div class=\"ds-score\"><b>14</b>pints served</div></div>",
       "css": ".ds-scene { position: relative; width: 320px; aspect-ratio: 16 / 11; background: #0e0e13; color: #fff4dc; border: 4px solid rgba(255, 244, 220, 0.9); border-radius: 24px; overflow: hidden; } .ds-bar { position: absolute; left: 4%; right: 4%; top: 14%; height: 5%; background: #c98a3e; border-radius: 6px; box-shadow: 0 5px 0 #8a5a22; } .ds-score { position: absolute; right: 4%; bottom: 4%; text-align: right; font-weight: 800; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.1; } .ds-score b { display: block; color: #ffb627; font-size: 2.2rem; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Floor Sticker",
+      "kind": "custom",
+      "refersTo": "floor-sticker",
+      "description": "History strip stop: the 2020 floor sticker reused as a dated marker. Dashed ink border, solid and scaled 1.08 on the current stop.",
+      "html": "<p class=\"ds-sticker\"><span><small>24 Sep</small><b>2020</b></span></p>",
+      "css": ".ds-sticker { width: 6.75rem; height: 6.75rem; margin: 0; border-radius: 50%; background: #fff4dc; color: #16161d; border: 3px dashed #16161d; display: grid; place-content: center; text-align: center; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em; rotate: -4deg; } .ds-sticker small { display: block; font-size: 1rem; letter-spacing: 0.08em; } .ds-sticker b { display: block; font-size: 1.6rem; line-height: 1; letter-spacing: -0.03em; }"
+    },
+    {
+      "name": "Strip Button",
+      "kind": "button",
+      "refersTo": "strip-button",
+      "description": "History strip previous/next: outlined ink circle with an SVG chevron; aria-disabled (30%) at the ends, never disabled.",
+      "html": "<button class=\"ds-strip-btn\" type=\"button\" aria-label=\"Next stop\"><svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"m5.5 2.5 5.5 5.5-5.5 5.5\"/></svg></button>",
+      "css": ".ds-strip-btn { width: 56px; height: 56px; display: grid; place-items: center; padding: 0; color: #16161d; background: transparent; border: 3px solid #16161d; border-radius: 999px; cursor: pointer; transition: scale 0.15s ease; } .ds-strip-btn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; } .ds-strip-btn:hover { scale: 1.06; } .ds-strip-btn:focus-visible { outline: 3px solid #16161d; outline-offset: 4px; } .ds-strip-btn[aria-disabled=\"true\"] { opacity: 0.3; cursor: default; }"
     }
   ],
   "narrative": {
