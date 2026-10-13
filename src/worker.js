@@ -158,7 +158,7 @@ async function handleCount(env, ctx) {
   return json({ count }, 200, { 'Cache-Control': 'public, max-age=60' });
 }
 
-/* ---------- Poll: the single file, for or against ----------
+/* ---------- Poll: stop the single file, for or against ----------
    Results only go to people who have voted: in the answer to a vote, or to a browser holding
    the voter cookie. What keeps the numbers honest:
    1. One vote per browser. The cookie holds a random voter id (UNIQUE in poll_votes). Voting
@@ -170,7 +170,7 @@ async function handleCount(env, ctx) {
    3. The POLL_LIMITER binding (wrangler.jsonc) turns away bursts before the database.
    The Origin check only stops other websites posting votes on their visitors' behalf. */
 
-const POLL_CHOICES = ['single', 'cluster']; // for the single file, against it
+const POLL_CHOICES = ['cluster', 'single']; // for stopping the single file, against it
 const POLL_COOKIE = 'dq_poll';
 const POLL_MAX_BODY = 256; // {"choice":"cluster"} is 20 bytes
 const POLL_VOTES_PER_NETWORK_PER_DAY = 20; // per IPv4 address or IPv6 /64
@@ -228,8 +228,8 @@ function pollWords({ single, cluster }, choice, status) {
       : status === 'missing'
         ? 'We couldn’t find your first vote, so nothing changed.'
         : choice === 'cluster'
-          ? 'You said against. Correct. Now make it official.'
-          : 'You said for. Noted. Take the hazard perception test, then we’ll talk.';
+          ? 'You said for. Correct. Now make it official.'
+          : 'You said against. Noted. Take the hazard perception test, then we’ll talk.';
   const next =
     choice === 'cluster'
       ? { back: '/#petition-section', label: 'Sign the petition' }
@@ -242,7 +242,7 @@ function pollWords({ single, cluster }, choice, status) {
 // `mine` is the side to stamp "your vote", if any.
 function pollChart({ single, cluster }, mine) {
   const total = single + cluster;
-  const forPc = total ? Math.round((single / total) * 100) : 0; // whole numbers that add up to 100
+  const forPc = total ? Math.round((cluster / total) * 100) : 0; // for stopping it; whole numbers that add up to 100
   const row = (key, label, pc, n) =>
     `<li class="poll-row" data-choice="${key}"><span class="poll-label">${label}` +
     (key === mine ? ' <span class="poll-you"><span class="sr-only">, </span>your vote</span>' : '') +
@@ -250,8 +250,8 @@ function pollChart({ single, cluster }, mine) {
     `<span class="poll-fig"><b class="poll-pc">${pc}%</b> <span class="poll-n">${votesText(n)}</span></span></li>`;
   return (
     `<figure class="poll-chart"><ul class="poll-bars">` +
-    row('single', 'For', forPc, single) +
-    row('cluster', 'Against', total ? 100 - forPc : 0, cluster) +
+    row('cluster', 'For', forPc, cluster) +
+    row('single', 'Against', total ? 100 - forPc : 0, single) +
     `</ul><div class="poll-axis" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>` +
     `</figure>`
   );

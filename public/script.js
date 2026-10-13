@@ -553,7 +553,7 @@ if (timeline) guard('timeline', () => {
   updateTimeline();
 });
 
-/* ---------- Poll: the single file, for or against (/api/poll) ----------
+/* ---------- Poll: stop the single file, for or against (/api/poll) ----------
    Nobody sees the numbers until they've voted. The Worker sends them back with a vote, or to a
    browser that has voted before (it holds the voter cookie), so returning voters go straight
    to the results. Voting again from there changes the vote; it never adds one. */
@@ -583,8 +583,8 @@ if (pollSection && poll && pollResults) guard('poll', () => {
     return 'Dead heat. Over to the barperson.';
   };
   const QUIPS = {
-    single: 'You said for. Noted. Take the hazard perception test, then we’ll talk.',
-    cluster: 'You said against. Correct. Now make it official.',
+    cluster: 'You said for. Correct. Now make it official.',
+    single: 'You said against. Noted. Take the hazard perception test, then we’ll talk.',
     capped: 'Your connection has had its fill of votes today, so this one didn’t count. Here’s the tally anyway.',
     missing: 'We couldn’t find your first vote, so nothing changed.',
   };
@@ -599,8 +599,8 @@ if (pollSection && poll && pollResults) guard('poll', () => {
     const cluster = Number(results?.cluster) || 0;
     const total = single + cluster;
     // Whole percentages that always add up to 100.
-    const forPc = total ? Math.round((single / total) * 100) : 0;
-    const pc = { single: forPc, cluster: total ? 100 - forPc : 0 };
+    const forPc = total ? Math.round((cluster / total) * 100) : 0; // for stopping it
+    const pc = { cluster: forPc, single: total ? 100 - forPc : 0 };
     const votes = { single, cluster };
 
     pollResults.querySelector('.poll-head').textContent = leadFor(single, cluster);
@@ -648,7 +648,7 @@ if (pollSection && poll && pollResults) guard('poll', () => {
     poll.hidden = false;
     buttons.forEach((b) => (b.querySelector('.poll-you').hidden = b.value !== last.choice));
     keep.hidden = false;
-    note.textContent = `You\u2019re down as ${last.choice === 'cluster' ? 'against' : 'for'}. Pick again to switch.`;
+    note.textContent = `You\u2019re down as ${last.choice === 'cluster' ? 'for' : 'against'}. Pick again to switch.`;
     // Focus the note, not a vote button, so a held Enter can't vote by accident.
     note.focus();
   });

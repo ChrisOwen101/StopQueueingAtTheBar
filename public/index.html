@@ -388,14 +388,15 @@
   <section class="screen c-cream" id="poll">
     <div class="inner reveal">
       <p class="small poll-kicker">pick a side</p>
-      <h2 class="mega">Single file. <br>For or against?</h2>
+      <h2 class="mega">Stop the <br>single file?</h2>
       <!-- method/action make the vote work if the script fails to load: the Worker takes the
            plain form post and answers with a small results page. script.js replaces it with fetch. -->
       <form class="poll" id="poll-form" method="post" action="/api/poll" enctype="application/x-www-form-urlencoded">
         <div class="poll-choices">
           <!-- The stamps mark the side on record when someone comes back via "Changed your mind?" -->
-          <button type="submit" name="choice" value="single"><b>For</b> <span>one orderly line</span> <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></button>
-          <button type="submit" name="choice" value="cluster"><b>Against</b> <span>spread along the bar</span> <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></button>
+          <!-- "For" stops the single file (choice "cluster"); "Against" keeps it ("single"). -->
+          <button type="submit" name="choice" value="cluster"><b>For</b> <span>spread along the bar</span> <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></button>
+          <button type="submit" name="choice" value="single"><b>Against</b> <span>keep the orderly line</span> <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></button>
         </div>
         <p class="poll-note" role="status" aria-live="polite" tabindex="-1">Vote to see what everyone else said.</p>
         <p><button type="button" class="poll-link poll-keep" hidden>Keep my vote</button></p>
@@ -409,12 +410,12 @@
              src/worker.js draws the same markup for the no-JavaScript results page. -->
         <figure class="poll-chart">
           <ul class="poll-bars">
-            <li class="poll-row" data-choice="single">
+            <li class="poll-row" data-choice="cluster">
               <span class="poll-label">For <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></span>
               <span class="poll-plot" aria-hidden="true"><span class="poll-fill"></span></span>
               <span class="poll-fig"><b class="poll-pc"></b> <span class="poll-n"></span></span>
             </li>
-            <li class="poll-row" data-choice="cluster">
+            <li class="poll-row" data-choice="single">
               <span class="poll-label">Against <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></span>
               <span class="poll-plot" aria-hidden="true"><span class="poll-fill"></span></span>
               <span class="poll-fig"><b class="poll-pc"></b> <span class="poll-n"></span></span>
