@@ -147,4 +147,40 @@ CONCEPTS.push(
   ${bar(c)}`,
     note: 'Arrow plus the two bodies. Busier than 10.',
   },
+  // ---------- Finalists, refined after the critiques ----------
+  {
+    n: 12, id: '12-the-corner-refined', title: 'The Corner, refined', words: ['queue', 'sideways.'], tab: 'Queue Sideways',
+    idea: 'Five heads r21 at pitch 52, the L clear of the ring and 3 units above the bar, the arrow 9 units clear of the last head.',
+    body: (c) => `
+  ${ring(c)}
+  <g fill="${c}">
+    <circle cx="146" cy="86" r="21"/><circle cx="146" cy="138" r="21"/>
+    <circle cx="146" cy="190" r="21"/><circle cx="198" cy="190" r="21"/><circle cx="250" cy="190" r="21"/>
+    <polygon points="280,160 280,214 334,187"/>
+  </g>
+  ${bar(c)}`,
+    note: 'Brand critique’s pick. Marketing critique: reads as media controls (dots and a play button).',
+  },
+  {
+    n: 13, id: '13-the-corner-no-arrow', title: 'The Corner, no arrow', words: ['queue', 'sideways.'], tab: 'Queue Sideways',
+    idea: 'The same L of heads with a sixth head instead of the arrow: the file comes down and lies along the bar. No play button.',
+    body: (c) => `
+  ${ring(c)}
+  <g fill="${c}">
+    <circle cx="134" cy="86" r="21"/><circle cx="134" cy="138" r="21"/>
+    <circle cx="134" cy="190" r="21"/><circle cx="186" cy="190" r="21"/><circle cx="238" cy="190" r="21"/><circle cx="290" cy="190" r="21"/>
+  </g>
+  ${bar(c)}`,
+    note: 'Six heads, one shape. Answers the media-controls read.',
+  },
+  {
+    n: 14, id: '14-the-turn-refined', title: 'The Turn, refined', words: ['queue', 'sideways.'], tab: 'Queue Sideways',
+    idea: 'The shaft enters from the ring edge, the head sits 10 units above the bar.',
+    body: (c) => `
+  ${ring(c)}
+  <path d="M138,50 V116 A44,44 0 0 0 182,160 H262" fill="none" stroke="${c}" stroke-width="44"/>
+  <polygon points="254,116 254,204 338,160" fill="${c}"/>
+  ${bar(c)}`,
+    note: 'Marketing critique’s pick. Brand critique: still a return key.',
+  },
 );

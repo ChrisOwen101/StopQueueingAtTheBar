@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="The Corner, no arrow">
+  <circle cx="200" cy="200" r="170" fill="none" stroke="#000" stroke-width="30"/>
+  <g fill="#000">
+    <circle cx="134" cy="86" r="21"/><circle cx="134" cy="138" r="21"/>
+    <circle cx="134" cy="190" r="21"/><circle cx="186" cy="190" r="21"/><circle cx="238" cy="190" r="21"/><circle cx="290" cy="190" r="21"/>
+  </g>
+  <rect x="0" y="214" width="400" height="64" fill="#000"/>
+</svg>
