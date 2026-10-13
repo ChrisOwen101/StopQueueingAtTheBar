@@ -153,62 +153,78 @@ p, h1, h2, ol, li { margin: 0; padding: 0; }
 .mega { font-weight: 900; letter-spacing: -0.04em; line-height: 0.92; text-transform: lowercase; }
 .mid { font-weight: 600; line-height: 1.25; }
 .small { font-weight: 500; letter-spacing: 0.08em; text-transform: lowercase; }
-.tag { display: inline-block; padding: 0.45em 1.1em; border: ${m(0.9)} solid #000; border-radius: 999px; font-weight: 900; letter-spacing: 0.08em; text-transform: lowercase; rotate: -3deg; font-size: ${m(4.2)}; }
+.tag { display: inline-block; padding: 0.4em 1em; border: ${m(0.8)} solid #000; border-radius: 999px; font-weight: 900; letter-spacing: 0.08em; text-transform: lowercase; rotate: -3deg; font-size: ${m(6.2)}; white-space: nowrap; }
 .roundel, .stamp, .qr { display: block; flex: none; }
 .foot { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: ${m(6)}; }
 .scan { display: flex; align-items: flex-end; gap: ${m(5)}; }
-.cta { font-weight: 900; font-size: ${m(6.5)}; letter-spacing: -0.02em; line-height: 1; }
-.addr { font-weight: 500; font-size: ${m(4.1)}; white-space: nowrap; margin-top: ${m(1.5)}; }
+.cta { font-weight: 900; font-size: ${m(8)}; letter-spacing: -0.02em; line-height: 1.05; }
+.addr { font-weight: 600; font-size: ${m(6.4)}; line-height: 1.2; white-space: nowrap; margin-top: ${m(2)}; }
 `;
 
+// The address written out: the QR is the route, this is the fallback, so it breaks after the
+// first dot and never under 3.5 mm x-height on A4 (2.5 mm at A5).
+const address = () => {
+  const i = DOMAIN.indexOf('.');
+  return i > 0 && DOMAIN.length > 28 ? `${DOMAIN.slice(0, i + 1)}<br>${DOMAIN.slice(i + 1)}` : DOMAIN;
+};
+
 // ---------- Face A: the poster ----------
-// Read from across the room: the stamp leads, "spread out." is the instruction, the house line
-// is the pub's permission, the body reassures, the strap is the joke. QR and caption together.
+// Read from across the room, in this order: the stamp (it leads, per the brief), "spread out."
+// (the instruction), the house line (the pub's permission and the reassurance). One roundel,
+// at the foot beside the petition line; the QR is plain so a mono laser and a photocopy keep it.
 const faceA = () => `<div class="page face-a">
-  ${stampSvg()}
-  <h1 class="spread mega">spread out.</h1>
-  <p class="house mega">this bar does the cluster.</p>
-  <p class="body mid">Along the bar, not behind each other. The bar staff know who’s next. They always did.</p>
-  <p class="strap">It’s a pub. Not a post office.</p>
+  <div class="top">
+    ${stampSvg()}
+    <h1 class="spread mega">spread out.</h1>
+    <p class="house mid">This bar does The&nbsp;Cluster. The bar staff know who’s&nbsp;next.</p>
+  </div>
   <div class="foot">
-    <div class="scan">${qrSvg(true)}<div><p class="cta">Sign the petition.</p><p class="addr">${DOMAIN}</p></div></div>
+    <div class="who">${roundel()}<div><p class="cta">Sign the petition.</p><p class="addr">${address()}</p></div></div>
+    ${qrSvg()}
   </div>
 </div>`;
 const CSS_A = `
-.face-a .stamp { width: ${m(84)}; }
-.face-a .spread { font-size: ${m(31)}; margin-top: ${m(12)}; }
-.face-a .house { font-size: ${m(15)}; margin-top: ${m(7)}; }
-.face-a .body { font-size: ${m(7.6)}; margin-top: ${m(7)}; max-width: ${m(150)}; }
-.face-a .strap { font-weight: 500; font-size: ${m(6)}; margin-top: ${m(6)}; }
-.face-a .qr { width: ${m(40)}; }
+.face-a .top { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-bottom: ${m(6)}; }
+.face-a .stamp { width: ${m(120)}; }
+.face-a .spread { font-size: ${m(30)}; margin-top: ${m(17)}; }
+.face-a .house { font-size: ${m(11.5)}; margin-top: ${m(7)}; max-width: ${m(170)}; text-wrap: balance; }
+.face-a .qr { width: ${m(36)}; }
+.face-a .roundel { width: ${m(20)}; }
+.face-a .who { display: flex; align-items: center; gap: ${m(5)}; }
 `;
 
 // ---------- Face B: the how-to ----------
-// Read in the hand: the four steps as a ruled list, then the worked example, then the test.
+// Read in the hand: the four steps, then the worked example with its caveat, then the test.
+// The stamp signs it bottom right (30 mm here, 21 mm at A5, above the 18 mm minimum).
 const faceB = () => `<div class="page face-b">
   <p class="kicker small">this bar does the cluster. here’s how.</p>
   <h1 class="h mega">Four easy steps.</h1>
   <ol class="steps">${STEPS.map(([t, d], i) => `<li class="step"><span class="n">${i + 1}</span><div><p class="t">${t}</p><p class="d mid">${d}</p></div></li>`).join('')}</ol>
-  <div class="maths"><div><p class="mh mega">25 minutes. Or six.</p><p class="ms mid">Twenty orders, 75&nbsp;seconds each. One spot on the bar, or four staff along it.</p><p class="mc">Arithmetic, not a stopwatch. Real pubs are messier.</p></div><p class="tag">worked example</p></div>
+  <div class="maths">
+    <p class="tag">worked example</p>
+    <p class="mh mega">25 minutes. Or six.</p>
+    <p class="ms mid">Twenty orders, 75&nbsp;seconds each. One spot on the bar, or four staff along it. Arithmetic, not a stopwatch. Real pubs are messier.</p>
+  </div>
   <div class="foot">
-    <div class="scan">${qrSvg(true)}<div><p class="cta">Think you’re ready?<br>Take the test.</p><p class="addr">${DOMAIN}</p></div></div>
+    <div class="who">${qrSvg()}<div><p class="cta">Think you’re ready?<br>Take the test.</p><p class="addr">${address()}</p></div></div>
     ${stampSvg()}
   </div>
 </div>`;
 const CSS_B = `
-.face-b .kicker { font-size: ${m(5)}; }
-.face-b .h { font-size: ${m(22)}; margin-top: ${m(2)}; }
-.face-b .steps { list-style: none; margin-top: ${m(7)}; }
-.face-b .step { display: grid; grid-template-columns: ${m(18)} 1fr; align-items: baseline; padding: ${m(3.4)} 0; border-top: ${m(1)} solid #000; }
-.face-b .n { font-weight: 900; font-size: ${m(12)}; line-height: 1; letter-spacing: -0.04em; }
-.face-b .t { font-weight: 900; font-size: ${m(11)}; letter-spacing: -0.04em; line-height: 1; text-transform: lowercase; }
-.face-b .d { font-size: ${m(5.2)}; margin-top: ${m(1.5)}; }
-.face-b .maths { margin-top: ${m(7)}; padding-top: ${m(6)}; border-top: ${m(2.4)} solid #000; display: grid; grid-template-columns: 1fr auto; gap: ${m(8)}; align-items: start; }
-.face-b .mh { font-size: ${m(15)}; }
-.face-b .ms { font-size: ${m(5.2)}; margin-top: ${m(2)}; max-width: ${m(120)}; }
-.face-b .mc { font-weight: 500; font-size: ${m(4.4)}; margin-top: ${m(1.5)}; }
-.face-b .qr { width: ${m(34)}; }
-.face-b .stamp { width: ${m(26)}; }
+.face-b .kicker { font-size: ${m(6)}; }
+.face-b .h { font-size: ${m(24)}; margin-top: ${m(2)}; }
+.face-b .steps { list-style: none; flex: 1; display: grid; align-content: space-evenly; gap: ${m(3)}; margin: ${m(3)} 0; }
+.face-b .step { display: grid; grid-template-columns: ${m(22)} 1fr; align-items: baseline; }
+.face-b .n { font-weight: 900; font-size: ${m(13)}; line-height: 1; letter-spacing: -0.04em; }
+.face-b .t { font-weight: 900; font-size: ${m(10.5)}; letter-spacing: -0.04em; line-height: 1; text-transform: lowercase; }
+.face-b .d { font-size: ${m(6.2)}; line-height: 1.25; margin-top: ${m(1.5)}; max-width: ${m(150)}; }
+.face-b .maths { position: relative; padding-top: ${m(6)}; border-top: ${m(2)} solid #000; margin-bottom: ${m(8)}; }
+.face-b .maths .tag { position: absolute; right: 0; top: ${m(-5.5)}; background: #fff; }
+.face-b .mh { font-size: ${m(13)}; white-space: nowrap; }
+.face-b .ms { font-size: ${m(6.2)}; line-height: 1.25; margin-top: ${m(3)}; max-width: ${m(165)}; }
+.face-b .qr { width: ${m(36)}; }
+.face-b .stamp { width: ${m(30)}; }
+.face-b .who { display: flex; align-items: flex-end; gap: ${m(5)}; }
 `;
 
 // ---------- Sheets and documents ----------

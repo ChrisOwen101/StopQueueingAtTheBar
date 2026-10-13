@@ -35,6 +35,7 @@ public/            Static site (served by Workers assets)
   lockup-horizontal.svg  The roundel beside the name, in ink: the homepage badge (same script)
   lockup-horizontal-reversed.svg  The same in cream: the hazard pages' header (same script)
   mats/            Beer mat print artwork, front and back (written by npm run build:mats)
+  flyers/          Print-at-home flyers: five PDFs and a PNG preview of each face (written by npm run build:flyers)
   script.js        Reveal, days-since counter, history strip, pub simulation, how-to stage, timeline rail, poll, petition form
   hazard.html      Hazard perception hub: two buttons, customer test and barperson test
   hazard.js        Shared test player (HazardTest.init): playback, questions, scoring, sound, speech
@@ -47,6 +48,7 @@ public/            Static site (served by Workers assets)
   audio/           Generated ElevenLabs narration and sound effects plus manifest.json (commit these)
 scripts/lib/brand.mjs             The brand marks as SVG strings: roundel, lockups, stamp, square icon, mat
 scripts/build-icons.mjs, build-mats.mjs   Write the site's marks, icons and mats from that module
+scripts/build-flyers.mjs          Writes public/flyers/: the two faces as HTML at paper size, printed to PDF by headless Chrome
 scripts/build-badges.mjs, lib/badge-words.mjs   Write the certificate masters: the seal from the brand module, the fixed words as outlined paths
 scripts/voice.json, sfx.json      Narrator voice and sound effect prompts for npm run audio:generate
 brand/BRIEF.md     The brand identity: decisions, usage rules, minimum sizes, what's left before print
@@ -54,7 +56,7 @@ brand/final/       The mark family as SVG (build.mjs writes them), contact sheet
 src/worker.js      Worker: POST /api/sign, GET /api/count, GET and POST /api/poll; everything else -> static assets
 schema.sql         Postgres tables: `signatures`, plus `poll_votes` and `poll_limits` for the poll (safe to re-run)
 wrangler.jsonc     Worker, assets and Hyperdrive config
-package.json       wrangler + pg; scripts: dev, deploy, check, db:init:local
+package.json       wrangler + pg (+ qrcode and pdf-lib for the build scripts); scripts: dev, deploy, check, db:init:local, build:*
 .github/workflows/deploy.yml   Deploys to Cloudflare on push to main
 README.md          Setup steps
 RESEARCH.md        Every figure, date and quote on the site, with sources and a checklist
@@ -141,6 +143,7 @@ npm install
 npm run dev        # wrangler dev (needs local Postgres: createdb bar_petition && npm run db:init:local)
 npm run deploy     # deploy to Cloudflare (also happens on push to main via GitHub Actions)
 npm run check      # wrangler deploy --dry-run
+npm run build:flyers   # public/flyers/ (needs a Chromium; only right on a Mac with Avenir Next, see Flyers)
 psql "$DATABASE_URL" -f schema.sql   # after a schema change, against Neon, before deploying (only creates what's missing)
 ```
 
@@ -167,7 +170,8 @@ psql "$DATABASE_URL" -f schema.sql   # after a schema change, against Neon, befo
 - **Beer mats:** no ordering route yet. Options are an email sign-up only, or a shop (Shopify, Stripe, Printful).
 - **Domain and contact details:** none yet. Custom domain goes under Workers & Pages -> the Worker -> Settings -> Domains & Routes. Earlier ideas: `bartheline.uk`, `thebarparty.uk`, `stoptheline.uk` (availability unchecked).
 - **Stripe icon:** upload `brand/final/icon-square-512.png` to the Payment Link's branding by hand. The link itself doesn't change.
-- **Before print:** outline the text in the mat and flyer SVGs on a Mac (Avenir Next), add bleed, and scan a printed proof of the mat back. See "Before print" in `brand/BRIEF.md`.
+- **Rebuild the flyers on a Mac.** `public/flyers/` was last built on Linux, where the font stack falls back (the committed PDFs are set in Inter, not Avenir Next). Run `npm run build:flyers` on a Mac with Avenir Next and commit `public/flyers/` before the site is promoted, then update the sizes shown beside the download links in `index.html` if they changed. Do it again whenever the domain changes, because the QR code and the written address are in the PDFs.
+- **Before print:** outline the text in the mat SVGs on a Mac (Avenir Next), add bleed, and scan a printed proof of the mat back. See "Before print" in `brand/BRIEF.md`. The flyers need none of that: they are for home printers, and Chrome embeds the font in the PDF.
 - **Not done:** press release.
 - **Possible extras:** an admin export of signatures, a "share" button, a pub-pledge form for venues.
 
