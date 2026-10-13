@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 400" role="img" aria-label="single file: no. along the bar: yes.">
+  <g>
+  <circle cx="200" cy="200" r="170" fill="none" stroke="#000" stroke-width="30"/>
+  <g fill="#000">
+    <circle cx="120" cy="100" r="18"/><circle cx="120" cy="146" r="18"/><circle cx="120" cy="192" r="18"/>
+    <circle cx="224" cy="192" r="18"/><circle cx="270" cy="192" r="18"/><circle cx="316" cy="192" r="18"/>
+  </g>
+  <line x1="78" y1="196" x2="162" y2="96" stroke="#000" stroke-width="22"/>
+  <path d="M236,118 L258,142 L300,96" fill="none" stroke="#000" stroke-width="20"/>
+  <rect x="0" y="214" width="400" height="64" fill="#000"/></g>
+  <g font-family="'Avenir Next','Helvetica Neue','Segoe UI',Arial,sans-serif" font-weight="900" font-size="89" fill="#000" letter-spacing="-3.56" text-anchor="start">
+    <text x="452" y="191">single file: no.</text>
+    <text x="452" y="273">along the bar: yes.</text>
+  </g>
+</svg>

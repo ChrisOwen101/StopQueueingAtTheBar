@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="The Turn, with people">
+  <circle cx="200" cy="200" r="170" fill="none" stroke="#000" stroke-width="30"/>
+  <path d="M118,58 V98 A40,40 0 0 0 158,138 H200" fill="none" stroke="#000" stroke-width="30"/>
+  <polygon points="196,104 196,172 246,138" fill="#000"/>
+  <g fill="#000"><g transform="translate(292,136) scale(1)"><circle r="25"/><path d="M-34,78 V64 a34,34 0 0 1 68,0 V78 Z"/></g></g>
+  <rect x="0" y="214" width="400" height="64" fill="#000"/>
+</svg>

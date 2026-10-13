@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="They Know">
+  <circle cx="200" cy="200" r="170" fill="none" stroke="#000" stroke-width="30"/>
+  <g fill="#000"><g transform="translate(150,165) scale(1)"><circle r="25"/><path d="M-34,78 V64 a34,34 0 0 1 68,0 V78 Z"/></g>
+    <circle cx="182" cy="140" r="6"/><circle cx="203" cy="128" r="9"/><circle cx="255" cy="112" r="50"/>
+  </g>
+  <g fill="#fff" transform="translate(226,99) scale(0.38)"><g transform="translate(0,0) scale(1)"><circle r="25"/><path d="M-34,78 V64 a34,34 0 0 1 68,0 V78 Z"/></g><g transform="translate(76,0) scale(1)"><circle r="25"/><path d="M-34,78 V64 a34,34 0 0 1 68,0 V78 Z"/></g><g transform="translate(152,0) scale(1)"><circle r="25"/><path d="M-34,78 V64 a34,34 0 0 1 68,0 V78 Z"/></g></g>
+  <rect x="0" y="214" width="400" height="64" fill="#000"/>
+</svg>
