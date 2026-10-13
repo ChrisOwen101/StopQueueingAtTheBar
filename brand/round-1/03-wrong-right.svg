@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Wrong and right: a single file above, the cluster below">
+  <defs><clipPath id="c"><circle cx="200" cy="200" r="186"/></clipPath></defs>
+  <g clip-path="url(#c)">
+    <rect x="0" y="0" width="400" height="200" fill="#000"/>
+    <rect x="0" y="200" width="400" height="200" fill="#fff"/>
+    <!-- top: single file, drawn white -->
+    <g fill="#fff">
+      <rect x="110" y="46" width="180" height="12" rx="6"/>
+      <circle cx="200" cy="78" r="11"/><circle cx="200" cy="108" r="11"/><circle cx="200" cy="138" r="11"/><circle cx="200" cy="168" r="11"/>
+    </g>
+    <!-- bottom: the cluster, drawn black -->
+    <g fill="#000">
+      <rect x="80" y="236" width="240" height="12" rx="6"/>
+      <circle cx="108" cy="270" r="11"/><circle cx="154" cy="270" r="11"/><circle cx="200" cy="270" r="11"/><circle cx="246" cy="270" r="11"/><circle cx="292" cy="270" r="11"/>
+    </g>
+  </g>
+  <circle cx="200" cy="200" r="186" fill="none" stroke="#000" stroke-width="14"/>
+  <!-- cross and tick -->
+  <g fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M276,96 l36,36 M312,96 l-36,36" stroke="#fff"/>
+    <path d="M84,318 l20,20 l38,-40" stroke="#000"/>
+  </g>
+</svg>

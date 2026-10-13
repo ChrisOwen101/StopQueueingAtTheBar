@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="No single file: a prohibition ring over a line of people seen from above">
+  <defs><g id="q"><ellipse cx="0" cy="8" rx="24" ry="12"/><circle cx="0" cy="0" r="13"/></g></defs>
+  <circle cx="200" cy="200" r="174" fill="none" stroke="#000" stroke-width="30"/>
+  <rect x="112" y="78" width="176" height="16" rx="8" fill="#000"/>
+  <g fill="#000" stroke="#fff" stroke-width="6" paint-order="stroke">
+    <use href="#q" x="200" y="128"/><use href="#q" x="200" y="178"/><use href="#q" x="200" y="228"/><use href="#q" x="200" y="278"/>
+  </g>
+  <line x1="84" y1="84" x2="316" y2="316" stroke="#000" stroke-width="30"/>
+</svg>

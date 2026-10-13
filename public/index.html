@@ -67,7 +67,7 @@
       <h1 class="mega">Don’t Queue <br>At The Bar</h1>
       <p class="mid">It’s a pub. Not a post office.</p>
     </div>
-    <a class="promo" href="#test">
+    <a class="promo" href="hazard.html">
       <span class="promo-big">Get your <em>pub goers</em> licence today</span>
       <span class="promo-small">Do the hazard perception test →</span>
     </a>
@@ -115,6 +115,12 @@
        The markup ships the finished frame (all four steps done, all copy shown) so the page
        reads without JS; script.js resets it and drives the steps from scroll position. -->
   <section class="howto" id="howto">
+    <!-- Where each step's slice of the scroll starts: the step pills are plain links to these,
+         so the browser does the scrolling (styles.css places them; they do nothing without JS). -->
+    <span class="howto-at" id="howto-1" style="--at:1"></span>
+    <span class="howto-at" id="howto-2" style="--at:2"></span>
+    <span class="howto-at" id="howto-3" style="--at:3"></span>
+    <span class="howto-at" id="howto-4" style="--at:4"></span>
     <div class="screen howto-stick c-green s1 s2 s3 s4 served">
       <div class="inner howto-grid reveal">
         <div class="howto-text">
@@ -125,22 +131,22 @@
               <p class="mid"><span class="js-only">Keep scrolling. </span>You’re the pink one.</p>
             </div>
             <ol class="steps">
-              <li class="step" id="howto-1">
+              <li class="step">
                 <p class="howto-step">step 1 of 4</p>
                 <h3 class="rule-title">Walk to <br>the bar.</h3>
                 <p class="mid">Not behind someone. To the bar. It’s the long wooden thing.</p>
               </li>
-              <li class="step" id="howto-2">
+              <li class="step">
                 <p class="howto-step">step 2 of 4</p>
                 <h3 class="rule-title">Pick <br>a gap.</h3>
                 <p class="mid">Any gap. Leave some elbow room. This is not a cuddle.</p>
               </li>
-              <li class="step" id="howto-3">
+              <li class="step">
                 <p class="howto-step">step 3 of 4</p>
                 <h3 class="rule-title">Catch <br>an eye.</h3>
                 <p class="mid">A nod. A raised eyebrow. A tenner held with quiet confidence. No waving. No clicking.</p>
               </li>
-              <li class="step" id="howto-4">
+              <li class="step">
                 <p class="howto-step">step 4 of 4</p>
                 <h3 class="rule-title">Trust the <br>barperson.</h3>
                 <p class="mid">They know who’s next. They always know. It’s their entire job.</p>

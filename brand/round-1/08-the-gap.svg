@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Pick a gap: three people at a bar and a dotted outline where the fourth should stand">
+  <defs><g id="p"><circle cx="0" cy="0" r="19"/><path d="M-26,64 V46 a26,26 0 0 1 52,0 V64 Z"/></g></defs>
+  <circle cx="200" cy="200" r="176" fill="none" stroke="#000" stroke-width="28"/>
+  <use href="#p" x="92" y="156" fill="#000"/><use href="#p" x="164" y="156" fill="#000"/><use href="#p" x="308" y="156" fill="#000"/>
+  <g transform="translate(236,156)" fill="none" stroke="#000" stroke-width="5" stroke-dasharray="9 7" stroke-linecap="round">
+    <circle cx="0" cy="0" r="17"/><path d="M-24,62 V46 a24,24 0 0 1 48,0 V62"/>
+  </g>
+  <rect x="14" y="214" width="372" height="62" fill="#000"/>
+</svg>

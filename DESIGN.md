@@ -152,11 +152,11 @@ Sim customer dots also use four light tints (#7f95ff, #4ad295, #ff6b76, #ffd36a)
 - **Stat** (900, `clamp(6rem, 30vw, 26rem)`, 0.85, -0.06em, tabular numerals): The giant counted-up number (e.g. +25%).
 - **Big** (800, `clamp(2.2rem, 7vw, 6rem)`, 1, -0.03em): Secondary statements and rule titles.
 - **Mid** (600, `clamp(1.3rem, 3.2vw, 2.6rem)`, 1.2): The supporting line under a headline.
-- **Small** (500, `clamp(1rem, 2vw, 1.6rem)`, 0.04em, lowercase, 80% opacity): Captions and asides.
+- **Small** (500, `clamp(1rem, 2vw, 1.6rem)`, 0.04em, lowercase, 80% opacity): Captions and asides. Full opacity on red and blue blocks, where 80% cream falls under 4.5:1.
 - **Label** (900, `clamp(0.9rem, 1.8vw, 1.3rem)`, 0.08em, uppercase): Tags, chart headings, sim scores.
 - **Rule title** (900, `clamp(2.2rem, 9vw, 8rem)`, 1, -0.04em, lowercase): the chapter and step headings (`.rule-title`), one step below Mega.
 
-Running text: `.mid` and `.small` use `text-wrap: balance`, other paragraphs `pretty`. On dark blocks `.mid` gets line-height 1.38 and +0.006em tracking. Nothing the visitor reads is below 1rem except the sim legends, rail labels and the hero sticker's small line (0.75rem floor). Apostrophes in visible copy are typographic (’). Mobile display sizes keep a rem floor so browser text size still applies.
+Running text: `.mid` and `.small` use `text-wrap: balance`, other paragraphs `pretty`. On dark blocks `.mid` gets line-height 1.38 and +0.006em tracking. Nothing the visitor reads is below 1rem except the sim legends, rail labels and the hero sticker's small line (0.75rem floor). Apostrophes in visible copy are typographic (’). Mobile display sizes keep a rem floor so browser text size still applies. On the hazard pages, labels (the header's test name and the clip count) use the Label scale, and the header label is hidden at 600px and below, where the line above the clip names the test.
 
 ### Named Rules
 **The Lowercase Shout Rule.** Headlines are lowercase and enormous. Uppercase is only for labels and the occasional `.mega.upper` quote.
@@ -167,9 +167,9 @@ Running text: `.mid` and `.small` use `text-wrap: balance`, other paragraphs `pr
 
 Every section is a `.screen`: at least one full viewport tall, a centred grid with generous padding (`12vh` top and bottom, `6vw` sides), content centred and capped at 1200px in `.inner`. Text is centred throughout, except forms, bars and sim captions, which are left-aligned inside their own containers. Vertical rhythm comes from the screens, not from spacing inside them: whitespace is one idea of padding, not many small gaps.
 
-There is no scroll snapping: the page scrolls freely. Side-by-side comparisons use an auto-fit grid (`minmax(min(100%, 420px), 1fr)`, 1.5rem gap) and stack on narrow screens. The alignment chart is a fixed 3x3 grid with an 8px gap.
+Scrolling is free: no scroll snap and no script moves the page on its own. Only anchor links the visitor clicks scroll smoothly (`scroll-behavior: smooth`, off with reduced motion). Side-by-side comparisons use an auto-fit grid (`minmax(min(100%, 420px), 1fr)`, 1.5rem gap) and stack on narrow screens. The alignment chart is a fixed 3x3 grid with an 8px gap.
 
-A fixed **timeline rail** sits on the left edge and tracks the eight chapters. Below 900px, screens gain 52px side padding to make room for it, and chapter labels appear only on tap or hover.
+A fixed **timeline rail** sits on the left edge and tracks the six chapters. Below 900px, screens gain 52px side padding to make room for it, and chapter labels appear only on tap or hover.
 
 Mobile type steps down at 600px (`.mega` to 10.5vw). Content must read at a glance on a phone in a pub.
 
@@ -218,7 +218,7 @@ Chunky and round. Pills (999px) for buttons, tags and the timeline rail; 14px fo
 - **Messages:** centred 700 weight; amber for success, red for error.
 
 ### Navigation (timeline rail)
-- **Style:** a fixed vertical ink pill (90% opacity, 2px cream border at 30%), eight 14px dots joined by a grey track with an amber progress fill.
+- **Style:** a fixed vertical ink pill (90% opacity, 2px cream border at 30%), six 14px dots joined by a grey track with an amber progress fill.
 - **States:** done dots fill amber; the active dot scales 1.5x, gets a cream border and an amber halo. Labels (ink pill with an amber uppercase kicker) appear on the active, hovered or focused dot.
 - **Behaviour:** hidden on the hero, fades in after it. On narrow screens only dots show until tap or hover.
 

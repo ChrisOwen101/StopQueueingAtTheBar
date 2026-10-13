@@ -4,7 +4,6 @@ document.documentElement.classList.add('js');
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasIO = 'IntersectionObserver' in window;
-let animPaused = false; // set by the pause control below
 
 // Each part of the page runs on its own, so one that breaks (an old browser, a missing
 // element) never takes the petition form down with it.
@@ -258,7 +257,7 @@ function buildScene(el) {
   let timer = null;
   return {
     start() {
-      if (!timer && !reduceMotion && !animPaused) timer = setInterval(step, TICK_MS);
+      if (!timer && !reduceMotion) timer = setInterval(step, TICK_MS);
     },
     stop() {
       clearInterval(timer);
@@ -273,7 +272,7 @@ const scenes = [...document.querySelectorAll('.scene')]
 
 // A hidden tab has no use for four simulations.
 document.addEventListener('visibilitychange', () => {
-  scenes.forEach((s) => (document.hidden ? s.sim.stop() : s.visible && !animPaused && s.sim.start()));
+  scenes.forEach((s) => (document.hidden ? s.sim.stop() : s.visible && s.sim.start()));
 });
 
 if (hasIO) {
@@ -292,34 +291,6 @@ if (hasIO) {
   scenes.forEach((s) => sceneIO.observe(s.el));
 } else {
   scenes.forEach((s) => s.sim.start());
-}
-
-/* ---------- Pause control (WCAG 2.2.2) ----------
-   The sims and the beer mats move on their own for more than five seconds, so
-   offer a way to stop them. Not needed when the visitor already asked for reduced motion. */
-
-if (!reduceMotion) {
-  const toggle = document.createElement('button');
-  toggle.type = 'button';
-  toggle.className = 'motion-toggle';
-  toggle.setAttribute('aria-pressed', 'false');
-  toggle.setAttribute('aria-label', 'Pause animations');
-  toggle.innerHTML =
-    '<svg class="pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg>' +
-    '<svg class="play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11a1 1 0 0 0 1.5.86l9-5.5a1 1 0 0 0 0-1.72l-9-5.5A1 1 0 0 0 4 2.5z"/></svg>' +
-    '<span class="txt">pause animations</span>';
-  const txt = toggle.querySelector('.txt');
-
-  toggle.addEventListener('click', () => {
-    animPaused = !animPaused;
-    document.documentElement.classList.toggle('paused', animPaused);
-    toggle.setAttribute('aria-pressed', String(animPaused));
-    toggle.setAttribute('aria-label', animPaused ? 'Play animations' : 'Pause animations');
-    txt.textContent = animPaused ? 'play animations' : 'pause animations';
-    scenes.forEach((s) => (animPaused ? s.sim.stop() : s.visible && s.sim.start()));
-  });
-
-  document.body.appendChild(toggle);
 }
 
 /* ---------- How to do The Cluster: one sticky stage, four steps, driven by scroll ----------
@@ -370,15 +341,6 @@ if (howto) guard('howto', () => {
     const n = Math.floor(x);
     setState(n, p >= 1 ? 1 : x - n);
   };
-
-  // A pill scrolls to the start of its step (the href is the fallback without this script).
-  pills.forEach((li, i) => {
-    li.querySelector('a').addEventListener('click', (event) => {
-      event.preventDefault();
-      const top = howto.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: top + ((i + 1 + 0.02) / SLICES) * travel(), behavior: reduceMotion ? 'auto' : 'smooth' });
-    });
-  });
 
   let ticking = false;
   window.addEventListener('scroll', () => {
