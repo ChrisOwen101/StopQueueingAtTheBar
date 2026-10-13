@@ -419,6 +419,160 @@ if (timeline) guard('timeline', () => {
   updateTimeline();
 });
 
+/* ---------- Poll: the single file, for or against (/api/poll) ----------
+   Nobody sees the numbers until they've voted. The Worker sends them back with a vote, or to a
+   browser that has voted before (it holds the voter cookie), so returning voters go straight
+   to the results. Voting again from there changes the vote; it never adds one. */
+
+const pollSection = document.getElementById('poll');
+const poll = document.getElementById('poll-form');
+const pollResults = document.querySelector('.poll-results');
+
+if (pollSection && poll && pollResults) guard('poll', () => {
+  const note = poll.querySelector('.poll-note');
+  const NOTE = note.textContent;
+  const buttons = [...poll.querySelectorAll('button[name="choice"]')];
+  const again = pollResults.querySelector('.poll-again');
+  const keep = poll.querySelector('.poll-keep');
+  const POLL_TIMEOUT_MS = 15000;
+  let last = null; // the results with this browser's vote on record, for "Keep my vote"
+  let changing = false; // on the "Changed your mind?" screen
+
+  const plural = (n) => `${n.toLocaleString('en-GB')} ${n === 1 ? 'vote' : 'votes'}`;
+
+  // src/worker.js has the same lines for the no-JavaScript page; keep the two in step.
+  // The lead line goes by the counts, not the rounded percentages (501 to 499 shows 50/50).
+  const leadFor = (single, cluster) => {
+    if (single + cluster < 50) return 'Early days. The jury’s still at the bar.';
+    if (cluster > single) return 'The Cluster is winning.';
+    if (single > cluster) return 'The Single File is ahead. We have work to do.';
+    return 'Dead heat. Over to the barperson.';
+  };
+  const QUIPS = {
+    single: 'You said for. Noted. Take the hazard perception test, then we’ll talk.',
+    cluster: 'You said against. Correct. Now make it official.',
+    capped: 'Your connection has had its fill of votes today, so this one didn’t count. Here’s the tally anyway.',
+    missing: 'We couldn’t find your first vote, so nothing changed.',
+  };
+
+  // `data` is an answer from /api/poll. A vote over the daily cap (capped) or a change with no
+  // vote on record (missing) wasn't counted: it shows the tally with no stamp.
+  const showResults = (data, justVoted) => {
+    const { choice, results } = data;
+    const counted = !data.capped && !data.missing;
+    if (counted) last = data;
+    const single = Number(results?.single) || 0;
+    const cluster = Number(results?.cluster) || 0;
+    const total = single + cluster;
+    // Whole percentages that always add up to 100.
+    const forPc = total ? Math.round((single / total) * 100) : 0;
+    const pc = { single: forPc, cluster: total ? 100 - forPc : 0 };
+    const votes = { single, cluster };
+
+    pollResults.querySelector('.poll-head').textContent = leadFor(single, cluster);
+    pollResults.querySelectorAll('.poll-row').forEach((row) => {
+      const key = row.dataset.choice;
+      row.querySelector('.poll-pc').textContent = `${pc[key]}%`;
+      row.querySelector('.poll-n').textContent = plural(votes[key]);
+      row.querySelector('.poll-fill').style.setProperty('--v', pc[key] / 100);
+      row.querySelector('.poll-you').hidden = !counted || key !== choice;
+    });
+    pollResults.querySelector('.poll-total').textContent =
+      `${plural(total)} so far. Self\u2011selecting and unscientific, like every pub argument.`;
+    pollResults.querySelector('.poll-quip').textContent =
+      (data.capped && QUIPS.capped) || (data.missing && QUIPS.missing) || QUIPS[choice] || '';
+    pollResults.querySelectorAll('.poll-next').forEach((a) => (a.hidden = a.dataset.for !== choice));
+    again.hidden = !counted; // a vote that didn't count has nothing to change
+
+    // Back from the change screen, if that's where they were.
+    changing = false;
+    keep.hidden = true;
+    buttons.forEach((b) => (b.querySelector('.poll-you').hidden = true));
+    note.textContent = NOTE;
+
+    pollSection.classList.add('voted');
+    poll.hidden = true;
+    pollResults.hidden = false;
+    // The button they pressed has gone, so take focus to the results.
+    if (justVoted) pollResults.querySelector('.poll-head').focus();
+  };
+
+  fetch('/api/poll')
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => {
+      if (d?.voted) showResults(d, false);
+    })
+    .catch(() => {});
+
+  // "Changed your mind?": back to the buttons, with the side on record stamped. The question
+  // stays small (#poll keeps .voted), so it doesn't look like a first visit. The next vote
+  // replaces the old one; "Keep my vote" goes back to the results.
+  again.addEventListener('click', () => {
+    if (!last) return;
+    changing = true;
+    pollResults.hidden = true;
+    poll.hidden = false;
+    buttons.forEach((b) => (b.querySelector('.poll-you').hidden = b.value !== last.choice));
+    keep.hidden = false;
+    note.textContent = `You\u2019re down as ${last.choice === 'cluster' ? 'against' : 'for'}. Pick again to switch.`;
+    // Focus the note, not a vote button, so a held Enter can't vote by accident.
+    note.focus();
+  });
+
+  keep.addEventListener('click', () => last && showResults(last, true));
+
+  const explain = (status, body) => {
+    if ([400, 429, 503].includes(status) && typeof body?.error === 'string' && body.error) return body.error;
+    if (status === 403) return 'That was blocked. Reload the page and try again.';
+    if (status >= 500) return 'That one is on us, not you. Try again in a minute.';
+    return 'Something went wrong. Try again in a minute.';
+  };
+
+  let sending = false;
+
+  poll.addEventListener('submit', async (event) => {
+    const button = event.submitter;
+    // A browser without event.submitter sends the plain form post and gets the results page.
+    if (!button?.value) return;
+    event.preventDefault();
+    if (sending) return;
+
+    sending = true;
+    buttons.forEach((b) => (b.disabled = true));
+    poll.setAttribute('aria-busy', 'true');
+    note.textContent = 'Counting…';
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), POLL_TIMEOUT_MS);
+    let shown = false;
+    try {
+      const res = await fetch('/api/poll', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(changing ? { choice: button.value, change: true } : { choice: button.value }),
+        signal: controller.signal,
+      });
+      const body = await res.json().catch(() => null);
+      if (!res.ok || !(body?.voted || body?.capped || body?.missing) || !body.results) {
+        note.textContent = explain(res.ok ? 502 : res.status, body);
+        return;
+      }
+      shown = true;
+      showResults(body, true);
+    } catch (err) {
+      if (err.name === 'AbortError') note.textContent = 'That took too long. Try again in a moment.';
+      else if (navigator.onLine === false) note.textContent = 'You look to be offline. Try again when you’re back.';
+      else note.textContent = 'Couldn’t reach the server. Check your connection and try again.';
+    } finally {
+      clearTimeout(timer);
+      sending = false;
+      buttons.forEach((b) => (b.disabled = false));
+      poll.removeAttribute('aria-busy');
+      if (!shown) button.focus(); // disabling it dropped the focus
+    }
+  });
+});
+
 /* ---------- Petition -> Cloudflare Worker (/api/sign), stored in Postgres ---------- */
 
 const form = document.getElementById('petition');

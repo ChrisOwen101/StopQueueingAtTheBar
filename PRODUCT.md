@@ -25,6 +25,7 @@ UK pubs, bars and breweries. The wrong behaviour is **The Single File**; the rig
 
 ## Capabilities and Constraints
 - Petition form (`POST /api/sign`) and running count (`GET /api/count`, cached 60s); duplicate emails silently ignored.
+- Poll, "Single file. For or against?" (`/api/poll`): results only show once you've voted; one vote per browser, a daily cap per network and a burst rate limit.
 - Animated single-file vs cluster pub simulations; count-ups; scroll-reveal; timeline rail. `prefers-reduced-motion` respected and the page works without JS.
 - Beer mats are "coming soon"; nothing is for sale and there is no ordering route yet.
 - **Gender-neutral language, always:** barperson, bar staff, landlord; they/them/their for staff. Never barman, barmaid, he/she/him/his/her.

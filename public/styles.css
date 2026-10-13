@@ -740,6 +740,214 @@ html:not(.js) .howto-pub { align-self: start; position: sticky; top: 12vh; }
   to   { transform: rotate(4deg) scale(1.04); }
 }
 
+/* ---------- Poll ----------
+   Two equal ink buttons, so the question stays fair. The results keep the page's colour
+   meanings: red is The Single File (for), green is The Cluster (against). */
+
+.poll, .poll-results { width: min(760px, 100%); margin: 2em auto 0; }
+
+/* After a vote the chart is the point: the kicker goes and the question steps down to .big,
+   so the results, the total and the next step fit on a laptop screen. */
+#poll.voted .poll-kicker { display: none; }
+#poll.voted .mega {
+  font-size: clamp(2.2rem, 7vw, 6rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+#poll .poll-results { margin-top: 1em; }
+
+.poll-choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 1rem;
+}
+
+.poll-choices button {
+  display: grid;
+  align-content: center;
+  gap: 0.25em;
+  padding: 0.7em 1em 0.8em;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--cream);
+  font: inherit;
+  cursor: pointer;
+  transition: scale 0.15s ease;
+}
+
+.poll-choices button b { font-size: clamp(1.8rem, 4.4vw, 3rem); font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+.poll-choices button span { font-size: 1rem; font-weight: 600; opacity: 0.8; }
+.poll-choices button:hover { scale: 1.03; }
+.poll-choices button:focus-visible { outline: 4px solid var(--ink); outline-offset: 4px; }
+.poll-choices button:disabled { opacity: 0.6; cursor: wait; scale: 1; }
+.poll-note { min-height: 1.5em; margin-top: 1.2em; font-weight: 700; }
+.poll-note:focus { outline: none; } /* focused by script on "Changed your mind?" */
+/* The side on record, on its button, after "Changed your mind?" */
+.poll-choices button .poll-you { justify-self: center; margin-top: 0.35rem; font-size: 0.75rem; font-weight: 800; opacity: 1; }
+.poll-small { margin-top: 0.4em; font-size: 1rem; font-weight: 500; opacity: 0.8; text-wrap: balance; }
+
+/* The lead line ("The Cluster is winning.") */
+.poll-head {
+  margin-bottom: 0.6em;
+  font-size: clamp(1.3rem, 3vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.poll-head:focus { outline: none; } /* focused by script after a vote, never by the keyboard */
+
+/* The results are a horizontal bar chart. Columns: label, plot, figures. The rows share the
+   chart's columns (subgrid), so every bar starts on the same baseline and runs on the same
+   0-100% scale, and the figures line up in a column of their own. Each plot cell fills its
+   row and draws its own gridlines; the rows touch, so the lines run unbroken. */
+.poll-chart {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  column-gap: clamp(0.75rem, 2vw, 1.5rem);
+  text-align: left;
+}
+
+.poll-bars,
+.poll-row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
+.poll-bars { list-style: none; margin: 0; padding: 0; }
+.poll-row { align-items: center; }
+
+.poll-label {
+  grid-column: 1;
+  padding-block: 0.6rem;
+  font-size: clamp(1.2rem, 2.8vw, 2rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* A rubber stamp, like .tag, under the side you picked */
+.poll-you {
+  display: block;
+  width: max-content;
+  margin-top: 0.4rem;
+  padding: 0.25em 0.75em;
+  border: 3px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  rotate: -3deg;
+}
+.poll-you[hidden] { display: none; }
+
+.poll-plot {
+  grid-column: 2;
+  align-self: stretch;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Gridlines: the baseline at 0, hairlines at 50% and 100% */
+.poll-plot::before,
+.poll-plot::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.poll-plot::before {
+  border-left: 2px solid rgba(22, 22, 29, 0.45);
+  border-right: 1px solid rgba(22, 22, 29, 0.25);
+}
+/* The 50% line is the one that means something here: past it is a majority */
+.poll-plot::after { left: calc(50% - 1px); border-left: 2px solid rgba(22, 22, 29, 0.3); }
+
+.poll-fill {
+  height: clamp(22px, 2.8vw, 34px);
+  width: calc(var(--v, 0) * 100%);
+  border-radius: 0 6px 6px 0; /* square on the baseline, rounded at the value end */
+  background: var(--ink);
+}
+.poll-row[data-choice="single"] .poll-fill { background: var(--red); }
+.poll-row[data-choice="cluster"] .poll-fill { background: var(--green); }
+.reveal.in .poll-fill { animation: poll-grow 1.1s cubic-bezier(.2, .8, .2, 1) 0.15s both; }
+
+@keyframes poll-grow {
+  from { width: 0; }
+}
+
+.poll-fig {
+  grid-column: 3;
+  display: grid;
+  justify-items: end;
+  gap: 0.2rem;
+  padding-block: 0.6rem;
+  font-variant-numeric: tabular-nums; /* a column of figures, so they line up */
+}
+.poll-pc { font-size: clamp(1.6rem, 4.4vw, 3rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.03em; }
+.poll-n { font-size: clamp(1rem, 1.4vw, 1.1rem); font-weight: 600; opacity: 0.75; }
+
+.poll-axis {
+  grid-column: 2;
+  position: relative;
+  height: 1.3em;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+.poll-axis span { position: absolute; top: 0; }
+.poll-axis span:nth-child(1) { left: 0; }
+.poll-axis span:nth-child(2) { left: 50%; translate: -50% 0; }
+.poll-axis span:nth-child(3) { right: 0; }
+
+/* Phones: the label and figures share a line, with the bar full width underneath */
+@media (max-width: 560px) {
+  .poll-chart { grid-template-columns: minmax(0, 1fr) max-content; }
+  .poll-row { grid-template-rows: auto auto; align-items: end; }
+  .poll-label {
+    grid-row: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem 0.5rem;
+    padding-block: 1rem 0.4rem;
+  }
+  .poll-you { margin: 0; }
+  .poll-you[hidden] { display: none; }
+  .poll-fig { grid-column: 2; grid-row: 1; padding-block: 1rem 0.4rem; }
+  .poll-plot { grid-column: 1 / -1; grid-row: 2; padding-block: 0.3rem; }
+  .poll-axis { grid-column: 1 / -1; }
+}
+
+.poll-total { margin-top: 1em; font-size: 1rem; font-weight: 500; opacity: 0.8; text-wrap: balance; }
+.poll-quip { margin-top: 0.6em; font-weight: 700; font-size: clamp(1.1rem, 2.2vw, 1.5rem); text-wrap: balance; }
+.poll-next { margin-top: 0.8em; }
+.poll-next[hidden] { display: none; }
+
+/* "Changed your mind?" and "Keep my vote" */
+.poll-link {
+  margin-top: 0.5em;
+  padding: 0.3em 0.2em;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+  cursor: pointer;
+}
+.poll-link:hover { text-decoration-thickness: 4px; }
+.poll-link:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+
+/* Windows High Contrast drops backgrounds, which would leave the chart with no bars */
+@media (forced-colors: active) {
+  .poll-row[data-choice] .poll-fill { forced-color-adjust: none; background: CanvasText; }
+}
+
 /* ---------- Petition ---------- */
 
 .petition {
@@ -999,4 +1207,6 @@ html:not(.js) .howto-pub { align-self: start; position: sticky; top: 12vh; }
   .howto-stick, .step-nav a, .howto-pub .cap, .howto-pub .gap, .howto-pub .sight line, .howto-pub .note,
   .howto-pub .you::after, .howto-pub .cust.has-drink::after { transition: none; animation: none; }
   .js .howto-copy > .howto-head, .js .steps > .step { transition: none; transform: none; }
+  .poll-choices button { transition: none; }
+  .reveal.in .poll-fill { animation: none; }
 }

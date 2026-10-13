@@ -169,7 +169,7 @@ Every section is a `.screen`: at least one full viewport tall, a centred grid wi
 
 Scrolling is free: no scroll snap and no script moves the page on its own. Only anchor links the visitor clicks scroll smoothly (`scroll-behavior: smooth`, off with reduced motion). Side-by-side comparisons use an auto-fit grid (`minmax(min(100%, 420px), 1fr)`, 1.5rem gap) and stack on narrow screens. The alignment chart is a fixed 3x3 grid with an 8px gap.
 
-A fixed **timeline rail** sits on the left edge and tracks the six chapters. Below 900px, screens gain 52px side padding to make room for it, and chapter labels appear only on tap or hover.
+A fixed **timeline rail** sits on the left edge and tracks the seven chapters. Below 900px, screens gain 52px side padding to make room for it, and chapter labels appear only on tap or hover.
 
 Mobile type steps down at 600px (`.mega` to 10.5vw). Content must read at a glance on a phone in a pub.
 
@@ -218,7 +218,7 @@ Chunky and round. Pills (999px) for buttons, tags and the timeline rail; 14px fo
 - **Messages:** centred 700 weight; amber for success, red for error.
 
 ### Navigation (timeline rail)
-- **Style:** a fixed vertical ink pill (90% opacity, 2px cream border at 30%), six 14px dots joined by a grey track with an amber progress fill.
+- **Style:** a fixed vertical ink pill (90% opacity, 2px cream border at 30%), seven 14px dots joined by a grey track with an amber progress fill.
 - **States:** done dots fill amber; the active dot scales 1.5x, gets a cream border and an amber halo. Labels (ink pill with an amber uppercase kicker) appear on the active, hovered or focused dot.
 - **Behaviour:** hidden on the hero, fades in after it. On narrow screens only dots show until tap or hover.
 
@@ -230,6 +230,9 @@ A 3x3 grid of ink cells with cream text and amber uppercase headings; the centre
 
 ### Bars (stat bars)
 A tall 16px-radius track in 12% ink with an ink fill, or red for the alternative. The fill grows from 0 when its screen is revealed.
+
+### Poll
+A cream screen. Before a vote: two equal ink pill buttons ("For", "Against", each with a small line under it) and no amber, so the question stays fair; a 4px ink focus ring. After a vote the kicker goes and the question steps down to Big, so the results fit a laptop screen. The results are a horizontal bar chart: a 900-weight label column, a plot on a shared 0-100% scale (a 2px 45%-ink baseline, a 2px 30%-ink line at 50% because a majority is the point, a 1px line at 100%, all solid), bars 22-34px tall, square on the baseline with a 6px rounded value end, growing from 0 once, and a right-aligned tabular column of figures (the percentage at up to 3rem/900, the vote count at 1rem+ in 75% ink). Fills keep the colour meanings (red for, green against); every label and figure stays ink, and each bar sits in its own labelled row, so nobody needs to tell red from green to read it. Under 560px the label and figures share a line with the bar full width underneath. The voter's side gets a "your vote" stamp (3px outlined pill, uppercase, tilted -3deg). Above the chart, a lead line (800 weight); below it, one quiet 1rem line with the total and caveat, a 700-weight quip, one ink CTA (ink is the CTA on light blocks; amber on cream would fail 3:1) and a "Changed your mind?" text button. On the change screen the question stays small and the side on record wears the stamp on its button. In forced colours the fills switch to `CanvasText`.
 
 ### Beer mats
 Real print artwork loaded from `/mats/*.svg` (generated from the logo by `scripts/build-mats.mjs`), shown at `clamp(220px, 30vw, 380px)`, tilted and wobbling, with a flat offset drop shadow.
