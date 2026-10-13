@@ -25,10 +25,11 @@
 // built on a Mac with Avenir Next. Anywhere else the script still works, in the fallback font,
 // and warns loudly. Rebuild on a Mac and commit public/flyers/ before the site is promoted.
 //
-// The QR code is level H, like the beer mats, and points at the same address as the mats:
-// SITE_URL in scripts/lib/site.mjs (dontqueueatthebar.co.uk; set SITE_URL in the env to
-// override). The domain must be pointed at the Worker before a flyer is printed, and the
-// flyers must be rebuilt if the address ever changes.
+// The QR codes are level H, like the beer mats. The poster's goes to the home page, the same
+// address as the mats (SITE_URL in scripts/lib/site.mjs, dontqueueatthebar.co.uk; set SITE_URL
+// in the env to override); the how-to's goes straight to the hazard perception test, /hazard,
+// which is what its "Take the test" line promises. The domain must be pointed at the Worker
+// before a flyer is printed, and the flyers must be rebuilt if the address ever changes.
 //
 // CHROME_PATH overrides the browser (any Chromium works). On a Mac the default is Google Chrome.
 // For design reviews only: FLYER_FONT puts a family in front of the stack (FLYER_FONT=Arial
@@ -118,19 +119,18 @@ if (!HAVE_AVENIR) {
 }
 
 // ---------- The artwork ----------
-const qr = QRCode.create(SITE_URL, { errorCorrectionLevel: 'H' });
-const { p: qrD, size: qrN } = qrPath(qr);
+// The two destinations: the poster sends people to the home page (the petition), the how-to
+// straight to the test. Each gets its own code and its own written address.
+const TEST_URL = new URL('hazard', SITE_URL).href;
+const HOME = { url: SITE_URL, text: DOMAIN, qr: QRCode.create(SITE_URL, { errorCorrectionLevel: 'H' }) };
+const TEST = { url: TEST_URL, text: `${DOMAIN}/hazard`, qr: QRCode.create(TEST_URL, { errorCorrectionLevel: 'H' }) };
 const QUIET = 4; // modules of quiet zone, the spec's minimum
-// `logo` puts the roundel on a tile in the middle of the code, as the mat back does. The tile
-// is 16% of the code, the size the mat's decode tests passed (AGENTS.md, "Beer mats").
-const qrSvg = (logo = false) => {
-  const N = qrN + QUIET * 2;
-  let tile = '';
-  if (logo) {
-    const L = qrN * 0.32, T = L * 1.25, c = N / 2;
-    tile = `<rect x="${c - T / 2}" y="${c - T / 2}" width="${T}" height="${T}" rx="${T / 10}" fill="#fff"/><g transform="translate(${c - L / 2} ${c - L / 2}) scale(${L / 400})">${markBody('#000')}</g>`;
-  }
-  return `<svg class="qr" viewBox="0 0 ${N} ${N}" role="img" aria-label="QR code to ${DOMAIN}"><defs>${FIG}</defs><rect width="${N}" height="${N}" fill="#fff"/><path transform="translate(${QUIET} ${QUIET})" d="${qrD}" fill="#000" shape-rendering="crispEdges"/>${tile}</svg>`;
+// A plain code (the mat back's roundel tile was tried and dropped: a mono laser plus a
+// photocopy eats both the roundel and the error correction it costs).
+const qrSvg = ({ qr, text }) => {
+  const { p, size } = qrPath(qr);
+  const N = size + QUIET * 2;
+  return `<svg class="qr" viewBox="0 0 ${N} ${N}" role="img" aria-label="QR code to ${text}"><rect width="${N}" height="${N}" fill="#fff"/><path transform="translate(${QUIET} ${QUIET})" d="${p}" fill="#000" shape-rendering="crispEdges"/></svg>`;
 };
 const roundel = () => `<svg class="roundel" viewBox="0 0 400 400" aria-hidden="true"><defs>${FIG}</defs>${markBody('#000')}</svg>`;
 const stampSvg = () => stamp('#000').replace('<svg ', '<svg class="stamp" ');
@@ -163,11 +163,15 @@ p, h1, h2, ol, li { margin: 0; padding: 0; }
 .addr { font-weight: 600; font-size: ${m(7.6)}; line-height: 1.2; white-space: nowrap; margin-top: ${m(2)}; }
 `;
 
-// The address written out: the QR is the route, this is the fallback. One line at 7.6 mm (A4)
-// so its x-height clears 2.5 mm at A5 in Avenir Next; a long address breaks after its first dot.
-const address = () => {
-  const i = DOMAIN.indexOf('.');
-  return i > 0 && DOMAIN.length > 28 ? `${DOMAIN.slice(0, i + 1)}<br>${DOMAIN.slice(i + 1)}` : DOMAIN;
+// The address written out: the QR is the route, this is the fallback. 7.6 mm type at A4 so its
+// x-height clears 2.5 mm at A5 in Avenir Next. A domain alone is one line; an address with a
+// path breaks after the slash (dontqueueatthebar.co.uk/ then hazard), since the whole thing
+// won't fit beside the how-to's code and stamp; a very long bare domain breaks after its first dot.
+const address = ({ text }) => {
+  const slash = text.indexOf('/');
+  if (slash > 0) return `${text.slice(0, slash + 1)}<br>${text.slice(slash + 1)}`;
+  const dot = text.indexOf('.');
+  return dot > 0 && text.length > 28 ? `${text.slice(0, dot + 1)}<br>${text.slice(dot + 1)}` : text;
 };
 
 // ---------- Face A: the poster ----------
@@ -181,8 +185,8 @@ const faceA = () => `<div class="page face-a">
     <p class="house mid">This bar does The&nbsp;Cluster.<br>The bar staff know who’s&nbsp;next.<br>They always did.</p>
   </div>
   <div class="foot">
-    <div class="who">${roundel()}<div><p class="cta">Sign the petition.</p><p class="addr">${address()}</p></div></div>
-    ${qrSvg()}
+    <div class="who">${roundel()}<div><p class="cta">Sign the petition.</p><p class="addr">${address(HOME)}</p></div></div>
+    ${qrSvg(HOME)}
   </div>
 </div>`;
 const CSS_A = `
@@ -209,7 +213,7 @@ const faceB = () => `<div class="page face-b">
     <p class="mc mid">Arithmetic, not a stopwatch. Real pubs are messier.</p>
   </div>
   <div class="foot">
-    <div class="who">${qrSvg()}<div><p class="cta">Think you’re ready?<br>Take the test.</p><p class="addr">${address()}</p></div></div>
+    <div class="who">${qrSvg(TEST)}<div><p class="cta">Think you’re ready?<br>Take the test.</p><p class="addr">${address(TEST)}</p></div></div>
     ${stampSvg()}
   </div>
 </div>`;
@@ -322,7 +326,7 @@ try {
   await preview('preview-a', faceA);
   await preview('preview-b', faceB);
 
-  console.log(`Flyers written to ${path.relative(root, dir) || '.'}/ (QR -> ${SITE_URL}, ${qrN}x${qrN} modules, level H)`);
+  console.log(`Flyers written to ${path.relative(root, dir) || '.'}/ (QR codes, level H: poster -> ${HOME.url}, ${HOME.qr.modules.size} modules; how-to -> ${TEST.url}, ${TEST.qr.modules.size} modules)`);
   for (const r of results) console.log(`  ${r.file.padEnd(24)} ${r.pages} page${r.pages > 1 ? 's' : ''}  ${(r.bytes / 1024).toFixed(0)} KB`);
   for (const f of ['preview-a.png', 'preview-b.png']) console.log(`  ${f.padEnd(24)} ${((await stat(path.join(dir, f))).size / 1024).toFixed(0)} KB`);
   console.log(HAVE_AVENIR ? 'Font: Avenir Next.' : `Font: NOT Avenir Next (see the warning above). Rebuild on a Mac before promoting.`);
