@@ -28,11 +28,12 @@ UK pubs, bars and breweries. The wrong behaviour is **The Single File**; the rig
 - Poll, "Stop the single file?" (For or Against) (`/api/poll`): results only show once you've voted; one vote per browser, a daily cap per network and a burst rate limit.
 - Animated single-file vs cluster pub simulations; stat bars; a horizontal history strip (swipe, buttons, arrow keys) ending on a live days-since counter; a scroll-driven how-to stage; scroll-reveal; timeline rail. `prefers-reduced-motion` respected and the page works without JS.
 - Beer mats are "coming soon"; nothing is for sale and there is no ordering route yet.
+- Print-at-home flyers for pubs (`public/flyers/`, built by `npm run build:flyers`): a poster face and a how-to face, as A4 and A5 PDFs, single or double-sided, plus two A5 posters on one A4. Downloaded from the beer mats section; black on white for office printers; the QR code and address point at `dontqueueatthebar.co.uk`, like the mats.
 - **Gender-neutral language, always:** barperson, bar staff, landlord; they/them/their for staff. Never barman, barmaid, he/she/him/his/her.
 - No photos. Hard-coded domains are avoided (the Worker injects the origin into `data-abs` tags).
 - Legal and trust: UK GDPR and PECR (consent for campaign email, opt-out). Privacy notice and signature deletion route are not yet built. Spam protection (Turnstile or WAF rate limit) is not yet in place.
 - Hackney Church Brew Co is deliberately not cited (its figures are the brewery's own claims; see `RESEARCH.md`).
-- Undecided: custom domain (current beer mat address is `https://dontqueueatthebar.co.uk/`), live URL, merch/shop route.
+- Undecided: merch/shop route. The custom domain is decided but not yet live: the beer mats and the flyers both carry `https://dontqueueatthebar.co.uk/` (`SITE_URL` in `scripts/lib/site.mjs`), so point it at the Worker before anything is printed.
 
 ## Brand Commitments
 - Name: "Don't Queue At The Bar" (earlier "Stop Queueing at the Bar", "Bar the Line / The Bar Party").

@@ -59,7 +59,7 @@
       <li><a href="#history"><span class="mark"></span><span class="lbl"><small>Since 2020</small> How We Got Here</span></a></li>
       <li><a href="#poll"><span class="mark"></span><span class="lbl"><small>Pick a</small> Side</span></a></li>
       <li><a href="#petition-section"><span class="mark"></span><span class="lbl"><small>Now</small> Sign the Petition</span></a></li>
-      <li><a href="#mats"><span class="mark"></span><span class="lbl"><small>For pubs</small> Beer Mats</span></a></li>
+      <li><a href="#mats"><span class="mark"></span><span class="lbl"><small>For pubs</small> Mats and Posters</span></a></li>
     </ol>
   </nav>
 
@@ -464,13 +464,33 @@
   <section class="screen c-amber" id="mats">
     <div class="inner reveal">
       <p class="small">for pubs</p>
-      <h2 class="mega">Beer mats.</h2>
+      <h2 class="mega">Mats and posters.</h2>
       <p class="mid">A polite reminder, under a pint.</p>
       <div class="mats">
         <img class="mat m1" src="/mats/mat-front.svg" width="400" height="400" loading="lazy" alt="The front of the beer mat: the words ‘don’t queue at the bar’ inside a thick ring, black on white.">
         <img class="mat m2" src="/mats/mat-back.svg" width="400" height="400" loading="lazy" alt="The back of the beer mat: a large QR code to the website with the Don’t Queue At The Bar roundel in the middle, and the web address printed round the edge, white on black.">
       </div>
-      <p class="mid">Coming soon. <a class="plain" href="#petition-section">Sign the petition</a> and we’ll tell you first.</p>
+      <p class="mid">Mats coming soon. <a class="plain" href="#petition-section">Sign the petition</a> and we’ll tell you first.</p>
+
+      <!-- The flyers: real print pages in /flyers/, written by scripts/build-flyers.mjs. The PNGs
+           are previews of the PDFs; the links download the PDFs (Content-Disposition: attachment
+           comes from public/_headers). Update the sizes after a rebuild. -->
+      <div class="flyers" id="flyers">
+        <h3 class="big">Posters. Print your own.</h3>
+        <p class="mid">A4 or A5, any printer, black and white is fine. <br>Stick one behind the bar, facing the room.</p>
+        <div class="flyer-pair">
+          <img class="flyer f1" src="/flyers/preview-a.png" width="1191" height="1685" loading="lazy" alt="The poster: the ‘don’t queue at the bar’ stamp, then ‘spread out.’ in huge type, then ‘This bar does The Cluster. The bar staff know who’s next. They always did.’, with the roundel, ‘Sign the petition.’, the web address and a QR code at the foot. Black on white.">
+          <img class="flyer f2" src="/flyers/preview-b.png" width="1191" height="1685" loading="lazy" alt="The how-to: ‘four easy steps.’ with the four steps of The Cluster, walk to the bar, pick a gap, catch an eye, trust the barperson, then the worked example, ‘25 minutes. Or six.’, and at the foot a QR code to the test, ‘Think you’re ready? Take the test.’, the web address and a small stamp. Black on white.">
+        </div>
+        <ul class="flyer-links">
+          <li><a href="/flyers/flyer-a4.pdf" download>A4 poster <small>PDF, 30 KB</small></a></li>
+          <li><a href="/flyers/flyer-a4-double.pdf" download>A4 poster and how-to <small>PDF, 70 KB</small></a></li>
+          <li><a href="/flyers/flyer-a5.pdf" download>A5 poster <small>PDF, 30 KB</small></a></li>
+          <li><a href="/flyers/flyer-a5-double.pdf" download>A5 poster and how-to <small>PDF, 70 KB</small></a></li>
+          <li><a href="/flyers/flyer-a5-two-up.pdf" download>Two A5 posters on one A4 <small>PDF, 40 KB</small></a></li>
+        </ul>
+        <p class="fine">The how-to goes on the back. Hand it to anyone who asks “the what?”</p>
+      </div>
     </div>
   </section>
   </main>
