@@ -20,6 +20,13 @@ export const markBody = (c) => `
   <g fill="${c}"><use href="#fig" x="108" y="136"/><use href="#fig" x="200" y="136"/><use href="#fig" x="292" y="136"/></g>
   <rect x="0" y="214" width="400" height="64" fill="${c}"/>`;
 
+// The same drawing with no <defs> or <use>, for putting inside another SVG whose ids get
+// rewritten (the licence certificates: hazard-badge.js prefixes every id with aw-).
+export const markInline = (c) =>
+  `<circle cx="200" cy="200" r="170" fill="none" stroke="${c}" stroke-width="30"/>` +
+  [108, 200, 292].map((x) => `<g transform="translate(${x} 136)"><circle r="25"/><path d="M-34,78 V64 a34,34 0 0 1 68,0 V78 Z"/></g>`).join('') +
+  `<rect x="0" y="214" width="400" height="64"/>`;
+
 export const mark = (c, bg) => `
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Don’t Queue At The Bar: three people spread along a bar inside a ring">
   <defs>${FIG}</defs>${bg ? `\n  <rect width="400" height="400" fill="${bg}"/>` : ''}${markBody(c)}

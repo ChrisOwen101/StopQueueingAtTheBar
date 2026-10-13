@@ -8,6 +8,7 @@
     "deploy": "wrangler deploy",
     "build:icons": "node scripts/build-icons.mjs",
     "build:mats": "node scripts/build-mats.mjs",
+    "build:badges": "node scripts/build-badges.mjs",
     "db:init:local": "psql \"postgres://postgres:postgres@localhost:5432/bar_petition\" -f schema.sql",
     "check": "wrangler deploy --dry-run",
     "audio:dry": "node scripts/generate-audio.mjs --dry-run",
