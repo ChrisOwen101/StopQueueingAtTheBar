@@ -258,6 +258,11 @@
     const live = part('live');
     const toggle = pill.querySelector('.vote-toggle');
     const close = pill.querySelector('.vote-close');
+    const question = pill.querySelector('.vote-q');
+    // A page without the poll and petition sections (the history page) says where they live:
+    // data-home="/prototypes/home.html" here, "/" at merge.
+    const home = pill.dataset.home || '';
+    const resolve = (href) => (href.startsWith('#') ? home + href : href);
 
     const setKicker = (text) => {
       kickerD.textContent = text;
@@ -294,13 +299,15 @@
           const onRecord = s === 'voted' ? data.choice : state.last?.choice;
           if (onRecord && NEXT[onRecord]) {
             next.textContent = NEXT[onRecord].text;
-            next.setAttribute('href', NEXT[onRecord].href);
+            next.setAttribute('href', resolve(NEXT[onRecord].href));
             next.hidden = false;
           }
+          more.setAttribute('href', resolve('#poll'));
           more.hidden = false;
           if (s === 'voted') {
             setKicker(`you voted ${SIDE[data.choice]}`);
-            kickerM.textContent = 'make it count.';
+            // The phone pill hides the rows, so its kicker carries the voter's own figure.
+            kickerM.textContent = `${SIDE[data.choice]} ${t.pc[data.choice]}%`;
             more.textContent = 'full result ↓';
             live.textContent = `Stop ${t.pc.cluster}%, keep ${t.pc.single}%. You voted ${SIDE[data.choice]}.`;
           } else {
@@ -324,10 +331,11 @@
     });
 
     // Phones: the collapsed pill opens in place; × or Escape closes it.
+    // Focus goes to the question, never a vote button: a second Enter must not vote a side.
     const open = () => {
       pill.classList.add('open');
       toggle.setAttribute('aria-expanded', 'true');
-      buttons[0]?.focus();
+      (question || close).focus();
     };
     const shut = () => {
       pill.classList.remove('open');

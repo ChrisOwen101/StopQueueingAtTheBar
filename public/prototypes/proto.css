@@ -104,6 +104,11 @@
   .verdict .scene { width: 100%; }
   .verdict-col + .verdict-col > .small { margin-top: 1.2em; }
 }
+/* The collapsed vote pill sits bottom right; the bar figures keep out of its column. */
+@media (max-width: 600px) {
+  .verdict .bar-row .label { padding-right: 96px; }
+  .verdict .bar-row .label span:last-child { white-space: nowrap; } /* the figure stays on one line; the name wraps */
+}
 @media (max-width: 600px) {
   .verdict-head { font-size: 8.2vw; }
 }
@@ -175,6 +180,7 @@ html:not(.js) .vote { display: none; }
   line-height: 1.15;
   text-wrap: balance;
 }
+.vote-q:focus { outline: none; } /* focused by script when the phone pill opens, never by the keyboard */
 
 .vote-btn {
   display: block;
@@ -300,7 +306,8 @@ html:not(.js) .vote { display: none; }
   .vote.open .vote-btn { font-size: 0.95rem; min-height: 44px; }
   .vote.open .vote-kicker { padding-right: 32px; }
 
-  /* The voted and not-counted pills: compact, the tally hidden, the next step as the pill */
+  /* The voted and not-counted pills: compact, the rows hidden (the voter's own figure is in
+     the kicker, "stop 71%"), the next step as the pill */
   .vote[data-state^="voted"], .vote[data-state="notcounted"] { padding: 8px 12px 10px; border-radius: 22px; width: auto; }
   .vote[data-state^="voted"] .vote-toggle, .vote[data-state="notcounted"] .vote-toggle { display: none; }
   .vote[data-state^="voted"] .vote-rows, .vote[data-state^="voted"] .vote-more { display: none !important; }
@@ -465,6 +472,10 @@ html:not(.js) .vote { display: none; }
 }
 .hist-stop .sticker { --i: 0; }
 .js .hist-stop.reveal.in .sticker { animation: slap 0.45s cubic-bezier(.2, .8, .2, 1) backwards 0.15s; }
+/* After the slap rule, so it wins at equal specificity, as styles.css does for the strip. */
+@media (prefers-reduced-motion: reduce) {
+  .js .hist-stop.reveal.in .sticker { animation: none; }
+}
 
 .hist-card { grid-template-columns: minmax(0, 1fr); }
 .hist-card h2 {

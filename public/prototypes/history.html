@@ -48,14 +48,14 @@
 
   <!-- THE VOTE PILL: fixed right (desktop) or a collapsed pill bottom right (phones).
        proto.js owns it with the poll screen: one state, one GET /api/poll, one cookie. -->
-  <form class="vote" id="vote-pill" method="post" action="/api/poll" data-state="loading"
+  <form class="vote" id="vote-pill" method="post" action="/api/poll" data-state="loading" data-home="/prototypes/home.html"
         aria-label="Poll: stop the queue at the bar? One vote per browser.">
     <button type="button" class="vote-toggle" aria-expanded="false" aria-controls="vote-panel">Vote</button>
     <div class="vote-panel" id="vote-panel">
       <button type="button" class="vote-close" aria-label="Hide this">×</button>
       <p class="vote-kicker"><span class="vote-kicker-d" data-part="kicker">vote</span><span class="vote-kicker-m" data-part="kicker-m"></span></p>
       <fieldset data-part="ask">
-        <legend class="vote-q">Stop the queue?</legend>
+        <legend class="vote-q" tabindex="-1">Stop the queue?</legend>
         <button type="submit" name="choice" value="cluster" class="vote-btn">Stop</button>
         <button type="submit" name="choice" value="single" class="vote-btn">Keep</button>
       </fieldset>
@@ -64,8 +64,8 @@
         <span class="vote-row" data-side="cluster">stop <b class="pc"></b> <span class="you" hidden>you</span><i></i></span>
         <span class="vote-row" data-side="single">keep <b class="pc"></b> <span class="you" hidden>you</span><i></i></span>
       </div>
-      <a class="vote-btn vote-next" data-part="next" href="#petition-section" hidden>Sign the petition</a>
-      <a class="vote-link vote-more" data-part="more" href="#poll" hidden>full result ↓</a>
+      <a class="vote-btn vote-next" data-part="next" href="/prototypes/home.html#petition-section" hidden>Sign the petition</a>
+      <a class="vote-link vote-more" data-part="more" href="/prototypes/home.html#poll" hidden>full result ↓</a>
       <p class="sr-only" data-part="live" aria-live="polite"></p>
     </div>
   </form>
@@ -273,8 +273,8 @@
       </div>
       <div class="hist-q">
         <h3>Do most people prefer queueing at the bar?</h3>
-        <p>Depends who asks. YouGov, September 2025: single file 40%, along the bar 39%, don’t know 21%. A trade survey for Zonal and CGA, December 2025: along the bar 69%, a line 31%.</p>
-        <p class="src"><a href="https://yougov.co.uk/topics/consumer/survey-results/daily/2025/09/18/59cc2/3" rel="noopener">YouGov, 18 Sep 2025, 5,914 GB adults</a> · Zonal and CGA by NIQ, GO Technology, Dec 2025, 5,000 consumers</p>
+        <p>Depends who asks. YouGov, September 2025: single file 40%, along the bar 39%, don’t know 21%.</p>
+        <p class="src"><a href="https://yougov.co.uk/topics/consumer/survey-results/daily/2025/09/18/59cc2/3" rel="noopener">YouGov, 18 Sep 2025, 5,914 GB adults</a></p>
       </div>
       <div class="hist-q">
         <h3>Is it rude to go to the bar when there’s a queue?</h3>
@@ -379,7 +379,7 @@
      "name": "Do most people prefer queueing at the bar?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Depends who asks. YouGov, September 2025: single file 40%, along the bar 39%, don’t know 21%. A trade survey for Zonal and CGA, December 2025: along the bar 69%, a line 31%."
+      "text": "Depends who asks. YouGov, September 2025: single file 40%, along the bar 39%, don’t know 21%."
      }
     },
     {
