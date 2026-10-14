@@ -199,6 +199,10 @@ const tick = () => `<svg class="tick" viewBox="0 0 100 100" aria-hidden="true"><
 const br = (s) => s.replace(/\n/g, '<br>');
 const em = (s) => s.replace(/\*([^*]+)\*/g, '<em class="st">$1</em>');
 const txt = (s) => em(br(s));
+// The class for an element that holds a stressed word: the weight device acts on that element
+// only (Round 4's notice lost its headline weight because the device was written on the page).
+const hasSt = (s) => (/\*[^*]+\*/.test(s) ? ' has-st' : '');
+const headline = (c) => `<h1 class="mega${c.upper ? ' upper' : ''}${hasSt(c.headline.join(''))}">${c.headline.map(em).join('<br>')}</h1>`;
 
 // ---------- Copy ----------
 const HOUSE = 'This bar does The&nbsp;Cluster.';
@@ -509,6 +513,65 @@ const CONCEPTS = [
     scan: 'Sign the petition.', route: 'home',
     mono: true,
   },
+  // ----- Round 5: the final set (round-4/decision.md, round-5/designer.md) -----
+  {
+    id: 'notice-ink', rounds: [5], final: true,
+    title: 'The notice',
+    layout: 'notice',
+    field: INK, fg: PAPER, head: AMBER, ring: RED,
+    headline: ['NO QUEUEING', 'AT THE BAR'], upper: true, stress: 'weight',
+    sizes: { head: 25, picto: 100 },
+    body: HOUSE, polite: POLITE_ALONG, code: CODE,
+    scan: 'Sign the petition.', route: 'home',
+    paper: ['a4', 'a5'], mono: true,
+  },
+  {
+    id: 'notice-along', rounds: [5], final: true,
+    title: 'The instruction notice: along, not away',
+    layout: 'pair',
+    field: INK, fg: PAPER, head: PAPER, ring: RED,
+    headline: ['QUEUE', 'ALONG', 'THE BAR.'], upper: true, stress: 'amber', monoStress: 'weight',
+    sizes: { head: 25, picto: 74 },
+    labels: ['Along', 'Away'],
+    body: HOUSE, polite: 'We kindly ask that you queue along the bar, not away from it.',
+    scan: 'Sign the petition.', route: 'home',
+    paper: ['a4', 'a5'], mono: true,
+  },
+  {
+    id: 'poster-green', rounds: [5], final: true,
+    title: 'The instruction poster',
+    layout: 'tap',
+    field: GREEN, fg: PAPER, head: PAPER,
+    headline: ['SPREAD', 'OUT.'], upper: true,
+    sizes: { head: 40, picto: 90 },
+    sub: 'It’s a pub.\nNot a post office.', subWeight: 600,
+    polite: CHEERS,
+    scan: 'Sign the petition.', route: 'home',
+    paper: ['a4', 'a5'], mono: true,
+  },
+  {
+    id: 'poster-along', rounds: [5], final: true,
+    title: 'The instruction poster: along, not away',
+    layout: 'tap',
+    field: INK, fg: PAPER, head: PAPER,
+    headline: ALONG_4, upper: true, stress: 'amber', monoStress: 'weight',
+    sizes: { head: 30, picto: 84 },
+    polite: CHEERS,
+    scan: 'Sign the petition.', route: 'home',
+    paper: ['a4', 'a5'], mono: true,
+  },
+  {
+    id: 'poster-gap', rounds: [5], final: true,
+    title: 'The instruction poster, "Find the gap" alternate',
+    layout: 'tap',
+    field: GREEN, fg: PAPER, head: PAPER,
+    headline: ['FIND', 'THE', 'GAP.'], upper: true,
+    sizes: { head: 32, picto: 72 },
+    sub: 'Any gap.\nThe bar staff know who’s next.', subWeight: 600,
+    polite: CHEERS,
+    scan: 'Take the test.', route: 'test',
+    mono: true,
+  },
 ];
 
 // The black-on-white version of a concept for office printers: no field, black type and marks,
@@ -550,17 +613,18 @@ em { font-style: normal; }
 .addr { font-weight: 600; font-size: ${m(7.6)}; line-height: 1.2; white-space: nowrap; }
 .rule { border: 0; border-top: ${m(1)} solid var(--fg); margin: 0; }
 .st-amber .st { color: ${AMBER}; }
-.st-weight .mega { font-weight: 500; letter-spacing: -0.02em; }
-.st-weight .mega .st { font-weight: 900; letter-spacing: -0.03em; }
-.st-weight .polite .st { font-weight: 900; }
+.st-weight .mega.has-st { font-weight: 500; letter-spacing: -0.02em; }
+.st-weight .mega.has-st .st { font-weight: 900; letter-spacing: -0.03em; }
+.st-weight .polite.has-st .st { font-weight: 900; }
 .st-underline .st { text-decoration: underline; text-decoration-thickness: 0.09em; text-underline-offset: 0.1em; }
 `;
 
 // The foot shared by the notice and the pair: a rule, then the roundel, the scan reason over
-// the address (the flyer's foot) and the stock-code gag at left, the code at right.
-const foot = (c, r) => `<hr class="rule">
+// the address (the flyer's foot) and the stock-code gag at left, the code at right. The pair
+// layout has the roundel as its pictogram already (one roundel per sheet), so its foot has none.
+const foot = (c, r, { mark = true } = {}) => `<hr class="rule">
   <div class="foot">
-    <div class="who">${roundel(c.fg)}<div><p class="cta">${c.scan}</p><p class="addr">${r.text}</p>${c.code ? `<p class="code label">${c.code}</p>` : ''}</div></div>
+    <div class="who">${mark ? roundel(c.fg) : ''}<div><p class="cta">${c.scan}</p><p class="addr">${r.text}</p>${c.code ? `<p class="code label">${c.code}</p>` : ''}</div></div>
     ${qrSvg(r)}
   </div>`;
 const CSS_FOOT = `
@@ -576,10 +640,10 @@ const CSS_FOOT = `
 // "notice": the compliance sign. Centred: headline, the prohibition sign, the house line, the
 // polite ask, then the foot.
 const notice = (c, r) => `<div class="page notice${stressClass(c)}" style="--head-size:${sz(c, 'head', c.upper ? 23 : 26)};--picto:${sz(c, 'picto', 104)}">
-  <h1 class="mega${c.upper ? ' upper' : ''}">${c.headline.map(em).join('<br>')}</h1>
+  ${headline(c)}
   ${prohibition({ ring: c.ring, fig: c.fg, field: c.field })}
   <p class="body mid">${c.body}</p>
-  <p class="polite mid">${txt(c.polite)}</p>
+  <p class="polite mid${hasSt(c.polite)}">${txt(c.polite)}</p>
   ${foot(c, r)}
 </div>`;
 const CSS_NOTICE = `
@@ -597,12 +661,12 @@ const CSS_NOTICE = `
 // right, where the reference keeps its mark.
 const tap = (c, r) => `<div class="page tap${stressClass(c)}" style="--head-size:${sz(c, 'head', c.upper ? 42 : 46)};--picto:${sz(c, 'picto', 90)};--sub-weight:${c.subWeight || 600}">
   <div class="top">
-    <h1 class="mega${c.upper ? ' upper' : ''}">${c.headline.map(em).join('<br>')}</h1>
+    ${headline(c)}
     ${c.sub ? `<p class="sub">${txt(c.sub)}</p>` : ''}
   </div>
   ${roundel(c.fg, 'picto')}
   <div class="foot">
-    <div class="words"><p class="polite mid">${txt(c.polite)}</p><hr class="rule"><p class="cta">${c.scan}</p><p class="addr">${r.text}</p></div>
+    <div class="words"><p class="polite mid${hasSt(c.polite)}">${txt(c.polite)}</p><hr class="rule"><p class="cta">${c.scan}</p><p class="addr">${r.text}</p></div>
     ${qrSvg(r)}
   </div>
 </div>`;
@@ -623,14 +687,14 @@ const CSS_TAP = `
 // whose slash is its own "no". The roundel keeps its clear space: the label sits more than an
 // eighth of its width below it.
 const pair = (c, r) => `<div class="page pair${stressClass(c)}" style="--head-size:${sz(c, 'head', 25)};--picto:${sz(c, 'picto', 74)}">
-  <h1 class="mega${c.upper ? ' upper' : ''}">${c.headline.map(em).join('<br>')}</h1>
+  ${headline(c)}
   <div class="pictos">
     <figure class="do">${roundel(c.fg, 'picto')}<figcaption class="label st">${tick()}${c.labels[0]}</figcaption></figure>
     <figure class="dont">${prohibition({ ring: c.ring, fig: c.fg, field: c.field })}<figcaption class="label">${c.labels[1]}</figcaption></figure>
   </div>
   <p class="body mid">${c.body}</p>
-  <p class="polite mid">${txt(c.polite)}</p>
-  ${foot(c, r)}
+  <p class="polite mid${hasSt(c.polite)}">${txt(c.polite)}</p>
+  ${foot(c, r, { mark: false })}
 </div>`;
 const CSS_PAIR = `
 .pair { text-align: center; align-items: center; }
