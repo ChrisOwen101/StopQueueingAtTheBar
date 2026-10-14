@@ -9,6 +9,7 @@
     "build:icons": "node scripts/build-icons.mjs",
     "build:mats": "node scripts/build-mats.mjs",
     "build:flyers": "node scripts/build-flyers.mjs",
+    "build:posters": "node scripts/build-posters.mjs",
     "build:badges": "node scripts/build-badges.mjs",
     "db:init:local": "psql \"postgres://postgres:postgres@localhost:5432/bar_petition\" -f schema.sql",
     "check": "wrangler deploy --dry-run",
