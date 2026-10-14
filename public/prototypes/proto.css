@@ -1,0 +1,537 @@
+/* Don't Queue At The Bar: homepage prototype styles (review/homepage, Round 3).
+   Loaded after /styles.css. The verdict screen, the vote pill, the hero door and count,
+   the pubs chapter, the history trailer and the /history page. Everything else is the
+   live stylesheet, unchanged. Folds into styles.css at merge. */
+
+/* ---------- Room for the fixed chrome on both sides ----------
+   The rail sits left and the pill right, both about 140px in from the edge at 1280, so
+   from 901px up the side padding is at least 150px and no full-width component runs
+   under either. Below 900px styles.css already sets --sx to 52px. */
+@media (min-width: 901px) {
+  .screen { --sx: max(6vw, 150px); }
+}
+
+/* ---------- Hero: the pub door and the count line ---------- */
+
+/* "Run a pub? →": navigation, not an ask. A 40px outline pill top right, level with the
+   lockup (36px on phones). */
+.door {
+  position: absolute;
+  top: clamp(14px, 3vh, 28px);
+  right: clamp(14px, 3vw, 32px);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 1.1em;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  color: var(--ink);
+  font-weight: 900;
+  font-size: 1rem;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.door:hover { background: var(--ink); color: var(--cream); }
+.door:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; border-radius: 999px; }
+
+/* The signature count: a fact with a link, written by proto.js from /api/count and only
+   from 500 signatures. Hidden otherwise, and without JS. */
+.hero-count { margin-top: 1.4em; text-transform: none; }
+.hero-count[hidden] { display: none; }
+
+/* ---------- The verdict: both sims, two headlines, the bars ----------
+   Two columns, each kicker / headline / sim / tag, in one grid so the headline row is
+   bottom-aligned and the two stages line up. The sims are capped at 40vh tall so the whole
+   screen, stamp included, fits 1280x800. On blue the Single File bar is red and the
+   Cluster bar cream: the two scores are already the screen's amber. */
+.verdict { padding-block: 4vh; }
+
+.verdict-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 clamp(1rem, 2.5vw, 2.2rem);
+  align-items: end;
+  justify-items: center;
+}
+.verdict-col { display: contents; }
+
+@media (min-width: 720px) {
+  .verdict-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-auto-flow: column;
+  }
+}
+
+.verdict .small { margin: 0 0 0.3em; }
+.verdict-head {
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: lowercase;
+  text-wrap: balance;
+}
+.verdict .scene {
+  width: min(100%, calc(35vh * 16 / 11));
+  width: min(100%, calc(35svh * 16 / 11));
+  margin: 0.5em auto 0;
+}
+.verdict .tag { margin-top: 0.5em; font-size: clamp(0.75rem, 1.2vw, 0.9rem); }
+.verdict .caption { margin: 0.6em 0 0; text-transform: none; } /* a sentence, not a kicker */
+
+.verdict .bars { margin-top: 0.7em; gap: 0.4rem; }
+.verdict .bar-row .label { font-size: clamp(0.95rem, 1.6vw, 1.1rem); margin-bottom: 0.2rem; }
+.verdict .bar-track { height: clamp(20px, 2.6vw, 24px); background: rgba(255, 244, 220, 0.18); }
+.verdict .fill.cluster { background: var(--cream); }
+
+/* The stamp and the caveat on one line, at the source-line size */
+.verdict .stamp-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em 0.9em;
+  margin-top: 0.7em;
+}
+.verdict .stamp-line .tag { margin: 0; font-size: 0.8rem; }
+.verdict .stamp-line .small { margin: 0; font-size: clamp(0.95rem, 1.3vw, 1.1rem); text-transform: none; text-wrap: balance; }
+
+/* Phones: the columns stack (DOM order: the Single File, then The Cluster). */
+@media (max-width: 719px) {
+  .verdict .scene { width: 100%; }
+  .verdict-col + .verdict-col > .small { margin-top: 1.2em; }
+}
+/* The collapsed vote pill sits bottom right; the bar figures keep out of its column. */
+@media (max-width: 600px) {
+  .verdict .bar-row .label { padding-right: 96px; }
+  .verdict .bar-row .label span:last-child { white-space: nowrap; } /* the figure stays on one line; the name wraps */
+}
+@media (max-width: 600px) {
+  .verdict-head { font-size: 8.2vw; }
+}
+
+/* ---------- The alternative home: the problem and the solution as two screens ---------- */
+.alt-rule { padding-block: 6vh; }
+.alt-rule .scene.capped {
+  width: min(760px, 100%, 50vh);
+  width: min(760px, 100%, 50svh);
+  margin: 3vh auto 2vh;
+}
+.solution-bars { margin-top: 2vh; }
+.solution-bars .bars { margin-top: 0.5em; gap: 0.6rem; }
+.solution-bars .bar-track { height: clamp(22px, 3vw, 30px); background: rgba(255, 244, 220, 0.18); }
+.solution-bars .fill.cluster { background: var(--amber); } /* on green the better number is the screen's amber */
+.solution-bars .bar-row .label { font-size: clamp(1rem, 1.8vw, 1.25rem); }
+
+/* ---------- The vote pill ----------
+   A fixed element in the rail's recipe (ink at 92%, a cream border at 30%, blur), the
+   rail's mirror on the right. Desktop shows the kicker, the question and both buttons at
+   rest, so a vote is one tap. Its only amber is the kicker; the buttons are equal cream
+   outlines so the question stays fair. proto.js sets data-state (loading, vote, posting,
+   voted-stop, voted-keep, notcounted, signed) and .show from the scroll position; it is
+   hidden on the hero and on any screen marked data-pill="off". No JS: no fixed element. */
+html:not(.js) .vote { display: none; }
+
+.vote {
+  position: fixed;
+  right: clamp(8px, 1.6vw, 22px);
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 50;
+  width: 118px;
+  margin: 0;
+  padding: 12px 9px 11px;
+  border: 2px solid rgba(255, 244, 220, 0.3);
+  border-radius: 28px;
+  background: rgba(22, 22, 29, 0.92);
+  backdrop-filter: blur(6px);
+  color: var(--cream);
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+}
+.vote.show { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
+.vote[data-state="loading"], .vote[data-state="signed"] { opacity: 0; visibility: hidden; pointer-events: none; }
+
+.vote fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.vote [hidden] { display: none !important; }
+
+.vote-kicker {
+  margin: 0 0 6px;
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.vote-kicker-m { display: none; }
+
+.vote-q {
+  display: block;
+  margin: 0 0 4px;
+  padding: 0;
+  font-size: 0.8rem;
+  font-weight: 800;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.vote-q:focus { outline: none; } /* focused by script when the phone pill opens, never by the keyboard */
+
+.vote-btn {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 0.45em 0.2em;
+  border: 2px solid var(--cream);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cream);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 900;
+  line-height: 1.1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.vote-btn:hover { background: var(--cream); color: var(--ink); }
+.vote-btn:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+.vote-btn:disabled { opacity: 0.6; cursor: wait; }
+.vote-btn:disabled:hover { background: transparent; color: var(--cream); }
+.vote-next { font-size: 0.78rem; padding: 0.5em 0.2em; }
+
+.vote-note { margin: 4px 0 0; font-size: 0.75rem; font-weight: 700; }
+
+/* After a vote: the tally as two cream bars (the labels carry the meaning; at 6px on ink
+   neither red nor green reads), "you" on the voter's side. */
+.vote-rows { display: grid; gap: 5px; margin: 0 0 8px; text-align: left; }
+.vote-row { display: block; font-size: 0.72rem; font-weight: 800; line-height: 1.1; }
+.vote-row .you {
+  display: inline-block;
+  margin-left: 0.3em;
+  padding: 0 0.4em;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.vote-row .you[hidden] { display: none; }
+/* The fill is a full-width bar scaled from the left (transform, not width, so nothing
+   lays out while it moves); a 4% floor keeps a zero visible. */
+.vote-row i {
+  display: block;
+  height: 6px;
+  margin-top: 3px;
+  border-radius: 3px;
+  background: var(--cream);
+  width: 100%;
+  transform: scaleX(max(var(--v, 0), 0.04));
+  transform-origin: left center;
+  transition: transform 0.6s cubic-bezier(.2, .8, .2, 1);
+}
+
+.vote-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--cream);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.vote-link:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; border-radius: 4px; }
+
+.vote-toggle, .vote-close { display: none; }
+
+/* Phones: a collapsed "Vote" pill bottom right (48px) that expands in place; after a vote
+   the pill is the next step under the kicker "make it count."; the tally stays on the
+   poll screen. Two taps to vote, no viewport cost. */
+@media (max-width: 600px) {
+  .vote {
+    top: auto;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    right: 12px;
+    translate: none;
+    width: auto;
+    max-width: calc(100vw - 24px);
+    padding: 0;
+    border-radius: 999px;
+  }
+  .vote-toggle {
+    display: inline-flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 1.3em;
+    border: 0;
+    background: transparent;
+    color: var(--cream);
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 900;
+    cursor: pointer;
+    border-radius: 999px;
+  }
+  .vote-toggle:focus-visible { outline: 3px solid var(--amber); outline-offset: 2px; }
+  .vote[data-state="vote"]:not(.open) .vote-panel,
+  .vote[data-state="posting"]:not(.open) .vote-panel { display: none; }
+  .vote[data-state="vote"].open, .vote[data-state="posting"].open { width: 224px; padding: 14px 14px 14px; border-radius: 24px; }
+  .vote.open .vote-toggle { display: none; }
+  .vote.open .vote-close {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--cream);
+    font: inherit;
+    font-size: 1.3rem;
+    font-weight: 900;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .vote.open .vote-close:focus-visible { outline: 3px solid var(--amber); outline-offset: 0; }
+  .vote.open .vote-q { font-size: 0.95rem; }
+  .vote.open .vote-btn { font-size: 0.95rem; min-height: 44px; }
+  .vote.open .vote-kicker { padding-right: 32px; }
+
+  /* The voted and not-counted pills: compact, the rows hidden (the voter's own figure is in
+     the kicker, "stop 71%"), the next step as the pill */
+  .vote[data-state^="voted"], .vote[data-state="notcounted"] { padding: 8px 12px 10px; border-radius: 22px; width: auto; }
+  .vote[data-state^="voted"] .vote-toggle, .vote[data-state="notcounted"] .vote-toggle { display: none; }
+  .vote[data-state^="voted"] .vote-rows, .vote[data-state^="voted"] .vote-more { display: none !important; }
+  .vote[data-state^="voted"] .vote-kicker-d { display: none; }
+  .vote[data-state^="voted"] .vote-kicker-m { display: inline; }
+  .vote[data-state^="voted"] .vote-next { margin-top: 4px; min-height: 40px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; padding: 0 1em; }
+  .vote[data-state="notcounted"] .vote-rows { display: none !important; }
+}
+
+/* The pinned how-to stage keeps its foot clear of the phone pill. */
+@media (max-width: 600px) {
+  .js .howto-stick { padding-bottom: calc(4vh + 64px); }
+}
+
+/* Short landscape phones: no pill; the poll screen is two viewports down. */
+@media (max-height: 450px) { .vote { display: none; } }
+
+@media print { .vote { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .vote, .vote-btn, .vote-row i { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .vote { border-color: CanvasText; }
+  .vote-row i { forced-color-adjust: none; background: CanvasText; }
+}
+
+/* ---------- The history trailer ---------- */
+.trailer-head {
+  font-size: clamp(1.8rem, 5vw, 4.4rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.trailer-head .count {
+  position: relative;
+  display: block;
+  margin-bottom: 0.1em;
+  font-size: clamp(3.2rem, 12vw, 11rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  text-transform: lowercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- For pubs: the tile, the art row ---------- */
+.pubs-sum {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem 2.5rem;
+  align-items: center;
+  width: min(1040px, 100%);
+  margin: 4vh auto 0;
+  text-align: left;
+}
+@media (min-width: 820px) {
+  .pubs-sum { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); }
+}
+.pubs-tile {
+  padding: 1em 1.2em 1.1em;
+  border: 4px solid var(--ink);
+  border-radius: 24px;
+}
+.pubs-tile .tile-n {
+  display: block;
+  font-size: clamp(2.2rem, 5.2vw, 4.6rem);
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+  font-variant-numeric: tabular-nums;
+}
+.pubs-tile .tile-line { margin-top: 0.5em; font-size: clamp(1rem, 1.6vw, 1.25rem); font-weight: 700; line-height: 1.3; }
+.pubs-tile .tag { margin-top: 0.9em; font-size: clamp(0.8rem, 1.4vw, 1rem); }
+.pubs-sum .mid { margin-top: 0; }
+.pubs-sum .src { margin: 0.6em 0 0; width: auto; }
+.pubs-pledge { margin-top: 5vh; }
+.pubs-pledge .mid { max-width: 40ch; margin-inline: auto; }
+
+.pubs-art {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.4rem);
+  margin: 3vh 0 1vh;
+}
+.pubs-art .mat { width: clamp(120px, 13vw, 160px); }
+.pubs-art .flyer { width: clamp(90px, 10vw, 118px); }
+.pubs .flyer-links { margin-top: 1.4em; }
+.pubs .fine { margin-top: 1.4em; font-size: 1rem; font-weight: 500; opacity: 0.75; text-wrap: pretty; }
+.pubs .mats-line { margin-top: 1.4em; }
+
+/* ---------- /history ---------- */
+.hist-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 60px;
+  padding: 0 clamp(14px, 3vw, 32px);
+  background: var(--pink);
+  color: var(--ink);
+}
+.hist-brand { display: block; flex: none; }
+.hist-brand img { display: block; height: 40px; width: auto; }
+.hist-brand:focus-visible { outline: 3px solid var(--ink); outline-offset: 6px; border-radius: 4px; }
+.hist-top .door { position: static; }
+
+.hist-open { padding-top: 8vh; }
+.hist-open .rule-title { margin-top: 0.1em; }
+.hist-count {
+  display: block;
+  margin: 0.2em 0 0;
+  font-size: clamp(4.5rem, 13vw, 12rem);
+  line-height: 0.85;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  text-transform: lowercase;
+  font-variant-numeric: tabular-nums;
+  text-wrap: balance;
+}
+.hist-open .mid { margin-top: 0.5em; }
+.hist-stand {
+  max-width: 62ch;
+  margin: 1.4em auto 0;
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+/* The timeline: a vertical floor tape with a sticker per stop and a card beside it. */
+.hist-tl { padding: 6vh var(--sx) 10vh; background: var(--pink); color: var(--ink); }
+.hist-stops {
+  --sticker: 6.75rem;
+  position: relative;
+  list-style: none;
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  padding: 0;
+}
+.hist-stops::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--sticker) / 2 - 2px);
+  border-left: 4px dashed rgba(22, 22, 29, 0.45);
+}
+.hist-stop {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--sticker) minmax(0, 1fr);
+  gap: clamp(16px, 3vw, 36px);
+  align-items: start;
+  margin-bottom: clamp(28px, 5vh, 56px);
+  scroll-margin-top: 80px;
+}
+.hist-stop .sticker { --i: 0; }
+.js .hist-stop.reveal.in .sticker { animation: slap 0.45s cubic-bezier(.2, .8, .2, 1) backwards 0.15s; }
+/* After the slap rule, so it wins at equal specificity, as styles.css does for the strip. */
+@media (prefers-reduced-motion: reduce) {
+  .js .hist-stop.reveal.in .sticker { animation: none; }
+}
+
+.hist-card { grid-template-columns: minmax(0, 1fr); }
+.hist-card h2 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: lowercase;
+}
+.hist-card p { font-size: clamp(1.05rem, 1.6vw, 1.2rem); }
+.hist-card blockquote { margin: 0; font-size: clamp(1.05rem, 1.6vw, 1.2rem); font-weight: 600; line-height: 1.35; }
+.hist-card .mini { aspect-ratio: 16 / 7; }
+@media (min-width: 820px) {
+  .hist-card {
+    grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    column-gap: clamp(16px, 2.5vw, 28px);
+  }
+  .hist-card .mini { grid-row: 1 / span 3; grid-column: 1; align-self: start; }
+  .hist-card h2, .hist-card p, .hist-card blockquote, .hist-card .src { grid-column: 2; }
+}
+.hist-card.now h2 { font-size: clamp(1.4rem, 2.4vw, 2rem); }
+.hist-card.now .count {
+  position: relative;
+  display: block;
+  margin-bottom: 0.25em;
+  color: var(--amber);
+  font-size: clamp(2.4rem, 4.4vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 600px) {
+  .hist-stops { --sticker: 5.5rem; }
+  .hist-stop { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .hist-stops::before { left: calc(var(--sticker) / 2 - 2px); }
+  .hist-stop .sticker { justify-self: start; }
+  .hist-card .mini { aspect-ratio: 16 / 8; }
+}
+
+/* The questions */
+.hist-qa { padding: 10vh var(--sx); }
+.hist-qa .inner { width: min(820px, 100%); text-align: left; }
+.hist-qa .big { text-align: center; }
+.hist-qa .small { text-align: center; }
+.hist-q { margin-top: 2.2em; }
+.hist-q h3 {
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+.hist-q p { margin-top: 0.5em; font-size: clamp(1.05rem, 1.7vw, 1.25rem); font-weight: 600; line-height: 1.4; text-wrap: pretty; }
+.hist-q .src { margin: 0.5em 0 0; width: auto; font-size: 0.95rem; }
+
+.hist-trailer { min-height: 70vh; min-height: 70svh; }

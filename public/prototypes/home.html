@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Don’t Queue At The Bar (prototype)</title>
+  <meta name="description" content="A campaign to end single-file queueing at the pub bar. Vote, sign the petition, print the poster. It’s a pub. Not a post office.">
+  <meta name="theme-color" content="#ffb627">
+  <meta name="application-name" content="Don't Queue At The Bar">
+  <meta name="apple-mobile-web-app-title" content="Don't Queue">
+  <!-- Prototype (review/homepage, Round 3): unlinked and not for indexing. -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Elements marked data-abs get the real site origin added by src/worker.js at merge
+       (the rewrite runs on / today; /history needs adding to run_worker_first). -->
+  <link rel="canonical" href="/" data-abs="/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Don't Queue At The Bar">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:title" content="Don’t Queue At The Bar">
+  <meta property="og:description" content="A bar is not a post office. Spread out. Catch the eye. Trust the barperson.">
+  <meta property="og:url" content="/" data-abs="/">
+  <meta property="og:image" content="/og-image.png" data-abs="/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Don’t Queue At The Bar: a round symbol of three people spread along a bar, beside the words ‘don’t queue at the bar.’, with the line ‘It’s a pub. Not a post office.’ underneath.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Don’t Queue At The Bar">
+  <meta name="twitter:description" content="A bar is not a post office. Spread out. Catch the eye. Trust the barperson.">
+  <meta name="twitter:image" content="/og-image.png" data-abs="/og-image.png">
+  <meta name="twitter:image:alt" content="Don’t Queue At The Bar: a round symbol of three people spread along a bar, beside the words ‘don’t queue at the bar.’, with the line ‘It’s a pub. Not a post office.’ underneath.">
+
+  <!-- Icons -->
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/prototypes/proto.css">
+  <script src="/script.js" defer></script>
+  <script src="/prototypes/proto.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#petition-section">Skip to the petition</a>
+
+  <!-- TIMELINE: fixed left rail, updated by script.js. The list matches the section ids. -->
+  <nav class="timeline" aria-label="Timeline">
+    <ol>
+      <li class="tl-fill" aria-hidden="true"></li>
+      <li><a href="#verdict"><span class="mark"></span><span class="lbl"><small>The</small> Verdict</span></a></li>
+      <li><a href="#poll"><span class="mark"></span><span class="lbl"><small>Pick a</small> Side</span></a></li>
+      <li><a href="#petition-section"><span class="mark"></span><span class="lbl"><small>Now</small> Sign</span></a></li>
+      <li><a href="#howto"><span class="mark"></span><span class="lbl"><small>How to</small> Do The Cluster</span></a></li>
+      <li><a href="#test"><span class="mark"></span><span class="lbl"><small>Then</small> Take the Test</span></a></li>
+      <li><a href="#history"><span class="mark"></span><span class="lbl"><small>Since 2020</small> History</span></a></li>
+      <li><a href="#pubs"><span class="mark"></span><span class="lbl"><small>For</small> Pubs</span></a></li>
+    </ol>
+  </nav>
+
+  <!-- THE VOTE PILL: fixed right (desktop) or a collapsed pill bottom right (phones).
+       proto.js owns it with the poll screen: one state, one GET /api/poll, one cookie. -->
+  <form class="vote" id="vote-pill" method="post" action="/api/poll" data-state="loading"
+        aria-label="Poll: stop the queue at the bar? One vote per browser.">
+    <button type="button" class="vote-toggle" aria-expanded="false" aria-controls="vote-panel">Vote</button>
+    <div class="vote-panel" id="vote-panel">
+      <button type="button" class="vote-close" aria-label="Hide this">×</button>
+      <p class="vote-kicker"><span class="vote-kicker-d" data-part="kicker">vote</span><span class="vote-kicker-m" data-part="kicker-m"></span></p>
+      <fieldset data-part="ask">
+        <legend class="vote-q" tabindex="-1">Stop the queue?</legend>
+        <button type="submit" name="choice" value="cluster" class="vote-btn">Stop</button>
+        <button type="submit" name="choice" value="single" class="vote-btn">Keep</button>
+      </fieldset>
+      <p class="vote-note" data-part="note" hidden>Counting…</p>
+      <div class="vote-rows" data-part="rows" hidden>
+        <span class="vote-row" data-side="cluster">stop <b class="pc"></b> <span class="you" hidden>you</span><i></i></span>
+        <span class="vote-row" data-side="single">keep <b class="pc"></b> <span class="you" hidden>you</span><i></i></span>
+      </div>
+      <a class="vote-btn vote-next" data-part="next" href="#petition-section" hidden>Sign the petition</a>
+      <a class="vote-link vote-more" data-part="more" href="#poll" hidden>full result ↓</a>
+      <p class="sr-only" data-part="live" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <main>
+
+  <!-- 1. HERO: one ask (the sticker); the door is navigation; the count line is a fact,
+       shown by proto.js only from 500 signatures. -->
+  <section class="screen c-cream hero" id="top" data-pill="off">
+    <a class="brand" href="/" aria-label="Don’t Queue At The Bar, home">
+      <img src="/lockup-horizontal.svg" width="1420" height="400" alt="">
+    </a>
+    <a class="door" href="#pubs">Run a pub? →</a>
+    <div class="inner">
+      <h1 class="mega">Don’t Queue <br>At The Bar</h1>
+      <p class="mid">It’s a pub. Not a post office.</p>
+      <p class="small hero-count" hidden><span class="hero-count-n"></span> <a class="plain" href="#petition-section">Add your name ↓</a></p>
+    </div>
+    <a class="promo" href="/hazard.html">
+      <span class="promo-big">Get your <em>pub-goer’s</em> licence today</span>
+      <span class="promo-small">Do the hazard perception test →</span>
+    </a>
+    <a class="scroll-hint" href="#verdict" aria-label="Scroll down">↓</a>
+  </section>
+
+  <!-- 2. THE VERDICT: the problem and the solution on one screen, the live scores as the
+       proof, the arithmetic as two bars. Two columns in one grid so the headline row is
+       bottom-aligned and the stages line up. -->
+  <section class="screen c-blue verdict" id="verdict">
+    <div class="inner reveal">
+      <div class="verdict-grid">
+        <div class="verdict-col">
+          <p class="small">the single file</p>
+          <h2 class="verdict-head">Four staff. <br>One working.</h2>
+          <div class="scene" data-mode="single" data-label="single file" role="img"
+             aria-label="Animated pub bar, The Single File: customers queue in one line to one spot on the bar. One barperson serves; three stand idle. The score counts pints served."></div>
+          <p class="tag"><span aria-hidden="true">✗</span> not recommended</p>
+        </div>
+        <div class="verdict-col">
+          <p class="small">the cluster</p>
+          <h2 class="verdict-head">Spread out.</h2>
+          <div class="scene" data-mode="cluster" data-label="the cluster" role="img"
+             aria-label="Animated pub bar, The Cluster: customers spread along the bar and all four staff serve. The score counts pints served."></div>
+          <p class="tag"><span aria-hidden="true">✓</span> the correct answer</p>
+        </div>
+      </div>
+      <p class="small caption">Same pub, same four staff, same pints. Keep an eye on the scores.</p>
+
+      <div class="bars" role="img" aria-label="Bar chart, twenty orders: The Single File takes 25 minutes, The Cluster six and a quarter.">
+        <div class="bar-row">
+          <div class="label"><span>the single file, twenty orders</span><span>25 min</span></div>
+          <div class="bar-track"><div class="fill single"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="label"><span>the cluster, twenty orders</span><span>6¼ min</span></div>
+          <div class="bar-track"><div class="fill cluster"></div></div>
+        </div>
+      </div>
+      <div class="stamp-line">
+        <p class="tag">worked example</p>
+        <p class="small">Twenty orders, 75 seconds each. One spot on the bar, or four staff along it. Arithmetic, not a stopwatch. Real pubs are messier.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. THE POLL: Stop / Keep (stored as cluster / single). The form is #poll-form-p so
+       script.js's poll block stands down and proto.js owns the screen with the pill. The
+       results only show once you've voted (src/worker.js, /api/poll). -->
+  <section class="screen c-cream" id="poll" data-pill="off">
+    <div class="inner reveal">
+      <p class="small poll-kicker">pick a side</p>
+      <h2 class="mega">Stop the <br>single file?</h2>
+      <!-- method/action make the vote work if the script fails to load: the Worker takes the
+           plain form post and answers with a small results page. -->
+      <form class="poll" id="poll-form-p" method="post" action="/api/poll" enctype="application/x-www-form-urlencoded">
+        <div class="poll-choices">
+          <!-- "Stop it" stops the single file (choice "cluster"); "Keep it" keeps it ("single"). -->
+          <button type="submit" name="choice" value="cluster"><b>Stop it</b> <span>spread along the bar</span> <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></button>
+          <button type="submit" name="choice" value="single"><b>Keep it</b> <span>stay in line</span> <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></button>
+        </div>
+        <p class="poll-note" role="status" aria-live="polite" tabindex="-1">Vote to see what everyone else said.</p>
+        <p><button type="button" class="poll-link poll-keep" hidden>Keep my vote</button></p>
+        <p class="poll-small">One vote per browser. A cookie remembers your vote, and that’s all it knows.</p>
+      </form>
+      <div class="poll-results" hidden>
+        <h3 class="poll-head" tabindex="-1"></h3>
+        <figure class="poll-chart">
+          <ul class="poll-bars">
+            <li class="poll-row" data-choice="cluster">
+              <span class="poll-label">Stop <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></span>
+              <span class="poll-plot" aria-hidden="true"><span class="poll-fill"></span></span>
+              <span class="poll-fig"><b class="poll-pc"></b> <span class="poll-n"></span></span>
+            </li>
+            <li class="poll-row" data-choice="single">
+              <span class="poll-label">Keep <span class="poll-you" hidden><span class="sr-only">, </span>your vote</span></span>
+              <span class="poll-plot" aria-hidden="true"><span class="poll-fill"></span></span>
+              <span class="poll-fig"><b class="poll-pc"></b> <span class="poll-n"></span></span>
+            </li>
+          </ul>
+          <div class="poll-axis" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>
+        </figure>
+        <p class="poll-total"></p>
+        <p class="poll-quip"></p>
+        <a class="cta poll-next" data-for="cluster" href="#petition-section" hidden>Sign the petition</a>
+        <a class="cta poll-next" data-for="single" href="/hazard.html" hidden>Take the test →</a>
+        <p><button type="button" class="poll-link poll-again" hidden>Changed your mind?</button></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. PETITION -->
+  <section class="screen c-ink footer" id="petition-section" data-pill="off">
+    <div class="inner reveal">
+      <h2 class="big">Sign the <br>Petition</h2>
+      <p class="mid dim">Stand along the bar. Make eye contact. Let the barperson decide.</p>
+      <p class="mid accent sig-count" id="sig-count" hidden></p>
+      <!-- method/action make the form work if the script fails to load: the Worker takes the
+           plain form post and answers with a small thank-you page. script.js replaces it with fetch. -->
+      <form class="petition" id="petition" method="post" action="/api/sign" enctype="application/x-www-form-urlencoded" novalidate>
+        <div class="hp" aria-hidden="true">
+          <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        </div>
+        <label>
+          <span>Your name</span>
+          <input type="text" name="name" autocomplete="name" autocapitalize="words" enterkeyhint="next" dir="auto" maxlength="100" required placeholder="Sam Pint" aria-describedby="err-name">
+          <span class="field-err" id="err-name" hidden></span>
+        </label>
+        <label>
+          <span>Email address</span>
+          <input type="email" name="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="email" enterkeyhint="send" maxlength="254" required placeholder="sam@example.com" aria-describedby="err-email">
+          <span class="field-err" id="err-email" hidden></span>
+        </label>
+        <label class="consent">
+          <input type="checkbox" name="consent" required aria-describedby="err-consent">
+          <span>I agree to my details being stored to support this petition, and to be told about the campaign and beer mats. I can ask for them to be removed at any time.</span>
+        </label>
+        <p class="field-err" id="err-consent" hidden></p>
+        <button type="submit">Sign the petition</button>
+        <p class="form-msg" role="status" aria-live="polite"></p>
+        <div class="share" hidden>
+          <button type="button" id="share-btn">Tell a mate</button>
+          <p class="share-note" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- 5. HOW TO: one sticky stage, four steps acted out by the dots as you scroll.
+       The markup ships the finished frame (all four steps done, all copy shown) so the page
+       reads without JS; script.js resets it and drives the steps from scroll position. -->
+  <section class="howto" id="howto">
+    <!-- Where each step's slice of the scroll starts: the step pills are plain links to these,
+         so the browser does the scrolling (styles.css places them; they do nothing without JS). -->
+    <span class="howto-at" id="howto-1" style="--at:1"></span>
+    <span class="howto-at" id="howto-2" style="--at:2"></span>
+    <span class="howto-at" id="howto-3" style="--at:3"></span>
+    <span class="howto-at" id="howto-4" style="--at:4"></span>
+    <div class="screen howto-stick c-green s1 s2 s3 s4 served">
+      <div class="inner howto-grid reveal">
+        <div class="howto-text">
+          <h2 class="small howto-kicker">how to do the cluster</h2>
+          <div class="howto-copy">
+            <div class="howto-head">
+              <p class="rule-title">Four easy <br>steps.</p>
+              <p class="mid"><span class="js-only">Keep scrolling. </span>You’re the pink one.</p>
+            </div>
+            <ol class="steps">
+              <li class="step">
+                <p class="howto-step">step 1 of 4</p>
+                <h3 class="rule-title">Walk to <br>the bar.</h3>
+                <p class="mid">Not behind someone. To the bar. It’s the long wooden thing.</p>
+              </li>
+              <li class="step">
+                <p class="howto-step">step 2 of 4</p>
+                <h3 class="rule-title">Pick <br>a gap.</h3>
+                <p class="mid">Any gap. Leave some elbow room. This is not a cuddle.</p>
+              </li>
+              <li class="step">
+                <p class="howto-step">step 3 of 4</p>
+                <h3 class="rule-title">Catch <br>an eye.</h3>
+                <p class="mid">A nod. A raised eyebrow. A tenner held with quiet confidence. No waving. No clicking.</p>
+              </li>
+              <li class="step">
+                <p class="howto-step">step 4 of 4</p>
+                <h3 class="rule-title">Trust the <br>barperson.</h3>
+                <p class="mid">They know who’s next. They always know. It’s their entire job.</p>
+              </li>
+            </ol>
+          </div>
+          <nav class="step-nav" aria-label="Steps">
+            <ol>
+              <li class="step-fill" aria-hidden="true"></li>
+              <li><a href="#howto-1"><span class="sr-only">Step </span>1</a></li>
+              <li><a href="#howto-2"><span class="sr-only">Step </span>2</a></li>
+              <li><a href="#howto-3"><span class="sr-only">Step </span>3</a></li>
+              <li><a href="#howto-4"><span class="sr-only">Step </span>4</a></li>
+            </ol>
+          </nav>
+        </div>
+
+        <!-- The pub from above, same language as the sims: bar at the top, staff behind it,
+             customers along it. Positions are % of the stage; each step moves things in styles.css. -->
+        <div class="howto-pub" role="img" aria-label="Pub diagram: you walk up to the bar, step into a gap, catch the nearest barperson’s eye, and a pint slides across to you.">
+          <div class="scene-bar"></div>
+          <span class="cap cap-bar" aria-hidden="true">the long wooden thing</span>
+          <span class="cap cap-end" aria-hidden="true">That’s it. That’s the whole method.</span>
+          <div class="dot staff idle" style="left:18%;top:8%"></div>
+          <div class="dot staff idle" style="left:39%;top:8%"></div>
+          <div class="dot staff idle keeper"></div>
+          <div class="dot staff idle" style="left:82%;top:8%"></div>
+          <div class="dot cust c1" style="left:10%;top:28%"></div>
+          <div class="dot cust c2 has-drink" style="left:21.4%;top:28%"></div>
+          <div class="dot cust c4" style="left:32.9%;top:28%"></div>
+          <div class="dot cust c1" style="left:44.3%;top:28%"></div>
+          <div class="dot cust c2" style="left:44.3%;top:38%"></div>
+          <div class="dot cust c4" style="left:55.7%;top:28%"></div>
+          <div class="dot cust c1 has-drink" style="left:78.6%;top:28%"></div>
+          <div class="dot cust c2" style="left:90%;top:28%"></div>
+          <span class="gap" aria-hidden="true"></span>
+          <svg class="sight" viewBox="0 0 160 110" aria-hidden="true"><line x1="107.4" y1="30.8" x2="97.6" y2="8.8" pathLength="1"/></svg>
+          <div class="pint"></div>
+          <div class="dot cust has-drink you" data-label="you"></div>
+          <span class="note" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 6. HAZARD PERCEPTION TEST (lives on hazard.html) -->
+  <section class="screen c-blue" id="test">
+    <div class="inner reveal">
+      <p class="small">think you’re ready?</p>
+      <h2 class="mega">The Hazard <br>Perception <br>Test</h2>
+      <p class="mid">Two tests. Which side <br>of the bar are you on?</p>
+      <a class="cta" href="/hazard.html">Take the test →</a>
+    </div>
+  </section>
+
+  <!-- 7. THE HISTORY TRAILER: the live counter leads; the stops live on /history -->
+  <section class="screen c-pink" id="history">
+    <div class="inner reveal">
+      <p class="small">a short history</p>
+      <h2 class="trailer-head"><b class="count" data-since="2021-07-19"><span class="count-vis" aria-hidden="true"></span><span class="count-txt">over five years</span></b> since you were allowed back at the bar.</h2>
+      <p class="mid">Still queueing. The rules never said to. How it happened, in eleven stops.</p>
+      <a class="cta" href="/prototypes/history.html">Read the history →</a>
+    </div>
+  </section>
+
+  <!-- 8. FOR PUBS: the poster is the pledge; the money is waiting, never lost -->
+  <section class="screen c-amber pubs" id="pubs" data-pill="off">
+    <div class="inner reveal">
+      <p class="small">run a pub?</p>
+      <h2 class="rule-title">Four staff. <br>Four pouring.</h2>
+      <div class="pubs-sum">
+        <div class="pubs-tile">
+          <b class="tile-n">48 an hour. <br>Or 192.</b>
+          <p class="tile-line">Orders through one spot on the bar, or four staff along it.</p>
+          <p class="tag">worked example</p>
+        </div>
+        <div>
+          <p class="mid">On a Friday at 90 orders an hour, one spot on the bar serves 48. The other 42 stand in a line holding about £224 of pints. Four staff along the bar pour the lot.</p>
+          <p class="src">Arithmetic, not an audit: 75 seconds an order, a pint an order, a line that ends at one spot on the bar, the average pint (£5.34, Morning Advertiser, Apr 2026). The Friday is made up. Your pub is yours.</p>
+        </div>
+      </div>
+      <div class="pubs-pledge">
+        <h3 class="big">Print the poster. <br>That’s the pledge.</h3>
+        <p class="mid">Behind the bar, facing the room, and this bar does The Cluster. No form, no fee, nobody from us turning up.</p>
+      </div>
+      <div class="pubs-art">
+        <img class="mat m1" src="/mats/mat-front.svg" width="400" height="400" loading="lazy" alt="The front of the beer mat: the words ‘don’t queue at the bar’ inside a thick ring, black on white.">
+        <img class="mat m2" src="/mats/mat-back.svg" width="400" height="400" loading="lazy" alt="The back of the beer mat: a large QR code to the website with the Don’t Queue At The Bar roundel in the middle, and the web address printed round the edge, white on black.">
+        <img class="flyer f1" src="/flyers/preview-a.png" width="1191" height="1685" loading="lazy" alt="The poster: the ‘don’t queue at the bar’ stamp, then ‘spread out.’ in huge type, then ‘This bar does The Cluster. The bar staff know who’s next. They always did.’, with the roundel, ‘Sign the petition.’, the web address and a QR code at the foot. Black on white.">
+        <img class="flyer f2" src="/flyers/preview-b.png" width="1191" height="1685" loading="lazy" alt="The how-to: ‘four easy steps.’ with the four steps of The Cluster, walk to the bar, pick a gap, catch an eye, trust the barperson, then the worked example, ‘25 minutes. Or six.’, and at the foot a QR code to the test, ‘Think you’re ready? Take the test.’, the web address and a small stamp. Black on white.">
+      </div>
+      <p class="mid">Free. A4 or A5, any printer, black and white is fine. Where the back of the line can read it.</p>
+        <ul class="flyer-links">
+          <li><a href="/flyers/flyer-a4.pdf" download>A4 poster <small>PDF, 30 KB</small></a></li>
+          <li><a href="/flyers/flyer-a4-double.pdf" download>A4 poster and how-to <small>PDF, 70 KB</small></a></li>
+          <li><a href="/flyers/flyer-a5.pdf" download>A5 poster <small>PDF, 30 KB</small></a></li>
+          <li><a href="/flyers/flyer-a5-double.pdf" download>A5 poster and how-to <small>PDF, 70 KB</small></a></li>
+          <li><a href="/flyers/flyer-a5-two-up.pdf" download>Two A5 posters on one A4 <small>PDF, 40 KB</small></a></li>
+        </ul>
+      <p class="fine">The how-to goes on the back. Hand it to anyone who asks “the what?”</p>
+      <p class="mid mats-line">Mats coming soon. <a class="plain" href="#petition-section">Sign the petition</a> and we’ll tell you first.</p>
+    </div>
+  </section>
+  </main>
+
+  <!-- 9. FOOTER -->
+  <footer class="site-footer" data-pill="off">
+    <p class="emoji" aria-hidden="true">🍺🍻🥜🍟🥃🍷🧾</p>
+    <p class="sources">
+      The history’s sources are on <a href="/prototypes/history.html">the history page</a>.
+      The average pint, £5.34: Morning Advertiser price survey, Apr 2026.
+      The pub sims, the queueing maths and the pub sum are worked examples, not measurements.
+    </p>
+    <p class="beer-fund">
+      Made with <span aria-hidden="true">🍻</span><span class="sr-only">beer</span> by people who just want a pint.
+      <!-- Stripe Payment Link, TEST MODE for now (see AGENTS.md). -->
+      <a href="https://buy.stripe.com/test_fZucN5fZc29N1Q26pf24000">Chip in to the beer fund</a>. No&nbsp;queue.
+    </p>
+    <p><a href="#top">Back to the top</a></p>
+  </footer>
+
+</body>
+</html>

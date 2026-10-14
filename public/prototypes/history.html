@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Why do people queue in pubs now? · Don’t Queue At The Bar</title>
+  <meta name="description" content="The rules never said queue at the bar. Pubs shut in March 2020, England’s bar came back in July 2021, and the queue stayed. Eleven stops, with sources.">
+  <meta name="theme-color" content="#ffb627">
+  <meta name="application-name" content="Don't Queue At The Bar">
+  <meta name="apple-mobile-web-app-title" content="Don't Queue">
+  <!-- Prototype (review/homepage, Round 3): unlinked and not for indexing. -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Elements marked data-abs get the real site origin added by src/worker.js at merge
+       (the rewrite runs on / today; /history needs adding to run_worker_first). -->
+  <link rel="canonical" href="/history" data-abs="/history">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Don't Queue At The Bar">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:title" content="Why do people queue in pubs now?">
+  <meta property="og:description" content="The rules never said queue at the bar. Pubs shut in March 2020, England’s bar came back in July 2021, and the queue stayed. Eleven stops, with sources.">
+  <meta property="og:url" content="/history" data-abs="/history">
+  <meta property="og:image" content="/og-image.png" data-abs="/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Don’t Queue At The Bar: a round symbol of three people spread along a bar, beside the words ‘don’t queue at the bar.’, with the line ‘It’s a pub. Not a post office.’ underneath.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Why do people queue in pubs now?">
+  <meta name="twitter:description" content="The rules never said queue at the bar. Pubs shut in March 2020, England’s bar came back in July 2021, and the queue stayed. Eleven stops, with sources.">
+  <meta name="twitter:image" content="/og-image.png" data-abs="/og-image.png">
+  <meta name="twitter:image:alt" content="Don’t Queue At The Bar: a round symbol of three people spread along a bar, beside the words ‘don’t queue at the bar.’, with the line ‘It’s a pub. Not a post office.’ underneath.">
+
+  <!-- Icons -->
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/prototypes/proto.css">
+  <script src="/script.js" defer></script>
+  <script src="/prototypes/proto.js" defer></script>
+</head>
+<body class="hist">
+  <a class="skip" href="#stops">Skip to the history</a>
+
+  <!-- THE VOTE PILL: fixed right (desktop) or a collapsed pill bottom right (phones).
+       proto.js owns it with the poll screen: one state, one GET /api/poll, one cookie. -->
+  <form class="vote" id="vote-pill" method="post" action="/api/poll" data-state="loading" data-home="/prototypes/home.html"
+        aria-label="Poll: stop the queue at the bar? One vote per browser.">
+    <button type="button" class="vote-toggle" aria-expanded="false" aria-controls="vote-panel">Vote</button>
+    <div class="vote-panel" id="vote-panel">
+      <button type="button" class="vote-close" aria-label="Hide this">×</button>
+      <p class="vote-kicker"><span class="vote-kicker-d" data-part="kicker">vote</span><span class="vote-kicker-m" data-part="kicker-m"></span></p>
+      <fieldset data-part="ask">
+        <legend class="vote-q" tabindex="-1">Stop the queue?</legend>
+        <button type="submit" name="choice" value="cluster" class="vote-btn">Stop</button>
+        <button type="submit" name="choice" value="single" class="vote-btn">Keep</button>
+      </fieldset>
+      <p class="vote-note" data-part="note" hidden>Counting…</p>
+      <div class="vote-rows" data-part="rows" hidden>
+        <span class="vote-row" data-side="cluster">stop <b class="pc"></b> <span class="you" hidden>you</span><i></i></span>
+        <span class="vote-row" data-side="single">keep <b class="pc"></b> <span class="you" hidden>you</span><i></i></span>
+      </div>
+      <a class="vote-btn vote-next" data-part="next" href="/prototypes/home.html#petition-section" hidden>Sign the petition</a>
+      <a class="vote-link vote-more" data-part="more" href="/prototypes/home.html#poll" hidden>full result ↓</a>
+      <p class="sr-only" data-part="live" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <header class="hist-top">
+    <a class="hist-brand" href="/" aria-label="Don’t Queue At The Bar, home">
+      <img src="/lockup-horizontal.svg" width="1420" height="400" alt="">
+    </a>
+    <a class="door" href="/prototypes/home.html">← Home</a>
+  </header>
+
+  <main>
+  <!-- THE OPENING: the question answered in the first two sentences; the counter big -->
+  <section class="screen c-pink hist-open" id="top" data-pill="off">
+    <div class="inner">
+      <p class="small">a short history</p>
+      <h1 class="rule-title">Blame 2020. Mostly.</h1>
+      <p><b class="count hist-count" data-since="2021-07-19"><span class="count-vis" aria-hidden="true"></span><span class="count-txt">over five years</span></b></p>
+      <p class="mid">since you were allowed back at the bar. Still queueing.</p>
+      <p class="hist-stand">Nobody told anyone to queue at the bar. The 2020 rules said not to gather at it, pubs reopened to stickers and table service, and the line outlasted the rules. Eleven stops from 1996 to today, each with a source, and still quicker than the queue.</p>
+    </div>
+  </section>
+
+  <!-- THE STOPS: a vertical floor tape, a sticker and a card per stop, ids by date -->
+  <section class="hist-tl" id="stops" aria-label="A short history of the bar queue, in eleven stops">
+    <ol class="hist-stops">
+          <li class="hist-stop reveal" id="before-2020">
+            <p class="sticker"><span><small>before</small><b>2020</b></span></p>
+            <article class="card hist-card">
+              <svg class="mini" viewBox="0 0 160 72" aria-hidden="true" focusable="false">
+                <rect class="bar" x="8" y="9" width="144" height="4" rx="1"/><rect class="lip" x="8" y="13" width="144" height="2"/>
+                <g class="staff"><circle cx="29" cy="5" r="3"/><circle cx="62" cy="5" r="3"/><circle cx="98" cy="5" r="3"/><circle cx="131" cy="5" r="3"/></g>
+                <g class="cust"><circle class="c0" cx="20" cy="21" r="3.2"/><circle class="c1" cx="44" cy="21" r="3.2"/><circle class="c2" cx="70" cy="21" r="3.2"/><circle class="c3" cx="92" cy="21" r="3.2"/><circle class="c4" cx="118" cy="21" r="3.2"/><circle class="c0" cx="140" cy="21" r="3.2"/><circle class="c1" cx="58" cy="34" r="3.2"/><circle class="c3" cx="128" cy="34" r="3.2"/></g>
+              </svg>
+              <h2>The invisible queue.</h2>
+              <p>“The bar counter is the only place in Britain in which anything is sold or served without the formation of a queue.”</p>
+              <p class="src"><a href="http://www.sirc.org/publik/ptpchap1.html" rel="noopener">Kate Fox, Passport to the Pub, 1996</a></p>
+            </article>
+          </li>
+
+          <li class="hist-stop reveal" id="2020-03-20">
+            <p class="sticker"><time datetime="2020-03-20"><small>20 Mar</small><b>2020</b></time></p>
+            <article class="card hist-card">
+              <svg class="mini" viewBox="0 0 160 72" aria-hidden="true" focusable="false">
+                <rect class="bar" x="8" y="9" width="144" height="4" rx="1"/><rect class="lip" x="8" y="13" width="144" height="2"/>
+                <rect class="sign" x="54" y="33" width="52" height="15" rx="7.5"/><text class="sign-txt" x="80" y="43.6" text-anchor="middle">closed</text>
+              </svg>
+              <h2>Pubs shut.</h2>
+              <p>The Prime Minister asks pubs to close ‘tonight as soon as they reasonably can’. Ordering at the bar won’t be rule-free again for 486 days.</p>
+              <p class="src"><a href="https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-20-march-2020" rel="noopener">GOV.UK, PM statement, 20 Mar 2020</a></p>
+            </article>
+          </li>
+
+          <li class="hist-stop reveal" id="2020-07-04">
+            <p class="sticker"><time datetime="2020-07-04"><small>4 Jul</small><b>2020</b></time></p>
+            <article class="card hist-card">
+              <svg class="mini" viewBox="0 0 160 72" aria-hidden="true" focusable="false">
+                <rect class="bar" x="8" y="9" width="144" height="4" rx="1"/><rect class="lip" x="8" y="13" width="144" height="2"/>
+                <g class="staff"><circle cx="29" cy="5" r="3"/><circle cx="62" cy="5" r="3"/><circle cx="98" cy="5" r="3"/><circle cx="131" cy="5" r="3"/></g>
+                <rect class="door" x="146" y="46" width="8" height="22" rx="1.5"/>
+                <g class="stickers"><circle cx="134" cy="58" r="6"/><circle cx="108" cy="58" r="6"/><circle cx="82" cy="58" r="6"/><circle cx="56" cy="58" r="6"/><circle cx="30" cy="58" r="6"/></g>
+                <g class="cust"><circle class="c0" cx="134" cy="58" r="3.2"/><circle class="c1" cx="108" cy="58" r="3.2"/><circle class="c3" cx="82" cy="58" r="3.2"/><circle class="c4" cx="56" cy="58" r="3.2"/></g>
+              </svg>
+              <h2>Pubs reopen. Carefully.</h2>
+              <p>Table service where possible. Stickers on the floor. Don’t gather at the bar. The rules never said ‘queue at the bar’. Somewhere in here, people started to.</p>
+              <p class="src"><a href="https://assets.publishing.service.gov.uk/media/5eb96e8e86650c278b077616/working-safely-during-covid-19-restaurants-pubs-takeaway-services-091120.pdf" rel="noopener">GOV.UK guidance for pubs, 2020 (later revision)</a></p>
+            </article>
+          </li>
+
+          <li class="hist-stop reveal" id="2020-09-24">
+            <p class="sticker"><time datetime="2020-09-24"><small>24 Sep</small><b>2020</b></time></p>
+            <article class="card hist-card">
+              <svg class="mini" viewBox="0 0 160 72" aria-hidden="true" focusable="false">
+                <rect class="bar" x="8" y="9" width="144" height="4" rx="1"/><rect class="lip" x="8" y="13" width="144" height="2"/>
+                <g class="staff"><circle class="idle" cx="29" cy="5" r="3"/><circle class="idle" cx="62" cy="5" r="3"/><circle class="idle" cx="98" cy="5" r="3"/><circle class="idle" cx="131" cy="5" r="3"/></g>
+                <g class="tables"><circle cx="36" cy="50" r="7"/><circle cx="82" cy="54" r="7"/><circle cx="126" cy="48" r="7"/></g>
+                <g class="cust"><circle class="c0" cx="26" cy="46" r="3.2"/><circle class="c1" cx="46" cy="46" r="3.2"/><circle class="c2" cx="36" cy="61" r="3.2"/><circle class="c3" cx="72" cy="50" r="3.2"/><circle class="c4" cx="92" cy="50" r="3.2"/><circle class="c0" cx="116" cy="44" r="3.2"/><circle class="c1" cx="136" cy="44" r="3.2"/><circle class="c2" cx="126" cy="59" r="3.2"/></g>
+              </svg>
+              <h2>Table service. By law.</h2>
+              <p>Sit down. Order from your seat. Home by ten. For 298 days, the bar is something you look at. Lockdowns permitting.</p>
+              <p class="src"><a href="https://www.legislation.gov.uk/uksi/2020/1029/made" rel="noopener">SI 2020/1029 (England), 24 Sep 2020</a></p>
+            </article>
+          </li>
+
+          <li class="hist-stop reveal" id="2021-07-19">
+            <p class="sticker"><time datetime="2021-07-19"><small>19 Jul</small><b>2021</b></time></p>
+            <article class="card hist-card">
+              <svg class="mini" viewBox="0 0 160 72" aria-hidden="true" focusable="false">
+                <rect class="bar" x="8" y="9" width="144" height="4" rx="1"/><rect class="lip" x="8" y="13" width="144" height="2"/>
+                <g class="staff"><circle class="idle" cx="29" cy="5" r="3"/><circle cx="62" cy="5" r="3"/><circle class="idle" cx="98" cy="5" r="3"/><circle class="idle" cx="131" cy="5" r="3"/></g>
+                <g class="tables"><circle cx="36" cy="52" r="7"/><circle cx="126" cy="50" r="7"/></g>
+                <g class="cust"><circle class="c2" cx="62" cy="21" r="3.2"/><circle class="c0" cx="26" cy="48" r="3.2"/><circle class="c1" cx="46" cy="48" r="3.2"/><circle class="c3" cx="116" cy="46" r="3.2"/><circle class="c4" cx="136" cy="46" r="3.2"/><circle class="c0" cx="126" cy="61" r="3.2"/></g>
+              </svg>
+              <h2>The bar is back.</h2>
+              <p>The rules go at 11.55pm the night before. You can walk up to the bar again. Legally. Nobody tells the queue.</p>
+              <p class="src"><a href="https://www.legislation.gov.uk/uksi/2021/848/made" rel="noopener">SI 2021/848 (England), 19 Jul 2021</a></p>
+            </article>
+          </li>
+
+          <li class="hist-stop reveal" id="2021-07-30">
+            <p class="sticker"><time datetime="2021-07-30"><small>30 Jul</small><b>2021</b></time></p>
+            <article class="card hist-card">
+              <svg class="mini" viewBox="0 0 160 72" aria-hidden="true" focusable="false">
+                <rect class="bar" x="8" y="9" width="144" height="4" rx="1"/><rect class="lip" x="8" y="13" width="144" height="2"/>
+                <g class="staff"><circle cx="29" cy="5" r="3"/><circle class="idle" cx="62" cy="5" r="3"/><circle class="idle" cx="98" cy="5" r="3"/><circle class="idle" cx="131" cy="5" r="3"/></g>
+                <g class="tables"><circle cx="44" cy="50" r="7"/><circle cx="88" cy="54" r="7"/><circle cx="130" cy="48" r="7"/></g>
+                <g class="cust"><circle class="c2" cx="29" cy="21" r="3.2"/><circle class="c0" cx="34" cy="46" r="3.2"/><circle class="c1" cx="54" cy="46" r="3.2"/><circle class="c3" cx="44" cy="61" r="3.2"/><circle class="c4" cx="78" cy="50" r="3.2"/><circle class="c0" cx="98" cy="50" r="3.2"/><circle class="c1" cx="88" cy="65" r="3.2"/><circle class="c3" cx="120" cy="44" r="3.2"/><circle class="c4" cx="140" cy="44" r="3.2"/><circle class="c2" cx="130" cy="59" r="3.2"/></g>
+              </svg>
+              <h2>The habit sticks.</h2>
+              <p>Eleven days after the rules go, YouGov asks how you’d rather order. From your table, 51%. At the bar, 25%. Table service isn’t a queue, but it is the habit of not walking to the bar. It stuck.</p>
+              <p class="src"><a href="https://yougov.com/en-gb/daily-results/20210730-a367c-2" rel="noopener">YouGov, 30 Jul 2021, 5,695 adults</a></p>
+            </article>
+          </li>
+
+          <li class="hist-stop reveal" id="2022-01-28">
+            <p class="sticker"><time datetime="2022-01-28"><small>28 Jan</small><b>2022</b></time></p>
+            <article class="card hist-card">
+              <svg class="mini" viewBox="0 0 160 72" aria-hidden="true" focusable="false">
+                <rect class="bar" x="8" y="9" width="144" height="4" rx="1"/><rect class="lip" x="8" y="13" width="144" height="2"/>
+                <g class="staff"><circle cx="29" cy="5" r="3"/><circle cx="62" cy="5" r="3"/><circle cx="98" cy="5" r="3"/><circle cx="131" cy="5" r="3"/></g>
+                <g class="tables"><circle cx="40" cy="54" r="7"/><circle cx="122" cy="52" r="7"/></g>
+                <g class="cust"><circle class="c0" cx="24" cy="21" r="3.2"/><circle class="c1" cx="48" cy="21" r="3.2"/><circle class="c2" cx="70" cy="21" r="3.2"/><circle class="c3" cx="92" cy="21" r="3.2"/><circle class="c4" cx="116" cy="21" r="3.2"/><circle class="c0" cx="138" cy="21" r="3.2"/><circle class="c1" cx="80" cy="34" r="3.2"/></g>
+              </svg>
+              <h2>Last orders for table service.</h2>
+              <p>Wales drops table service, the last of the four nations to. 679 days after the pubs shut.</p>
+              <p class="src"><a href="https://www.gov.wales/wales-completes-move-alert-level-0" rel="noopener">Welsh Government, 28 Jan 2022</a></p>
+            </article>
+          </li>
+
+          <li class="hist-stop reveal" id="2023-07">
+            <p class="sticker"><time datetime="2023-07"><small>July</small><b>2023</b></time></p>
+            <article class="card hist-card">
+              <svg class="mini" viewBox="0 0 160 72" aria-hidden="true" focusable="false">
+                <rect class="bar" x="8" y="9" width="144" height="4" rx="1"/><rect class="lip" x="8" y="13" width="144" height="2"/>
+                <g class="staff"><circle class="idle" cx="29" cy="5" r="3"/><circle cx="62" cy="5" r="3"/><circle class="idle" cx="98" cy="5" r="3"/><circle class="idle" cx="131" cy="5" r="3"/></g>
+                <g class="cust"><circle class="c0" cx="62" cy="21" r="3.2"/><circle class="c1" cx="64" cy="29" r="3.2"/><circle class="c2" cx="61" cy="37" r="3.2"/><circle class="c3" cx="63" cy="45" r="3.2"/><circle class="c4" cx="60" cy="53" r="3.2"/><circle class="c0" cx="63" cy="61" r="3.2"/><circle class="c1" cx="61" cy="69" r="3.2"/></g>
+              </svg>
+              <h2>Someone notices.</h2>
+              <p>Time Out asks: ‘Why have people started queuing single-file in pubs?’ Two years after the rules ended.</p>
+              <p class="src"><a href="https://www.timeout.com/uk/news/why-have-people-started-queuing-single-file-in-pubs-073123" rel="noopener">Time Out, July 2023</a></p>
+            </article>
+          </li>
+
+          <li class="hist-stop reveal" id="2025-08-23">
+            <p class="sticker"><time datetime="2025-08-23"><small>23 Aug</small><b>2025</b></time></p>
+            <article class="card hist-card">
+              <svg class="mini" viewBox="0 0 160 72" aria-hidden="true" focusable="false">
+                <rect class="bar" x="8" y="9" width="144" height="4" rx="1"/><rect class="lip" x="8" y="13" width="144" height="2"/>
+                <g class="staff"><circle class="idle" cx="29" cy="5" r="3"/><circle cx="62" cy="5" r="3"/><circle class="idle" cx="98" cy="5" r="3"/><circle class="idle" cx="131" cy="5" r="3"/></g>
+                <g class="cust"><circle class="c0" cx="62" cy="21" r="3.2"/><circle class="c1" cx="64" cy="29" r="3.2"/><circle class="c2" cx="61" cy="37" r="3.2"/><circle class="c3" cx="63" cy="45" r="3.2"/><circle class="c4" cx="60" cy="53" r="3.2"/><circle class="c0" cx="63" cy="61" r="3.2"/></g>
+                <rect class="sign" x="98" y="40" width="54" height="15" rx="7.5"/><text class="sign-txt" x="125" y="50.6" text-anchor="middle">front page</text>
+              </svg>
+              <h2>America notices.</h2>
+              <p>The Wall Street Journal calls the single-file queue ‘a mortal threat’ to British pub culture. Two years after Time Out. Same question, bigger newspaper.</p>
+              <p class="src"><a href="https://www.tovima.com/wsj/britains-pub-culture-faces-a-mortal-threat-the-single-file-queue/" rel="noopener">The Wall Street Journal, 23 Aug 2025</a></p>
+            </article>
+          </li>
+
+          <li class="hist-stop reveal" id="2025-09-18">
+            <p class="sticker"><time datetime="2025-09-18"><small>18 Sep</small><b>2025</b></time></p>
+            <article class="card hist-card">
+              <svg class="mini" viewBox="0 0 160 72" aria-hidden="true" focusable="false">
+                <rect class="bar" x="8" y="9" width="144" height="4" rx="1"/><rect class="lip" x="8" y="13" width="144" height="2"/>
+                <g class="staff"><circle cx="29" cy="5" r="3"/><circle class="idle" cx="62" cy="5" r="3"/><circle cx="98" cy="5" r="3"/><circle cx="131" cy="5" r="3"/></g>
+                <g class="cust"><circle class="c0" cx="29" cy="21" r="3.2"/><circle class="c1" cx="31" cy="29" r="3.2"/><circle class="c2" cx="28" cy="37" r="3.2"/><circle class="c3" cx="30" cy="45" r="3.2"/><circle class="c4" cx="92" cy="21" r="3.2"/><circle class="c0" cx="108" cy="21" r="3.2"/><circle class="c1" cx="124" cy="21" r="3.2"/><circle class="c2" cx="140" cy="21" r="3.2"/><circle class="dk" cx="70" cy="56" r="3.2"/><circle class="dk" cx="146" cy="60" r="3.2"/></g>
+              </svg>
+              <h2>Britain splits.</h2>
+              <p>YouGov asks which you’d prefer. Single file, 40%. Along the bar, 39%. Don’t know, 21%. One point in it. <a href="https://yougov.com/en-gb/daily-results/20250918-59cc2-2" rel="noopener">One in four adults</a> had seen a single-file bar queue that year.</p>
+              <p class="src"><a href="https://yougov.co.uk/topics/consumer/survey-results/daily/2025/09/18/59cc2/3" rel="noopener">YouGov, 18 Sep 2025, 5,914 GB adults</a></p>
+            </article>
+          </li>
+
+          <li class="hist-stop reveal" id="today">
+            <p class="sticker"><span><b class="one">today</b></span></p>
+            <article class="card hist-card now">
+              <svg class="mini" viewBox="0 0 160 72" aria-hidden="true" focusable="false">
+                <rect class="bar" x="8" y="9" width="144" height="4" rx="1"/><rect class="lip" x="8" y="13" width="144" height="2"/>
+                <g class="staff"><circle class="idle" cx="29" cy="5" r="3"/><circle cx="62" cy="5" r="3"/><circle class="idle" cx="98" cy="5" r="3"/><circle class="idle" cx="131" cy="5" r="3"/></g>
+                <g class="cust"><circle class="c0" cx="62" cy="21" r="3.2"/><circle class="c1" cx="64" cy="28" r="3.2"/><circle class="c2" cx="61" cy="35" r="3.2"/><circle class="c3" cx="63" cy="42" r="3.2"/><circle class="c4" cx="60" cy="49" r="3.2"/><circle class="c0" cx="63" cy="56" r="3.2"/><circle class="c1" cx="61" cy="63" r="3.2"/><circle class="c2" cx="63" cy="70" r="3.2"/><circle class="c3" cx="60" cy="77" r="3.2"/></g>
+              </svg>
+              <!-- The real figure lives in .count-txt from page load (script.js writes it at init).
+                   .count-vis is an aria-hidden twin that only shows the running number during the count-up. -->
+              <h2><b class="count" data-since="2021-07-19"><span class="count-vis" aria-hidden="true"></span><span class="count-txt">over five years</span></b> since you were allowed back at the bar.</h2>
+              <p>Still queueing. That’s long enough.</p>
+              <p class="src">Counted from 19 Jul 2021, England (SI 2021/848)</p>
+            </article>
+          </li>
+    </ol>
+  </section>
+
+  <!-- THE QUESTIONS -->
+  <section class="c-cream hist-qa" id="questions">
+    <div class="inner">
+      <p class="small">questions</p>
+      <h2 class="big">Asked and answered.</h2>
+      <div class="hist-q">
+        <h3>Why do people queue at the bar now?</h3>
+        <p>Nobody told them to. The 2020 guidance said not to gather at the bar at all; floor markings were for entrances and queues outside. Pubs reopened to stickers and table service, and the line outlasted the rules. 2020 normalised it; it didn’t invent it.</p>
+        <p class="src"><a href="https://assets.publishing.service.gov.uk/media/5eb96e8e86650c278b077616/working-safely-during-covid-19-restaurants-pubs-takeaway-services-091120.pdf" rel="noopener">GOV.UK guidance for pubs, 2020</a></p>
+      </div>
+      <div class="hist-q">
+        <h3>When did table service end in pubs?</h3>
+        <p>England, 19 July 2021. Wales was the last of the four, on 28 January 2022.</p>
+        <p class="src"><a href="https://www.legislation.gov.uk/uksi/2021/848/made" rel="noopener">SI 2021/848 (England)</a> · <a href="https://www.gov.wales/wales-completes-move-alert-level-0" rel="noopener">Welsh Government, 28 Jan 2022</a></p>
+      </div>
+      <div class="hist-q">
+        <h3>Do most people prefer queueing at the bar?</h3>
+        <p>Depends who asks. YouGov, September 2025: single file 40%, along the bar 39%, don’t know 21%.</p>
+        <p class="src"><a href="https://yougov.co.uk/topics/consumer/survey-results/daily/2025/09/18/59cc2/3" rel="noopener">YouGov, 18 Sep 2025, 5,914 GB adults</a></p>
+      </div>
+      <div class="hist-q">
+        <h3>Is it rude to go to the bar when there’s a queue?</h3>
+        <p>Not at a bar, which Kate Fox called the only place in Britain where anything is served without a queue. The invisible queue polices itself: in 2017, 91% told YouGov they’d point out that someone else was next if they were served out of turn.</p>
+        <p class="src"><a href="http://www.sirc.org/publik/ptpchap1.html" rel="noopener">Kate Fox, Passport to the Pub, 1996</a> · <a href="https://yougov.co.uk/news/2017/11/24/young-brits-wont-speak-themselves-bar/" rel="noopener">YouGov, 24 Nov 2017</a></p>
+      </div>
+      <div class="hist-q">
+        <h3>How much slower is The Single File?</h3>
+        <p>Twenty orders through one spot on the bar take 25 minutes at 75 seconds each. Across four staff, six. Arithmetic, not a stopwatch.</p>
+        <p class="src">A worked example, not a survey. Illustrative, like the sims on the home page.</p>
+      </div>
+      <div class="hist-q">
+        <h3>How do you order without queueing?</h3>
+        <p>Walk to the bar. Pick a gap. Catch an eye. Trust the barperson. The four steps are on the home page, and there is a test.</p>
+        <p class="src"><a href="/prototypes/home.html#howto">How to do The Cluster</a> · <a href="/hazard.html">The hazard perception test</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAILERS -->
+  <section class="screen c-blue hist-trailer" id="test">
+    <div class="inner reveal">
+      <p class="small">think you’re ready?</p>
+      <h2 class="mega">The Hazard <br>Perception <br>Test</h2>
+      <p class="mid">Two tests. Which side <br>of the bar are you on?</p>
+      <a class="cta" href="/hazard.html">Take the test →</a>
+    </div>
+  </section>
+
+  <section class="screen c-ink hist-trailer" id="petition-trailer" data-pill="off">
+    <div class="inner reveal">
+      <h2 class="big">Still queueing?</h2>
+      <p class="mid dim">Sign the petition. Then go and stand at the bar.</p>
+      <a class="cta" href="/prototypes/home.html#petition-section">Sign the petition</a>
+    </div>
+  </section>
+  </main>
+
+  <footer class="site-footer" data-pill="off">
+    <p class="emoji" aria-hidden="true">🍺🍻🥜🍟🥃🍷🧾</p>
+    <p class="sources">
+      Sources:
+      <a href="http://www.sirc.org/publik/ptpchap1.html" rel="noopener">Kate Fox, Passport to the Pub (1996)</a> ·
+      <a href="https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-20-march-2020" rel="noopener">GOV.UK, 20 Mar 2020</a> ·
+      <a href="https://assets.publishing.service.gov.uk/media/5eb96e8e86650c278b077616/working-safely-during-covid-19-restaurants-pubs-takeaway-services-091120.pdf" rel="noopener">GOV.UK pub guidance (2020)</a> ·
+      <a href="https://www.legislation.gov.uk/uksi/2020/1029/made" rel="noopener">SI 2020/1029</a> ·
+      <a href="https://www.legislation.gov.uk/uksi/2021/848/made" rel="noopener">SI 2021/848</a> ·
+      <a href="https://yougov.com/en-gb/daily-results/20210730-a367c-2" rel="noopener">YouGov, 30 Jul 2021</a> ·
+      <a href="https://www.gov.wales/wales-completes-move-alert-level-0" rel="noopener">Welsh Government, 28 Jan 2022</a> ·
+      <a href="https://www.timeout.com/uk/news/why-have-people-started-queuing-single-file-in-pubs-073123" rel="noopener">Time Out, Jul 2023</a> ·
+      <a href="https://www.tovima.com/wsj/britains-pub-culture-faces-a-mortal-threat-the-single-file-queue/" rel="noopener">The Wall Street Journal, 23 Aug 2025</a> ·
+      <a href="https://yougov.co.uk/topics/consumer/survey-results/daily/2025/09/18/59cc2/3" rel="noopener">YouGov, 18 Sep 2025</a> ·
+      <a href="https://yougov.co.uk/news/2017/11/24/young-brits-wont-speak-themselves-bar/" rel="noopener">YouGov, 24 Nov 2017</a>.
+      The days are counted from 19 Jul 2021, England.
+    </p>
+    <p><a href="#top">Back to the top</a></p>
+  </footer>
+
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Article",
+   "headline": "Why do people queue in pubs now?",
+   "alternativeHeadline": "Blame 2020. Mostly.",
+   "description": "The rules never said queue at the bar. Pubs shut in March 2020, England’s bar came back in July 2021, and the queue stayed. Eleven stops, with sources.",
+   "datePublished": "2026-10-14",
+   "dateModified": "2026-10-14",
+   "inLanguage": "en-GB",
+   "author": {
+    "@type": "Organization",
+    "name": "Don’t Queue At The Bar"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Don’t Queue At The Bar"
+   },
+   "mainEntityOfPage": "/history"
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Why do people queue at the bar now?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Nobody told them to. The 2020 guidance said not to gather at the bar at all; floor markings were for entrances and queues outside. Pubs reopened to stickers and table service, and the line outlasted the rules. 2020 normalised it; it didn’t invent it."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "When did table service end in pubs?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "England, 19 July 2021. Wales was the last of the four, on 28 January 2022."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Do most people prefer queueing at the bar?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Depends who asks. YouGov, September 2025: single file 40%, along the bar 39%, don’t know 21%."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Is it rude to go to the bar when there’s a queue?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Not at a bar, which Kate Fox called the only place in Britain where anything is served without a queue. The invisible queue polices itself: in 2017, 91% told YouGov they’d point out that someone else was next if they were served out of turn."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How much slower is The Single File?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Twenty orders through one spot on the bar take 25 minutes at 75 seconds each. Across four staff, six. Arithmetic, not a stopwatch."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "How do you order without queueing?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Walk to the bar. Pick a gap. Catch an eye. Trust the barperson. The four steps are on the home page, and there is a test."
+     }
+    }
+   ]
+  }
+ ]
+}
+  </script>
+</body>
+</html>

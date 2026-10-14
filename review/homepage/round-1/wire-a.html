@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Wireframe A: one screen says it all</title><style>
+:root{--cream:#fff4dc;--ink:#16161d;--green:#0f5b43;--amber:#ffb627;--red:#d62839;--pink:#ff9ec1;--blue:#2447f5;--night:#0e0e13;--wood:#c98a3e;
+ --font:"Avenir Next","Helvetica Neue","Segoe UI",system-ui,-apple-system,Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);color:var(--ink);background:var(--cream);text-align:center;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0}
+.scr{position:relative;min-height:calc(var(--vp,1) * 100vh);display:grid;place-items:center;padding:10vh 6vw;overflow:hidden}
+.c-cream{background:var(--cream);color:var(--ink)}.c-ink{background:var(--ink);color:var(--cream)}.c-green{background:var(--green);color:var(--cream)}
+.c-amber{background:var(--amber);color:var(--ink)}.c-red{background:var(--red);color:var(--cream)}.c-pink{background:var(--pink);color:var(--ink)}.c-blue{background:var(--blue);color:var(--cream)}
+.inner{width:min(1200px,100%)}
+.mega{font-size:clamp(2.4rem,9vw,8rem);line-height:.95;font-weight:900;letter-spacing:-.04em;text-transform:lowercase}
+.big{font-size:clamp(1.8rem,5.2vw,4.4rem);line-height:1;font-weight:800;letter-spacing:-.03em;text-transform:lowercase}
+.mid{font-size:clamp(1.05rem,2.2vw,1.8rem);line-height:1.3;font-weight:600;margin-top:.8em}
+.small{font-size:clamp(.9rem,1.5vw,1.2rem);font-weight:500;letter-spacing:.04em;text-transform:lowercase;opacity:.85;margin:.6em 0}
+.ph{opacity:.92}
+.ph::before{content:"[ "}.ph::after{content:" ]"}
+.meta{position:absolute;top:10px;left:50%;translate:-50% 0;font-size:.72rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:.3em .9em;border:2px dashed currentColor;border-radius:999px;opacity:.75;white-space:nowrap}
+.note{position:absolute;bottom:10px;left:50%;translate:-50% 0;font-size:.78rem;font-weight:600;opacity:.8;max-width:80%;text-wrap:balance}
+.box{border:3px dashed currentColor;border-radius:20px;padding:1em;font-size:.95rem;font-weight:700;line-height:1.25;display:grid;place-items:center;text-align:center;opacity:.95}
+.box small{display:block;font-weight:500;opacity:.8;font-size:.8rem;margin-top:.3em}
+.sim{aspect-ratio:16/11;width:min(100%,560px);margin:1.2em auto 0;background:var(--night);color:var(--cream);border:4px solid rgba(255,244,220,.9);border-radius:24px;border-style:solid;position:relative}
+.sim .bar{position:absolute;left:5%;right:5%;top:17%;height:5%;background:var(--wood);border-radius:3px;box-shadow:0 4px 0 #8a5a22}
+.sim .lbl{position:absolute;left:5%;bottom:6%;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:900;opacity:.8}
+.sim .score{position:absolute;right:5%;bottom:5%;text-align:right;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:900}
+.sim .score b{display:block;font-size:2.4rem;color:var(--amber);line-height:1;font-variant-numeric:tabular-nums}
+.sim .what{position:absolute;inset:30% 8% 30% 8%;display:grid;place-items:center;font-size:.9rem;font-weight:700;opacity:.9;border:2px dashed rgba(255,244,220,.4);border-radius:14px}
+.sim.one{width:min(100%,560px,52vh)}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:1.5rem;margin-top:1em;align-items:start}
+.pair .sim{margin-top:.6em;width:min(100%,calc(40vh * 16 / 11))}
+.verdict{padding-block:5vh}
+.verdict .bars{margin-top:1em;gap:.4rem}
+.verdict .track{height:22px}
+.verdict .pair{margin-top:.4em}
+.pair h3{font-size:clamp(1.3rem,2.6vw,2.2rem);font-weight:800;letter-spacing:-.02em;line-height:1.05;text-transform:lowercase}
+.chip{display:inline-block;font-size:.75rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:.3em .8em;border-radius:999px;margin-bottom:.4em}
+.chip.red{background:var(--red);color:var(--cream)}.chip.green{background:var(--green);color:var(--cream)}
+.bars{width:min(900px,100%);margin:1.4em auto 0;display:grid;gap:.6rem;text-align:left}
+.bar-row .label{display:flex;justify-content:space-between;font-weight:900;font-size:1rem;text-transform:lowercase;font-variant-numeric:tabular-nums}
+.track{height:28px;background:rgba(255,244,220,.18);border-radius:16px;overflow:hidden}
+.c-cream .track,.c-amber .track,.c-pink .track{background:rgba(22,22,29,.12)}
+.fill{height:100%;border-radius:16px}
+.fill.single{width:100%;background:var(--red)}.fill.cluster{width:25%;background:var(--cream)}
+.c-ink .fill.cluster{background:var(--amber)}
+.tag{display:inline-block;margin-top:1em;padding:.4em 1em;border:3px solid currentColor;border-radius:999px;font-weight:900;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;rotate:-3deg}
+.src{font-size:.85rem;font-weight:500;opacity:.75;margin-top:1em;max-width:60ch;margin-inline:auto}
+.cta{display:inline-block;margin-top:1.2em;padding:.7em 1.4em;border-radius:999px;background:var(--ink);color:var(--cream);font-weight:900;font-size:1.1rem}
+.c-ink .cta{background:var(--amber);color:var(--ink)}
+.cta.outline{background:transparent;color:inherit;border:3px solid currentColor}
+.plain{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:3px}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1rem;width:min(700px,100%);margin:1.2em auto 0}
+.choices .b{padding:.7em 1em .8em;border-radius:999px;background:var(--ink);color:var(--cream);font-weight:900;font-size:1.6rem;line-height:1}
+.choices .b span{display:block;font-size:.85rem;font-weight:600;opacity:.8;margin-top:.25em}
+.chart{width:min(700px,100%);margin:1em auto 0;text-align:left;display:grid;gap:.5rem}
+.chart .r{display:grid;grid-template-columns:110px 1fr 90px;gap:.8rem;align-items:center;font-weight:900}
+.chart .p{height:26px;background:transparent;border-bottom:2px solid rgba(22,22,29,.45);position:relative}
+.chart .p i{position:absolute;left:0;top:0;bottom:0;border-radius:0 6px 6px 0}
+.chart .g{background:var(--green)}.chart .rd{background:var(--red)}
+.chart .f{text-align:right;font-variant-numeric:tabular-nums}
+.chart .f small{display:block;font-weight:500;opacity:.75;font-size:.8rem}
+.form{width:min(560px,100%);margin:1.2em auto 0;text-align:left;display:grid;gap:.7rem}
+.form .in{height:52px;border:3px solid var(--cream);border-radius:14px;padding:0 1em;display:flex;align-items:center;font-weight:700;opacity:.6}
+.form .lab{font-size:.95rem;font-weight:700}
+.form .chk{font-size:.85rem;opacity:.8;display:flex;gap:.6em;align-items:flex-start}
+.form .chk i{width:20px;height:20px;border:2px solid var(--cream);border-radius:4px;flex:none}
+.form .sub{height:56px;border-radius:999px;background:var(--amber);color:var(--ink);display:grid;place-items:center;font-weight:900;font-size:1.2rem}
+.stage{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;margin-top:1em;text-align:left}
+.stage .copy .step{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;font-weight:900;opacity:.8}
+.stage .pills{display:flex;gap:.5rem;margin-top:1em;align-items:center}
+.stage .pills i{width:36px;height:36px;border-radius:999px;border:3px solid currentColor;display:grid;place-items:center;font-style:normal;font-weight:900;font-size:.9rem}
+.stage .pills i.on{background:currentColor}
+.stage .pills i.on::after{content:"";}
+.stickers{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin-top:1.4em}
+.sticker{width:84px;height:84px;border-radius:50%;background:var(--cream);color:var(--ink);border:3px dashed var(--ink);display:grid;place-content:center;font-weight:900;font-size:1rem;line-height:1;rotate:-4deg}
+.sticker small{display:block;font-size:.62rem;font-weight:700;margin-bottom:.2em}
+.sticker.now{background:var(--ink);color:var(--cream);border-style:solid;scale:1.08}
+.count{font-size:clamp(3rem,10vw,9rem);font-weight:900;letter-spacing:-.06em;line-height:.85;font-variant-numeric:tabular-nums;color:var(--ink)}
+.c-pink .count{color:var(--ink)} .c-amber .count{color:var(--ink)} .c-ink .count{color:var(--amber)}
+.art{display:flex;flex-wrap:wrap;gap:1.4rem;justify-content:center;margin-top:1.4em;align-items:center}
+.mat{width:150px;height:150px;border-radius:50%;background:#fff;color:#000;border:6px solid #000;display:grid;place-items:center;font-weight:900;font-size:.85rem;line-height:1;rotate:-6deg;filter:drop-shadow(0 8px 0 rgba(22,22,29,.25))}
+.mat.back{background:#000;color:#fff;border-color:#fff;rotate:5deg}
+.sheet{width:120px;height:170px;background:#fff;color:#000;border:2px solid #000;display:grid;place-items:center;font-weight:900;font-size:.75rem;line-height:1.1;rotate:-3deg;filter:drop-shadow(0 8px 0 rgba(22,22,29,.25));padding:.5em}
+.sheet.b{rotate:3deg}
+.dl{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:1.2em}
+.dl span{padding:.5em 1em;border:3px solid currentColor;border-radius:999px;font-weight:900;font-size:.85rem}
+.dl span small{display:block;font-weight:500;font-size:.7rem;opacity:.8}
+.stat{display:inline-grid;gap:.2em;justify-items:start;text-align:left;margin-top:1em;padding:.6em 1.2em;border:3px dashed currentColor;border-radius:20px}
+.stat b{font-size:clamp(2.4rem,7vw,5.5rem);font-weight:900;letter-spacing:-.05em;line-height:.9;font-variant-numeric:tabular-nums}
+.stat span{font-weight:700;font-size:.95rem}
+.score-strip{display:inline-flex;gap:2rem;margin-top:1em;padding:.7em 1.4em;border:3px dashed currentColor;border-radius:999px;font-weight:900;font-size:1rem;text-transform:lowercase;align-items:center;flex-wrap:wrap;justify-content:center}
+.score-strip b{font-size:1.8rem;font-variant-numeric:tabular-nums;color:var(--amber)}
+.score-strip .dim b{color:inherit;opacity:.8}
+.lockup{position:absolute;top:20px;left:24px;display:flex;align-items:center;gap:.5em;font-weight:900;font-size:1rem;line-height:.95;text-align:left;letter-spacing:-.02em}
+.lockup i{width:44px;height:44px;border-radius:50%;border:4px solid var(--ink);display:block;position:relative}
+.lockup i::after{content:"";position:absolute;left:-6px;right:-6px;top:50%;height:5px;background:var(--ink);border-radius:2px}
+.promo{position:absolute;right:24px;bottom:28px;width:170px;padding:.9em 1em;border:3px solid var(--ink);border-radius:18px;background:var(--red);color:var(--cream);font-weight:900;text-transform:uppercase;font-size:.95rem;line-height:1;box-shadow:5px 5px 0 var(--ink);rotate:-4deg}
+.promo em{font-style:normal;color:var(--amber)}
+.promo small{display:block;margin-top:.5em;font-size:.6rem;background:var(--ink);border-radius:999px;padding:.3em .6em;letter-spacing:.04em;text-transform:none}
+.hint{position:absolute;bottom:22px;left:50%;translate:-50% 0;font-size:2rem;font-weight:900}
+/* the fixed chrome, drawn in place on each block */
+.rail{position:absolute;left:16px;top:50%;translate:0 -50%;width:34px;padding:12px 0;border-radius:999px;background:rgba(22,22,29,.9);border:2px solid rgba(255,244,220,.3);display:grid;gap:14px;justify-items:center}
+.rail i{width:12px;height:12px;border-radius:50%;border:2px solid rgba(255,244,220,.55);background:var(--ink)}
+.rail i.on{background:var(--amber);border-color:var(--cream);scale:1.4;box-shadow:0 0 0 4px rgba(255,182,39,.35)}
+.rail i.done{background:var(--amber);border-color:var(--amber)}
+.rail.off{opacity:.25}
+.pill{position:absolute;right:16px;top:50%;translate:0 -50%;width:118px;padding:12px 9px 11px;border-radius:26px;background:rgba(22,22,29,.92);border:2px solid rgba(255,244,220,.3);color:var(--cream);display:grid;gap:7px;justify-items:stretch;text-align:center;z-index:5}
+.pill .k{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;font-weight:900;color:var(--amber)}
+.pill .q{font-size:.8rem;font-weight:800;line-height:1.15;text-transform:lowercase}
+.pill .b{border:2px solid var(--cream);border-radius:999px;padding:.45em 0;font-weight:900;font-size:.85rem}
+.pill .b.amber{background:var(--amber);color:var(--ink);border-color:var(--amber);font-size:.78rem;line-height:1.1;padding:.5em .2em}
+.pill .res{display:grid;gap:3px;text-align:left;font-size:.7rem;font-weight:800}
+.pill .res i{display:block;height:6px;border-radius:3px;background:var(--cream);margin-top:2px}
+.pill.off{opacity:.3;outline:2px dashed var(--cream)}
+.pill.off .b,.pill.off .k{opacity:.6}
+.pill .st{font-size:.58rem;font-weight:700;opacity:.8;text-transform:uppercase;letter-spacing:.06em;border-top:1px dashed rgba(255,244,220,.4);padding-top:6px;margin-top:2px}
+.vbar{display:none}
+.pill.static{position:static;translate:none;margin:0 auto}
+.vbar.static{display:flex;position:static;height:56px;background:rgba(22,22,29,.92);border:2px solid rgba(255,244,220,.3);border-radius:8px;color:var(--cream);align-items:center;gap:8px;padding:0 10px;font-size:.78rem;font-weight:800;text-align:left}
+.vbar.static .q{flex:1;text-transform:lowercase;line-height:1.1}.vbar.static .b{border:2px solid var(--cream);border-radius:999px;padding:.45em .9em;font-weight:900}.vbar.static .b.amber{background:var(--amber);color:var(--ink);border-color:var(--amber)}.vbar.static .k{font-size:.55rem;color:var(--amber);letter-spacing:.08em;text-transform:uppercase;display:block}.vbar.static.off{opacity:.3;outline:2px dashed var(--ink)}.vbar.static .res{flex:1;font-size:.7rem;line-height:1.1}
+.scr.pin{align-content:start;padding-top:0;padding-bottom:0}
+.scr.pin .stage-vp{min-height:100vh;display:grid;place-items:center;padding:8vh 0 6vh;width:100%}
+.sticky-rest{position:absolute;left:0;right:0;top:100vh;bottom:0;display:grid;place-items:center;border-top:3px dashed rgba(255,244,220,.5);font-weight:800;font-size:1.1rem;opacity:.75;padding:0 10vw;text-wrap:balance}
+.c-cream .sticky-rest,.c-amber .sticky-rest,.c-pink .sticky-rest{border-color:rgba(22,22,29,.4)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:center;text-align:left;margin-top:1em}
+.split .stat{margin-top:0}
+.states{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:1.2em;text-align:left}
+.states .s{border:3px dashed currentColor;border-radius:16px;padding:.8em;font-size:.85rem;font-weight:700;line-height:1.25}
+.states .s b{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3em}
+.states .s.r{background:var(--red);color:var(--cream);border-color:transparent}.states .s.g{background:var(--green);color:var(--cream);border-color:transparent}.states .s.k{background:var(--ink);color:var(--cream);border-color:transparent}
+@media (max-width:600px){
+ .scr{padding:9vh 52px 11vh 52px}
+ .mega{font-size:10.5vw}.big{font-size:8.2vw}.mid{font-size:1.05rem}
+ .meta{font-size:.6rem;top:8px}
+ .rail{left:7px;width:26px;gap:10px;padding:8px 0}.rail i{width:9px;height:9px}
+ .lockup{left:14px;top:14px;font-size:.8rem}.lockup i{width:34px;height:34px}
+ .promo{width:150px;right:12px;bottom:60px;font-size:.85rem}.hint{bottom:14px}
+ .pill{display:none}
+ .vbar{display:flex;position:absolute;left:0;right:0;bottom:0;height:56px;background:rgba(22,22,29,.92);border-top:2px solid rgba(255,244,220,.3);color:var(--cream);align-items:center;gap:8px;padding:0 10px;z-index:5;font-size:.78rem;font-weight:800;text-align:left}
+ .vbar .q{flex:1;text-transform:lowercase;line-height:1.1}
+ .vbar .b{border:2px solid var(--cream);border-radius:999px;padding:.45em .9em;font-weight:900}
+ .vbar .b.amber{background:var(--amber);color:var(--ink);border-color:var(--amber)}
+ .vbar .k{font-size:.55rem;color:var(--amber);letter-spacing:.08em;text-transform:uppercase;display:block}
+ .vbar.off{opacity:.3;outline:2px dashed var(--cream);outline-offset:-2px}
+ .vbar .res{flex:1;font-size:.7rem;line-height:1.1}
+ .note{bottom:62px;font-size:.7rem}
+ .stage{grid-template-columns:1fr}
+ .split{grid-template-columns:1fr}
+ .states{grid-template-columns:1fr}
+ .chart .r{grid-template-columns:1fr}
+ .sim.one{width:100%}
+ .sticker{width:64px;height:64px;font-size:.8rem}
+ .mat{width:110px;height:110px}.sheet{width:90px;height:128px}
+ .sticky-rest{font-size:.9rem}
+}
+</style></head>
+<body>
+
+<section class="scr c-cream" style="--vp:1">
+  <div class="meta">1 · hero · cream · 1 vp · unchanged + count</div>
+  <div class="lockup"><i></i>don’t queue<br>at the bar.</div>
+  <div class="rail off"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+  <div class="pill off"><div class="k">vote</div><div class="q">(hidden here)</div><div class="st">hidden on the hero</div></div><div class="vbar off"><span class="q">vote bar hidden here</span></div>
+  <div class="inner">
+    <h1 class="mega" style="text-transform:none">Don’t Queue<br>At The Bar</h1>
+    <p class="mid">It’s a pub. Not a post office.</p>
+    <p class="small ph" style="margin-top:1.4em">12,345 have signed. <span class="plain">Add yours ↓</span> (live, from /api/count; plain link below a threshold)</p>
+  </div>
+  <div class="promo">Get your <em>pub goers</em> licence today<small>Do the hazard perception test →</small></div>
+  <div class="hint">↓</div>
+</section>
+<section class="scr c-blue verdict" style="--vp:1">
+  <div class="meta">2 · the verdict · blue · 1 vp · folds problem + solution + comparison + maths</div>
+  <div class="rail"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div><div class="pill"><div class="k">vote</div><div class="q">stop the single file?</div><div class="b">For</div><div class="b">Against</div><div class="st">from here on: the vote pill</div></div><div class="vbar"><span class="q"><span class="k">vote</span>stop the single file?</span><span class="b">For</span><span class="b">Against</span></div>
+  <div class="inner">
+    <p class="small">the problem</p>
+    <h2 class="big ph">headline that states the problem, two lines</h2>
+    <div class="pair">
+      <div><span class="chip red">the single file</span><h3 class="ph">what is wrong, six words</h3><div class="sim "><div class="bar"></div><div class="what">.scene[data-mode=single]<br><small>live score is the proof</small></div><span class="lbl">single file</span><span class="score">pints served<b>4</b></span></div></div>
+      <div><span class="chip green">the cluster</span><h3 class="ph">what we want, six words</h3><div class="sim "><div class="bar"></div><div class="what">.scene[data-mode=cluster]<br><small>same seed, same arrivals, four staff</small></div><span class="lbl">the cluster</span><span class="score">pints served<b>17</b></span></div></div>
+    </div>
+    <div class="bars"><div class="bar-row"><div class="label"><span>the single file, twenty orders</span><span>25 min</span></div><div class="track"><div class="fill single"></div></div></div><div class="bar-row"><div class="label"><span>the cluster, twenty orders</span><span>6¼ min</span></div><div class="track"><div class="fill cluster"></div></div></div></div>
+    <p class="small" style="margin-top:.5em"><span class="tag" style="margin:0 .6em 0 0;font-size:.7rem">worked example</span> Twenty orders, 75 seconds each. One spot on the bar, or four staff along it. &nbsp;·&nbsp; Sold? <span class="plain">Sign the petition.</span></p>
+  </div>
+</section>
+<section class="scr c-green pin" style="--vp:4.5">
+  <div class="meta">3 · how to do the cluster · cream→blue→green · 4.5 vp pinned · unchanged</div>
+  <div class="rail"><i class="done"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div><div class="pill"><div class="k">vote</div><div class="q">stop the single file?</div><div class="b">For</div><div class="b">Against</div><div class="st">still the vote pill until you vote</div></div><div class="vbar"><span class="q"><span class="k">vote</span>stop the single file?</span><span class="b">For</span><span class="b">Against</span></div>
+  <div class="stage-vp"><div class="inner"><div class="stage"><div class="copy"><p class="small" style="margin:0">how to do the cluster</p><p class="big">four easy steps.</p><p class="step" style="margin-top:1em">step 1 of 4</p><p class="big" style="font-size:clamp(1.4rem,3.6vw,3rem)">walk to the bar.</p><p class="mid">Not behind someone. To the bar.</p><div class="pills"><i class="on">1</i><i>2</i><i>3</i><i>4</i></div></div><div class="sim one"><div class="bar"></div><div class="what">how-to stage: .howto-pub<br><small>you (pink) walk up, pick a gap, catch an eye, get a pint; scroll-linked, unchanged</small></div><span class="lbl">the pub</span><span class="score">pints served<b>17</b></span></div></div></div></div>
+  <div class="sticky-rest">the stage stays pinned while 3.5 more viewports scroll past (steps 2, 3, 4), exactly as now</div>
+</section>
+
+<section class="scr c-blue" style="--vp:1">
+  <div class="meta">4 · test teaser · blue · 1 vp · unchanged</div>
+  <div class="rail"><i class="done"></i><i class="done"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div><div class="pill"><div class="k">you voted</div><div class="res"><span>for 71%</span><i style="width:71%"></i><span>against 29%</span><i style="width:29%"></i></div><div class="b amber">Sign the petition</div><div class="st">after a vote: the petition pill</div></div><div class="vbar"><span class="res">For 71% · Against 29%<br><span style="opacity:.7">you voted for</span></span><span class="b amber">Sign the petition</span></div>
+  <div class="inner"><p class="small">think you’re ready?</p><h2 class="mega">the hazard<br>perception test</h2><p class="mid">Two tests. Which side of the bar are you on?</p><span class="cta">Take the test →</span></div>
+</section>
+
+<section class="scr c-pink" style="--vp:1">
+  <div class="meta">5 · history trailer · pink · 1 vp · new (replaces the strip)</div>
+  <div class="rail"><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i></div><div class="pill"><div class="k">you voted</div><div class="res"><span>for 71%</span><i style="width:71%"></i><span>against 29%</span><i style="width:29%"></i></div><div class="b amber">Sign the petition</div><div class="st">after a vote: the petition pill</div></div><div class="vbar"><span class="res">For 71% · Against 29%<br><span style="opacity:.7">you voted for</span></span><span class="b amber">Sign the petition</span></div>
+  <div class="inner"><p class="small">a short history</p><h2 class="mega">blame 2020.<br>mostly.</h2>
+    <p class="count" style="margin-top:.3em">1,913 days</p>
+    <p class="mid">since you were allowed back at the bar. Still queueing. <small style="display:block;font-size:.8rem;opacity:.7">[data-since] counter, reused; the one amber of this screen is the number only on ink, on pink it stays ink</small></p>
+    <div class="stickers"><div class="sticker"><small>before</small>2020</div><div class="sticker"><small>20 mar</small>2020</div><div class="sticker"><small>4 jul</small>2020</div><div class="sticker"><small>24 sep</small>2020</div><div class="sticker"><small>19 jul</small>2021</div><div class="sticker"><small>jul</small>2023</div><div class="sticker"><small>18 sep</small>2025</div><div class="sticker now">today</div></div><p class="small">eight stickers, dates only, each a link to its stop on /history (#2020-07-04 …)</p>
+    <span class="cta">Read the whole history →</span>
+  </div>
+</section>
+
+<section class="scr c-cream" style="--vp:1">
+  <div class="meta">6 · poll · cream · 1 vp · existing component</div>
+  <div class="rail"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i class=""></i><i class=""></i></div><div class="pill off"><div class="k">vote</div><div class="q">(hidden here)</div><div class="st">hidden on the poll screen (the screen is the pill, expanded)</div></div><div class="vbar off"><span class="q">vote bar hidden here</span></div>
+  <div class="inner"><p class="small">pick a side</p><h2 class="mega">stop the<br>single file?</h2>
+    <div class="choices"><div class="b">For<span>spread along the bar</span></div><div class="b">Against<span>keep the orderly line</span></div></div>
+    <p class="small">Vote to see what everyone else said. One vote per browser.</p>
+    <p class="small" style="margin-top:1.4em;opacity:.7">after a vote (from here or from the pill): the question steps down and the chart shows, as now ↓</p>
+    <div class="chart"><div class="r"><span>For</span><span class="p"><i class="g" style="width:71%"></i></span><span class="f">71%<small>1,204 votes</small></span></div><div class="r"><span>Against</span><span class="p"><i class="rd" style="width:29%"></i></span><span class="f">29%<small>492 votes</small></span></div></div>
+  </div>
+  <p class="note">A keeps the poll where it is in the current order, after the history trailer: the pill carries the vote for the 6 viewports above it.</p>
+</section>
+
+<section class="scr c-ink" style="--vp:1.1">
+  <div class="meta">7 · petition · ink · 1.1 vp · form as now</div>
+  <div class="rail"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i><i class=""></i></div><div class="pill off"><div class="k">vote</div><div class="q">(hidden here)</div><div class="st">hidden on the petition screen</div></div><div class="vbar off"><span class="q">vote bar hidden here</span></div>
+  <div class="inner"><h2 class="big">sign the petition</h2><p class="mid" style="opacity:.6">Stand along the bar. Make eye contact. Let the barperson decide.</p><p class="small" style="color:var(--amber);opacity:1">12,345 signatures (#sig-count)</p><div class="form"><span class="lab">Your name</span><div class="in">Jane Pint</div><span class="lab">Email address</span><div class="in">jane@example.com</div><div class="chk"><i></i><span>Consent line as now (petition plus campaign and mat updates).</span></div><div class="sub">Sign the petition</div></div></div>
+</section>
+
+<section class="scr c-amber" style="--vp:1.6">
+  <div class="meta">8 · for pubs · amber · 1.6 vp · mats + posters folded, money stat new</div>
+  <div class="rail"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i></div><div class="pill"><div class="k">you voted</div><div class="res"><span>for 71%</span><i style="width:71%"></i><span>against 29%</span><i style="width:29%"></i></div><div class="b amber">Sign the petition</div><div class="st">after a vote: the petition pill</div></div><div class="vbar"><span class="res">For 71% · Against 29%<br><span style="opacity:.7">you voted for</span></span><span class="b amber">Sign the petition</span></div>
+  <div class="inner"><p class="small">run a pub?</p><h2 class="big ph">headline to the publican: the money, two lines</h2>
+    <div class="split">
+      <div class="stat"><b>£769</b><span>an hour of bar capacity, four spots against one, at £5.34 a pint</span><span class="tag" style="margin-top:.6em">worked example</span></div>
+      <div style="text-align:left"><p class="mid" style="margin-top:0">[ one line: one spot on the bar does 48 pints an hour; four do 192; the difference at £5.34 a pint. Capacity, never takings. ]</p><p class="src" style="margin-inline:0">Derived from the worked example and the Morning Advertiser price survey (Apr 2026). Illustrative, like the sims.</p></div>
+    </div>
+    <p class="big ph" style="margin-top:1.2em;font-size:clamp(1.4rem,3.4vw,2.8rem)">print the poster. that’s the pledge.</p>
+    <div class="art"><div class="mat">don’t<br>queue<br>at the bar.</div><div class="mat back">QR +<br>roundel</div><div class="sheet">poster<br>(face A)<br><br>spread out.</div><div class="sheet b">how-to<br>(face B)<br><br>four easy steps.</div></div>
+    <div class="dl"><span>A4 poster<small>PDF, 30 KB</small></span><span>A4 poster and how-to<small>PDF, 70 KB</small></span><span>A5 poster<small>PDF, 30 KB</small></span><span>A5 poster and how-to<small>PDF, 70 KB</small></span><span>Two A5 on one A4<small>PDF, 40 KB</small></span></div>
+    <p class="small">Mats coming soon: sign the petition and we’ll tell you first. </p>
+  </div>
+</section>
+
+<section class="scr c-ink" style="--vp:.45;min-height:45vh">
+  <div class="meta">footer · ink · 0.45 vp · unchanged</div>
+  <div class="inner"><p class="small">Sources line (the history sources move to /history; the worked-example line stays) · Made with 🍻 · Chip in to the beer fund · Back to the top</p></div>
+</section></body></html>
