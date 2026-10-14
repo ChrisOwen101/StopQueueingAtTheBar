@@ -27,7 +27,11 @@ h1,h2,h3,p{margin:0}
 .sim .what{position:absolute;inset:30% 8% 30% 8%;display:grid;place-items:center;font-size:.9rem;font-weight:700;opacity:.9;border:2px dashed rgba(255,244,220,.4);border-radius:14px}
 .sim.one{width:min(100%,560px,52vh)}
 .pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:1.5rem;margin-top:1em;align-items:start}
-.pair .sim{margin-top:.6em}
+.pair .sim{margin-top:.6em;width:min(100%,calc(40vh * 16 / 11))}
+.verdict{padding-block:5vh}
+.verdict .bars{margin-top:1em;gap:.4rem}
+.verdict .track{height:22px}
+.verdict .pair{margin-top:.4em}
 .pair h3{font-size:clamp(1.3rem,2.6vw,2.2rem);font-weight:800;letter-spacing:-.02em;line-height:1.05;text-transform:lowercase}
 .chip{display:inline-block;font-size:.75rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:.3em .8em;border-radius:999px;margin-bottom:.4em}
 .chip.red{background:var(--red);color:var(--cream)}.chip.green{background:var(--green);color:var(--cream)}
@@ -80,7 +84,7 @@ h1,h2,h3,p{margin:0}
 .dl{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:1.2em}
 .dl span{padding:.5em 1em;border:3px solid currentColor;border-radius:999px;font-weight:900;font-size:.85rem}
 .dl span small{display:block;font-weight:500;font-size:.7rem;opacity:.8}
-.stat{display:inline-grid;gap:.2em;margin-top:1em;padding:.6em 1.2em;border:3px dashed currentColor;border-radius:20px}
+.stat{display:inline-grid;gap:.2em;justify-items:start;text-align:left;margin-top:1em;padding:.6em 1.2em;border:3px dashed currentColor;border-radius:20px}
 .stat b{font-size:clamp(2.4rem,7vw,5.5rem);font-weight:900;letter-spacing:-.05em;line-height:.9;font-variant-numeric:tabular-nums}
 .stat span{font-weight:700;font-size:.95rem}
 .score-strip{display:inline-flex;gap:2rem;margin-top:1em;padding:.7em 1.4em;border:3px dashed currentColor;border-radius:999px;font-weight:900;font-size:1rem;text-transform:lowercase;align-items:center;flex-wrap:wrap;justify-content:center}
@@ -110,6 +114,11 @@ h1,h2,h3,p{margin:0}
 .pill.off .b,.pill.off .k{opacity:.6}
 .pill .st{font-size:.58rem;font-weight:700;opacity:.8;text-transform:uppercase;letter-spacing:.06em;border-top:1px dashed rgba(255,244,220,.4);padding-top:6px;margin-top:2px}
 .vbar{display:none}
+.pill.static{position:static;translate:none;margin:0 auto}
+.vbar.static{display:flex;position:static;height:56px;background:rgba(22,22,29,.92);border:2px solid rgba(255,244,220,.3);border-radius:8px;color:var(--cream);align-items:center;gap:8px;padding:0 10px;font-size:.78rem;font-weight:800;text-align:left}
+.vbar.static .q{flex:1;text-transform:lowercase;line-height:1.1}.vbar.static .b{border:2px solid var(--cream);border-radius:999px;padding:.45em .9em;font-weight:900}.vbar.static .b.amber{background:var(--amber);color:var(--ink);border-color:var(--amber)}.vbar.static .k{font-size:.55rem;color:var(--amber);letter-spacing:.08em;text-transform:uppercase;display:block}.vbar.static.off{opacity:.3;outline:2px dashed var(--ink)}.vbar.static .res{flex:1;font-size:.7rem;line-height:1.1}
+.scr.pin{align-content:start;padding-top:0;padding-bottom:0}
+.scr.pin .stage-vp{min-height:100vh;display:grid;place-items:center;padding:8vh 0 6vh;width:100%}
 .sticky-rest{position:absolute;left:0;right:0;top:100vh;bottom:0;display:grid;place-items:center;border-top:3px dashed rgba(255,244,220,.5);font-weight:800;font-size:1.1rem;opacity:.75;padding:0 10vw;text-wrap:balance}
 .c-cream .sticky-rest,.c-amber .sticky-rest,.c-pink .sticky-rest{border-color:rgba(22,22,29,.4)}
 .split{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:center;text-align:left;margin-top:1em}
@@ -154,28 +163,29 @@ h1,h2,h3,p{margin:0}
   <div class="inner">
     <h1 class="mega" style="text-transform:none">Don’t Queue<br>At The Bar</h1>
     <p class="mid">It’s a pub. Not a post office.</p>
-    <p class="small ph" style="margin-top:1.4em">12,345 have signed. <span class="plain">Add yours ↓</span> (live count from /api/count; a plain “Sign the petition ↓” link until it passes a threshold)</p>
+    <p class="small ph" style="margin-top:1.4em">12,345 have signed. <span class="plain">Add yours ↓</span> (live, from /api/count; plain link below a threshold)</p>
   </div>
   <div class="promo">Get your <em>pub goers</em> licence today<small>Do the hazard perception test →</small></div>
   <div class="hint">↓</div>
 </section>
-<section class="scr c-red" style="--vp:3">
+<section class="scr c-red pin" style="--vp:3">
   <div class="meta">2 · the pinned pub · red→green→ink · 3 vp pinned · new sticky chapter, how-to mechanics</div>
   <div class="rail"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div><div class="pill"><div class="k">vote</div><div class="q">stop the single file?</div><div class="b">For</div><div class="b">Against</div><div class="st">from here on: the vote pill</div></div><div class="vbar"><span class="q"><span class="k">vote</span>stop the single file?</span><span class="b">For</span><span class="b">Against</span></div>
-  <div class="inner">
+  <div class="stage-vp"><div class="inner">
     <p class="small">the problem</p>
-    <h2 class="big ph">slice 1 headline: the problem</h2>
+    <h2 class="big ph">slice 1 headline: states the problem</h2>
     <div class="pair">
       <div><span class="chip red">the single file</span><div class="sim "><div class="bar"></div><div class="what">.scene[data-mode=single]<br><small>runs for all three slices</small></div><span class="lbl">single file</span><span class="score">pints served<b>4</b></span></div></div>
       <div style="opacity:.45"><span class="chip green">the cluster</span><div class="sim "><div class="bar"></div><div class="what">.scene[data-mode=cluster]<br><small>dimmed in slice 1, lit in slice 2</small></div><span class="lbl">the cluster</span><span class="score">pints served<b>17</b></span></div></div>
     </div>
-    <div class="states">
+    <p class="mid ph">one dry line under the pair; the step pills (1 2 3) as on the how-to</p>
+  </div></div>
+  <div class="sticky-rest" style="display:block;padding-top:6vh"><p>the stage stays pinned while two more viewports scroll past: the block turns green, then ink; the sims never stop</p>
+    <div class="inner" style="margin:0 auto"><div class="states">
       <div class="s r"><b>slice 1 · red · 0–1 vp</b>Headline states the problem. The Single File sim is lit, the Cluster sim dimmed. Scores start.</div>
       <div class="s g"><b>slice 2 · green · 1–2 vp</b>Headline says what we want. Both sims lit. The scores have diverged (about 4 to 17).</div>
       <div class="s k"><b>slice 3 · ink · 2–3 vp</b>Headline: “25 minutes. Or six.” The two bars grow under the sims; worked-example tag; “Sold? Sign the petition.”</div>
-    </div>
-  </div>
-  <div class="sticky-rest">the stage stays pinned while two more viewports scroll past: the block turns green, then ink; the sims never stop</div>
+    </div></div></div>
 </section>
 
 <section class="scr c-cream" style="--vp:1">
@@ -189,10 +199,10 @@ h1,h2,h3,p{margin:0}
   </div>
   <p class="note">C also puts the poll straight after the argument.</p>
 </section>
-<section class="scr c-green" style="--vp:4.5">
+<section class="scr c-green pin" style="--vp:4.5">
   <div class="meta">4 · how to do the cluster · cream→blue→green · 4.5 vp pinned · unchanged</div>
   <div class="rail"><i class="done"></i><i class="done"></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div><div class="pill"><div class="k">you voted</div><div class="res"><span>for 71%</span><i style="width:71%"></i><span>against 29%</span><i style="width:29%"></i></div><div class="b amber">Sign the petition</div><div class="st">after a vote: the petition pill</div></div><div class="vbar"><span class="res">For 71% · Against 29%<br><span style="opacity:.7">you voted for</span></span><span class="b amber">Sign the petition</span></div>
-  <div class="inner"><div class="stage"><div class="copy"><p class="small" style="margin:0">how to do the cluster</p><p class="big">four easy steps.</p><p class="step" style="margin-top:1em">step 1 of 4</p><p class="big" style="font-size:clamp(1.4rem,3.6vw,3rem)">walk to the bar.</p><p class="mid">Not behind someone. To the bar.</p><div class="pills"><i class="on">1</i><i>2</i><i>3</i><i>4</i></div></div><div class="sim one"><div class="bar"></div><div class="what">how-to stage: .howto-pub<br><small>you (pink) walk up, pick a gap, catch an eye, get a pint; scroll-linked, unchanged</small></div><span class="lbl">the pub</span><span class="score">pints served<b>17</b></span></div></div></div>
+  <div class="stage-vp"><div class="inner"><div class="stage"><div class="copy"><p class="small" style="margin:0">how to do the cluster</p><p class="big">four easy steps.</p><p class="step" style="margin-top:1em">step 1 of 4</p><p class="big" style="font-size:clamp(1.4rem,3.6vw,3rem)">walk to the bar.</p><p class="mid">Not behind someone. To the bar.</p><div class="pills"><i class="on">1</i><i>2</i><i>3</i><i>4</i></div></div><div class="sim one"><div class="bar"></div><div class="what">how-to stage: .howto-pub<br><small>you (pink) walk up, pick a gap, catch an eye, get a pint; scroll-linked, unchanged</small></div><span class="lbl">the pub</span><span class="score">pints served<b>17</b></span></div></div></div></div>
   <div class="sticky-rest">the stage stays pinned while 3.5 more viewports scroll past (steps 2, 3, 4), exactly as now</div>
 </section>
 
@@ -221,7 +231,7 @@ h1,h2,h3,p{margin:0}
 <section class="scr c-amber" style="--vp:1">
   <div class="meta">8 · for pubs, trailer · amber · 1 vp · the chapter moves to /pubs</div>
   <div class="rail"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="on"></i></div><div class="pill"><div class="k">you voted</div><div class="res"><span>for 71%</span><i style="width:71%"></i><span>against 29%</span><i style="width:29%"></i></div><div class="b amber">Sign the petition</div><div class="st">after a vote: the petition pill</div></div><div class="vbar"><span class="res">For 71% · Against 29%<br><span style="opacity:.7">you voted for</span></span><span class="b amber">Sign the petition</span></div>
-  <div class="inner"><p class="small">run a pub?</p><h2 class="mega ph">headline to the publican</h2>
+  <div class="inner"><p class="small">run a pub?</p><h2 class="big ph">headline to the publican</h2>
     <div class="stat"><b>£769</b><span>an hour of bar capacity, four spots against one, at £5.34 a pint</span><span class="tag" style="margin-top:.6em">worked example</span></div>
     <div class="art" style="margin-top:1em"><div class="mat">don’t<br>queue<br>at the bar.</div><div class="sheet">poster<br>(face A)</div></div>
     <span class="cta">Posters, mats and the sums →</span>
