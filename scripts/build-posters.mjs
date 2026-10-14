@@ -13,8 +13,8 @@
 //   --out DIR        write somewhere else
 //
 // Each concept is one entry in CONCEPTS below (copy, field colour, layout, scan reason), so a
-// round is a change to that array. Three layouts: "notice" (centred, the compliance sign),
-// "tap" (headline stacked top left, the pictogram lower right), "split" (red panel over green).
+// round is a change to that array. Two layouts: "notice" (centred, the compliance sign) and
+// "tap" (headline stacked top left, the pictogram lower right).
 //
 // Paper and the mount: exact A4 (210 x 297 mm) and A5 (148 x 210 mm, the A4 layout at 148/210,
 // every length a multiple of --mm). A home printer can't print to the edge, so a colour field
@@ -187,56 +187,38 @@ const br = (s) => s.replace(/\n/g, '<br>');
 
 // ---------- Copy ----------
 const HOUSE = 'This bar does The&nbsp;Cluster.';
-const POLITE = 'We kindly ask that you spread out along the bar.\nThe bar staff know who’s&nbsp;next.';
+// Two sentences, two lines: the first sentence with "along the bar" on the end is wider than
+// the measure in every font, and the sheet says "at the bar" twice already.
+const POLITE = 'We kindly ask that you spread out.\nThe bar staff know who’s&nbsp;next.';
 const CODE = 'DQ/POS/BAR-001'; // the stock-code gag, in the register of the point-of-sale notice
 
 // ---------- The concepts ----------
-// Round 2 (14 Oct 2026): the family is a pair, the notice and the instruction poster; see
-// brand/final/review/posters/round-1/decision.md. Round 1's six concepts are in that folder.
+// The family is a pair, settled over three rounds on 14 Oct 2026 (brand/final/review/posters/):
+// the notice (the landlord's sheet, the compliance sign) and the instruction poster (the
+// taproom's, the water poster's structure), each in colour and in mono, plus the poster's
+// alternate headline. Round 1's six concepts, with the red notice, the blue poster and the
+// two-panel sheet that were dropped, are rendered in round-1/ and round-2/.
 // field: the block colour. fg: text and marks on it (paper white). ring: the prohibition
-// ring's colour where the layout has one. head: the headline colour. layout: notice | tap |
-// split. upper: uppercase headline. sizes: {head, picto} in mm at A4. subWeight: the tap
-// subhead's weight. scan: the reason beside the code. route: home (the petition) or test (the
-// hazard perception test). paper: the sizes to render (default a4). mono: also render the
+// ring's colour where the layout has one. head: the headline colour. layout: notice | tap.
+// upper: uppercase headline. sizes: {head, picto} in mm at A4. subWeight: the tap subhead's
+// weight. scan: the reason beside the code. route: home (the petition) or test (the hazard
+// perception test). paper: the sizes to render (default a4). mono: also render the
 // black-on-white version.
 const CONCEPTS = [
   {
     id: 'notice-ink',
-    title: 'The notice, on ink',
+    title: 'The notice',
     layout: 'notice',
     field: INK, fg: PAPER, head: AMBER, ring: RED,
     headline: ['NO QUEUEING', 'AT THE BAR'], upper: true,
-    sizes: { head: 25 },
+    sizes: { head: 25 }, // the ceiling: it fills the measure in Liberation Sans
     body: HOUSE, polite: POLITE, code: CODE,
     scan: 'Sign the petition.', route: 'home',
     paper: ['a4', 'a5'], mono: true,
-  },
-  {
-    id: 'notice-red',
-    title: 'The notice, on red',
-    layout: 'notice',
-    field: RED, fg: PAPER, head: PAPER, ring: PAPER,
-    headline: ['NO QUEUEING', 'AT THE BAR'], upper: true,
-    sizes: { head: 25 },
-    body: HOUSE, polite: POLITE, code: CODE,
-    scan: 'Sign the petition.', route: 'home',
-    paper: ['a4', 'a5'],
   },
   {
     id: 'poster-green',
-    title: 'The instruction poster, on green',
-    layout: 'tap',
-    field: GREEN, fg: PAPER, head: PAPER,
-    headline: ['SPREAD', 'OUT.'], upper: true,
-    sizes: { head: 40 },
-    sub: 'It’s a pub.\nNot a post office.', subWeight: 500,
-    polite: 'Please don’t queue. Cheers.',
-    scan: 'Sign the petition.', route: 'home',
-    paper: ['a4', 'a5'], mono: true,
-  },
-  {
-    id: 'poster-green-600',
-    title: 'The instruction poster, on green, subhead at 600',
+    title: 'The instruction poster',
     layout: 'tap',
     field: GREEN, fg: PAPER, head: PAPER,
     headline: ['SPREAD', 'OUT.'], upper: true,
@@ -244,17 +226,7 @@ const CONCEPTS = [
     sub: 'It’s a pub.\nNot a post office.', subWeight: 600,
     polite: 'Please don’t queue. Cheers.',
     scan: 'Sign the petition.', route: 'home',
-  },
-  {
-    id: 'poster-blue',
-    title: 'The instruction poster, on blue (for comparison)',
-    layout: 'tap',
-    field: BLUE, fg: PAPER, head: PAPER,
-    headline: ['SPREAD', 'OUT.'], upper: true,
-    sizes: { head: 40 },
-    sub: 'It’s a pub.\nNot a post office.', subWeight: 500,
-    polite: 'Please don’t queue. Cheers.',
-    scan: 'Sign the petition.', route: 'home',
+    paper: ['a4', 'a5'], mono: true,
   },
   {
     id: 'poster-gap',
@@ -262,10 +234,11 @@ const CONCEPTS = [
     layout: 'tap',
     field: GREEN, fg: PAPER, head: PAPER,
     headline: ['FIND', 'THE', 'GAP.'], upper: true,
-    sizes: { head: 32, picto: 80 },
-    sub: 'Any gap.\nThe bar staff know who’s next.', subWeight: 500,
+    sizes: { head: 32, picto: 80 }, // three lines, so the roundel gives up 16 mm
+    sub: 'Any gap.\nThe bar staff know who’s next.', subWeight: 600,
     polite: 'Please don’t queue. Cheers.',
     scan: 'Take the test.', route: 'test',
+    mono: true,
   },
 ];
 
@@ -276,7 +249,7 @@ const mono = (c) => ({
   id: `${c.id}-mono`,
   title: `${c.title} (mono)`,
   field: PAPER, fg: BLACK, head: BLACK, ring: BLACK,
-  mono: true,
+  isMono: true,
 });
 
 // ---------- Layout ----------
@@ -366,54 +339,22 @@ const CSS_TAP = `
 .tap .qr { width: ${m(36)}; }
 `;
 
-// "split": the wrong behaviour on red over the right one on green, each with its pictogram and
-// a two-word headline, and the house line, the address and the code on the paper under them.
-const split = (c, r) => `<div class="page split">
-  <div class="panel red" style="--field:${RED}">
-    ${prohibition({ ring: PAPER, fig: PAPER, field: RED })}
-    <h1 class="mega">${c.headline[0]}</h1>
-  </div>
-  <div class="panel green" style="--field:${GREEN}">
-    ${roundel(PAPER, 'picto')}
-    <h1 class="mega">${c.headline[1]}</h1>
-  </div>
-  <div class="foot">
-    <div class="words"><p class="house mid">${br(c.body)}</p><p class="cta">${c.scan}</p><p class="addr">${r.text}</p></div>
-    ${qrSvg(r)}
-  </div>
-</div>`;
-const CSS_SPLIT = `
-.split .panel { flex: 1; background: var(--field); color: ${PAPER}; display: flex; align-items: center; gap: ${m(10)}; padding: ${m(10)} ${m(12)}; }
-.split .panel .picto { width: ${m(78)}; }
-.split .panel .mega { font-size: ${m(26)}; color: ${PAPER}; }
-.split .foot { display: flex; align-items: flex-end; justify-content: space-between; gap: ${m(6)}; padding-top: ${m(6)}; color: ${BLACK}; }
-.split .words { flex: 1; min-width: 0; }
-.split .house { font-size: ${m(8)}; }
-.split .words .cta { margin-top: ${m(4)}; }
-.split .words .addr { margin-top: ${m(1.5)}; }
-.split .qr { width: ${m(36)}; }
-`;
-
-const LAYOUTS = { notice, tap, split };
+// (A third layout, "split", the wrong behaviour on a red panel over the right one on green,
+// was Round 1's Concept C; it is rendered in round-1/ and was dropped: both ideas on one sheet,
+// neither leads. The pair hung side by side does its job.)
+const LAYOUTS = { notice, tap };
 
 // ---------- Sheets and documents ----------
 const SIZES = { a4: [210, 297], a5: [148, 210] };
 const sheet = (size, c) => {
   const [w, h] = SIZES[size];
-  const r = ROUTES[c.route];
-  const inner = LAYOUTS[c.layout](c, r);
-  const field = c.layout === 'split'
-    ? `<div class="page split-wrap" style="position:absolute;inset:${m(FRAME)};display:flex;flex-direction:column">${inner}</div>`
-    : `<div class="field${c.mono ? ' mono' : ''}" style="--field:${c.field};--fg:${c.fg};--head:${c.head}">${inner}</div>`;
+  const inner = LAYOUTS[c.layout](c, ROUTES[c.route]);
+  const field = `<div class="field${c.isMono ? ' mono' : ''}" style="--field:${c.field};--fg:${c.fg};--head:${c.head}">${inner}</div>`;
   return `<div class="sheet" style="width:${w}mm;height:${h}mm;--mm:${(w / 210).toFixed(5)}mm">${field}</div>`;
 };
-// The split layout owns its own frame: its panels fill the field and the foot sits on the paper.
-const CSS_SPLIT_WRAP = `
-.split-wrap .split { position: static; inset: auto; flex: 1; }
-`;
 
 const doc = (title, [w, h], body) =>
-  `<!doctype html><html lang="${LANG}"><head><meta charset="utf-8"><title>${title}</title><style>@page { size: ${w}mm ${h}mm; margin: 0; }${CSS}${CSS_NOTICE}${CSS_TAP}${CSS_SPLIT}${CSS_SPLIT_WRAP}</style></head><body>${body}</body></html>`;
+  `<!doctype html><html lang="${LANG}"><head><meta charset="utf-8"><title>${title}</title><style>@page { size: ${w}mm ${h}mm; margin: 0; }${CSS}${CSS_NOTICE}${CSS_TAP}</style></head><body>${body}</body></html>`;
 
 async function printPdf(name, title, size, body) {
   const html = path.join(tmp, `${name}.html`);
@@ -474,7 +415,7 @@ async function preview(name, size, html) {
 
 try {
   let set = ONLY.length ? CONCEPTS.filter((c) => ONLY.includes(c.id)) : CONCEPTS;
-  set = set.flatMap((c) => (c.layout !== 'split' && (MONO || c.mono) ? [c, mono(c)] : [c]));
+  set = set.flatMap((c) => (MONO || c.mono ? [c, mono(c)] : [c]));
   const rows = [];
   for (const c of set) {
     for (const size of SIZES_ARG ? SIZES_ARG.split(',') : c.paper || ['a4']) {
