@@ -1,0 +1,197 @@
+{
+  "report": {
+    "home@1280": {
+      "total": 14.13,
+      "verdict": 1,
+      "verdictH": 1,
+      "problem": null,
+      "problemH": null,
+      "solution": null,
+      "solutionH": null,
+      "poll": 2,
+      "pollButtons": 2.65,
+      "petition": 3,
+      "form": 3.57,
+      "howto": 4.22,
+      "test": 8.72,
+      "history": 9.91,
+      "pubs": 10.91,
+      "pubsH": 2.69
+    },
+    "home@390": {
+      "total": 13.79,
+      "verdict": 1,
+      "verdictH": 1.2,
+      "problem": null,
+      "problemH": null,
+      "solution": null,
+      "solutionH": null,
+      "poll": 2.2,
+      "pollButtons": 2.63,
+      "petition": 3.2,
+      "form": 3.55,
+      "howto": 4.2,
+      "test": 8.7,
+      "history": 9.7,
+      "pubs": 10.7,
+      "pubsH": 2.53
+    },
+    "home-alt@1280": {
+      "total": 15.61,
+      "verdict": null,
+      "verdictH": null,
+      "problem": 1,
+      "problemH": 1.08,
+      "solution": 2.08,
+      "solutionH": 1.41,
+      "poll": 3.49,
+      "pollButtons": 4.13,
+      "petition": 4.49,
+      "form": 5.06,
+      "howto": 5.71,
+      "test": 10.21,
+      "history": 11.4,
+      "pubs": 12.4,
+      "pubsH": 2.69
+    },
+    "home-alt@390": {
+      "total": 14.64,
+      "verdict": null,
+      "verdictH": null,
+      "problem": 1,
+      "problemH": 1,
+      "solution": 2,
+      "solutionH": 1.05,
+      "poll": 3.05,
+      "pollButtons": 3.48,
+      "petition": 4.05,
+      "form": 4.4,
+      "howto": 5.05,
+      "test": 9.55,
+      "history": 10.55,
+      "pubs": 11.55,
+      "pubsH": 2.53
+    },
+    "verdictFit@1280": {
+      "screenH": 801,
+      "vh": 800,
+      "stampBottomInView": true,
+      "stampBottom": 769
+    },
+    "verdictFit@1366": {
+      "screenH": 797,
+      "vh": 768,
+      "stampBottomInView": true,
+      "stampBottom": 766
+    },
+    "pill-vote": {
+      "state": "vote",
+      "shown": true,
+      "live": ""
+    },
+    "pill-posting": {
+      "state": "posting",
+      "shown": true,
+      "live": ""
+    },
+    "pill-voted-stop": {
+      "state": "voted",
+      "shown": true,
+      "live": "Stop 71%, keep 29%. You voted stop."
+    },
+    "pill-voted-keep": {
+      "state": "voted",
+      "shown": true,
+      "live": "Stop 71%, keep 29%. You voted keep."
+    },
+    "pill-returning-voter": {
+      "state": "voted",
+      "shown": true,
+      "live": "Stop 71%, keep 29%. You voted stop."
+    },
+    "pill-notcounted": {
+      "state": "notcounted",
+      "shown": true,
+      "live": "That vote wasn’t counted. Stop 71%, keep 29%."
+    },
+    "pill-signed": {
+      "state": "signed",
+      "shown": true,
+      "live": ""
+    },
+    "pill-focus": {
+      "state": "vote",
+      "shown": true,
+      "live": ""
+    },
+    "tabOrderAtVerdict": [
+      "a.plain:Add your name ↓",
+      "a.promo:Get your pub-goer’",
+      "a.scroll-hint:↓",
+      "button:Stop it spread alo",
+      "button:Keep it stay in li",
+      "input:",
+      "input:",
+      "input:",
+      "button:Sign the petition",
+      "a:Step 1",
+      "a:Step 2",
+      "a:Step 3"
+    ],
+    "phoneOpen": {
+      "stopH": 44,
+      "stopW": 192,
+      "focused": "Stop"
+    },
+    "history@1280": {
+      "total": 8.68,
+      "stops": 11,
+      "openH": 885,
+      "vh": 800
+    },
+    "history@390": {
+      "total": 11.52,
+      "stops": 11,
+      "openH": 844,
+      "vh": 844
+    }
+  },
+  "errors": [
+    "home@1280: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "home@1280: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "home@390: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "home@390: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "home-alt@1280: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "home-alt@1280: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "home-alt@390: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "home-alt@390: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "verdict@1280: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "verdict@1280: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "alt screens: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "alt screens: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "verdict@1366: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "verdict@1366: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "screens: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "screens: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill vote: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill vote: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill posting: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill posting: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill voted-stop: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill voted-stop: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill voted-keep: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill voted-keep: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill returning-voter: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill returning-voter: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill notcounted: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill notcounted: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill signed: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill signed: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill focus: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "pill focus: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "phone pill: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "phone pill: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "reduced: console Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "reduced: console Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+}

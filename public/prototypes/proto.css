@@ -38,7 +38,7 @@
 
 /* The signature count: a fact with a link, written by proto.js from /api/count and only
    from 500 signatures. Hidden otherwise, and without JS. */
-.hero-count { margin-top: 1.4em; }
+.hero-count { margin-top: 1.4em; text-transform: none; }
 .hero-count[hidden] { display: none; }
 
 /* ---------- The verdict: both sims, two headlines, the bars ----------
@@ -46,7 +46,7 @@
    bottom-aligned and the two stages line up. The sims are capped at 40vh tall so the whole
    screen, stamp included, fits 1280x800. On blue the Single File bar is red and the
    Cluster bar cream: the two scores are already the screen's amber. */
-.verdict { padding-block: 5vh; }
+.verdict { padding-block: 4vh; }
 
 .verdict-grid {
   display: grid;
@@ -75,28 +75,29 @@
   text-wrap: balance;
 }
 .verdict .scene {
-  width: min(100%, calc(40vh * 16 / 11));
-  width: min(100%, calc(40svh * 16 / 11));
-  margin: 0.6em auto 0;
+  width: min(100%, calc(35vh * 16 / 11));
+  width: min(100%, calc(35svh * 16 / 11));
+  margin: 0.5em auto 0;
 }
-.verdict .tag { margin-top: 0.8em; font-size: clamp(0.8rem, 1.4vw, 1rem); }
-.verdict .caption { margin: 1em 0 0; }
+.verdict .tag { margin-top: 0.5em; font-size: clamp(0.75rem, 1.2vw, 0.9rem); }
+.verdict .caption { margin: 0.6em 0 0; text-transform: none; } /* a sentence, not a kicker */
 
-.verdict .bars { margin-top: 1em; gap: 0.6rem; }
-.verdict .bar-row .label { font-size: clamp(1rem, 1.8vw, 1.25rem); margin-bottom: 0.25rem; }
-.verdict .bar-track { height: clamp(22px, 3vw, 30px); background: rgba(255, 244, 220, 0.18); }
+.verdict .bars { margin-top: 0.7em; gap: 0.4rem; }
+.verdict .bar-row .label { font-size: clamp(0.95rem, 1.6vw, 1.1rem); margin-bottom: 0.2rem; }
+.verdict .bar-track { height: clamp(20px, 2.6vw, 24px); background: rgba(255, 244, 220, 0.18); }
 .verdict .fill.cluster { background: var(--cream); }
 
+/* The stamp and the caveat on one line, at the source-line size */
 .verdict .stamp-line {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 0.5em 0.9em;
-  margin-top: 1em;
+  margin-top: 0.7em;
 }
-.verdict .stamp-line .tag { margin: 0; }
-.verdict .stamp-line .small { margin: 0; text-wrap: balance; }
+.verdict .stamp-line .tag { margin: 0; font-size: 0.8rem; }
+.verdict .stamp-line .small { margin: 0; font-size: clamp(0.95rem, 1.3vw, 1.1rem); text-transform: none; text-wrap: balance; }
 
 /* Phones: the columns stack (DOM order: the Single File, then The Cluster). */
 @media (max-width: 719px) {
@@ -108,9 +109,11 @@
 }
 
 /* ---------- The alternative home: the problem and the solution as two screens ---------- */
-.rule .scene.capped {
+.alt-rule { padding-block: 6vh; }
+.alt-rule .scene.capped {
   width: min(760px, 100%, 50vh);
   width: min(760px, 100%, 50svh);
+  margin: 3vh auto 2vh;
 }
 .solution-bars { margin-top: 2vh; }
 .solution-bars .bars { margin-top: 0.5em; gap: 0.6rem; }
@@ -214,15 +217,18 @@ html:not(.js) .vote { display: none; }
   vertical-align: middle;
 }
 .vote-row .you[hidden] { display: none; }
+/* The fill is a full-width bar scaled from the left (transform, not width, so nothing
+   lays out while it moves); a 4% floor keeps a zero visible. */
 .vote-row i {
   display: block;
   height: 6px;
   margin-top: 3px;
   border-radius: 3px;
   background: var(--cream);
-  width: calc(var(--v, 0) * 100%);
-  min-width: 4px;
-  transition: width 0.6s cubic-bezier(.2, .8, .2, 1);
+  width: 100%;
+  transform: scaleX(max(var(--v, 0), 0.04));
+  transform-origin: left center;
+  transition: transform 0.6s cubic-bezier(.2, .8, .2, 1);
 }
 
 .vote-link {
@@ -304,6 +310,11 @@ html:not(.js) .vote { display: none; }
   .vote[data-state="notcounted"] .vote-rows { display: none !important; }
 }
 
+/* The pinned how-to stage keeps its foot clear of the phone pill. */
+@media (max-width: 600px) {
+  .js .howto-stick { padding-bottom: calc(4vh + 64px); }
+}
+
 /* Short landscape phones: no pill; the poll screen is two viewports down. */
 @media (max-height: 450px) { .vote { display: none; } }
 
@@ -369,7 +380,7 @@ html:not(.js) .vote { display: none; }
 .pubs-tile .tag { margin-top: 0.9em; font-size: clamp(0.8rem, 1.4vw, 1rem); }
 .pubs-sum .mid { margin-top: 0; }
 .pubs-sum .src { margin: 0.6em 0 0; width: auto; }
-.pubs-pledge { margin-top: 7vh; }
+.pubs-pledge { margin-top: 5vh; }
 .pubs-pledge .mid { max-width: 40ch; margin-inline: auto; }
 
 .pubs-art {
@@ -378,10 +389,10 @@ html:not(.js) .vote { display: none; }
   justify-content: center;
   align-items: center;
   gap: clamp(1rem, 3vw, 2.4rem);
-  margin: 4vh 0 2vh;
+  margin: 3vh 0 1vh;
 }
-.pubs-art .mat { width: clamp(130px, 15vw, 190px); animation: none; }
-.pubs-art .flyer { width: clamp(100px, 11vw, 140px); }
+.pubs-art .mat { width: clamp(120px, 13vw, 160px); }
+.pubs-art .flyer { width: clamp(90px, 10vw, 118px); }
 .pubs .flyer-links { margin-top: 1.4em; }
 .pubs .fine { margin-top: 1.4em; font-size: 1rem; font-weight: 500; opacity: 0.75; text-wrap: pretty; }
 .pubs .mats-line { margin-top: 1.4em; }

@@ -1,0 +1,62 @@
+# Homepage round 3: the build
+
+Design specialist, 14 Oct 2026, from `DECISION.md` and the copywriter's Round 2 deck (`round-2/copy.md` §3) with the decision's overrides. Everything is under `public/prototypes/` (unlinked, `noindex, nofollow`) and reuses `/styles.css` and `/script.js` unchanged. Nothing in `RESEARCH.md` was touched; nothing is committed.
+
+## What was built
+
+| File | Contents |
+| --- | --- |
+| `public/prototypes/home.html` | The recommended page: hero (one ask, the sticker; the "Run a pub? →" door top right; the count line, shown by `proto.js` only from 500 via `/api/count`) → `#verdict` (blue: two columns, each kicker, headline, sim, tag; the caption; the two bars, red and cream; the stamp and caveat) → `#poll` (Stop it / Keep it, form id `#poll-form-p`) → `#petition-section` (the form verbatim, Sam Pint) → `#howto` (verbatim, with its `.howto-at` anchors) → `#test` → `#history` (the trailer led by the live counter) → `#pubs` (the tile "48 an hour. Or 192.", the £224 sentence, the register's honesty line, "Print the poster. That’s the pledge.", one row of art, the five downloads, the fine print, the mats line) → footer. Rail: `#verdict`, `#poll`, `#petition-section`, `#howto`, `#test`, `#history`, `#pubs`. |
+| `public/prototypes/home-alt.html` | The two-screen proof: red `#problem` (the Single File sim alone under "Four staff. One working.", "One line. One spot on the bar.", ✗) then green `#solution` (the Cluster sim under "Spread out.", the name line, ✓, then the bars, stamp and caveat). Everything after is identical. Rail starts `#problem`, `#solution`. |
+| `public/prototypes/history.html` | `/history`: the pink header (ink lockup at 40px, "← Home"), the opening screen ("Blame 2020. Mostly.", the counter at a capped Stat scale, the standfirst), eleven `<article>` stops on a vertical floor-tape spine with stickers and ids by date (`#before-2020` … `#2025-08-23`, `#today`), the eight existing `.mini` stages copied and three new ones drawn in the same vocabulary (30 Jul 2021: tables full, one at the bar; 28 Jan 2022: everyone along the bar, four staff on, tables empty; 23 Aug 2025: the line and a "front page" sign), "Asked and answered." with six `<h3>`s, `Article` + `FAQPage` JSON-LD, the test and petition trailers, the page's own sources line, the pill. Title, description, canonical `/history` and OG tags relative with `data-abs`. |
+| `public/prototypes/proto.css` | The side padding `max(6vw, 150px)` from 901px; the door and the count line; the verdict grid (`display: contents` columns in a two-column, four-row, column-flow grid, so the headline row is bottom-aligned and the stages line up); the alt's screens; the pill in every state, desktop and phone, with the hide, print, reduced-motion and forced-colours rules; the trailer; the pubs tile and art row; the history page. |
+| `public/prototypes/proto.js` | The pill and the poll screen as one module with one state object, one `GET /api/poll` and one cookie (the poll screen's logic is a copy of `script.js`'s with the Stop / Keep words). `POST` bodies carry `source: 'pill'` or `'section'`. The hero count. The signed flag (a `MutationObserver` on the petition form's share box, plus a `localStorage` per-viewer flag). |
+| `review/homepage/round-3/*.png`, `measurements.json` | The renders listed at the end, and the numbers behind the table below. |
+
+The pill, as decided: desktop at rest shows the amber kicker, "Stop the queue?" and Stop / Keep as equal cream outline buttons (Stop first, no amber on either); states loading, vote, posting ("one sec" / "Counting…"), voted-stop and voted-keep (the tally as two cream bars with "you" on the voter's side, the next step as a cream outline button, "full result ↓"), not counted (the tally, no "you", "why? ↓", then the next step of any vote on record), signed (the pill goes). A returning voter loads straight into the voted state. Hidden on the hero, `#poll`, `#petition-section`, `#pubs`, the footer, in print, after signing, on short landscape phones, and on `#test` for a Keep voter (that screen is their next step). The tally has an `aria-live` sentence ("Stop 71%, keep 29%. You voted stop."); the form's accessible name is "Poll: stop the queue at the bar? One vote per browser." Phones: a collapsed ink "Vote" pill bottom right (48px) that expands in place with a × ("Hide this"; Escape closes, focus returns to the toggle; the Stop and Keep buttons are 44px tall); after a vote, "Sign the petition" or "Take the test" under the kicker "make it count."; the how-to stage gets 64px of bottom clearance. Without JavaScript there is no fixed element and the poll screen's form posts as now. Reduced motion: no transitions. A failed vote (the static server's 404, or a real network error) leaves the vote state in place; the pill says nothing visible (a screen-reader line only) and the poll screen's own note carries the reason when the vote came from there.
+
+## What differs from the decision, and why
+
+- **The pubs honesty line is the register's wording** ("Arithmetic, not an audit: 75 seconds an order, a pint an order, a line that ends at one spot on the bar, the average pint (£5.34, Morning Advertiser, Apr 2026). The Friday is made up. Your pub is yours."), which the marketing specialist committed to `RESEARCH.md` row P after the decision quoted the §4 version. The register is the page's source of truth, so the page says what the register says. Same four facts.
+- **The pubs tile line** is mine: "Orders through one spot on the bar, or four staff along it." The deck's tile line was written for a tile whose big number was 192; the decision made the big number "48 an hour. Or 192.", so the line now names the two spots instead of repeating the 48.
+- **The pubs headline is at the chapter scale** (`.rule-title`, one step under Mega). At Mega the chapter was 2.84 viewports; it is 2.69 now. The decision set the words, not the size.
+- **The 28 Jan 2022 stop and the table-service answer** follow the register's later constraint (no Scotland or Northern Ireland dates): the stop ends at "679 days after the pubs shut." and the answer reads "England, 19 July 2021. Wales was the last of the four, on 28 January 2022." with its two sources.
+- **The pill also hides on `#test` for a Keep voter** (marketing's Round 1 rule; the decision's list didn't mention it). A Stop voter still sees it there.
+- **The rail's last label** is "For / Pubs" (kicker "For", label "Pubs"): the deck's "For Pubs" with the kicker "For pubs" would print the same words twice.
+- **The hero count's under-500 line is not built**, as the decision says (nothing below 500). The deck's "Sign the petition ↓" and one-signature forms are not used.
+- **Not built, by the decision:** the pinned stage (C), a `/pubs` page, the pledge form and the "I run a pub" tick, the sticker row on the trailer, the Zonal stop, a no-JS pill, a "Tell a mate" pill state.
+
+## What was cut
+
+Nothing from the plan. The JSON-LD, the questions section and the phone pill's expand all went in. One thing I'd still call unfinished: the alt's problem screen is 1.08 vp at 1280×800, so its ✗ tag sits just under the fold (the comparison point is honest about the alt's cost; shrinking its sim further would be unfair to it).
+
+## Measured
+
+Viewports ("vp") of the window; tops are the top of the block.
+
+| | home @ 1280×800 | home @ 390×844 | home-alt @ 1280×800 | home-alt @ 390×844 |
+| --- | --- | --- | --- | --- |
+| Whole page | 14.13 vp | 13.79 vp | 15.61 vp | 14.64 vp |
+| Proof screen(s) | `#verdict` 1.00 vp (801px, stamp bottom at 769px) | 1.20 vp | `#problem` 1.08 + `#solution` 1.41 | 1.00 + 1.05 |
+| Poll screen top / its buttons | 2.00 / 2.65 vp | 2.20 / 2.63 | 3.49 / 4.13 | 3.05 / 3.48 |
+| Petition top / the form | 3.00 / 3.57 vp | 3.20 / 3.55 | 4.49 / 5.06 | 4.05 / 4.40 |
+| How-to · test · history · pubs tops | 4.22 · 8.72 · 9.91 · 10.91 | 4.20 · 8.70 · 9.70 · 10.70 | 5.71 · 10.21 · 11.40 · 12.40 | 5.05 · 9.55 · 10.55 · 11.55 |
+| Pubs chapter height | 2.69 vp | 2.53 | 2.69 | 2.53 |
+
+The verdict at 1366×768: 797px, the stamp's bottom at 766px, in view. The live page for comparison: 19.2 vp, the poll at 13.7, the form at 14.7. `/history`: 8.68 vp at 1280 (the opening screen 885px), 11.52 vp at 390, eleven stops. The phone pill's Stop button: 44×192px. Tab order from the hero (after the door): the count link, the sticker, the scroll hint, then the poll's buttons; from the top of the page once past the hero: the skip link, the rail, the pill (Stop, Keep), the lockup, the door. The rail's active label never meets the pill (it opens 265px in from the left).
+
+## Checks
+
+`node --check proto.js` passes. No `on*` attributes; the only `<script>` without `src` is the JSON-LD block. The gender grep and the tone grep ("Let’s", "It’s not", "!") are clean on every file. Every same-origin link resolves on the static server except the canonical `/history` (see the merge notes). The two rails match their ids. No page errors in Chromium at either width; the only console lines are the stubbed `/api/count` 404s. The pill's states were rendered by stubbing `/api/poll` through Playwright routes; there is no stub in `proto.js`.
+
+## Merge notes (for the PR, not built here)
+
+- **File moves:** `prototypes/home.html` over `index.html`; `prototypes/history.html` to `public/history.html`, served at `/history` like `/hazard`; `proto.css` folded into `styles.css`; `proto.js`'s poll module replaces the poll block in `script.js` (the pill, the hero count and the signed flag join it); the `.strip` CSS and the history-strip script can go.
+- **Ids and links:** rename `#poll-form-p` back to `#poll-form`; `/prototypes/history.html` → `/history` (the trailer's CTA, the footer, the history page's `/prototypes/home.html…` links → `/` and `/#howto`); `/hazard.html` can stay or become `/hazard`; the history page's petition trailer is `#petition-trailer` because `#petition` is the form's id in `script.js` (keep it that way).
+- **Worker:** `pollWords` in `src/worker.js` takes the Stop / Keep lines (buttons "Stop it" / "Keep it", chart rows Stop / Keep, the quips "You said stop. Correct. Now make it official." and "You said keep. Noted. Take the hazard perception test, then we’ll talk.", the change note "You’re down as stop. Pick again to switch."); add `/history` to `run_worker_first` and to the `data-abs` rewrite; log `source` from the vote and sign bodies (never stored); the JSON-LD's `mainEntityOfPage` wants the absolute URL too.
+- **Register and sources:** the footer cites the Morning Advertiser price survey without a link because row P has no URL yet; add it when the row does. The WSJ stop links the register's syndicated copy (tovima.com); swap for the WSJ's own page and check the quoted words when the row is ticked. The YouGov 2021 source line says "adults" until the row confirms "GB".
+- **Still to do before promotion:** the privacy notice (the form is now the fourth screen; the `dq_poll` cookie, the hashed network counts, the `dq_signed` flag); a Mac-built OG image for `/history`; the `/history` canonical and OG absolute URLs through the Worker.
+
+## Renders
+
+`home-1280-fold.png`, `home-390-fold.png`, `home-1280-full.png`, `home-390-full.png` and the same four for `home-alt`; `home-verdict-1280.png`, `home-verdict-1366.png`, `home-verdict-1280-reduced-motion.png`; `home-alt-problem-1280.png`, `home-alt-solution-1280.png`; `home-poll-1280.png`, `home-petition-section-1280.png`, `home-history-1280.png`, `home-pubs-1280.png`; `home-hero-count-1280.png` (the count stubbed at 12,345), `home-door-focus-1280.png`; `pill-vote.png`, `pill-posting.png`, `pill-voted-stop.png`, `pill-voted-keep.png`, `pill-returning-voter.png`, `pill-notcounted.png`, `pill-signed.png` (no pill), `pill-focus.png`; `pill-phone-collapsed.png`, `pill-phone-open.png`, `pill-phone-voted.png`, `home-howto-390-pill.png`; `history-1280-fold.png`, `history-1280-full.png`, `history-390-full.png`; `measurements.json`.
