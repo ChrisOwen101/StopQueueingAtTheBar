@@ -8,12 +8,15 @@ Types: **P** primary (government, legislation, pollster's own page), **A** acade
 
 ## On the page
 
-Location codes: **M** is the maths screen (`#maths`), **H1** to **H8** are the stops on the history strip (`#history`), **HW** is the England/Wales line under the strip, **F** is the footer sources line.
+Location codes: **M** is the maths screen (`#maths`), **P** is the pubs chapter (`#pubs`), **H1** to **H8** are the stops on the history strip (`#history`), **HW** is the England/Wales line under the strip, **F** is the footer sources line, **HP1** to **HP11** are the eleven stops on the history page (`/history`, in page order: before 2020, 20 Mar 2020, 4 Jul 2020, 24 Sep 2020, 19 Jul 2021, 30 Jul 2021, 28 Jan 2022, Jul 2023, 23 Aug 2025, 18 Sep 2025, today) and **HQ** is that page’s questions section. HP1 to HP5, HP8, HP10 and HP11 are the H1 to H8 cards moved to the page unchanged, so their rows above cover them; the HP and HQ rows below are only what the page adds.
 
 | Where | Wording on the page | Source | Type | Conf. | Checked |
 |---|---|---|---|---|---|
 | M | 25 minutes. Or six. Twenty orders, 75 seconds each. One spot on the bar, or four staff along it. | Derived: plain arithmetic (see below). Stamped “worked example” on the page, with “Simple arithmetic, not a survey … Illustrative, like the sims.” | derived | High | [ ] |
 | M | Friday night, 90 orders an hour? One spot on the bar can do 48. The line just grows. | Derived: 3,600 ÷ 75 = 48 an hour. The 90 is an illustrative Friday demand, not a measurement | derived | High | [ ] |
+| P | 192 orders an hour, four staff along the bar. One spot does 48. (the tile’s big number is 192) | Derived: 3,600 ÷ 75 = 48; 48 × 4 staff = 192 (see below). Stamped “worked example” on the page | derived | High | [ ] |
+| P | On a Friday at 90 orders an hour, one spot on the bar serves 48. The other 42 stand in a line holding about £224 of pints. Four staff along the bar pour the lot. | Derived: 90 − 48 = 42; 42 × £5.34 = £224.28 (see below). The 90 is row M’s illustrative Friday, not a measurement. Stamped “worked example”, with the honesty line on the same screen: “Arithmetic, not an audit: 75 seconds an order, a pint an order, a line that ends at one spot on the bar, the average pint (£5.34, Morning Advertiser, Apr 2026). The Friday is made up. Your pub is yours.” Waiting, never “lost” | derived | High on the arithmetic; the price is the row below | [ ] |
+| P | The average pint, £5.34 (Morning Advertiser, Apr 2026); also the home footer’s source line | Morning Advertiser price survey, published 21 May 2026: average draught pint £5.34 in Apr 2026 (promoted from Reserves 14 Oct 2026, where it had no URL: **URL needed**, see the checklist) | S | Medium-high | [ ] |
 | H1 | “The bar counter is the only place in Britain in which anything is sold or served without the formation of a queue.” | Kate Fox, *Passport to the Pub: The Tourist’s Guide to Pub Etiquette* (Brewers and Licensed Retailers Association, 1996), http://www.sirc.org/publik/ptpchap1.html | A | High that it exists, medium on exact wording | [ ] |
 | H2 | 20 Mar 2020. The Prime Minister asks pubs to close “tonight as soon as they reasonably can” | GOV.UK, “PM statement on coronavirus: 20 March 2020”, https://www.gov.uk/government/speeches/pm-statement-on-coronavirus-20-march-2020 | P | High on the fact, medium on wording (the transcript is partly garbled) | [ ] |
 | H2 | Ordering at the bar won’t be rule-free again for 486 days | Derived: 20 Mar 2020 to 19 Jul 2021 (see below) | derived | High | [ ] |
@@ -26,6 +29,12 @@ Location codes: **M** is the maths screen (`#maths`), **H1** to **H8** are the s
 | H7 | 18 Sep 2025. YouGov: single file 40%, along the bar 39%, don’t know 21% | YouGov daily question, 18 Sep 2025, 5,914 GB adults: “And which would you prefer the system for ordering drinks be at pub bars?” https://yougov.co.uk/topics/consumer/survey-results/daily/2025/09/18/59cc2/3 | P | High | [ ] |
 | H8 | 1,911 days (on 12 Oct 2026) since you were allowed back at the bar, counted from 19 Jul 2021, England | Computed live in `script.js` from 19 Jul 2021 (SI 2021/848). Without JS the page says “over five years”, true from 19 Jul 2026 | derived | High | [ ] |
 | HW | Wales was the last to drop table service, on 28 January 2022 | Welsh Government, “Wales completes move to alert level 0”, https://www.gov.wales/wales-completes-move-alert-level-0 | P | High | [ ] |
+| HP6 | 30 Jul 2021. The habit sticks. Eleven days after the rules go, YouGov asks how you’d rather order. From your table, 51%. At the bar, 25%. Table service isn’t a queue, but it is the habit of not walking to the bar. | YouGov, 30 Jul 2021, 5,695 adults, https://yougov.com/en-gb/daily-results/20210730-a367c-2 (promoted from Reserves). The card says table service isn’t a bar queue: the figure is the habit, not the queue | P | High; confirm “GB” and the question wording before the source line says “GB adults” | [ ] |
+| HP7 | 28 Jan 2022. Last orders for table service. Wales drops table service, the last of the four nations to. 679 days after the pubs shut. Scotland and Northern Ireland went the week before. | Welsh Government, “Wales completes move to alert level 0”, https://www.gov.wales/wales-completes-move-alert-level-0 (row HW’s source). 679 days: derived, 20 Mar 2020 to 28 Jan 2022 (see below). “The week before” rests on Scotland 24 Jan 2022 and Northern Ireland 21 Jan 2022, which have no URL here (row HQ): until they do, the card ends at “the last of the four nations to” and the 679 days, and drops the last sentence | P + derived | High on Wales and the arithmetic; the last sentence waits on HQ | [ ] |
+| HP9 | 23 Aug 2025. America notices. The Wall Street Journal calls the single-file queue ‘a mortal threat’ to British pub culture. Two years after Time Out. | WSJ, “Britain’s Pub Culture Faces a Mortal Threat: The Single-File Queue”, 23 Aug 2025 (promoted from Reserves). The only link in the register is a syndicated copy, https://www.tovima.com/wsj/britains-pub-culture-faces-a-mortal-threat-the-single-file-queue/ : swap it for the WSJ’s own page and check the quoted words against the headline | S | Medium-high that it exists; medium on the words until checked | [ ] |
+| HP10 | One in four adults had seen a single-file bar queue that year. (one sentence added to the 18 Sep 2025 stop, row H7) | YouGov, 18 Sep 2025, same survey as H7, https://yougov.com/en-gb/daily-results/20250918-59cc2-2 (promoted from Reserves; the reserve row read “1 in 4 adults (about 35% of pub-goers) saw a single-file bar queue in the past year”) | P | High; check “that year” against the question’s period | [ ] |
+| HQ | Is it rude to go to the bar when there’s a queue? … The invisible queue polices itself: in 2017, 91% told YouGov they’d point out that someone else was next if they were served out of turn. | YouGov, 24 Nov 2017, https://yougov.co.uk/news/2017/11/24/young-brits-wont-speak-themselves-bar/ (promoted from Reserves, where it read “91% would tell the barperson someone else was next if they were served out of turn”) | P | High; check the question’s wording before the answer paraphrases it | [ ] |
+| HQ | When did table service end in pubs? England, 19 July 2021. Scotland, 9 August 2021, and again on 24 January 2022 after Omicron. Wales, 7 August 2021, and again on 28 January 2022, the last of the four. Northern Ireland, 21 January 2022. | England: SI 2021/848 (row H5). Wales 28 Jan 2022: gov.wales (row HW). Wales 7 Aug 2021 (alert level 0), Scotland 9 Aug 2021 (beyond Level 0) and 24 Jan 2022 (Omicron measures lifted), Northern Ireland 21 Jan 2022 (Executive Office): all from the wider timeline below, **URL needed** for each (leads, unfetched: gov.scot news, Aug 2021, “Scotland to move beyond Level 0”; gov.scot news, Jan 2022, on lifting the Omicron measures; executiveoffice-ni.gov.uk news, 20 Jan 2022, on the Executive’s relaxation of restrictions). **Until every URL is in this row the page states only: “England, 19 July 2021. Wales was the last of the four, on 28 January 2022.”** | P | High on England and Wales 28 Jan; the rest unsourced here until linked | [ ] |
 | F | Sources: Kate Fox (1996), GOV.UK 20 Mar 2020, GOV.UK pub guidance (2020), SI 2020/1029, SI 2021/848, Welsh Government 28 Jan 2022, Time Out Jul 2023, YouGov 18 Sep 2025. “The pub sims and the queueing maths are worked examples, not measurements.” | The same links as the rows above. Keep it in step with the cards | | | [ ] |
 
 ## Derived figures (arithmetic, shown so anyone can check it)
@@ -35,6 +44,7 @@ Dates (calendar days, end date exclusive):
 - **486 days**: pubs told to close (20 Mar 2020) to bar ordering rule-free in England (19 Jul 2021).
 - **298 days**: table service compulsory in England (24 Sep 2020) to 19 Jul 2021. Pubs were shut by lockdowns for much of it, hence “lockdowns permitting” on the page.
 - **1,911 days**: 19 Jul 2021 to 12 Oct 2026. The page counts this live.
+- **679 days**: pubs told to close (20 Mar 2020) to Wales dropping table service (28 Jan 2022): 365 + 306 + 8. On the history page (HP7).
 - Also true, not on the page: in those 16 months English pubs could open indoors on at most **222 days** (4 Jul to 5 Nov 2020: 124; 2 Dec 2020 to 6 Jan 2021: 35, tier-dependent; 17 May to 19 Jul 2021: 63). Table service was the law on about 140 of the days pubs were actually open indoors. Wales dropped table service **679 days** after the pubs closed.
 
 The maths screen (a worked example, labelled “Simple arithmetic, not a survey” and “Illustrative, like the sims” on the page):
@@ -44,6 +54,11 @@ The maths screen (a worked example, labelled “Simple arithmetic, not a survey�
 - One spot on the bar can serve 3,600 ÷ 75 = **48 orders an hour**. Against 90 an hour on a Friday night the line grows by about 42 people an hour.
 - Why 75 seconds: it is generous to the single file. Anglia Ruskin’s pubLAB observed an average of 2 min 23 s per customer from first contact to leaving with a drink (2015). At that rate the twenty take about 48 minutes through one spot and 12 across four.
 - The honest caveat, which the page’s wording follows: a single queue that feeds *every* member of staff (the post office “cashier number three, please”) is efficient. The problem is that a single file at a bar ends at one spot, so in practice one or two staff serve it.
+
+The pubs chapter (`#pubs`, rows P; a worked example, labelled “Arithmetic, not an audit” on the page):
+
+- One spot on the bar: 3,600 ÷ 75 = **48 orders an hour**. Four staff along it: 48 × 4 = **192 an hour**. The tile’s big number.
+- Row M’s Friday, 90 orders an hour, through one spot: 90 − 48 = **42 orders an hour** not served that hour (the line grows by 42, as the maths screen said). At the average pint, 42 × £5.34 = **£224.28**, “about £224 of pints”. Assumes a pint an order (a round makes it more; there is no figure for round size, so the page doesn’t say so) and a single file that ends at one spot (one that feeds two staff keeps up at 90 an hour: 2 × 48 = 96). It is orders **waiting**, not lost: the arithmetic says nothing about whether they are served later, elsewhere, or not at all. One hour, never a night or a year.
 
 ## Background: the queueing theory (not on the page)
 
@@ -74,22 +89,20 @@ Northern Ireland: pubs serving food 3 Jul 2020, others 23 Sep 2020; indoor 24 Ma
 
 ## Reserves (true enough to use later, each with what it would support)
 
+Moved to “On the page” on 14 Oct 2026, for the home page’s pubs chapter and the history page: the average pint (P), YouGov 30 Jul 2021 (HP6), the WSJ (HP9), YouGov’s 1 in 4 (HP10) and YouGov 2017’s 91% (HQ). Their caveats went with them.
+
 | Figure | Source | Type | Conf. | Would support |
 |---|---|---|---|---|
 | Average 2 min 23 s per customer at the bar, first contact to leaving with a drink | Anglia Ruskin University pubLAB, Alcohol Innovation Congress 2015, via Cambridge Network, 1 Dec 2015, https://www.cambridgenetwork.co.uk/news/women-take-more-time-bar-study | A (conference) | Medium | “75 seconds is generous” on the maths screen |
-| 91% would tell the barperson someone else was next if they were served out of turn | YouGov, 24 Nov 2017, https://yougov.co.uk/news/2017/11/24/young-brits-wont-speak-themselves-bar/ | P | High | Step ④ “Trust the barperson”: the invisible queue polices itself |
 | Over 90% of customers who wanted serving stood right at the counter, facing it or the staff; fewer than 1 in 25 gestured | Loth, Huth and de Ruiter, *Frontiers in Psychology* 4:557, 2013, https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00557 | A | High | How The Cluster actually works |
 | A 20-person single file is about 15–16 m long and covers 12–18 m², the floor building rules give 12–18 seated diners | Queue length per person 0.76–0.81 m (Visiontron queue guide, C); 0.6–0.9 m² a head (Highway Capacity Manual LOS C, via NPTEL, A); Approved Document B floor-space factors (dining 1.0 m² a head; “bar areas within 2m of serving point” 0.3 m², the densest category) | C/A/P | Medium | “It gets in the way”: wasted floor and blocked seats |
-| 1 in 4 adults (about 35% of pub-goers) saw a single-file bar queue in the past year | YouGov, 18 Sep 2025 (same survey as H7), https://yougov.com/en-gb/daily-results/20250918-59cc2-2 | P | High | How common it is |
-| Eleven days after the rules ended, 51% preferred table service, 25% going to the bar | YouGov, 30 Jul 2021, 5,695 adults, https://yougov.com/en-gb/daily-results/20210730-a367c-2 | P | High | The habit stuck (table service isn’t a bar queue, so frame with care) |
 | 69% prefer finding space along the bar, 31% a line | Zonal and CGA by NIQ, *GO Technology*, Dec 2025, 5,000 consumers | C (commissioned by an EPoS vendor) | Medium-high | Conflicts with YouGov’s 40/39; if used, show both |
 | 295 pubs shut Jan–Sep 2026, 360 forecast for the year (“almost one a day”); 44,650 pubs in 2025, down from 60,800 in 2000 | BBPA via Morning Advertiser, 12 Oct 2026, https://www.morningadvertiser.co.uk/Article/2026/10/12/bbpa-290-uk-pubs-shut-in-2026-so-far-360-closures-forecast/ ; 6 May 2026 | TB via S | Medium-high (the headline says 290, the body 295) | A “why now” piece near the petition |
-| Average draught pint £5.34 (Apr 2026) | Morning Advertiser price survey, 21 May 2026 | S | Medium-high | Any money figure (label as illustrative) |
 | 20% have left a bar for another because of waits; 24% considered abandoning a drink | Barclaycard / Opinium, Dec 2016, 2,000 adults | C | Medium | Use lightly, if at all |
 | Patience for a pub drink about 7 min 51 s | Omnico, 2014, 5,000 consumers | C | Medium | Use lightly, if at all |
 | A perfect Guinness takes 119.5 s, most of it settling | Guinness guidance, widely repeated | C | Medium-high | While it settles, a barperson who can see the whole bar serves someone else |
 | Tim Martin (Wetherspoon): “On balance, we’d opt for the traditional anarchy of a non-queue.” | Coventry Telegraph, Sep 2025, https://www.coventrytelegraph.net/whats-on/wetherspoons-ditches-new-bar-rules-32539621 | S | Medium | A quote, if one is wanted |
-| Coverage: WSJ, “Britain’s Pub Culture Faces a Mortal Threat: The Single-File Queue”, 23 Aug 2025; New Statesman, Sep 2025; The Week, 26 Sep 2025; LBC “It’s a pub not a post office!” | https://www.tovima.com/wsj/britains-pub-culture-faces-a-mortal-threat-the-single-file-queue/ and the publishers’ sites | S/O | Medium-high | A press stop, a press page |
+| Coverage: New Statesman, Sep 2025; The Week, 26 Sep 2025; LBC “It’s a pub not a post office!” (the WSJ, 23 Aug 2025, moved to HP9) | the publishers’ sites | S/O | Medium-high | A press stop, a press page |
 
 ## Avoid
 
@@ -108,6 +121,11 @@ Northern Ireland: pubs serving food 3 Jul 2020, others 23 Sep 2020; indoor 24 Ma
 - The “Super Saturday” and “Freedom Day” nicknames (not checked).
 - Tottenham’s “10,000 pints a minute”, “200 drinks an hour” per member of bar staff and any average UK pub floor area or bar length (no source exists).
 - Flipdish’s “80% of pub-goers want to order on apps” (the company’s own claim).
+- A capacity difference priced as money: “£769 an hour” (144 × £5.34), “£1,025 an hour” (192 × £5.34) or “£256” (48 × £5.34). Capacity is not demand; priced, it reads as takings, which the page may never claim.
+- “Losing”, “lost”, “takings”, “revenue” or “profit” anywhere near the pub sum. The arithmetic shows orders waiting; whether any is ever lost is unknown (Barclaycard 2016 is the only hint, and it is to be used lightly).
+- Any town’s pint price without a row of its own: a dated, published survey by a named body with a sample, or a pub’s own price with written permission. The only price in the register is the national average. Never a named pub’s price.
+- Any per-night or per-year money figure. One hour, labelled, is as far as the sum goes.
+- Scotland’s and Northern Ireland’s table-service dates on a page before their rows carry URLs (row HQ).
 
 ## Before-promoting checklist
 
@@ -119,3 +137,9 @@ Northern Ireland: pubs serving food 3 Jul 2020, others 23 Sep 2020; indoor 24 Ma
 - [ ] Look for an https copy of the Kate Fox text (the SIRC page is http only).
 - [ ] Check the Welsh Government page still says table service ended on 28 Jan 2022 (HW).
 - [ ] Re-run the date arithmetic if any date changes.
+- [ ] Find and open the Morning Advertiser price survey (published 21 May 2026): confirm £5.34 is the average draught pint for Apr 2026 and what it averages (UK, draught, all styles or lager), add the URL to row P, and tick it.
+- [ ] Find the WSJ’s own page for “Britain’s Pub Culture Faces a Mortal Threat: The Single-File Queue” (23 Aug 2025), swap the syndicated link in HP9 for it, and check ‘a mortal threat’ word for word against the headline.
+- [ ] Confirm YouGov 30 Jul 2021 is GB adults, n = 5,695, and the 51 / 25 figures and the question wording, before HP6’s source line says “GB” (HP6).
+- [ ] Find the Scottish Government pages for 9 Aug 2021 (beyond Level 0) and 24 Jan 2022 (Omicron measures lifted), the Executive Office page for 21 Jan 2022, and the gov.wales page for 7 Aug 2021; add the URLs to HQ (and HP7’s last sentence), and only then let the page state those dates.
+- [ ] Confirm the 91% and the question wording on YouGov’s 24 Nov 2017 page (HQ).
+- [ ] Confirm the 1 in 4 figure and its period (“that year”) on YouGov’s 18 Sep 2025 results page (HP10).
