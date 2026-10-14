@@ -54,9 +54,10 @@ const arg = (name, dflt) => {
   return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : dflt;
 };
 const ROUND = arg('--round', null);
-const SIZES_WANTED = arg('--size', 'a4').split(',');
+const SIZES_ARG = arg('--size', null); // overrides every concept's `paper`
 const ONLY = arg('--only', '').split(',').filter(Boolean);
-const MONO = argv.includes('--mono');
+const MONO = argv.includes('--mono'); // forces a mono of every concept
+const TAG = arg('--tag', ''); // appended to every file name (the Arial check: POSTER_FONT=Arial --tag arial)
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dir = arg('--out', null)
@@ -163,7 +164,7 @@ const stampSvg = (c) => stamp(c).replace('<svg ', '<svg class="stamp" ');
 // `ring` is the ring-and-slash colour, `fig` the figures', `field` the colour of the knockout
 // that keeps the slash clear of the figures when they are the same colour.
 function prohibition({ ring, fig, field }) {
-  const scales = [0.5, 0.6, 0.72, 0.86], GAP = 8;
+  const scales = [0.5, 0.6, 0.72, 0.88], GAP = 7;
   const height = scales.reduce((h, s) => h + 103 * s, 0) + GAP * (scales.length - 1);
   let y = 200 - height / 2;
   const col = scales
@@ -185,76 +186,85 @@ function prohibition({ ring, fig, field }) {
 const br = (s) => s.replace(/\n/g, '<br>');
 
 // ---------- Copy ----------
-const HOUSE = 'This bar does The&nbsp;Cluster. The bar staff know who’s&nbsp;next. They always did.';
-const POLITE = 'We kindly ask that you spread out along the bar. The bar staff know who’s&nbsp;next.';
+const HOUSE = 'This bar does The&nbsp;Cluster.';
+const POLITE = 'We kindly ask that you spread out along the bar.\nThe bar staff know who’s&nbsp;next.';
+const CODE = 'DQ/POS/BAR-001'; // the stock-code gag, in the register of the point-of-sale notice
 
 // ---------- The concepts ----------
-// field: the block colour. fg: text and marks on it (paper white, or black on a pale field).
-// ring: the prohibition ring's colour where the layout has one. head: the headline colour.
-// layout: notice | tap | split. upper: uppercase headline. scan: the reason beside the code.
-// route: home (the petition) or test (the hazard perception test).
+// Round 2 (14 Oct 2026): the family is a pair, the notice and the instruction poster; see
+// brand/final/review/posters/round-1/decision.md. Round 1's six concepts are in that folder.
+// field: the block colour. fg: text and marks on it (paper white). ring: the prohibition
+// ring's colour where the layout has one. head: the headline colour. layout: notice | tap |
+// split. upper: uppercase headline. sizes: {head, picto} in mm at A4. subWeight: the tap
+// subhead's weight. scan: the reason beside the code. route: home (the petition) or test (the
+// hazard perception test). paper: the sizes to render (default a4). mono: also render the
+// black-on-white version.
 const CONCEPTS = [
   {
-    id: 'a-prohibition',
-    title: 'A. No queueing: the prohibition notice',
+    id: 'notice-ink',
+    title: 'The notice, on ink',
+    layout: 'notice',
+    field: INK, fg: PAPER, head: AMBER, ring: RED,
+    headline: ['NO QUEUEING', 'AT THE BAR'], upper: true,
+    sizes: { head: 25 },
+    body: HOUSE, polite: POLITE, code: CODE,
+    scan: 'Sign the petition.', route: 'home',
+    paper: ['a4', 'a5'], mono: true,
+  },
+  {
+    id: 'notice-red',
+    title: 'The notice, on red',
     layout: 'notice',
     field: RED, fg: PAPER, head: PAPER, ring: PAPER,
-    headline: ['don’t queue', 'at the bar.'], upper: false,
-    body: 'This bar does The&nbsp;Cluster.',
-    polite: POLITE,
+    headline: ['NO QUEUEING', 'AT THE BAR'], upper: true,
+    sizes: { head: 25 },
+    body: HOUSE, polite: POLITE, code: CODE,
+    scan: 'Sign the petition.', route: 'home',
+    paper: ['a4', 'a5'],
+  },
+  {
+    id: 'poster-green',
+    title: 'The instruction poster, on green',
+    layout: 'tap',
+    field: GREEN, fg: PAPER, head: PAPER,
+    headline: ['SPREAD', 'OUT.'], upper: true,
+    sizes: { head: 40 },
+    sub: 'It’s a pub.\nNot a post office.', subWeight: 500,
+    polite: 'Please don’t queue. Cheers.',
+    scan: 'Sign the petition.', route: 'home',
+    paper: ['a4', 'a5'], mono: true,
+  },
+  {
+    id: 'poster-green-600',
+    title: 'The instruction poster, on green, subhead at 600',
+    layout: 'tap',
+    field: GREEN, fg: PAPER, head: PAPER,
+    headline: ['SPREAD', 'OUT.'], upper: true,
+    sizes: { head: 40 },
+    sub: 'It’s a pub.\nNot a post office.', subWeight: 600,
+    polite: 'Please don’t queue. Cheers.',
     scan: 'Sign the petition.', route: 'home',
   },
   {
-    id: 'b-spread-out',
-    title: 'B. Spread out: the tap poster’s structure',
+    id: 'poster-blue',
+    title: 'The instruction poster, on blue (for comparison)',
     layout: 'tap',
     field: BLUE, fg: PAPER, head: PAPER,
     headline: ['SPREAD', 'OUT.'], upper: true,
     sizes: { head: 40 },
-    sub: 'The bar is long\nfor a reason.',
-    polite: 'Please don’t queue.\nCheers.',
+    sub: 'It’s a pub.\nNot a post office.', subWeight: 500,
+    polite: 'Please don’t queue. Cheers.',
     scan: 'Sign the petition.', route: 'home',
   },
   {
-    id: 'b2-spread-out-lower',
-    title: 'B2. Spread out, lowercase, the post office line',
-    layout: 'tap',
-    field: BLUE, fg: PAPER, head: PAPER,
-    headline: ['spread', 'out.'], upper: false,
-    sizes: { head: 44 },
-    sub: 'It’s a pub.\nNot a post office.',
-    polite: 'Please don’t queue.\nCheers.',
-    scan: 'Sign the petition.', route: 'home',
-  },
-  {
-    id: 'c-split',
-    title: 'C. Don’t / do: the two-panel notice',
-    layout: 'split',
-    fg: PAPER,
-    headline: ['don’t queue.', 'spread out.'], upper: false,
-    body: 'This bar does The&nbsp;Cluster.\nThe bar staff know who’s&nbsp;next.\nThey always did.',
-    scan: 'Sign the petition.', route: 'home',
-  },
-  {
-    id: 'd-no-queueing',
-    title: 'D. No queueing: the no-smoking structure',
-    layout: 'notice',
-    field: INK, fg: PAPER, head: AMBER, ring: RED,
-    headline: ['NO QUEUEING', 'AT THE BAR'], upper: true,
-    body: 'This bar does The&nbsp;Cluster.',
-    polite: POLITE,
-    code: 'DQ/POS/BAR-001',
-    scan: 'Sign the petition.', route: 'home',
-  },
-  {
-    id: 'e-find-the-gap',
-    title: 'E. Find the gap: the instruction in green',
+    id: 'poster-gap',
+    title: 'The instruction poster, "Find the gap" alternate',
     layout: 'tap',
     field: GREEN, fg: PAPER, head: PAPER,
     headline: ['FIND', 'THE', 'GAP.'], upper: true,
     sizes: { head: 32, picto: 80 },
-    sub: 'Any gap. The bar staff\nknow who’s next.',
-    polite: 'Please don’t queue.\nCheers.',
+    sub: 'Any gap.\nThe bar staff know who’s next.', subWeight: 500,
+    polite: 'Please don’t queue. Cheers.',
     scan: 'Take the test.', route: 'test',
   },
 ];
@@ -318,7 +328,7 @@ const CSS_NOTICE = `
 .notice .mega { font-size: var(--head-size); }
 .notice .picto { width: var(--picto); margin: ${m(8)} 0 ${m(7)}; }
 .notice .body { font-size: ${m(12)}; }
-.notice .polite { font-size: ${m(7.6)}; max-width: ${m(140)}; margin-top: ${m(4)}; }
+.notice .polite { font-size: ${m(7.6)}; max-width: ${m(156)}; margin-top: ${m(4)}; }
 .notice .rule { width: 100%; margin-top: auto; }
 .notice .foot { width: 100%; display: flex; align-items: flex-end; justify-content: space-between; margin-top: ${m(5)}; text-align: left; }
 .notice .who { display: flex; align-items: center; gap: ${m(5)}; }
@@ -330,29 +340,29 @@ const CSS_NOTICE = `
 
 // "tap": the water poster's structure. The headline stacked top left, one word a line, a quiet
 // subhead, the roundel as the pictogram lower right (it shows the right behaviour, so it is the
-// picture and the mark at once: one roundel per sheet), and at the foot the polite line over a
-// short rule with the address at left, the scan reason and the code at right.
-const tap = (c, r) => `<div class="page tap" style="--head-size:${sz(c, 'head', c.upper ? 42 : 46)};--picto:${sz(c, 'picto', 96)}">
+// picture and the mark at once: one roundel per sheet), and at the foot two columns: the polite
+// line over a short rule, then the scan reason and the address at left; the code alone at
+// right, where the reference keeps its mark. Four lines at left are the code's 36 mm.
+const tap = (c, r) => `<div class="page tap" style="--head-size:${sz(c, 'head', c.upper ? 42 : 46)};--picto:${sz(c, 'picto', 96)};--sub-weight:${c.subWeight || 500}">
   <div class="top">
     <h1 class="mega${c.upper ? ' upper' : ''}">${c.headline.join('<br>')}</h1>
-    <p class="sub light">${br(c.sub)}</p>
+    <p class="sub">${br(c.sub)}</p>
   </div>
   ${roundel(c.fg, 'picto')}
   <div class="foot">
-    <div class="polite-wrap"><p class="polite mid">${br(c.polite)}</p><hr class="rule"><p class="addr">${r.text}</p></div>
-    <div class="scan"><p class="cta">${c.scan}</p>${qrSvg(r)}</div>
+    <div class="words"><p class="polite mid">${br(c.polite)}</p><hr class="rule"><p class="cta">${c.scan}</p><p class="addr">${r.text}</p></div>
+    ${qrSvg(r)}
   </div>
 </div>`;
 const CSS_TAP = `
 .tap .top { text-align: left; }
 .tap .mega { font-size: var(--head-size); }
-.tap .sub { font-size: ${m(11)}; margin-top: ${m(8)}; }
+.tap .sub { font-size: ${m(11)}; margin-top: ${m(8)}; font-weight: var(--sub-weight); line-height: 1.2; }
 .tap .picto { width: var(--picto); align-self: flex-end; margin: auto 0 ${m(14)}; }
 .tap .foot { display: flex; align-items: flex-end; justify-content: space-between; gap: ${m(6)}; }
 .tap .polite { font-size: ${m(7.6)}; white-space: nowrap; }
-.tap .polite-wrap .rule { width: ${m(40)}; margin: ${m(3)} 0; }
-.tap .scan { display: flex; align-items: flex-end; gap: ${m(5)}; text-align: right; }
-.tap .scan .cta { max-width: ${m(46)}; }
+.tap .words .rule { width: ${m(40)}; margin: ${m(3)} 0; }
+.tap .words .addr { margin-top: ${m(1.5)}; }
 .tap .qr { width: ${m(36)}; }
 `;
 
@@ -464,11 +474,11 @@ async function preview(name, size, html) {
 
 try {
   let set = ONLY.length ? CONCEPTS.filter((c) => ONLY.includes(c.id)) : CONCEPTS;
-  if (MONO) set = set.flatMap((c) => (c.layout === 'split' ? [c] : [c, mono(c)]));
+  set = set.flatMap((c) => (c.layout !== 'split' && (MONO || c.mono) ? [c, mono(c)] : [c]));
   const rows = [];
   for (const c of set) {
-    for (const size of SIZES_WANTED) {
-      const name = `${c.id}-${size}`;
+    for (const size of SIZES_ARG ? SIZES_ARG.split(',') : c.paper || ['a4']) {
+      const name = `${c.id}-${size}${TAG ? `-${TAG}` : ''}`;
       const part = await printPdf(name, `${c.title} (${size.toUpperCase()})`, SIZES[size], sheet(size, c));
       const { bytes } = await publish(`${name}.pdf`, `Don’t queue at the bar: ${c.title}`, [part]);
       const ink = await preview(name, size, part.html);
